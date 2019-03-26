@@ -8,7 +8,8 @@ namespace Asm.Net
     {
         public static string ToCidrString(this IPAddress ipAddress, IPAddress mask)
         {
-            if (ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) throw new InvalidOperationException("Not an IPv4 address");
+            if (ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) throw new ArgumentException("Not an IPv4 address", nameof(ipAddress));
+            if (mask.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork) throw new ArgumentException("Not an IPv4 address", nameof(mask));
 
             uint bitCheck = 0b1000_0000_0000_0000_0000_0000_0000_0000;
             uint reverseCheck = 0b0000_0000_0000_0000_0000_0000_0000_0001;
@@ -37,7 +38,7 @@ namespace Asm.Net
                         }
                         else if (reverse + cidrNumber != 32)
                         {
-                            throw new InvalidCastException("Invalid mask");
+                            throw new FormatException("Invalid mask");
                         }
                     }
                     break;
@@ -69,7 +70,7 @@ namespace Asm.Net
             if (ipAddress == null) throw new ArgumentNullException(nameof(ipAddress));
             if (ipAddress.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
             {
-                throw new ArgumentException("Not a valid IPv4 Address", nameof(ipAddress));
+                throw new ArgumentException("Not an IPv4 address", nameof(ipAddress));
             }
 
             var split = ipAddress.GetAddressBytes();
