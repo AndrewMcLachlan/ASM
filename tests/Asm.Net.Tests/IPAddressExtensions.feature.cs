@@ -17,6 +17,7 @@ namespace Asm.Net.Tests
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.4.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "IPAddressExtensions")]
     public partial class IPAddressExtensionsFeature : Xunit.IClassFixture<IPAddressExtensionsFeature.FixtureData>, System.IDisposable
     {
         
@@ -38,7 +39,8 @@ namespace Asm.Net.Tests
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "IPAddress Extensions", "\tIn order to get IP addresses in different notations\r\n\tI want to be able to conve" +
                     "rt from a subnet mask to CIDR\r\n\tSo that I can see IP addresses with CIDR notatio" +
-                    "n", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "n", ProgrammingLanguage.CSharp, new string[] {
+                        "IPAddressExtensions"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -124,38 +126,135 @@ namespace Asm.Net.Tests
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation", null, @__tags);
-#line 7
+#line 8
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 8
- testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.When("I call ToCidrString", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
+ testRunner.When("I call ToCidrString", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
  testRunner.Then(string.Format("the string value \'{0}\' will be returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
-        [Xunit.TheoryAttribute(DisplayName="Get IP address as unsigned 32 bit integer")]
+        [Xunit.TheoryAttribute(DisplayName="Get IP address in CIDR notation with invalid mask")]
         [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
-        [Xunit.TraitAttribute("Description", "Get IP address as unsigned 32 bit integer")]
-        [Xunit.InlineDataAttribute("255.255.255.255", "4294967295", new string[0])]
-        [Xunit.InlineDataAttribute("204.204.204.204", "3435973836", new string[0])]
-        public virtual void GetIPAddressAsUnsigned32BitInteger(string iPAddress, string value, string[] exampleTags)
+        [Xunit.TraitAttribute("Description", "Get IP address in CIDR notation with invalid mask")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.253", "System.FormatException", "Invalid mask", new string[0])]
+        public virtual void GetIPAddressInCIDRNotationWithInvalidMask(string iPAddress, string mask, string exceptionType, string message, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as unsigned 32 bit integer", null, exampleTags);
-#line 49
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation with invalid mask", null, @__tags);
+#line 51
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 50
- testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 51
- testRunner.When("I call ToUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
+ testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 53
+ testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+ testRunner.When("I call ToCidrString expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 55
+ testRunner.Then(string.Format("an exception of type \'{0}\' is thrown", exceptionType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 56
+ testRunner.And(string.Format("the exception message is \'{0}\'", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.TheoryAttribute(DisplayName="Get IP address in CIDR notation with invalid input")]
+        [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
+        [Xunit.TraitAttribute("Description", "Get IP address in CIDR notation with invalid input")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        [Xunit.InlineDataAttribute("fe80::200:f8ff:fe21:67cf", "255.255.255.255", "ipAddress", new string[0])]
+        [Xunit.InlineDataAttribute("192.168.0.1", "fe80::200:f8ff:fe21:67cf", "mask", new string[0])]
+        public virtual void GetIPAddressInCIDRNotationWithInvalidInput(string iPAddress, string mask, string parameter, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation with invalid input", null, @__tags);
+#line 63
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 64
+ testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 65
+ testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.When("I call ToCidrString expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 67
+ testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 68
+ testRunner.And(string.Format("the exception message is \'Not an IPv4 address\\r\\nParameter name: {0}\'", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.And(string.Format("the exception parameter name is \'{0}\'", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.TheoryAttribute(DisplayName="Get IP address as an unsigned 32 bit integer")]
+        [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
+        [Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        [Xunit.InlineDataAttribute("255.255.255.255", "4294967295", new string[0])]
+        [Xunit.InlineDataAttribute("204.204.204.204", "3435973836", new string[0])]
+        public virtual void GetIPAddressAsAnUnsigned32BitInteger(string iPAddress, string value, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer", null, @__tags);
+#line 77
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 78
+ testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 79
+ testRunner.When("I call ToUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 80
  testRunner.Then(string.Format("the unsigned 32 bit integer value {0} will be returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.FactAttribute(DisplayName="Get IP address as an unsigned 32 bit integer with invalid input")]
+        [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
+        [Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer with invalid input")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        public virtual void GetIPAddressAsAnUnsigned32BitIntegerWithInvalidInput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer with invalid input", null, new string[] {
+                        "Unit"});
+#line 88
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 89
+ testRunner.Given("I have an IP Address \'fe80::200:f8ff:fe21:67cf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 90
+ testRunner.When("I call ToUInt32 expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 91
+ testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 92
+ testRunner.And("the exception message is \'Not an IPv4 address\\r\\nParameter name: ipAddress\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
+ testRunner.And("the exception parameter name is \'ipAddress\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

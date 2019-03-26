@@ -1,4 +1,5 @@
-﻿Feature: IPAddress Extensions
+﻿@IPAddressExtensions
+Feature: IPAddress Extensions
 	In order to get IP addresses in different notations
 	I want to be able to convert from a subnet mask to CIDR
 	So that I can see IP addresses with CIDR notation
@@ -46,7 +47,34 @@ Scenario Outline: Get IP address in CIDR notation
     | 192.168.1.1 | 255.255.255.254 | 192.168.1.0/31 |
     | 192.168.1.1 | 255.255.255.255 | 192.168.1.1/32 |
 
-Scenario Outline: Get IP address as unsigned 32 bit integer
+@Unit
+Scenario Outline: Get IP address in CIDR notation with invalid mask
+	Given I have an IP Address '<IP Address>'
+	And I have a subnet mask '<Mask>'
+	When I call ToCidrString expecting an exception
+	Then an exception of type '<Exception Type>' is thrown
+	And the exception message is '<Message>'
+
+	Examples:
+	| IP Address  | Mask            | Exception Type         | Message       |
+	| 192.168.1.1 | 255.255.255.253 | System.FormatException | Invalid mask  |
+
+@Unit
+Scenario Outline: Get IP address in CIDR notation with invalid input
+	Given I have an IP Address '<IP Address>'
+	And I have a subnet mask '<Mask>'
+	When I call ToCidrString expecting an exception
+	Then an exception of type 'System.ArgumentException' is thrown
+	And the exception message is 'Not an IPv4 address\r\nParameter name: <Parameter>'
+	And the exception parameter name is '<Parameter>'
+
+	Examples:
+	| IP Address               | Mask                     | Parameter |
+	| fe80::200:f8ff:fe21:67cf | 255.255.255.255          | ipAddress |
+	| 192.168.0.1              | fe80::200:f8ff:fe21:67cf | mask      |
+
+@Unit
+Scenario Outline: Get IP address as an unsigned 32 bit integer
 	Given I have an IP Address '<IP Address>'
 	When I call ToUInt32
 	Then the unsigned 32 bit integer value <Value> will be returned
@@ -55,3 +83,11 @@ Scenario Outline: Get IP address as unsigned 32 bit integer
 	| IP Address      | Value      |
 	| 255.255.255.255 | 4294967295 |
 	| 204.204.204.204 | 3435973836 |
+
+@Unit
+Scenario: Get IP address as an unsigned 32 bit integer with invalid input
+	Given I have an IP Address 'fe80::200:f8ff:fe21:67cf'
+	When I call ToUInt32 expecting an exception
+	Then an exception of type 'System.ArgumentException' is thrown
+	And the exception message is 'Not an IPv4 address\r\nParameter name: ipAddress'
+	And the exception parameter name is 'ipAddress'
