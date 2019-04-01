@@ -18,7 +18,6 @@ namespace Asm.Net
 
             byte cidrNumber = 0;
 
-            int index = 0;
             for (int i = 31; i >= 0; i--)
             {
                 if ((bitCheck & maskNumber) == bitCheck)
@@ -43,8 +42,6 @@ namespace Asm.Net
                     }
                     break;
                 }
-
-                index++;
             }
 
             uint byteMask = 0b1111_1111_0000_0000_0000_0000_0000_0000;
