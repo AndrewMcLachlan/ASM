@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Asm.Testing
 {
-    public class ScenarioData<T>
+    public class ScenarioInput<T>
     {
-        public T Result { get; set; }
+        public T Input { get; set; }
     }
 }

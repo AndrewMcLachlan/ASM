@@ -12,7 +12,7 @@ namespace Asm.Net.Tests
     public class IPAddressExtensionsSteps
     {
         private ScenarioData _scenarioData;
-        private ScenarioData<Exception> _exception;
+        private ScenarioResult<Exception> _exception;
 
         public class ScenarioData
         {
@@ -24,7 +24,7 @@ namespace Asm.Net.Tests
             public UInt32 IPAddressAsUInt32 { get; set; }
         }
 
-        public IPAddressExtensionsSteps(ScenarioData scenarioData, ScenarioData<Exception> exception)
+        public IPAddressExtensionsSteps(ScenarioData scenarioData, ScenarioResult<Exception> exception)
         {
             _scenarioData = scenarioData;
             _exception = exception;

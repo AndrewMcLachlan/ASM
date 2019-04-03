@@ -8,11 +8,11 @@ namespace Asm.Testing
     [Binding]
     public class ExceptionSteps
     {
-        private ScenarioData<Exception> _scenarioData;
+        private ScenarioResult<Exception> _result;
 
-        public ExceptionSteps(ScenarioData<Exception> scenarioData)
+        public ExceptionSteps(ScenarioResult<Exception> result)
         {
-            _scenarioData = scenarioData;
+            _result = result;
         }
 
         [Then(@"an exception of type '(.*)' is thrown")]
@@ -20,7 +20,7 @@ namespace Asm.Testing
         {
             Type expected = Type.GetType(exceptionType, true);
 
-            var actual = _scenarioData.Result;
+            var actual = _result.Result;
 
             Assert.NotNull(actual);
             Assert.IsType(expected, actual);
@@ -29,14 +29,14 @@ namespace Asm.Testing
         [Then(@"the exception message is '(.*)'")]
         public void ThenTheExceptionMessageIs(string message)
         {
-            Assert.NotNull(_scenarioData.Result);
-            Assert.Equal(message.SpecFlowProcess(), _scenarioData.Result.Message);
+            Assert.NotNull(_result.Result);
+            Assert.Equal(message.SpecFlowProcess(), _result.Result.Message);
         }
 
         [Then(@"the exception parameter name is '(.*)'")]
         public void ThenTheExceptionParameterNAmeIs(string parameterName)
         {
-            var exception = _scenarioData.Result;
+            var exception = _result.Result;
 
             Assert.NotNull(exception);
             Assert.IsAssignableFrom(typeof(ArgumentException), exception);

@@ -20,16 +20,13 @@ namespace Asm.Testing
             return str.Replace("\\r", "\r").Replace("\\n", "\n").Replace("\\t", "\t");
         }
 
-        public static void CatchException(Action action, ScenarioData<Exception> scenarioData)
+        public static void CatchException(Action action, ScenarioResult<Exception> scenarioData)
         {
             var exception = Record.Exception(action);
 
             Assert.NotNull(scenarioData);
 
             scenarioData.Result = exception;
-
-            //ScenarioContext.Current.Add(CommonSteps.ExceptionKey, exception);
-
 
         }
     }
