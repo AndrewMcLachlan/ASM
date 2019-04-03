@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Asm.Net\Asm.Net.csproj" />
-    <ProjectReference Include="..\Asm.Tests.Common\Asm.Tests.Common.csproj" />
+    <ProjectReference Include="..\..\src\Asm.Testing\Asm.Testing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +29,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>IPAddressExtensions.feature</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="specflow.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
