@@ -30,7 +30,7 @@ namespace Asm.Testing
         public void ThenTheExceptionMessageIs(string message)
         {
             Assert.NotNull(_result.Result);
-            Assert.Equal(message.SpecFlowProcess(), _result.Result.Message);
+            Assert.Equal(message.DecodeWhitespace(), _result.Result.Message);
         }
 
         [Then(@"the exception parameter name is '(.*)'")]
