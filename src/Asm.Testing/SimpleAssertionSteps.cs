@@ -33,8 +33,8 @@ namespace Asm.Testing
         }
 
 
-        [Then(@"the a date '(.*)' will be returned")]
-        public void ThenTheADateWillBeReturned(DateTime expected)
+        [Then(@"the date '(.*)' is returned")]
+        public void ThenTheDateIsReturned(DateTime expected)
         {
             Assert.NotNull(_dateResult);
             Assert.Equal(expected, _dateResult.Result);

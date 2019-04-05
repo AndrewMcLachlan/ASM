@@ -92,7 +92,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
  testRunner.When("I call FirstDayOfWeek", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 8
- testRunner.Then("the a date \'2019-03-31\' will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the date \'2019-03-31\' is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -122,7 +122,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.When("I call FirstDayOfWeek", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
- testRunner.Then(string.Format("the a date \'{0}\' will be returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -143,7 +143,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 26
  testRunner.When("I call LastDayOfWeek", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
- testRunner.Then("the a date \'2019-04-06\' will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the date \'2019-04-06\' is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -173,7 +173,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 33
  testRunner.When("I call LastDayOfWeek", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
- testRunner.Then(string.Format("the a date \'{0}\' will be returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
