@@ -85,6 +85,12 @@ Scenario Outline: Get IP address as an unsigned 32 bit integer
 	| 204.204.204.204 | 3435973836 |
 
 @Unit
+Scenario: Create an IP address from an unsigned 32 bit integer
+	Given I have an unsigned 32 bit integer 3435973836
+	When I call FromUInt32
+	Then the IP Address 204.204.204.204 is returned
+
+@Unit
 Scenario: Get IP address as an unsigned 32 bit integer with invalid input
 	Given I have an IP Address 'fe80::200:f8ff:fe21:67cf'
 	When I call ToUInt32 expecting an exception
