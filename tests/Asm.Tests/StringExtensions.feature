@@ -11,3 +11,8 @@ Scenario Outline: Append
 	| string | append | value       |
 	|        | Hello  | Hello       |
 	| Hello  | World  | Hello,World |
+
+Scenario: Squish
+	Given I have a string 'Hello World'
+	When I Squish the string by 2 characters
+	Then the string value 'llo Wor' is returned

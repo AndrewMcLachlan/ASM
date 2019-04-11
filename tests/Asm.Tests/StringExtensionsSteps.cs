@@ -34,5 +34,12 @@ namespace Asm.Tests
         {
             _result.Result = _input.Append(append, _separator);
         }
+
+        [When(@"I Squish the string by (.*) characters")]
+        public void WhenISquishTheStringByCharacters(int chars)
+        {
+            _result.Result = _input.Squish(chars, chars);
+        }
+
     }
 }
