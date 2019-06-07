@@ -106,20 +106,50 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.TheoryAttribute(DisplayName="Prepend")]
+        [Xunit.TraitAttribute("FeatureTitle", "String Extensions")]
+        [Xunit.TraitAttribute("Description", "Prepend")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        [Xunit.InlineDataAttribute("", "Hello", "Hello", new string[0])]
+        [Xunit.InlineDataAttribute("Hello", "World", "World,Hello", new string[0])]
+        public virtual void Prepend(string @string, string prepend, string value, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Prepend", null, @__tags);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 17
+ testRunner.Given(string.Format("I have a string \'{0}\'", @string), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
+ testRunner.And("I have a separator \',\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+ testRunner.When(string.Format("I Prepend \'{0}\' to the string", prepend), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 20
+ testRunner.Then(string.Format("the string value \'{0}\' is returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.FactAttribute(DisplayName="Squish")]
         [Xunit.TraitAttribute("FeatureTitle", "String Extensions")]
         [Xunit.TraitAttribute("Description", "Squish")]
         public virtual void Squish()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Squish", null, ((string[])(null)));
-#line 15
+#line 27
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 16
+#line 28
  testRunner.Given("I have a string \'Hello World\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 17
+#line 29
  testRunner.When("I Squish the string by 2 characters", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 18
+#line 30
  testRunner.Then("the string value \'llo Wor\' is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
