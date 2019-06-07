@@ -2,7 +2,6 @@
 using System.Net;
 using Asm.Testing;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Configuration;
 using Xunit;
 
 namespace Asm.Net.Tests
@@ -31,21 +30,26 @@ namespace Asm.Net.Tests
         }
 
         [Given(@"I have an IP Address '(.*)'")]
-        public void GivenIHaveAnIPAddress(string ipAddress)
+        public void GivenIHaveAnIPAddress(IPAddress ipAddress)
         {
-            _scenarioData.IPAddress = IPAddress.Parse(ipAddress);
+            _scenarioData.IPAddress = ipAddress;
         }
 
         [Given(@"I have a subnet mask '(.*)'")]
-        public void GivenIHaveASubnetMask(string subnetMask)
+        public void GivenIHaveASubnetMask(IPAddress subnetMask)
         {
-            _scenarioData.SubnetMask = IPAddress.Parse(subnetMask);
+            _scenarioData.SubnetMask = subnetMask;
+        }
+
+        [Given(@"I have an unsigned 32 bit integer (.*)")]
+        public void GivenIHaveAnUnsignedBitInteger(uint ipAddressAsUint32)
+        {
+            _scenarioData.IPAddressAsUInt32 = ipAddressAsUint32;
         }
 
         [When(@"I call ToCidrString")]
         public void WhenICallToCidrString()
         {
-            //ScenarioContext.Current.Add("Result", );
             _scenarioData.Cidr = _scenarioData.IPAddress.ToCidrString(_scenarioData.SubnetMask);
         }
 
@@ -67,6 +71,12 @@ namespace Asm.Net.Tests
             SpecFlowHelper.CatchException(() => _scenarioData.IPAddress.ToUInt32(), _exception);
         }
 
+        [When(@"I call FromUInt32")]
+        public void WhenICallFromUInt()
+        {
+            _scenarioData.IPAddress = IPAddressExtensions.FromUInt32(_scenarioData.IPAddressAsUInt32);
+        }
+
         [Then(@"the string value '(.*)' will be returned")]
         public void ThenTheStringValue_WillBeReturned(string expected)
         {
@@ -78,5 +88,12 @@ namespace Asm.Net.Tests
         {
             Assert.Equal(expected, _scenarioData.IPAddressAsUInt32);
         }
+
+        [Then(@"the IP Address (.*) is returned")]
+        public void ThenTheIPAddress_IsReturned(IPAddress ipAddress)
+        {
+            Assert.Equal(ipAddress, _scenarioData.IPAddress);
+        }
+
     }
 }

@@ -34,6 +34,11 @@ namespace Asm.Extensions
             }
         }
 
+        public static string Squish(this string str, int fromStart, int fromEnd)
+        {
+            return str.Substring(fromStart, str.Length - (fromStart+fromEnd));
+        }
+
         /// <summary>
         /// Prepends a string to a string, using the separator string.
         /// </summary>

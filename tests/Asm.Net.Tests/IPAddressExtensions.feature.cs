@@ -234,6 +234,27 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.FactAttribute(DisplayName="Create an IP address from an unsigned 32 bit integer")]
+        [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
+        [Xunit.TraitAttribute("Description", "Create an IP address from an unsigned 32 bit integer")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        public virtual void CreateAnIPAddressFromAnUnsigned32BitInteger()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create an IP address from an unsigned 32 bit integer", null, new string[] {
+                        "Unit"});
+#line 88
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 89
+ testRunner.Given("I have an unsigned 32 bit integer 3435973836", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 90
+ testRunner.When("I call FromUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 91
+ testRunner.Then("the IP Address 204.204.204.204 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.FactAttribute(DisplayName="Get IP address as an unsigned 32 bit integer with invalid input")]
         [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer with invalid input")]
@@ -242,18 +263,18 @@ this.ScenarioInitialize(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer with invalid input", null, new string[] {
                         "Unit"});
-#line 88
+#line 94
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
-#line 89
+#line 95
  testRunner.Given("I have an IP Address \'fe80::200:f8ff:fe21:67cf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 90
+#line 96
  testRunner.When("I call ToUInt32 expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 91
+#line 97
  testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 92
+#line 98
  testRunner.And("the exception message is \'Not an IPv4 address\\r\\nParameter name: ipAddress\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 99
  testRunner.And("the exception parameter name is \'ipAddress\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
