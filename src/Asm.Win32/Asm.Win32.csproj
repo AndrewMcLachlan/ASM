@@ -4,13 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Copyright>Copyright © Andrew McLachlan 2011-2019. All rights reserved.</Copyright>
-    <Product>Asm</Product>
+    <Product>ASM Framework</Product>
     <Company />
     <Authors>Andrew McLachlan</Authors>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <Version>2.0.0</Version>
     <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
+    <PackageIconUrl>https://www.andrewmclachlan.com/images/am.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>

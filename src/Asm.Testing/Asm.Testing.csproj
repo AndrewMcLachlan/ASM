@@ -5,9 +5,11 @@
     <Version>2.0.0</Version>
     <Authors>Andrew McLachlan</Authors>
     <Company>Andrew McLachlan</Company>
-    <Product>Asm</Product>
+    <Product>ASM Framework</Product>
     <Copyright>Copyright © Andrew McLachlan 2011-2019. All rights reserved.</Copyright>
     <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
+    <PackageIconUrl>https://www.andrewmclachlan.com/images/am.png</PackageIconUrl>
+    <Description>ASM Core Library unit testing support.</Description>
   </PropertyGroup>
 
   <ItemGroup>
