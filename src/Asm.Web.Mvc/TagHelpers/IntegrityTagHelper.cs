@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Asm.AmCom.Web.TagHelpers
+namespace Asm.Web.Mvc.TagHelpers
 {
     public abstract class IntegrityTagHelper : TagHelper
     {
@@ -56,9 +56,12 @@ namespace Asm.AmCom.Web.TagHelpers
 
             string path = Path.Combine(HostingEnvironment.WebRootPath, cleanPath);
 
-            var hashAlgo = System.Security.Cryptography.HashAlgorithm.Create("SHA-512");
+            byte[] hash;
 
-            byte[] hash = hashAlgo.ComputeHash(File.OpenRead(path));
+            using (var hashAlgo = System.Security.Cryptography.HashAlgorithm.Create("SHA-512"))
+            {
+                hash = hashAlgo.ComputeHash(File.OpenRead(path));
+            }
 
             string hashBase64 = "sha512-" + Convert.ToBase64String(hash);
             string calculatedUrl = UrlHelper.Content(url.Replace("$v", Math.Abs(hashBase64.GetHashCode()).ToString()));
