@@ -16,15 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Security\IPrincipalProvider.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs" Link="CommonAssemblyInfo.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Security\IPrincipalProvider.cs" />
   </ItemGroup>
 
 </Project>
