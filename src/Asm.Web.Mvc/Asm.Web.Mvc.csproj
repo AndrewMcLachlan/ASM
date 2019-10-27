@@ -11,11 +11,15 @@
     <Authors>Andrew McLachlan</Authors>
     <PackageIconUrl>https://www.andrewmclachlan.com/images/am.png</PackageIconUrl>
     <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Asm" Version="2.0.317" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
 
 </Project>
