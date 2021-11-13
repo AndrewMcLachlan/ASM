@@ -21,14 +21,14 @@ namespace Asm.Web.Mvc.TagHelpers
         public ViewContext ViewContext { get; set; }
 
         protected IUrlHelper UrlHelper { get; }
-        protected IHostingEnvironment HostingEnvironment { get; }
+        protected IWebHostEnvironment HostingEnvironment { get; }
         protected IMemoryCache MemoryCache { get; }
 
         protected abstract string UrlSourceAttributeName { get; }
 
         protected abstract string UrlOutputAttributeName { get; }
 
-        public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, IMemoryCache memoryCache)
+        public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache)
         {
             UrlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
             HostingEnvironment = hostingEnvironment;

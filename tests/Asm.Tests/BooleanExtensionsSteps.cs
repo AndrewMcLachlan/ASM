@@ -8,9 +8,9 @@ namespace Asm.Tests
     [Binding]
     public class BooleanExtensionsSteps
     {
-        private ScenarioInput<bool> _input;
-        private ScenarioResult<int> _intResult;
-        private ScenarioResult<string> _strResult;
+        private readonly ScenarioInput<bool> _input;
+        private readonly ScenarioResult<int> _intResult;
+        private readonly ScenarioResult<string> _strResult;
 
         public BooleanExtensionsSteps(ScenarioInput<bool> input, ScenarioResult<int> intResult, ScenarioResult<string> strResult)
         {

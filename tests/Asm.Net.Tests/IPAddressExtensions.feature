@@ -65,7 +65,7 @@ Scenario Outline: Get IP address in CIDR notation with invalid input
 	And I have a subnet mask '<Mask>'
 	When I call ToCidrString expecting an exception
 	Then an exception of type 'System.ArgumentException' is thrown
-	And the exception message is 'Not an IPv4 address\r\nParameter name: <Parameter>'
+	And the exception message is 'Not an IPv4 address (Parameter '<Parameter>')'
 	And the exception parameter name is '<Parameter>'
 
 	Examples:
@@ -95,5 +95,5 @@ Scenario: Get IP address as an unsigned 32 bit integer with invalid input
 	Given I have an IP Address 'fe80::200:f8ff:fe21:67cf'
 	When I call ToUInt32 expecting an exception
 	Then an exception of type 'System.ArgumentException' is thrown
-	And the exception message is 'Not an IPv4 address\r\nParameter name: ipAddress'
+	And the exception message is 'Not an IPv4 address (Parameter 'ipAddress')'
 	And the exception parameter name is 'ipAddress'

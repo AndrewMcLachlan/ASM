@@ -39,7 +39,7 @@ namespace Asm
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsmException"/> class with a specified error message. 
+        /// Initializes a new instance of the <see cref="AsmException"/> class with a specified error message.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         public AsmException(string message) : base(message)
@@ -68,7 +68,7 @@ namespace Asm
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AsmException"/> class with a specified error message. 
+        /// Initializes a new instance of the <see cref="AsmException"/> class with a specified error message.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="errorId">The ID of the error.</param>
@@ -108,7 +108,6 @@ namespace Asm
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
-        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null) throw new ArgumentNullException("info");

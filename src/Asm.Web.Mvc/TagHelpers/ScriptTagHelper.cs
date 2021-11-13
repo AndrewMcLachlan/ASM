@@ -13,7 +13,7 @@ namespace Asm.Web.Mvc.TagHelpers
         private string _urlAttributeName = "src";
         private bool _emitMinifiedUrls = false;
 
-        public ScriptTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration) : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
+        public ScriptTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration) : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
         {
              Boolean.TryParse(configuration["EmitMinifiedUrls"] ?? "false", out _emitMinifiedUrls);
         }

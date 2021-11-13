@@ -1,11 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../Common/Common.props"/>
+  <Import Project="../../Common/Common.props" />
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Description>ASM Core Library</Description>
+    <Description>Classes for handling media files and formats</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asm\Asm.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs" Link="CommonAssemblyInfo.cs" />
