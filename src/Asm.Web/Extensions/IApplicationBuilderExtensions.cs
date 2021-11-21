@@ -6,7 +6,7 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class IApplicationBuilderExtensions
     {
-        public static IApplicationBuilder AddStandardExceptionHandler(this IApplicationBuilder builder) =>
+        public static IApplicationBuilder UseStandardExceptionHandler(this IApplicationBuilder builder) =>
             builder.UseExceptionHandler(errorApp =>
             {
                 errorApp.Run(async context =>
