@@ -13,10 +13,10 @@ namespace Asm
     public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     {
         #region Fields
-        private byte[] bytes;
+        private readonly byte[] bytes;
         //private bool[] bitArray;
         private BitArray bitArray;
-        private Endian endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+        private readonly Endian endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
         #endregion
 
         #region Properties
@@ -158,8 +158,8 @@ namespace Asm
         /// <returns>A new ExtendedBitArray.</returns>
         public ExtendedBitArray Copy(int start, int length)
         {
-            if ((length + start)-1 > this.Count) throw new ArgumentOutOfRangeException("start");
-            if (length > this.Count) throw new ArgumentOutOfRangeException("length");
+            if ((length + start)-1 > this.Count) throw new ArgumentOutOfRangeException(nameof(start));
+            if (length > this.Count) throw new ArgumentOutOfRangeException(nameof(length));
 
             bool[] temp = new bool[length-start];
 
@@ -180,7 +180,7 @@ namespace Asm
         /// <exception cref="ArgumentException">Thrown if <paramref name="index"/> is less than 0 or greater than the length of <paramref name="array"/>.</exception>
         public void CopyTo(ExtendedBitArray array, int index)
         {
-            if (array == null) throw new ArgumentNullException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
             if (index < 0) throw new ArgumentException("index cannot be less than 0.");
             if (index > array.bitArray.Length - 1) throw new ArgumentException("index cannot be greater than the length of the array.");
 
@@ -292,11 +292,11 @@ namespace Asm
         /// <returns>A string of binary digits.</returns>
         public override string ToString()
         {
-            StringBuilder temp = new StringBuilder();
+            StringBuilder temp = new();
 
             foreach (bool b in this)
             {
-                temp.Append(Convert.ToInt16(b).ToString());
+                temp.Append(Convert.ToInt16(b));
             }
 
             return temp.ToString();
@@ -356,7 +356,7 @@ namespace Asm
 
         private static BitArray GetBits(bool[] values, Endian endian)
         {
-            BitArray temp = new BitArray(values.Length);
+            BitArray temp = new(values.Length);
 
             switch ((endian == Endian.LittleEndian) && BitConverter.IsLittleEndian)
             {
@@ -422,7 +422,7 @@ namespace Asm
                     }
                     break;
                 case Endian.LittleEndian:
-                    switch ((bool)this[this.Count-1])
+                    switch ((bool)this[Count-1])
                     {
                         case true:
                             for (int i=0;i<this.Count-1;i++)

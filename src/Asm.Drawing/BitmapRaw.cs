@@ -42,7 +42,7 @@ namespace Asm.Drawing
         /// <returns>A bitmap.</returns>
         public Bitmap ToBitmap32()
         {
-            Bitmap bitmap = new Bitmap(BitmapInfoHeader.Width, Math.Abs(BitmapInfoHeader.Height), GetPixelFormat(32));
+            Bitmap bitmap = new(BitmapInfoHeader.Width, Math.Abs(BitmapInfoHeader.Height), GetPixelFormat(32));
 
             Color[] pixels = new Color[PixelData.Length / 4];
             for (int i = 0; i < PixelData.Length - 2; i += 4)

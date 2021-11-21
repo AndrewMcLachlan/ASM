@@ -57,7 +57,7 @@ namespace Asm.Net
                 byteMask >>= 8;
             }
 
-            newIp = newIp.Substring(0, newIp.Length - 1);
+            newIp = newIp[0..^1];
 
             return newIp + "/" + cidrNumber.ToString();
         }

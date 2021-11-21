@@ -23,18 +23,18 @@ namespace Asm.Win32
         /// <summary>
         /// The IP address of the entry.
         /// </summary>
-        public IPAddress Address { get; set; }
+        public IPAddress? Address { get; set; }
 
         /// <summary>
         /// The alias assigned to the IP address.
         /// </summary>
-        public string Alias { get; set; }
+        public string? Alias { get; set; }
 
         /// <summary>
         /// Any comment attached to the end of the IP address.
         /// </summary>
-        public string Comment { get; set; }
-        
+        public string? Comment { get; set; }
+
         /// <summary>
         /// The type of entry.
         /// </summary>
@@ -97,9 +97,9 @@ namespace Asm.Win32
         /// <remarks>
         /// Used for constructing comment entries.
         /// </remarks>
-        public HostEntry(string comment) : this(null, null, comment, true)
+        public HostEntry(string? comment) : this(null, null, comment, true)
         {
-            
+
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Asm.Win32
         /// <param name="alias">The alias assigned to the address.</param>
         /// <param name="comment">Any appended comment.</param>
         /// <param name="isCommented">Whether or not this line is commented.</param>
-        public HostEntry(IPAddress address, string alias, string comment, bool isCommented)
+        public HostEntry(IPAddress? address, string? alias, string? comment, bool isCommented)
         {
             Address = address;
             Alias = alias;

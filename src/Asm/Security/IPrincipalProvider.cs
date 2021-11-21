@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
 
-namespace Asm.Security
+namespace Asm.Security;
+
+public interface IPrincipalProvider
 {
-    public interface IPrincipalProvider
-    {
-        ClaimsPrincipal Principal { get; }
-    }
+    ClaimsPrincipal? Principal { get; }
 }

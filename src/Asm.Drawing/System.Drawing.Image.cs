@@ -206,7 +206,7 @@ namespace System.Drawing
             }
 
             Bitmap thumbnail = new Bitmap(newWidth, newHeight);
-            
+
             // Maintain image metadata.
             foreach(PropertyItem pi in image.PropertyItems)
             {
@@ -343,9 +343,9 @@ namespace System.Drawing
         /// <param name="image">The <see cref="Image"/> instance that this method extends.</param>
         /// <param name="property">The EXIF property name.</param>
         /// <returns>The value of the property item or null if the property item is not available.</returns>
-        public static string GetProperty(this Image image, ExifProperty property)
+        public static string? GetProperty(this Image image, ExifProperty property)
         {
-            PropertyItem propItem;
+            PropertyItem? propItem;
             try
             {
                 propItem = image.GetPropertyItem((int)property);
@@ -354,6 +354,8 @@ namespace System.Drawing
             {
                 return null;
             }
+
+            if (propItem?.Value == null) return null;
 
             return System.Text.Encoding.UTF8.GetString(propItem.Value);
         }

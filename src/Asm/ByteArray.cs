@@ -17,7 +17,7 @@ namespace Asm
 	public struct ByteArray
 	{
 		#region Fields
-		private byte[] bytes;
+		private readonly byte[] bytes;
 		private Endian endian;
 		#endregion
 
@@ -113,11 +113,11 @@ namespace Asm
 		/// <returns>A new ByteArray.</returns>
 		public ByteArray Copy(int start, int length)
 		{
-			if ((length + start)-1 > bytes.Length) throw new ArgumentOutOfRangeException("start");
-            if (length > bytes.Length) throw new ArgumentOutOfRangeException("length");
+			if ((length + start)-1 > bytes.Length) throw new ArgumentOutOfRangeException(nameof(start));
+            if (length > bytes.Length) throw new ArgumentOutOfRangeException(nameof(length));
 
-			ByteArray newArray = new ByteArray(length, this.endian);
-			
+			ByteArray newArray = new(length, this.endian);
+
 			int j = 0;
 			for (int i=start;i<start+length;i++)
 			{
@@ -159,16 +159,13 @@ namespace Asm
 		/// <returns>An unsigned short.</returns>
 		public ushort ToUInt16()
 		{
-			switch (endian)
-			{
-				case Endian.BigEndian :
-					return ToUInt16BE();
-				case Endian.LittleEndian :
-					return ToUInt16LE();
-				default :
-					return 0;
-			}
-		}
+            return endian switch
+            {
+                Endian.BigEndian => ToUInt16BE(),
+                Endian.LittleEndian => ToUInt16LE(),
+                _ => 0,
+            };
+        }
 
 		/// <summary>
 		/// Converts the array into an unsigned int.
@@ -176,16 +173,13 @@ namespace Asm
 		/// <returns>An unsigned int.</returns>
 		public uint ToUInt32()
 		{
-			switch (endian)
-			{
-				case Endian.BigEndian :
-					return ToUInt32BE();
-				case Endian.LittleEndian :
-					return ToUInt32LE();
-				default :
-					return 0;
-			}
-		}
+            return endian switch
+            {
+                Endian.BigEndian => ToUInt32BE(),
+                Endian.LittleEndian => ToUInt32LE(),
+                _ => 0,
+            };
+        }
 
 		/// <summary>
 		/// Converts the array into an unsigned long.
@@ -193,18 +187,15 @@ namespace Asm
 		/// <returns>An unsigned long.</returns>
 		public ulong ToUInt64()
 		{
-			switch (endian)
-			{
-				case Endian.BigEndian :
-					return ToUInt64BE();
-					//break;
-				case Endian.LittleEndian :
-					return ToUInt64LE();
-					//break;
-				default :
-					return 0;
-			}
-		}
+            return endian switch
+            {
+                Endian.BigEndian => ToUInt64BE(),
+                //break;
+                Endian.LittleEndian => ToUInt64LE(),
+                //break;
+                _ => 0,
+            };
+        }
 
 		/// <summary>
 		/// Converts the array into a signed short.
@@ -258,8 +249,10 @@ namespace Asm
         /// </summary>
         /// <param name="obj">The byte array to check against.</param>
         /// <returns>Whether the arrays are equal.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
+			if (obj == null) return false;
+
             ByteArray array;
             try
             {
@@ -319,9 +312,8 @@ namespace Asm
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-			ushort temp = 0;
-			temp = bytes[0];
-			temp <<= 8;
+            ushort temp = bytes[0];
+            temp <<= 8;
 			temp |= bytes[1];
 
 			return temp;
@@ -333,9 +325,8 @@ namespace Asm
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-			ushort temp = 0;
-			temp = bytes[1];
-			temp <<= 8;
+            ushort temp = bytes[1];
+            temp <<= 8;
 			temp |= bytes[0];
 
 			return temp;
@@ -377,10 +368,8 @@ namespace Asm
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-
-			uint temp = 0;
-			temp = bytes[3];
-			temp <<= 8;
+            uint temp = bytes[3];
+            temp <<= 8;
 			temp |= bytes[2];
 			temp <<= 8;
 			temp |= bytes[1];
@@ -396,10 +385,8 @@ namespace Asm
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-
-			ulong temp = 0;
-			temp = bytes[7];
-			temp <<= 8;
+            ulong temp = bytes[7];
+            temp <<= 8;
 			temp |= bytes[6];
 			temp <<= 8;
 			temp |= bytes[5];
@@ -423,10 +410,8 @@ namespace Asm
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-
-			ulong temp = 0;
-			temp = bytes[0];
-			temp <<= 8;
+            ulong temp = bytes[0];
+            temp <<= 8;
 			temp |= bytes[1];
 			temp <<= 8;
 			temp |= bytes[2];

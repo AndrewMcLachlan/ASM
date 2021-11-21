@@ -46,7 +46,7 @@ namespace Asm.Extensions
         /// <exception cref="InvalidOperationException">Thrown if the total number of characters to be removed exceeds the length of the string.</exception>
         public static string Squish(this string str, int fromStart, int fromEnd)
         {
-            if (str == null) return null;
+            if (str == null) throw new ArgumentNullException(nameof(str));
 
             if (fromStart < 0 || fromStart > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), "fromStart must be greater than zero and less than the length of the string");
             if (fromEnd < 0 || fromEnd > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), "fromStart must be greater than zero and less than the length of the string");

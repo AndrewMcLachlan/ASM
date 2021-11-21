@@ -46,7 +46,7 @@ namespace Asm.Extensions
         /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public static long Read(this Stream stream, byte[] buffer, long offset, long count)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             if (count <= Int32.MaxValue && offset <= Int32.MaxValue)
             {
@@ -99,7 +99,7 @@ namespace Asm.Extensions
         /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
         public static void Write(this Stream stream, byte[] buffer, long offset, long count)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
 
             if (count <= Int32.MaxValue && offset <= Int32.MaxValue)
             {

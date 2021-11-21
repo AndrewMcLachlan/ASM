@@ -6,6 +6,7 @@ using Asm.Media;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Asm.Drawing.Imaging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Asm.Drawing
 {
@@ -83,6 +84,7 @@ namespace Asm.Drawing
         /// <summary>
         /// Gets or sets the format of the icon's image.
         /// </summary>
+        [DisallowNull]
         public ImageFormat Format
         {
             get
@@ -94,14 +96,12 @@ namespace Asm.Drawing
             {
                 _imageFormat = value;
 
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Image.Save(mem, value);
+                using MemoryStream mem = new();
+                Image.Save(mem, value);
 
-                    mem.Position = 0;
-                    Image = new Bitmap(mem);
-                    RawImage = GetRawImage(Image);
-                }
+                mem.Position = 0;
+                Image = new Bitmap(mem);
+                RawImage = GetRawImage(Image);
             }
         }
 
@@ -318,7 +318,7 @@ namespace Asm.Drawing
                         k += 4;
                     }
 
-                    // Apply AND mask 
+                    // Apply AND mask
                     int bitsPerLine = dirEntry.Width;
                     int bytesPerLine = BytesPerLine(infoHeader.ColourDepth, dirEntry.Width);
                     int insignificantBitsPerLine = (bytesPerLine * 8) - bitsPerLine;

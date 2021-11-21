@@ -23,7 +23,7 @@ namespace Asm.Extensions
         /// <returns>If the key exists the value in the given type is returned. Otherwise the <paramref name="defaultValue"/> is returned.</returns>
         public static T GetValue<T>(this NameValueCollection collection, string name, T defaultValue)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
 
             if (collection[name] == null)
             {

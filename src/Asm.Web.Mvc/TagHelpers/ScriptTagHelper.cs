@@ -11,11 +11,11 @@ namespace Asm.Web.Mvc.TagHelpers
     public class ScriptTagHelper : IntegrityTagHelper
     {
         private string _urlAttributeName = "src";
-        private bool _emitMinifiedUrls = false;
+        private readonly bool _emitMinifiedUrls = false;
 
         public ScriptTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration) : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
         {
-             Boolean.TryParse(configuration["EmitMinifiedUrls"] ?? "false", out _emitMinifiedUrls);
+            if (!Boolean.TryParse(configuration["EmitMinifiedUrls"] ?? "false", out _emitMinifiedUrls)) throw new InvalidOperationException("EmitMinifiedUrls is not a boolean value");
         }
 
         protected override string UrlSourceAttributeName => _urlAttributeName;

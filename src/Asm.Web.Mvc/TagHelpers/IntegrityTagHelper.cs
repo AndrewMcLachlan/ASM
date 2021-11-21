@@ -51,7 +51,7 @@ namespace Asm.Web.Mvc.TagHelpers
             }
 
             string cleanPath = url.Replace('~', '.');
-            cleanPath = cleanPath.Substring(0, cleanPath.IndexOf("?") > 0 ? cleanPath.IndexOf("?") : cleanPath.Length);
+            cleanPath = cleanPath[..(cleanPath.IndexOf("?") > 0 ? cleanPath.IndexOf("?") : cleanPath.Length)];
             cleanPath = cleanPath.Replace('/', Path.DirectorySeparatorChar);
 
             string path = Path.Combine(HostingEnvironment.WebRootPath, cleanPath);

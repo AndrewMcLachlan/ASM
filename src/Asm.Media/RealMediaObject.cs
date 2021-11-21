@@ -13,7 +13,7 @@ namespace Asm.Media
 		private uint size;
 		private ushort version;
 		private RealMediaObject parent = null;
-		private ArrayList realMediaObjects;
+		private readonly ArrayList realMediaObjects;
 		#endregion
 
 		#region Properties
@@ -74,7 +74,7 @@ namespace Asm.Media
 				return parent;
 			}
 		}
-		
+
         /// <summary>
         /// The child objects.
         /// </summary>

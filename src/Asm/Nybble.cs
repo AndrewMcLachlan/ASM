@@ -57,7 +57,7 @@ namespace Asm
             }
             else
             {
-                BitArray b = new BitArray(new byte[] { Convert.ToByte(value) });
+                BitArray b = new(new byte[] { Convert.ToByte(value) });
                 byteValue = Convert.ToByte(b[0]);
                 byteValue <<= 1;
                 byteValue |= Convert.ToByte(b[1]);
@@ -78,7 +78,7 @@ namespace Asm
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="value"/> is null.</exception>
         public static uint ToUInt32(Nybble[] value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             uint temp;
 
@@ -96,7 +96,7 @@ namespace Asm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -107,7 +107,7 @@ namespace Asm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -118,7 +118,7 @@ namespace Asm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -187,8 +187,10 @@ namespace Asm
         /// </summary>
         /// <param name="obj">The nybble to check against.</param>
         /// <returns>Whether the nybbles are equal.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
+            if (obj == null) return false;
+
             Nybble nybble;
             try
             {
@@ -239,7 +241,7 @@ namespace Asm
         /// <returns>An array of nybbles.</returns>
         public static Nybble[] GetNybbles(int value)
         {
-            BitArray b = new BitArray(new int[] { value });
+            BitArray b = new(new int[] { value });
             return ToNybbles(b);
         }
 
@@ -250,8 +252,8 @@ namespace Asm
         /// <returns>An array of nybbles.</returns>
         public static Nybble[] ToNybbles(byte value)
         {
-            BitArray bLE = new BitArray(new byte[] { value });
-            BitArray b = new BitArray(8);
+            BitArray bLE = new(new byte[] { value });
+            BitArray b = new(8);
 
             //Convert little-endian to big-endian
             for (int i=0, j=7;i<8;i++, j--)
@@ -259,8 +261,8 @@ namespace Asm
                 b[i] = bLE[j];
             }
 
-            Nybble n1 = new Nybble();
-            Nybble n2 = new Nybble();
+            Nybble n1 = new();
+            Nybble n2 = new();
 
             byte b1, b2;
             b1 = Convert.ToByte(b[0]);
@@ -293,7 +295,7 @@ namespace Asm
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="value"/> is null.</exception>
         public static Nybble[] ToNybbles(byte[] value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
             Nybble[] n = new Nybble[value.Length*2];
 
@@ -312,18 +314,16 @@ namespace Asm
         private static Nybble[] ToNybbles(BitArray Bits)
         {
             Nybble[] nybbles = new Nybble[Bits.Length/4];
-            byte b = 0;
             for (int i=0;i<Bits.Length;i+=4)
             {
-                b = 0;
-                b = Convert.ToByte(Bits[i]);
+                byte b = Convert.ToByte(Bits[i]);
                 b <<= 1;
                 b |= Convert.ToByte(Bits[i+1]);
                 b <<= 1;
                 b |= Convert.ToByte(Bits[i+2]);
                 b <<= 1;
                 b |= Convert.ToByte(Bits[i+3]);
-                Nybble n = new Nybble(b);
+                Nybble n = new(b);
                 nybbles[i/4] = n;
             }
 

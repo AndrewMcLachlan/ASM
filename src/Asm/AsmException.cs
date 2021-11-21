@@ -97,7 +97,10 @@ namespace Asm
         /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
         protected AsmException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            Id = (Guid)info.GetValue("Id", typeof(Guid));
+            object? idObj = info.GetValue("Id", typeof(Guid));
+
+            Id = idObj == null ? new Guid() : (Guid)idObj;
+
             ErrorId = info.GetInt32("ErrorId");
         }
         #endregion
@@ -110,7 +113,7 @@ namespace Asm
         /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (info == null) throw new ArgumentNullException("info");
+            if (info == null) throw new ArgumentNullException(nameof(info));
 
             base.GetObjectData(info, context);
 
