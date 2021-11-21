@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Asm.Domain\Asm.Domain.csproj" />
+    <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
 
 </Project>
