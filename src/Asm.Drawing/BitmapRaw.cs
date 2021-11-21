@@ -84,21 +84,15 @@ namespace Asm.Drawing
         #region Private Methods
         private static PixelFormat GetPixelFormat(int colourDepth)
         {
-            switch (colourDepth)
+            return colourDepth switch
             {
-                case 32:
-                    return PixelFormat.Format32bppArgb;
-                case 24:
-                    return PixelFormat.Format24bppRgb;
-                case 16:
-                    return PixelFormat.Format16bppRgb555;
-                case 8:
-                    return PixelFormat.Format8bppIndexed;
-                case 4:
-                    return PixelFormat.Format4bppIndexed;
-                default:
-                    return PixelFormat.DontCare;
-            }
+                32 => PixelFormat.Format32bppArgb,
+                24 => PixelFormat.Format24bppRgb,
+                16 => PixelFormat.Format16bppRgb555,
+                8 => PixelFormat.Format8bppIndexed,
+                4 => PixelFormat.Format4bppIndexed,
+                _ => PixelFormat.DontCare,
+            };
         }
         #endregion
     }

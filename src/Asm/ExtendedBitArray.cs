@@ -13,10 +13,10 @@ namespace Asm
     public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     {
         #region Fields
-        private readonly byte[] bytes;
+        private readonly byte[] _bytes;
         //private bool[] bitArray;
-        private BitArray bitArray;
-        private readonly Endian endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+        private BitArray _bitArray;
+        private readonly Endian _endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
         #endregion
 
         #region Properties
@@ -27,7 +27,7 @@ namespace Asm
         {
             get
             {
-                return bitArray[index];
+                return _bitArray[index];
             }
         }
 
@@ -38,7 +38,7 @@ namespace Asm
         {
             get
             {
-                return endian;
+                return _endian;
             }
         }
         #endregion
@@ -51,8 +51,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(BitArray values, Endian endian)
         {
-            this.endian = endian;
-            bitArray = values;
+            _endian = endian;
+            _bitArray = values;
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(bool[] values, Endian endian)
         {
-            this.endian = endian;
-            bitArray = GetBits(values, endian);
+            _endian = endian;
+            _bitArray = GetBits(values, endian);
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(byte[] value, Endian endian)
         {
-            this.endian = endian;
-            this.bytes = Reverse(value);
+            _endian = endian;
+            _bytes = Reverse(value);
             GetBits();
         }
 
@@ -85,8 +85,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(byte value, Endian endian)
         {
-            this.bytes = new byte[] { value };
-            this.endian = endian;
+            _bytes = new byte[] { value };
+            _endian = endian;
             GetBits();
         }
 
@@ -97,8 +97,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(sbyte value, Endian endian)
         {
-            this.bytes = new byte[] { Convert.ToByte(value) };
-            this.endian = endian;
+            _bytes = new byte[] { Convert.ToByte(value) };
+            _endian = endian;
             GetBits();
         }
 
@@ -109,8 +109,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(short value, Endian endian)
         {
-            this.bytes = BitConverter.GetBytes(value);
-            this.endian = endian;
+            _bytes = BitConverter.GetBytes(value);
+            _endian = endian;
             GetBits();
         }
 
@@ -122,8 +122,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(int value, Endian endian)
         {
-            this.bytes = BitConverter.GetBytes(value);
-            this.endian = endian;
+            _bytes = BitConverter.GetBytes(value);
+            _endian = endian;
             GetBits();
         }
 
@@ -134,8 +134,8 @@ namespace Asm
         /// <param name="endian">The endianess of the array.</param>
         public ExtendedBitArray(long value, Endian endian)
         {
-            this.bytes = BitConverter.GetBytes(value);
-            this.endian = endian;
+            _bytes = BitConverter.GetBytes(value);
+            _endian = endian;
             GetBits();
         }
         #endregion
@@ -147,7 +147,7 @@ namespace Asm
         /// <returns>A byte array.</returns>
         public byte[] GetBytes()
         {
-            return bytes;
+            return _bytes;
         }
 
         /// <summary>
@@ -158,8 +158,8 @@ namespace Asm
         /// <returns>A new ExtendedBitArray.</returns>
         public ExtendedBitArray Copy(int start, int length)
         {
-            if ((length + start)-1 > this.Count) throw new ArgumentOutOfRangeException(nameof(start));
-            if (length > this.Count) throw new ArgumentOutOfRangeException(nameof(length));
+            if ((length + start)-1 > Count) throw new ArgumentOutOfRangeException(nameof(start));
+            if (length > Count) throw new ArgumentOutOfRangeException(nameof(length));
 
             bool[] temp = new bool[length-start];
 
@@ -168,7 +168,7 @@ namespace Asm
                 temp[j] = this[i];
             }
 
-            return new ExtendedBitArray(temp, this.Endian);
+            return new ExtendedBitArray(temp, Endian);
         }
 
         /// <summary>
@@ -182,12 +182,12 @@ namespace Asm
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
             if (index < 0) throw new ArgumentException("index cannot be less than 0.");
-            if (index > array.bitArray.Length - 1) throw new ArgumentException("index cannot be greater than the length of the array.");
+            if (index > array._bitArray.Length - 1) throw new ArgumentException("index cannot be greater than the length of the array.");
 
-            bool[] temp = new bool[array.bitArray.Length];
-            array.bitArray.CopyTo(temp, 0);
-            bitArray.CopyTo(temp, index);
-            array.bitArray = new BitArray(temp);
+            bool[] temp = new bool[array._bitArray.Length];
+            array._bitArray.CopyTo(temp, 0);
+            _bitArray.CopyTo(temp, index);
+            array._bitArray = new BitArray(temp);
         }
 
         /// <summary>
@@ -320,11 +320,11 @@ namespace Asm
         #region Private Methods
         private static void GetBits()
         {
-            /*bitArray = new bool[this.bytes.Length * 8];
+            /*bitArray = new bool[bytes.Length * 8];
             short quotient;
             byte element;
 
-            for (int i=0;i<this.bytes.Length;i++)
+            for (int i=0;i<bytes.Length;i++)
             {
                 element = bytes[i];
                 quotient = bytes[i];
@@ -336,7 +336,7 @@ namespace Asm
                 }
             }
 
-            switch (this.endian)
+            switch (endian)
             {
                 case Endian.BigEndian :
                     for (int i=bitArray.Length-1, k=0;i>=0;i--,k++)
@@ -392,14 +392,14 @@ namespace Asm
         private long ToSigned(int BytesToRead)
         {
             long temp = 0;
-            switch (this.endian)
+            switch (_endian)
             {
                 case Endian.BigEndian:
                     switch ((bool)this[0])
                     {
                         //Negative
                         case true:
-                            for (int i=0, j=this.Count-2;i<this.Count-1 && i<(BytesToRead*8)-1;i++, j--)
+                            for (int i=0, j=Count-2;i<Count-1 && i<(BytesToRead*8)-1;i++, j--)
                             {
                                 if (!this[i])
                                 {
@@ -411,7 +411,7 @@ namespace Asm
                             break;
                         //Positive
                         case false:
-                            for (int i=0, j=this.Count-2;i<this.Count-1 && i<(BytesToRead*8)-1;i++, j--)
+                            for (int i=0, j=Count-2;i<Count-1 && i<(BytesToRead*8)-1;i++, j--)
                             {
                                 if (this[i])
                                 {
@@ -425,7 +425,7 @@ namespace Asm
                     switch ((bool)this[Count-1])
                     {
                         case true:
-                            for (int i=0;i<this.Count-1;i++)
+                            for (int i=0;i<Count-1;i++)
                             {
                                 if (!this[i])
                                 {
@@ -436,7 +436,7 @@ namespace Asm
                             temp = -temp;
                             break;
                         case false:
-                            for (int i=0;i<this.Count-1;i++)
+                            for (int i=0;i<Count-1;i++)
                             {
                                 if (this[i])
                                 {
@@ -453,10 +453,10 @@ namespace Asm
         private ulong ToUnsigned(int BytesToRead)
         {
             ulong temp = 0;
-            switch (this.endian)
+            switch (_endian)
             {
                 case Endian.BigEndian:
-                    for (int i=0, j=this.Count-1;i<this.Count && i<BytesToRead*8;i++, j--)
+                    for (int i=0, j=Count-1;i<Count && i<BytesToRead*8;i++, j--)
                     {
                         if (this[i])
                         {
@@ -465,7 +465,7 @@ namespace Asm
                     }
                     break;
                 case Endian.LittleEndian:
-                    for (int i=0;i<this.Count;i++)
+                    for (int i=0;i<Count;i++)
                     {
                         if (this[i])
                         {
@@ -504,7 +504,7 @@ namespace Asm
         /// </exception>
         public void CopyTo(Array array, int index)
         {
-            bitArray.CopyTo(array, index);
+            _bitArray.CopyTo(array, index);
             throw new NotImplementedException();
         }
 
@@ -516,7 +516,7 @@ namespace Asm
         /// </returns>
         public int Count
         {
-            get { return bitArray.Count; }
+            get { return _bitArray.Count; }
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace Asm
         /// </returns>
         public bool IsSynchronized
         {
-            get { return bitArray.IsSynchronized; }
+            get { return _bitArray.IsSynchronized; }
         }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace Asm
         /// </returns>
         public object SyncRoot
         {
-            get { return bitArray.SyncRoot; }
+            get { return _bitArray.SyncRoot; }
         }
         #endregion
 
@@ -553,7 +553,7 @@ namespace Asm
         /// </returns>
         public IEnumerator GetEnumerator()
         {
-            return bitArray.GetEnumerator();
+            return _bitArray.GetEnumerator();
         }
         #endregion
 
@@ -564,7 +564,7 @@ namespace Asm
         /// <returns>A copy fo this <see cref="ExtendedBitArray"/>.</returns>
         public object Clone()
         {
-            return new ExtendedBitArray((BitArray) bitArray.Clone(), this.endian);
+            return new ExtendedBitArray((BitArray) _bitArray.Clone(), _endian);
         }
         #endregion
     }

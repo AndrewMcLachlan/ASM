@@ -17,13 +17,13 @@ namespace Asm.Win32
         /// <summary>
         /// Fired when the Windows hosts file has been changed.
         /// </summary>
-        public event EventHandler HostsFileChanged;
+        public event EventHandler? HostsFileChanged;
         #endregion
 
         #region Fields
         private static readonly Hosts _instance = new();
-        private readonly string _hostsFile;
-        private readonly Timer _pollTimer;
+        private readonly string? _hostsFile;
+        private readonly Timer? _pollTimer;
         private DateTime _hostsFileLastUpdated;
         private bool _disposed;
         #endregion
@@ -52,7 +52,7 @@ namespace Asm.Win32
         {
             get;
             private set;
-        }
+        } = new List<HostEntry>();
         #endregion
 
         #region Constructors
@@ -148,6 +148,8 @@ namespace Asm.Win32
         #region Private Methods
         private void LoadHostsFile(string fileName)
         {
+            if (!File.Exists(fileName)) throw new ArgumentException($"cannot find hosts file at {fileName}", nameof(fileName));
+
             _hostsFileLastUpdated = File.GetLastWriteTime(fileName);
 
             using Stream stream = File.OpenRead(fileName);
@@ -178,7 +180,7 @@ namespace Asm.Win32
                 if (match.Success)
                 {
 
-                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress ip))
+                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                     {
                         Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), Comment = match.Groups[3].Value.Trim(), IsCommented = true });
                     }
@@ -194,7 +196,7 @@ namespace Asm.Win32
                 if (match.Success)
                 {
 
-                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress ip))
+                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                     {
                         Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), IsCommented = true });
                     }
@@ -220,7 +222,7 @@ namespace Asm.Win32
                 if (match.Success)
                 {
 
-                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress ip))
+                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                     {
                         Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), Comment = match.Groups[3].Value.Trim() });
                     }
@@ -237,7 +239,7 @@ namespace Asm.Win32
                 if (match.Success)
                 {
 
-                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress ip))
+                    if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                     {
                         Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim() });
                     }
@@ -264,9 +266,9 @@ namespace Asm.Win32
             return raw.ToString();
         }
 
-        private void PollTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void PollTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            DateTime lastWriteTime = File.GetLastWriteTime(_hostsFile);
+            DateTime lastWriteTime = File.GetLastWriteTime(_hostsFile!);
             if (lastWriteTime > _hostsFileLastUpdated)
             {
                 _hostsFileLastUpdated = lastWriteTime;
@@ -286,7 +288,7 @@ namespace Asm.Win32
             {
                 if (disposing)
                 {
-                    _pollTimer.Dispose();
+                    _pollTimer?.Dispose();
                 }
                 _disposed = true;
             }

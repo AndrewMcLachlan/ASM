@@ -32,7 +32,10 @@ namespace Asm.Extensions
 
             try
             {
-                return (T)Convert.ChangeType(collection[name], typeof(T));
+                var result = Convert.ChangeType(collection[name], typeof(T));
+                if (result == null) return defaultValue;
+
+                return (T)result;
             }
             catch(InvalidCastException)
             {

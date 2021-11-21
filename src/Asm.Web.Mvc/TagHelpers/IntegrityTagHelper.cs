@@ -18,7 +18,7 @@ namespace Asm.Web.Mvc.TagHelpers
     public abstract class IntegrityTagHelper : TagHelper
     {
         [ViewContext]
-        public ViewContext ViewContext { get; set; }
+        public ViewContext? ViewContext { get; set; }
 
         protected IUrlHelper UrlHelper { get; }
         protected IWebHostEnvironment HostingEnvironment { get; }
@@ -30,6 +30,9 @@ namespace Asm.Web.Mvc.TagHelpers
 
         public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache)
         {
+            if (actionContextAccessor == null) throw new ArgumentNullException(nameof(actionContextAccessor));
+            if (actionContextAccessor.ActionContext == null) throw new InvalidOperationException("There is no current action contet");
+
             UrlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
             HostingEnvironment = hostingEnvironment;
             MemoryCache = memoryCache;
@@ -60,6 +63,7 @@ namespace Asm.Web.Mvc.TagHelpers
 
             using (var hashAlgo = System.Security.Cryptography.HashAlgorithm.Create("SHA-512"))
             {
+                if (hashAlgo == null) throw new InvalidOperationException("Cannot find SHA-512 hash algorithm");
                 hash = hashAlgo.ComputeHash(File.OpenRead(path));
             }
 

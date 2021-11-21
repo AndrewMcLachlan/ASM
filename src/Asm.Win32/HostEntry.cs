@@ -12,7 +12,7 @@ namespace Asm.Win32
     public class HostEntry
     {
         #region Constants
-        private const string commentChar = "#";
+        private const string CommentChar = "#";
         #endregion
 
         #region Fields
@@ -129,7 +129,7 @@ namespace Asm.Win32
 
             if (IsCommented)
             {
-                format += commentChar;
+                format += CommentChar;
             }
 
             switch (EntryType)
@@ -150,7 +150,7 @@ namespace Asm.Win32
                     break;
             }
 
-            return String.Format(format, Address, Alias, commentChar, Comment);
+            return String.Format(format, Address, Alias, CommentChar, Comment);
         }
         #endregion
     }

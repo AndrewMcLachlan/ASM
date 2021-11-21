@@ -126,7 +126,7 @@ namespace Asm.Drawing
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="image"/> is null.</exception>
         public Icon(System.Drawing.Image image)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
             Initialize(image);
         }
@@ -138,7 +138,7 @@ namespace Asm.Drawing
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="imageData"/> is null.</exception>
         public Icon(Stream imageData)
         {
-            if (imageData == null) throw new ArgumentNullException("imageData");
+            if (imageData == null) throw new ArgumentNullException(nameof(imageData));
 
             Image image = new Bitmap(imageData);
 
@@ -154,21 +154,19 @@ namespace Asm.Drawing
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="icon"/> is null.</exception>
         public Icon(System.Drawing.Icon icon)
         {
-            if (icon == null) throw new ArgumentNullException("icon");
+            if (icon == null) throw new ArgumentNullException(nameof(icon));
 
-            using (MemoryStream mem = new MemoryStream())
-            {
-                icon.Save(mem);
+            using MemoryStream mem = new();
+            icon.Save(mem);
 
-                mem.Position = 0;
-                IconParser parser = new IconParser(mem);
+            mem.Position = 0;
+            IconParser parser = new(mem);
 
-                Icon inner = (Icon)parser.Parse()[0];
+            Icon inner = (Icon)parser.Parse()[0];
 
-                Header = inner.Header;
-                Image = inner.Image;
-                RawImage = inner.RawImage;
-            }
+            Header = inner.Header;
+            Image = inner.Image;
+            RawImage = inner.RawImage;
         }
 
      /*   /// <summary>
@@ -199,18 +197,16 @@ namespace Asm.Drawing
         /// <returns></returns>
         public System.Drawing.Icon ToIcon()
         {
-            using (MemoryStream mem = new MemoryStream())
-            {
-                mem.Write(BitConverter.GetBytes((short)IconParser.IconDirMarker), 0, 2);
-                mem.Write(BitConverter.GetBytes((short)IconFileType.Icon), 0, 2);
-                mem.Write(BitConverter.GetBytes((short)1), 0, 2);
-                Header.WriteHeader(mem, IconParser.SingleEntryCompleteHeaderSize);
+            using MemoryStream mem = new();
+            mem.Write(BitConverter.GetBytes((short)IconParser.IconDirMarker), 0, 2);
+            mem.Write(BitConverter.GetBytes((short)IconFileType.Icon), 0, 2);
+            mem.Write(BitConverter.GetBytes((short)1), 0, 2);
+            Header.WriteHeader(mem, IconParser.SingleEntryCompleteHeaderSize);
 
-                mem.Write(RawImage, 0, RawImage.Length);
-                mem.Position = 0;
+            mem.Write(RawImage, 0, RawImage.Length);
+            mem.Position = 0;
 
-                return new System.Drawing.Icon(mem);
-            }
+            return new System.Drawing.Icon(mem);
         }
         #endregion
 
@@ -224,7 +220,7 @@ namespace Asm.Drawing
         #region Private Methods
         private void Initialize(Image image)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
             // If the image is larger than 256 then we must shrink it to size.
             if (image.Height > 256 || image.Width > 256)
@@ -251,28 +247,24 @@ namespace Asm.Drawing
             if (format.Equals(ImageFormat.Png))
             {
                 // IS PNG
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    mem.Write(buffer, 0, buffer.Length);
-                    mem.Position = 0;
-                    return new Bitmap(mem);
-                }
+                using MemoryStream mem = new();
+                mem.Write(buffer, 0, buffer.Length);
+                mem.Position = 0;
+                return new Bitmap(mem);
             }
             else
             {
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    mem.Write(BitConverter.GetBytes((short)IconParser.IconDirMarker), 0, 2);
-                    mem.Write(BitConverter.GetBytes((short)IconFileType.Icon), 0, 2);
-                    mem.Write(BitConverter.GetBytes((short)1), 0, 2);
-                    dirEntry.WriteHeader(mem, IconParser.SingleEntryCompleteHeaderSize);
+                using MemoryStream mem = new();
+                mem.Write(BitConverter.GetBytes((short)IconParser.IconDirMarker), 0, 2);
+                mem.Write(BitConverter.GetBytes((short)IconFileType.Icon), 0, 2);
+                mem.Write(BitConverter.GetBytes((short)1), 0, 2);
+                dirEntry.WriteHeader(mem, IconParser.SingleEntryCompleteHeaderSize);
 
-                    byte[] rawImage = buffer;
-                    mem.Write(rawImage, 0, rawImage.Length);
-                    mem.Position = 0;
+                byte[] rawImage = buffer;
+                mem.Write(rawImage, 0, rawImage.Length);
+                mem.Position = 0;
 
-                    return (new System.Drawing.Icon(mem)).ToBitmap();
-                }
+                return (new System.Drawing.Icon(mem)).ToBitmap();
 
                 /*int rawSize = Marshal.SizeOf(typeof(BitmapInfoHeader));
 
@@ -397,67 +389,55 @@ namespace Asm.Drawing
 
         private static PixelFormat GetPixelFormat(IconDirEntry dirEntry)
         {
-            switch (dirEntry.Custom2)
+            return dirEntry.Custom2 switch
             {
-                case 32:
-                    return PixelFormat.Format32bppArgb;
-                case 24:
-                    return PixelFormat.Format24bppRgb;
-                case 16:
-                    return PixelFormat.Format16bppRgb555;
-                case 8:
-                    return PixelFormat.Format8bppIndexed;
-                case 4:
-                    return PixelFormat.Format4bppIndexed;
-                default:
-                    return PixelFormat.DontCare;
-            }
-
-
+                32 => PixelFormat.Format32bppArgb,
+                24 => PixelFormat.Format24bppRgb,
+                16 => PixelFormat.Format16bppRgb555,
+                8 => PixelFormat.Format8bppIndexed,
+                4 => PixelFormat.Format4bppIndexed,
+                _ => PixelFormat.DontCare,
+            };
         }
 
         private static byte[] GetRawImage(System.Drawing.Image image)
         {
-            using (MemoryStream mem = new MemoryStream())
+            using MemoryStream mem = new();
+            if (image.RawFormat.Equals(ImageFormat.Png))
             {
-                if (image.RawFormat.Equals(ImageFormat.Png))
-                {
-                    image.Save(mem, System.Drawing.Imaging.ImageFormat.Png);
+                image.Save(mem, System.Drawing.Imaging.ImageFormat.Png);
 
-                    mem.Position = 0;
+                mem.Position = 0;
 
-                    byte[] buffer = new byte[mem.Length];
+                byte[] buffer = new byte[mem.Length];
 
-                    mem.Read(buffer, 0, buffer.Length);
+                mem.Read(buffer, 0, buffer.Length);
 
-                    return buffer;
-                }
-                else
-                {
-                    using (Bitmap bitmap = new Bitmap(image))
-                    {
-                        IntPtr iconHandle = bitmap.GetHicon();
-                        System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(iconHandle);
+                return buffer;
+            }
+            else
+            {
+                using Bitmap bitmap = new(image);
+                IntPtr iconHandle = bitmap.GetHicon();
+                System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(iconHandle);
 
-                        icon.Save(mem);
-                        mem.Position = 0;
-                        IconParser ip = new IconParser(mem);
-                        return ip.Parse()[0].RawImage;
-                    }
+                icon.Save(mem);
+                mem.Position = 0;
+                IconParser ip = new(mem);
+                return ip.Parse()[0].RawImage;
 
-                    /*throw new NotImplementedException();
-                    //image.Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);
-                    Bitmap bitmap = new Bitmap(image);
+                /*throw new NotImplementedException();
+                //image.Save(mem, System.Drawing.Imaging.ImageFormat.Bmp);
+                Bitmap bitmap = new Bitmap(image);
 
-                    BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-                    bitmap.UnlockBits(data);
+                BitmapData data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+                bitmap.UnlockBits(data);
 
 
-                    byte[] bmp = new byte[mem.Length];
-                    mem.Read(bmp, 0, mem.Length);
+                byte[] bmp = new byte[mem.Length];
+                mem.Read(bmp, 0, mem.Length);
 
-                    //return StripBmpHeader(bmp);*/
-                }
+                //return StripBmpHeader(bmp);*/
             }
         }
 
@@ -476,7 +456,7 @@ namespace Asm.Drawing
 
         private static byte ToByte(int dimension)
         {
-            if (dimension > 256) throw new ArgumentException("Dimension is too large", "dimension");
+            if (dimension > 256) throw new ArgumentException("Dimension is too large", nameof(dimension));
 
             return dimension == 256 ? (byte)0 : checked((byte)dimension);
         }
@@ -539,18 +519,18 @@ namespace Asm.Drawing
         /// </summary>
         /// <param name="obj">The icon to compare.</param>
         /// <returns>true if the icons match, otherwise false.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null) return false;
 
-            if (obj is Icon)
+            if (obj is Icon icon)
             {
-                return CheckEquality(this, (Icon)obj);
+                return CheckEquality(this, icon);
             }
             else
             {
                 // Attempt a string comparison.
-                return this.ToString().Equals(obj.ToString(), StringComparison.CurrentCultureIgnoreCase);
+                return (ToString() ?? String.Empty).Equals(obj.ToString(), StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
@@ -593,7 +573,7 @@ namespace Asm.Drawing
             }
 
             // At this stage we know that at least one of these is not null. If the other is, return false.
-            if ((object)left == null || (object)right == null)
+            if (left is null || right is null)
             {
                 return false;
             }

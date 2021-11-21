@@ -14,7 +14,7 @@ namespace Asm
     public struct Nybble
     {
         #region Fields
-        private byte byteValue;
+        private byte _byteValue;
         /// <summary>
         /// Represents the smallest possible value of a Nybble. This field is constant.
         /// </summary>
@@ -39,7 +39,7 @@ namespace Asm
         {
             get
             {
-                return byteValue;
+                return _byteValue;
             }
         }
         #endregion
@@ -58,13 +58,13 @@ namespace Asm
             else
             {
                 BitArray b = new(new byte[] { Convert.ToByte(value) });
-                byteValue = Convert.ToByte(b[0]);
-                byteValue <<= 1;
-                byteValue |= Convert.ToByte(b[1]);
-                byteValue <<= 1;
-                byteValue |= Convert.ToByte(b[2]);
-                byteValue <<= 1;
-                byteValue |= Convert.ToByte(b[3]);
+                _byteValue = Convert.ToByte(b[0]);
+                _byteValue <<= 1;
+                _byteValue |= Convert.ToByte(b[1]);
+                _byteValue <<= 1;
+                _byteValue |= Convert.ToByte(b[2]);
+                _byteValue <<= 1;
+                _byteValue |= Convert.ToByte(b[3]);
             }
         }
         #endregion
@@ -200,7 +200,7 @@ namespace Asm
             {
                 return false;
             }
-            return nybble.byteValue == this.byteValue;
+            return nybble._byteValue == this._byteValue;
         }
 
         /// <summary>
@@ -281,8 +281,8 @@ namespace Asm
             b2 <<= 1;
             b2 |= Convert.ToByte(b[7]);
 
-            n1.byteValue = b1;
-            n2.byteValue = b2;
+            n1._byteValue = b1;
+            n2._byteValue = b2;
 
             return new Nybble[] { n1, n2 };
         }

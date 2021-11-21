@@ -17,8 +17,8 @@ namespace Asm
 	public struct ByteArray
 	{
 		#region Fields
-		private readonly byte[] bytes;
-		private Endian endian;
+		private readonly byte[] _bytes;
+		private Endian _endian;
 		#endregion
 
 		#region Properties
@@ -29,11 +29,11 @@ namespace Asm
 		{
 			get
 			{
-				return bytes[index];
+				return _bytes[index];
 			}
 			set
 			{
-				bytes[index] = value;
+				_bytes[index] = value;
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace Asm
 		/// </summary>
 		public byte[] GetBytes()
 		{
-            return bytes;
+            return _bytes;
 		}
 		/// <summary>
 		/// The Endianness of the array.
@@ -51,11 +51,11 @@ namespace Asm
 		{
 			get
 			{
-				return endian;
+				return _endian;
 			}
 			set
 			{
-				endian = value;
+				_endian = value;
 			}
 		}
 		#endregion
@@ -67,8 +67,8 @@ namespace Asm
 		/// <param name="size">This number of elements in the array.</param>
 		public ByteArray(int size)
 		{
-			bytes = new byte[size];
-			endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+			_bytes = new byte[size];
+			_endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
 		}
 
 		/// <summary>
@@ -78,8 +78,8 @@ namespace Asm
 		/// <param name="type">The <see cref="Endian"/>ness of the array.</param>
 		public ByteArray(int size, Endian type)
 		{
-			bytes = new byte[size];
-			endian = type;
+			_bytes = new byte[size];
+			_endian = type;
 		}
 
 		/// <summary>
@@ -88,8 +88,8 @@ namespace Asm
 		/// <param name="value">An array of bytes.</param>
 		public ByteArray(byte[] value)
 		{
-			this.bytes = value;
-			endian = endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+			this._bytes = value;
+			_endian = _endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
 		}
 
 		/// <summary>
@@ -99,8 +99,8 @@ namespace Asm
 		/// <param name="type">The <see cref="Endian"/>ness of the array.</param>
 		public ByteArray(byte[] value, Endian type)
 		{
-			this.bytes = value;
-			endian = type;
+			this._bytes = value;
+			_endian = type;
 		}
 		#endregion
 
@@ -113,10 +113,10 @@ namespace Asm
 		/// <returns>A new ByteArray.</returns>
 		public ByteArray Copy(int start, int length)
 		{
-			if ((length + start)-1 > bytes.Length) throw new ArgumentOutOfRangeException(nameof(start));
-            if (length > bytes.Length) throw new ArgumentOutOfRangeException(nameof(length));
+			if ((length + start)-1 > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(start));
+            if (length > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(length));
 
-			ByteArray newArray = new(length, this.endian);
+			ByteArray newArray = new(length, this._endian);
 
 			int j = 0;
 			for (int i=start;i<start+length;i++)
@@ -133,9 +133,9 @@ namespace Asm
 		/// <returns>An array of characters.</returns>
 		public char[] ToCharArray()
 		{
-			char[] chars = new char[bytes.Length];
+			char[] chars = new char[_bytes.Length];
 			int i = 0;
-			foreach(byte b in this.bytes)
+			foreach(byte b in this._bytes)
 			{
 				char c = Convert.ToChar(b);
 				chars[i] = c;
@@ -159,7 +159,7 @@ namespace Asm
 		/// <returns>An unsigned short.</returns>
 		public ushort ToUInt16()
 		{
-            return endian switch
+            return _endian switch
             {
                 Endian.BigEndian => ToUInt16BE(),
                 Endian.LittleEndian => ToUInt16LE(),
@@ -173,7 +173,7 @@ namespace Asm
 		/// <returns>An unsigned int.</returns>
 		public uint ToUInt32()
 		{
-            return endian switch
+            return _endian switch
             {
                 Endian.BigEndian => ToUInt32BE(),
                 Endian.LittleEndian => ToUInt32LE(),
@@ -187,7 +187,7 @@ namespace Asm
 		/// <returns>An unsigned long.</returns>
 		public ulong ToUInt64()
 		{
-            return endian switch
+            return _endian switch
             {
                 Endian.BigEndian => ToUInt64BE(),
                 //break;
@@ -230,17 +230,17 @@ namespace Asm
 		/// <returns>A GUID.</returns>
 		public Guid ToGuid()
 		{
-			if (bytes.Length > 16)
+			if (_bytes.Length > 16)
 			{
 				throw new InvalidOperationException("The array is too big to be converted.");
 			}
-			else if (bytes.Length < 16)
+			else if (_bytes.Length < 16)
 			{
                 throw new InvalidOperationException("The array is too small to be a GUID.");
 			}
 			else
 			{
-				return new Guid(bytes);
+				return new Guid(_bytes);
 			}
 		}
 
@@ -263,9 +263,9 @@ namespace Asm
                 return false;
             }
 
-            for (int i=0; i<bytes.Length; i++)
+            for (int i=0; i<_bytes.Length; i++)
             {
-                if (bytes[i] != array.bytes[i]) return false;
+                if (_bytes[i] != array._bytes[i]) return false;
             }
 
             if (this.Endian != array.Endian) return false;
@@ -308,43 +308,43 @@ namespace Asm
 		#region Private Methods
 		private ushort ToUInt16BE()
 		{
-			if (bytes.Length > 2)
+			if (_bytes.Length > 2)
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-            ushort temp = bytes[0];
+            ushort temp = _bytes[0];
             temp <<= 8;
-			temp |= bytes[1];
+			temp |= _bytes[1];
 
 			return temp;
 		}
 
 		private ushort ToUInt16LE()
 		{
-			if (bytes.Length > 2)
+			if (_bytes.Length > 2)
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-            ushort temp = bytes[1];
+            ushort temp = _bytes[1];
             temp <<= 8;
-			temp |= bytes[0];
+			temp |= _bytes[0];
 
 			return temp;
 		}
 
 		private uint ToUInt32BE()
 		{
-			if (bytes.Length > 4)
+			if (_bytes.Length > 4)
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
 
 			uint temp = 0;
 
-			for (int i=0;i<bytes.Length;i++)
+			for (int i=0;i<_bytes.Length;i++)
 			{
-				temp |= bytes[i];
-				if (i+1<bytes.Length)
+				temp |= _bytes[i];
+				if (i+1<_bytes.Length)
 				{
 					temp <<= 8;
 				}
@@ -364,67 +364,67 @@ namespace Asm
 
 		private uint ToUInt32LE()
 		{
-			if (bytes.Length > 4)
+			if (_bytes.Length > 4)
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-            uint temp = bytes[3];
+            uint temp = _bytes[3];
             temp <<= 8;
-			temp |= bytes[2];
+			temp |= _bytes[2];
 			temp <<= 8;
-			temp |= bytes[1];
+			temp |= _bytes[1];
 			temp <<= 8;
-			temp |= bytes[0];
+			temp |= _bytes[0];
 
 			return temp;
 		}
 
 		private ulong ToUInt64LE()
 		{
-			if (bytes.Length > 8)
+			if (_bytes.Length > 8)
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-            ulong temp = bytes[7];
+            ulong temp = _bytes[7];
             temp <<= 8;
-			temp |= bytes[6];
+			temp |= _bytes[6];
 			temp <<= 8;
-			temp |= bytes[5];
+			temp |= _bytes[5];
 			temp <<= 8;
-			temp |= bytes[4];
+			temp |= _bytes[4];
 			temp <<= 8;
-			temp |= bytes[3];
+			temp |= _bytes[3];
 			temp <<= 8;
-			temp |= bytes[2];
+			temp |= _bytes[2];
 			temp <<= 8;
-			temp |= bytes[1];
+			temp |= _bytes[1];
 			temp <<= 8;
-			temp |= bytes[0];
+			temp |= _bytes[0];
 
 			return temp;
 		}
 
 		private ulong ToUInt64BE()
 		{
-			if (bytes.Length > 8)
+			if (_bytes.Length > 8)
 			{
 				throw new OverflowException("The array is too big to be converted.");
 			}
-            ulong temp = bytes[0];
+            ulong temp = _bytes[0];
             temp <<= 8;
-			temp |= bytes[1];
+			temp |= _bytes[1];
 			temp <<= 8;
-			temp |= bytes[2];
+			temp |= _bytes[2];
 			temp <<= 8;
-			temp |= bytes[3];
+			temp |= _bytes[3];
 			temp <<= 8;
-			temp |= bytes[4];
+			temp |= _bytes[4];
 			temp <<= 8;
-			temp |= bytes[5];
+			temp |= _bytes[5];
 			temp <<= 8;
-			temp |= bytes[6];
+			temp |= _bytes[6];
 			temp <<= 8;
-			temp |= bytes[7];
+			temp |= _bytes[7];
 
 			return temp;
 		}

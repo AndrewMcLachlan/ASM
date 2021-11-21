@@ -8,7 +8,7 @@ namespace Asm.IO
     /// </summary>
     public sealed class StringWriterWithEncoding : StringWriter
     {
-        private readonly Encoding encoding;
+        private readonly Encoding _encoding;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringWriterWithEncoding" /> class.
@@ -16,7 +16,7 @@ namespace Asm.IO
         /// <param name="encoding"> The Encoding in which the output is written.</param>
         public StringWriterWithEncoding(Encoding encoding)
         {
-            this.encoding = encoding;
+            this._encoding = encoding;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Asm.IO
         /// </returns>
         public override Encoding Encoding
         {
-            get { return encoding; }
+            get { return _encoding; }
         }
     }
 }

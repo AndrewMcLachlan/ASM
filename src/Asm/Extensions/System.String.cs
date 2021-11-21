@@ -84,10 +84,7 @@ namespace Asm.Extensions
         /// <returns>A title cased string.</returns>
         public static string ToTitleCase(this string input)
         {
-            if (input == null)
-            {
-                return null;
-            }
+            if (input == null) throw new ArgumentNullException(nameof(input));
 
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.ToUpperInvariant());
         }

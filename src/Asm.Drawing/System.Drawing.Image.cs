@@ -25,7 +25,7 @@ namespace System.Drawing
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="image"/> is null.</exception>
         public static int GetColourDepth(this Image image)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
             switch (image.PixelFormat)
             {
@@ -52,7 +52,7 @@ namespace System.Drawing
                 case PixelFormat.Format64bppPArgb:
                 case PixelFormat.Format32bppArgb:
                 case PixelFormat.Format64bppArgb:
-                    Regex replace = new Regex("Format?([0-9]+)bpp.*");
+                    Regex replace = new("Format?([0-9]+)bpp.*");
                     Match match = replace.Match(image.PixelFormat.ToString());
                     return Int32.Parse(match.Groups[1].Value);
                 default:
@@ -68,14 +68,12 @@ namespace System.Drawing
         /// <param name="compression">The compression to use from 0 (highest compression) to 100 (lowest compression).</param>
         public static void SaveJpeg(this Image image, Stream stream, long compression)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
-            using (EncoderParameters eps = new EncoderParameters(1))
-            {
-                eps.Param[0] = new EncoderParameter(Encoder.Quality, compression);
-                ImageCodecInfo ici = GetEncoderInfo(MediaTypeNames.Image.Jpeg);
-                image.Save(stream, ici, eps);
-            }
+            using EncoderParameters eps = new(1);
+            eps.Param[0] = new EncoderParameter(Encoder.Quality, compression);
+            ImageCodecInfo ici = GetEncoderInfo(MediaTypeNames.Image.Jpeg);
+            image.Save(stream, ici, eps);
         }
 
         /// <summary>
@@ -86,14 +84,12 @@ namespace System.Drawing
         /// <param name="compression">The compression to use from 0 (highest compression) to 100 (lowest compression).</param>
         public static void SaveJpeg(this Image image, string fileName, long compression)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
-            using (EncoderParameters eps = new EncoderParameters(1))
-            {
-                eps.Param[0] = new EncoderParameter(Encoder.Quality, compression);
-                ImageCodecInfo ici = GetEncoderInfo(MediaTypeNames.Image.Jpeg);
-                image.Save(fileName, ici, eps);
-            }
+            using EncoderParameters eps = new(1);
+            eps.Param[0] = new EncoderParameter(Encoder.Quality, compression);
+            ImageCodecInfo ici = GetEncoderInfo(MediaTypeNames.Image.Jpeg);
+            image.Save(fileName, ici, eps);
         }
 
         /// <summary>
@@ -103,24 +99,24 @@ namespace System.Drawing
         /// <param name="fileName">The name of the to save to.</param>
         public static void SaveBmp32(this Image image, string fileName)
         {
-            if (image == null) throw new ArgumentNullException("image");
-            if (fileName == null) throw new ArgumentNullException("fileName");
-            if (String.IsNullOrWhiteSpace(fileName)) throw new ArgumentException("Enter a valid file name", "fileName");
+            if (image == null) throw new ArgumentNullException(nameof(image));
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+            if (String.IsNullOrWhiteSpace(fileName)) throw new ArgumentException("Enter a valid file name", nameof(fileName));
 
-            Bitmap bm = new Bitmap(image);
+            Bitmap bm = new(image);
 
             BitmapData bmd = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             FileStream fs = File.Open(fileName, FileMode.OpenOrCreate);
 
-            BitmapFileMarker bmfm = new BitmapFileMarker();
+            BitmapFileMarker bmfm = new();
 
-            BitmapHeader bmh = new BitmapHeader
+            BitmapHeader bmh = new()
             {
                 Offset = 54,
             };
 
-            BitmapInfoHeader bmih = new BitmapInfoHeader
+            BitmapInfoHeader bmih = new()
             {
                 ColourDepth = 32,
                 ColourPlanes = 1,
@@ -183,7 +179,7 @@ namespace System.Drawing
         /// <returns>A thumbnail image.</returns>
         public static Image GetThumbnailImageMaintainAspectRatio(this Image image, int thumbMaxWidth, int thumbMaxHeight)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
             int newHeight, newWidth;
 
@@ -205,7 +201,7 @@ namespace System.Drawing
                 newHeight = (int)(newWidth * ratio);
             }
 
-            Bitmap thumbnail = new Bitmap(newWidth, newHeight);
+            Bitmap thumbnail = new(newWidth, newHeight);
 
             // Maintain image metadata.
             foreach(PropertyItem pi in image.PropertyItems)
@@ -215,14 +211,12 @@ namespace System.Drawing
 
             try
             {
-                using (Graphics g = Graphics.FromImage(thumbnail))
-                {
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                using Graphics g = Graphics.FromImage(thumbnail);
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
 
-                    g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight));
-                }
+                g.DrawImage(image, new Rectangle(0, 0, newWidth, newHeight));
             }
             catch
             {
@@ -240,7 +234,7 @@ namespace System.Drawing
         /// <returns>The date the image was taken or null if the property item is not available.</returns>
         public static DateTime? GetDateTaken(this Image image)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
             PropertyItem propItem;
             try
@@ -256,8 +250,8 @@ namespace System.Drawing
 
             //Convert date taken metadata to a DateTime object
             string dateTakenString = System.Text.Encoding.UTF8.GetString(propItem.Value).Trim();
-            string secondhalf = dateTakenString.Substring(dateTakenString.IndexOf(" "), (dateTakenString.Length - dateTakenString.IndexOf(" ")));
-            string firsthalf = dateTakenString.Substring(0, 10);
+            string secondhalf = dateTakenString[dateTakenString.IndexOf(" ")..];
+            string firsthalf = dateTakenString[..10];
             firsthalf = firsthalf.Replace(":", "-");
             dateTakenString = firsthalf + secondhalf;
             dateTaken = DateTime.Parse(dateTakenString);
@@ -272,7 +266,7 @@ namespace System.Drawing
         /// <returns>The orientation of the image or <see cref="ExifOrientation.NotSet"/> if the property item is not available.</returns>
         public static ExifOrientation GetOrientation(this Image image)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
             PropertyItem propItem;
             try
@@ -301,31 +295,26 @@ namespace System.Drawing
         /// <returns>The orientation of the image or <see cref="ExifOrientation.NotSet"/> if the property item is not available.</returns>
         public static RotateFlipType GetOrientationInstruction(this Image image)
         {
-            if (image == null) throw new ArgumentNullException("image");
+            if (image == null) throw new ArgumentNullException(nameof(image));
 
-            PropertyItem propItem;
+            PropertyItem? propItem;
             try
             {
                 propItem = image.GetPropertyItem((int)ExifProperty.PropertyTagOrientation);
-                switch (propItem.Value[0])
+
+                if (propItem?.Value == null || propItem.Value.Length == 0) return RotateFlipType.RotateNoneFlipNone;
+
+                return propItem.Value[0] switch
                 {
-                    case 2:
-                        return RotateFlipType.RotateNoneFlipX;
-                    case 3:
-                        return RotateFlipType.Rotate180FlipNone;
-                    case 4:
-                        return RotateFlipType.Rotate180FlipX;
-                    case 5:
-                        return RotateFlipType.Rotate270FlipX;
-                    case 6:
-                        return RotateFlipType.Rotate90FlipNone;
-                    case 7:
-                        return RotateFlipType.Rotate90FlipX;
-                    case 8:
-                        return RotateFlipType.Rotate270FlipNone;
-                    default:
-                        return RotateFlipType.RotateNoneFlipNone;
-                }
+                    2 => RotateFlipType.RotateNoneFlipX,
+                    3 => RotateFlipType.Rotate180FlipNone,
+                    4 => RotateFlipType.Rotate180FlipX,
+                    5 => RotateFlipType.Rotate270FlipX,
+                    6 => RotateFlipType.Rotate90FlipNone,
+                    7 => RotateFlipType.Rotate90FlipX,
+                    8 => RotateFlipType.Rotate270FlipNone,
+                    _ => RotateFlipType.RotateNoneFlipNone,
+                };
             }
             catch (IndexOutOfRangeException)
             {
