@@ -1,5 +1,4 @@
-﻿using Asm.Web;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Builder
@@ -11,7 +10,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 errorApp.Run(async context =>
                 {
-                    var factory = context.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+                    var factory = context.RequestServices.GetRequiredService<Mvc.Infrastructure.ProblemDetailsFactory>();
                     context.Response.ContentType = "application/json";
 
                     await context.Response.WriteAsJsonAsync(factory.CreateProblemDetails(context));
