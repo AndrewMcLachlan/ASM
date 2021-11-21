@@ -25,12 +25,12 @@ public static class Authentication
     private class ConfigureAzureOptions : IConfigureNamedOptions<JwtBearerOptions>
     {
         private readonly AzureOAuthOptions _azureOptions;
-        private readonly IHostEnvironment environment;
+        private readonly IHostEnvironment _environment;
 
         public ConfigureAzureOptions(IOptions<AzureOAuthOptions> azureOptions, IHostEnvironment environment)
         {
             _azureOptions = azureOptions.Value;
-            this.environment = environment;
+            this._environment = environment;
         }
 
         public void Configure(JwtBearerOptions options)
@@ -40,9 +40,9 @@ public static class Authentication
         public void Configure(string name, JwtBearerOptions options)
         {
             options.Audience = _azureOptions.Audience;
-            options.Authority = _azureOptions.Audience;
+            options.Authority = _azureOptions.Authority;
 
-            if (environment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 options.RequireHttpsMetadata = false;
             }

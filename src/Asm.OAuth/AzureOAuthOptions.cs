@@ -6,6 +6,6 @@ namespace Asm.OAuth
     {
         public Guid TenantId { get; set; }
 
-        public override string Authority => $"{Domain}/{TenantId}";
+        public override string Authority => $"{Domain}/{TenantId}/v2.0";
     }
 }
