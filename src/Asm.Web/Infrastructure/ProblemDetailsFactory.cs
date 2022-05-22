@@ -60,6 +60,19 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Type = "http://andrewmclachlan.com/error/exists";
                 break;
+            case NotAuthorisedException _:
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                problemDetails.Title = "Forbidden";
+                problemDetails.Detail = errorContext.Error.Message;
+                problemDetails.Type = "http://andrewmclachlan.com/error/forbidden";
+                break;
+            case AsmException asmException:
+                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                problemDetails.Title = "Unexpected error occured";
+                problemDetails.Detail = errorContext.Error.Message;
+                problemDetails.Extensions.Add("Code", asmException.ErrorId);
+                problemDetails.Type = "http://andrewmclachlan.com/error/forbidden";
+                break;
             default:
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 problemDetails.Title = "Unexpected error occured";
