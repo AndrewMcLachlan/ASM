@@ -19,7 +19,7 @@ public class CanonicalTagHelper : TagHelper
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        string href = $"{ViewContext!.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/{Path}";
+        string href = $"{ViewContext!.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/{Path}".Replace("//", "/").TrimEnd('/');
 
         output.TagName = "link";
 

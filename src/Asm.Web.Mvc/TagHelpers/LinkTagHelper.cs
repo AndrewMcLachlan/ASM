@@ -5,23 +5,22 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Asm.Web.Mvc.TagHelpers
+namespace Asm.Web.Mvc.TagHelpers;
+
+public class LinkTagHelper : IntegrityTagHelper
 {
-    public class LinkTagHelper : IntegrityTagHelper
+    protected override string UrlSourceAttributeName => "href";
+
+    protected override string UrlOutputAttributeName => UrlSourceAttributeName;
+
+    public LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache) : base (actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
     {
-        protected override string UrlSourceAttributeName => "href";
+    }
 
-        protected override string UrlOutputAttributeName => UrlSourceAttributeName;
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        if (context.AllAttributes["integrity"] != null || context.AllAttributes["rel"] == null || ((HtmlString)context.AllAttributes["rel"].Value).Value != "stylesheet") return;
 
-        public LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache) : base (actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
-        {
-        }
-
-        public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
-            if (context.AllAttributes["integrity"] != null || context.AllAttributes["rel"] == null || ((HtmlString)context.AllAttributes["rel"].Value).Value != "stylesheet") return;
-
-            base.Process(context, output);
-        }
+        base.Process(context, output);
     }
 }
