@@ -1,8 +1,7 @@
-﻿using Asm.Web;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Serilog.Context;
 
-namespace Asm.BankPlus.Web.Middleware
+namespace Asm.Web.Middleware
 {
     public class SerilogEnrichWithUserMiddleware
     {
@@ -30,6 +29,6 @@ namespace Microsoft.AspNetCore.Builder
     public static class SerilogEnrichmentMiddlewareExtensions
     {
         public static IApplicationBuilder UseSerilogEnrichWithUser(this IApplicationBuilder app) =>
-            app.UseMiddleware<Asm.BankPlus.Web.Middleware.SerilogEnrichWithUserMiddleware>();
+            app.UseMiddleware<Asm.Web.Middleware.SerilogEnrichWithUserMiddleware>();
     }
 }

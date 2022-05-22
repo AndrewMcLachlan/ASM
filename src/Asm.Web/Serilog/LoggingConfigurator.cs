@@ -1,6 +1,7 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
@@ -21,6 +22,7 @@ public static class LoggingConfigurator
             .MinimumLevel.Information()
             .MinimumLevel.Is(LogEventLevel.Information)
             .WriteTo.Trace()
+            .WriteTo.Console()
             .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces);
 
         if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("Seq:Host")))
@@ -48,16 +50,26 @@ public static class LoggingConfigurator
             .MinimumLevel.Information()
             .MinimumLevel.Is(LogEventLevel.Information)
             .WriteTo.Trace()
+            .WriteTo.Console()
             .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces);
 
 
-        IConfigurationSection logLevelConfig = context.Configuration.GetSection("Logging").GetSection("LogLevel");
-        configuration
-            .MinimumLevel.Override("System", logLevelConfig.GetValue<LogEventLevel>("System"))
-            .MinimumLevel.Override("Microsoft", logLevelConfig.GetValue<LogEventLevel>("Microsoft"))
-            .WriteTo.Seq(context.Configuration["Seq:Host"], apiKey: context.Configuration["Seq:APIKey"]);
+        IConfigurationSection? logLevelConfig = context.Configuration.GetSection("Logging").GetSection("LogLevel");
 
-        if (context.HostingEnvironment.EnvironmentName == "Development")
+        if (logLevelConfig != null)
+        {
+            foreach(IConfigurationSection child in logLevelConfig.GetChildren())
+            {
+                configuration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
+            }
+        }
+
+        if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("Seq:Host")))
+        {
+            configuration.WriteTo.Seq(Environment.GetEnvironmentVariable("Seq:Host")!, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
+        }
+
+        if (context.HostingEnvironment.IsDevelopment())
         {
             configuration.WriteTo.File(@"logs\Log.log", rollingInterval: RollingInterval.Day);
         }
