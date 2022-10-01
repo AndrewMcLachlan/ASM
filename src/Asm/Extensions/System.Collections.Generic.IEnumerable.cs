@@ -6,4 +6,6 @@ public static class IEnumerableExtensions
     {
         return enumerable.Skip((pageNumber - 1) * pageSize).Take(pageSize);
     }
+
+    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable) => enumerable.ToList().Shuffle();
 }
