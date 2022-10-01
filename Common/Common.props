@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Authors>Andrew McLachlan</Authors>
     <Company />
-    <Copyright>Copyright © Andrew McLachlan 2011-2021. All rights reserved.</Copyright>
+    <Copyright>Copyright © Andrew McLachlan 2011. All rights reserved.</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <Version>3.0.0</Version>
@@ -11,5 +11,7 @@
     <Product>ASM Framework</Product>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/AndrewMcLachlan/ASM</RepositoryUrl>
   </PropertyGroup>
 </Project>
