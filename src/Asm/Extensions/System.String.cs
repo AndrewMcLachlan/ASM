@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Asm.Extensions;
+namespace System;
 
 /// <summary>
 /// Extensions for the <see cref="System.String"/> class.
