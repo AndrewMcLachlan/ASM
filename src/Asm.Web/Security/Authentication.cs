@@ -51,7 +51,7 @@ public static class Authentication
             {
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
-                ValidateAudience = true,
+                ValidateAudience = _azureOptions.ValidateAudience,
             };
         }
 
