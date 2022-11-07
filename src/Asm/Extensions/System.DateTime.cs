@@ -68,4 +68,9 @@ public static class DateTimeExtensions
 
         return lastDayInWeek;
     }
+
+    public static DateOnly ToDateOnly(this DateTime dt) => DateOnly.FromDateTime(dt);
+
+    public static TimeOnly ToTimeOnly(this DateTime dt) => TimeOnly.FromDateTime(dt);
+
 }
