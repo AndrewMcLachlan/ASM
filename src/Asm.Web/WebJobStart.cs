@@ -5,7 +5,7 @@ using Serilog;
 
 namespace Asm.Web
 {
-    public static class WebJobStart<T> where T : class
+    public static class WebJobStart
     {
         public static int Run(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices)
         {
