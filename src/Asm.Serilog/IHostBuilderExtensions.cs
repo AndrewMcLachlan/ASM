@@ -1,12 +1,12 @@
 ﻿using Asm.Serilog;
-using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace Asm.Web.Extensions;
 
-public static class IWebHostBuilderExtensions
+namespace Microsoft.Extensions.Hosting;
+
+public static class IHostBuilderExtensions
 {
-    public static IWebHostBuilder UseCustomSerilog(this IWebHostBuilder builder)
+    public static IHostBuilder UseCustomSerilog(this IHostBuilder builder)
     {
         return builder.UseSerilog((context, configuration) => LoggingConfigurator.ConfigureLogging(configuration, context.Configuration, context.HostingEnvironment));
     }

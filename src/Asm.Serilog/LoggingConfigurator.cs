@@ -1,18 +1,18 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace Asm.Web.Serilog;
+namespace Asm.Serilog;
 
 public static class LoggingConfigurator
 {
-    private static readonly string? Env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
     public static LoggerConfiguration ConfigureLogging(LoggerConfiguration configuration, string appName)
     {
+        string? Env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "UNKNOWN";
+
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
         configuration
@@ -38,15 +38,16 @@ public static class LoggingConfigurator
         return configuration;
     }
 
-    public static LoggerConfiguration ConfigureLogging(LoggerConfiguration configuration, WebHostBuilderContext context)
+    public static LoggerConfiguration ConfigureLogging(LoggerConfiguration loggerConfiguration, IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
+        if (loggerConfiguration == null) throw new ArgumentNullException(nameof(loggerConfiguration));
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-        if (context == null) throw new ArgumentNullException(nameof(context));
+        if (hostEnvironment == null) throw new ArgumentNullException(nameof(hostEnvironment));
 
-        configuration
+        loggerConfiguration
             .Enrich.FromLogContext()
-            .Enrich.WithProperty("App", context.HostingEnvironment.ApplicationName)
-            .Enrich.WithProperty("Env", context.HostingEnvironment.EnvironmentName)
+            .Enrich.WithProperty("App", hostEnvironment.ApplicationName)
+            .Enrich.WithProperty("Env", hostEnvironment.EnvironmentName)
             .MinimumLevel.Information()
             .MinimumLevel.Is(LogEventLevel.Information)
             .WriteTo.Trace()
@@ -54,26 +55,26 @@ public static class LoggingConfigurator
             .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces);
 
 
-        IConfigurationSection? logLevelConfig = context.Configuration.GetSection("Logging").GetSection("LogLevel");
+        IConfigurationSection? logLevelConfig = configuration.GetSection("Logging").GetSection("LogLevel");
 
         if (logLevelConfig != null)
         {
             foreach(IConfigurationSection child in logLevelConfig.GetChildren())
             {
-                configuration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
+                loggerConfiguration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
             }
         }
 
         if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("Seq:Host")))
         {
-            configuration.WriteTo.Seq(Environment.GetEnvironmentVariable("Seq:Host")!, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
+            loggerConfiguration.WriteTo.Seq(Environment.GetEnvironmentVariable("Seq:Host")!, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
         }
 
-        if (context.HostingEnvironment.IsDevelopment())
+        if (hostEnvironment.IsDevelopment())
         {
-            configuration.WriteTo.File(@"logs\Log.log", rollingInterval: RollingInterval.Day);
+            loggerConfiguration.WriteTo.File(@"logs\Log.log", rollingInterval: RollingInterval.Day);
         }
 
-        return configuration;
+        return loggerConfiguration;
     }
 }
