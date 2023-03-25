@@ -15,7 +15,7 @@ public static class IServiceCollectionExtensions
             config.RegisterServicesFromAssembly(commandsAssembly);
         });
 
-        services.TryAddSingleton<ICommandDispatcher, MediatrCommandDispatcher>();
+        services.TryAddTransient<ICommandDispatcher, MediatrCommandDispatcher>();
 
         return services;
     }
@@ -24,9 +24,9 @@ public static class IServiceCollectionExtensions
     {
         services.AddMediatR(config => {});
 
-        services.TryAddSingleton<ICommandDispatcher, MediatrCommandDispatcher>();
+        services.TryAddTransient<ICommandDispatcher, MediatrCommandDispatcher>();
 
-        services.AddScoped<ICommandHandler<TRequest, TResponse>, THandler>();
+        services.AddTransient<ICommandHandler<TRequest, TResponse>, THandler>();
 
         return services;
     }
@@ -35,9 +35,9 @@ public static class IServiceCollectionExtensions
     {
         services.AddMediatR(config => { });
 
-        services.TryAddSingleton<ICommandDispatcher, MediatrCommandDispatcher>();
+        services.TryAddTransient<ICommandDispatcher, MediatrCommandDispatcher>();
 
-        services.AddScoped<ICommandHandler<TRequest>, THandler>();
+        services.AddTransient<ICommandHandler<TRequest>, THandler>();
 
         return services;
     }
@@ -51,7 +51,7 @@ public static class IServiceCollectionExtensions
             config.RegisterServicesFromAssembly(QuerysAssembly);
         });
 
-        services.TryAddSingleton<IQueryDispatcher, MediatrQueryDispatcher>();
+        services.TryAddTransient<IQueryDispatcher, MediatrQueryDispatcher>();
 
         return services;
     }
@@ -60,9 +60,9 @@ public static class IServiceCollectionExtensions
     {
         services.AddMediatR(config => { });
 
-        services.TryAddSingleton<IQueryDispatcher, MediatrQueryDispatcher>();
+        services.TryAddTransient<IQueryDispatcher, MediatrQueryDispatcher>();
 
-        services.AddScoped<IQueryHandler<TRequest, TResponse>, THandler>();
+        services.AddTransient<IQueryHandler<TRequest, TResponse>, THandler>();
 
         return services;
     }
