@@ -37,7 +37,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : IRepository<TEnt
 
     public virtual async Task<TEntity> Get(TKey id)
     {
-        var entity = await Entities.SingleOrDefaultAsync(t => t.Id != null && t.Id.Equals(id));
+        var entity = await Entities.SingleOrDefaultAsync(t => t.Id.Equals(id));
         return entity ?? throw new NotFoundException();
     }
 

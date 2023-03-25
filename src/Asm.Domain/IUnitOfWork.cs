@@ -1,10 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿namespace Asm.Domain;
 
-namespace Asm.Domain
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
-    }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
