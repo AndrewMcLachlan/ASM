@@ -64,7 +64,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         ServiceLifetime contextLifetime = ServiceLifetime.Scoped,
         ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         where TContext : DbContext, IReadOnlyDbContext
-        => AddReadOnlyDbContext<TContext, TContext>(serviceCollection, optionsAction, contextLifetime, optionsLifetime);
+        => AddReadOnlyDbContext<IReadOnlyDbContext, TContext>(serviceCollection, optionsAction, contextLifetime, optionsLifetime);
 
     /// <summary>
     ///     <para>
@@ -151,7 +151,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         ServiceLifetime contextLifetime,
         ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         where TContext : DbContext, IReadOnlyDbContext
-        => AddReadOnlyDbContext<TContext, TContext>(serviceCollection, contextLifetime, optionsLifetime);
+        => AddReadOnlyDbContext<IReadOnlyDbContext, TContext>(serviceCollection, contextLifetime, optionsLifetime);
 
     /// <summary>
     ///     <para>
@@ -185,7 +185,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         where TContextImplementation : DbContext, TContextService
         where TContextService : class, IReadOnlyDbContext
-        => AddReadOnlyDbContext<TContextService, TContextImplementation>(
+        => AddReadOnlyDbContext<IReadOnlyDbContext, TContextImplementation>(
             serviceCollection,
             (Action<IServiceProvider, DbContextOptionsBuilder>?)null,
             contextLifetime,
@@ -253,7 +253,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         ServiceLifetime contextLifetime = ServiceLifetime.Scoped,
         ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         where TContext : DbContext, IReadOnlyDbContext
-        => AddReadOnlyDbContext<TContext, TContext>(serviceCollection, optionsAction, contextLifetime, optionsLifetime);
+        => AddReadOnlyDbContext<IReadOnlyDbContext, TContext>(serviceCollection, optionsAction, contextLifetime, optionsLifetime);
 
     /// <summary>
     ///     <para>
