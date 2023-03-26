@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TechTalk.SpecFlow;
-using Xunit;
+﻿using Xunit;
 
-namespace Asm.Testing
+namespace Asm.Testing;
+
+public static class SpecFlowHelper
 {
-    public static class SpecFlowHelper
+    public static string? DecodeWhitespace(this string str)
     {
-        public static string DecodeWhitespace(this string str)
-        {
-            if (str == null) return null;
+        if (str == null) return null;
 
-            return str.Replace(@"\r", "\r").Replace(@"\n", "\n").Replace(@"\t", "\t");
-        }
+        return str.Replace(@"\r", "\r").Replace(@"\n", "\n").Replace(@"\t", "\t");
+    }
 
-        public static void CatchException(Action action, ScenarioResult<Exception> scenarioData)
-        {
-            var exception = Record.Exception(action);
+    public static void CatchException(Action action, ScenarioResult<Exception> scenarioData)
+    {
+        var exception = Record.Exception(action);
 
-            Assert.NotNull(scenarioData);
+        Assert.NotNull(scenarioData);
 
-            scenarioData.Result = exception;
+        scenarioData.Result = exception;
 
-        }
     }
 }

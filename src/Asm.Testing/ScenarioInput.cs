@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Asm.Testing;
 
-namespace Asm.Testing
+public class ScenarioInput<T>
 {
-    public class ScenarioInput<T>
-    {
-        public T Input { get; set; }
-    }
+    public T? Input { get; set; }
 }
