@@ -7,11 +7,15 @@
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <Version>3.0.0</Version>
     <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
-    <PackageIconUrl>https://www.andrewmclachlan.com/images/am.png</PackageIconUrl>
+    <PackageIconUrl>Icon.128.png</PackageIconUrl>
     <Product>ASM Framework</Product>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/AndrewMcLachlan/ASM</RepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Common\Icon.128.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 </Project>
