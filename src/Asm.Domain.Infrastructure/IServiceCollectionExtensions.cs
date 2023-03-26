@@ -1,20 +1,48 @@
 ﻿using Asm.Domain;
 using Asm.Domain.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AsmDomainInfrastructureIServiceCollectionExtensions
 {
+    private static readonly Type IQueryableType = typeof(IQueryable<>);
+    private static readonly MethodInfo DbContextSetMethod = typeof(IReadOnlyDbContext).GetTypeInfo().GetDeclaredMethod(nameof(IReadOnlyDbContext.Set))!;
+    private static readonly MethodInfo AsNoTrackingMethod = typeof(EntityFrameworkQueryableExtensions).GetTypeInfo().GetDeclaredMethod(nameof(EntityFrameworkQueryableExtensions.AsNoTracking))!;
+
     public static IServiceCollection AddUnitOfWork<T>(this IServiceCollection services) where T : class, IUnitOfWork =>
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<T>());
 
 
     public static IServiceCollection AddQueryable<TEntity, TContext>(this IServiceCollection services) where TEntity : class where TContext : IReadOnlyDbContext =>
         services.AddTransient(sp => sp.GetRequiredService<TContext>().Set<TEntity>().AsNoTracking());
+
+    public static IServiceCollection AddAggregateRoots<TContext>(this IServiceCollection services, Assembly entityAssembly) where TContext : IReadOnlyDbContext
+    {
+        var types = entityAssembly.GetTypes().Where(t => t.CustomAttributes.Any(ca => ca.AttributeType == typeof(AggregateRootAttribute)));
+
+        foreach (var type in types)
+        {
+            var queryableGeneric = IQueryableType.MakeGenericType(type);
+
+            services.Add(new ServiceDescriptor(queryableGeneric, sp =>
+            {
+                IReadOnlyDbContext context = sp.GetRequiredService<TContext>();
+
+                var genericSet = DbContextSetMethod.MakeGenericMethod(type);
+
+                var res = genericSet.Invoke(context, null);
+
+                var genericAsNoTracking = AsNoTrackingMethod.MakeGenericMethod(type);
+
+                var res2 = genericAsNoTracking.Invoke(null, new[] { res });
+
+                return res2!;
+            }, ServiceLifetime.Transient));
+        }
+        return services;
+    }
 
     #region Add Readonly DB Context
     /// <summary>
