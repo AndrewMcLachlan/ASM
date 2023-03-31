@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		Common\Common.props = Common\Common.props
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
+		Common\Icon-128.png = Common\Icon-128.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Net", "src\Asm.Net\Asm.Net.csproj", "{4EF4AD03-3FC1-4415-8FE6-DB345E9D6D3E}"
@@ -44,9 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Hosting", "src\Asm.Host
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Serilog", "src\Asm.Serilog\Asm.Serilog.csproj", "{1EAFB901-9AE0-4D97-8E11-E3BA9542A994}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Cqrs", "src\Asm.Cqrs\Asm.Cqrs.csproj", "{50A308EE-4566-411D-82A5-A39A6FDB6AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Cqrs", "src\Asm.Cqrs\Asm.Cqrs.csproj", "{50A308EE-4566-411D-82A5-A39A6FDB6AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Cqrs.Tests", "tests\Asm.Cqrs.Tests\Asm.Cqrs.Tests.csproj", "{F237B5B1-8F2C-48A6-AD3F-AB9BFAD748E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Cqrs.Tests", "tests\Asm.Cqrs.Tests\Asm.Cqrs.Tests.csproj", "{F237B5B1-8F2C-48A6-AD3F-AB9BFAD748E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
