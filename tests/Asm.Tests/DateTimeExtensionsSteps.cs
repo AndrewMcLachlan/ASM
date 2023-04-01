@@ -42,11 +42,11 @@ namespace Asm.Tests
         {
             if (_input.FormatProvider != null)
             {
-                _result.Result = _input.Date.FirstDayOfWeek(_input.FormatProvider);
+                _result.Value = _input.Date.FirstDayOfWeek(_input.FormatProvider);
             }
             else
             {
-                _result.Result = _input.Date.FirstDayOfWeek();
+                _result.Value = _input.Date.FirstDayOfWeek();
             }
         }
 
@@ -55,11 +55,11 @@ namespace Asm.Tests
         {
             if (_input.FormatProvider != null)
             {
-                _result.Result = _input.Date.LastDayOfWeek(_input.FormatProvider);
+                _result.Value = _input.Date.LastDayOfWeek(_input.FormatProvider);
             }
             else
             {
-                _result.Result = _input.Date.LastDayOfWeek();
+                _result.Value = _input.Date.LastDayOfWeek();
             }
         }
 

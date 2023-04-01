@@ -32,19 +32,19 @@ namespace Asm.Tests
         [When(@"I Append '(.*)' to the string")]
         public void WhenIAppendToTheString(string append)
         {
-            _result.Result = _input.Append(append, _separator);
+            _result.Value = _input.Append(append, _separator);
         }
 
         [When(@"I Prepend '(.*)' to the string")]
         public void WhenIPrependToTheString(string append)
         {
-            _result.Result = _input.Prepend(append, _separator);
+            _result.Value = _input.Prepend(append, _separator);
         }
 
         [When(@"I Squish the string by (.*) characters")]
         public void WhenISquishTheStringByCharacters(int chars)
         {
-            _result.Result = _input.Squish(chars, chars);
+            _result.Value = _input.Squish(chars, chars);
         }
 
     }

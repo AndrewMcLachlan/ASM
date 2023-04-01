@@ -3,7 +3,7 @@
 namespace Asm.Domain.Infrastructure;
 
 public abstract class RepositoryBase<TContext, TEntity, TKey> : IRepository<TEntity, TKey>
-        where TEntity : Entity<TKey>, new()
+        where TEntity : KeyedEntity<TKey>, new()
         where TContext : DbContext
 {
     protected TContext Context { get; private set; }

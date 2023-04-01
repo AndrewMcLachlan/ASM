@@ -35,7 +35,7 @@ namespace Asm.Tests
         [When(@"I call ToRoundedCurrencyString")]
         public void WhenICallToRoundedCurrencyString()
         {
-            _result.Result = _places != null ? _input.ToRoundedCurrencyString(_places.Value) : _input.ToRoundedCurrencyString();
+            _result.Value = _places != null ? _input.ToRoundedCurrencyString(_places.Value) : _input.ToRoundedCurrencyString();
         }
 
         [When(@"I call ToRoundedCurrencyString expecting an exception")]

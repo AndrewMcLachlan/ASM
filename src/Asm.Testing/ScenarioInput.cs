@@ -2,5 +2,5 @@
 
 public class ScenarioInput<T>
 {
-    public T? Input { get; set; }
+    public T? Value { get; set; }
 }

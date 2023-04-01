@@ -2,5 +2,5 @@
 
 public class ScenarioResult<T>
 {
-    public T? Result { get; set; }
+    public T? Value { get; set; }
 }

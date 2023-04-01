@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿namespace Asm.Domain;
 
-namespace Asm.Domain
+public interface IRepository<TEntity, TKey> where TEntity : KeyedEntity<TKey>
 {
-    public interface IRepository<TEntity, TKey> where TEntity : Entity<TKey>
-    {
-        IQueryable<TEntity> Queryable();
+    IQueryable<TEntity> Queryable();
 
-        Task<IEnumerable<TEntity>> Get();
+    Task<IEnumerable<TEntity>> Get();
 
-        Task<TEntity> Get(TKey Id);
+    Task<TEntity> Get(TKey Id);
 
-        TEntity Add(TEntity item);
+    TEntity Add(TEntity item);
 
-        void Delete(TKey id);
-    }
+    void Delete(TKey id);
 }

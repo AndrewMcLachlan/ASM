@@ -22,19 +22,19 @@ namespace Asm.Tests
         [Given(@"I have boolean that is '(.*)'")]
         public void GivenIHaveBooleanThatIs(bool value)
         {
-            _input.Input = value;
+            _input.Value = value;
         }
 
         [When(@"I call ToNumeric")]
         public void WhenICallToNumeric()
         {
-            _intResult.Result = _input.Input.ToNumeric();
+            _intResult.Value = _input.Value.ToNumeric();
         }
 
         [When(@"I call ToNumericString")]
         public void WhenICallToNumericString()
         {
-            _strResult.Result = _input.Input.ToNumericString();
+            _strResult.Value = _input.Value.ToNumericString();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Asm.Net.Tests
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
+        private static string[] featureTags = new string[] {
                 "IPAddressExtensions"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -42,10 +42,9 @@ namespace Asm.Net.Tests
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "IPAddress Extensions", "\tIn order to get IP addresses in different notations\r\n\tI want to be able to conve" +
-                    "rt from a subnet mask to CIDR\r\n\tSo that I can see IP addresses with CIDR notatio" +
-                    "n", ProgrammingLanguage.CSharp, new string[] {
-                        "IPAddressExtensions"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "IPAddress Extensions", "    In order to get IP addresses in different notations\r\n    I want to be able to" +
+                    " convert from a subnet mask to CIDR\r\n    So that I can see IP addresses with CID" +
+                    "R notation", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -55,27 +54,27 @@ namespace Asm.Net.Tests
             testRunner = null;
         }
         
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
         }
         
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -122,7 +121,7 @@ namespace Asm.Net.Tests
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.252", "192.168.1.0/30", new string[0])]
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.254", "192.168.1.0/31", new string[0])]
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.255", "192.168.1.1/32", new string[0])]
-        public virtual void GetIPAddressInCIDRNotation(string iPAddress, string mask, string value, string[] exampleTags)
+        public void GetIPAddressInCIDRNotation(string iPAddress, string mask, string value, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -135,21 +134,11 @@ namespace Asm.Net.Tests
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Mask", mask);
             argumentsOfScenario.Add("Value", value);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -157,16 +146,16 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 9
- testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 10
- testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
- testRunner.When("I call ToCidrString", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I call ToCidrString", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 12
- testRunner.Then(string.Format("the string value \'{0}\' will be returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then(string.Format("the string value \'{0}\' will be returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -177,7 +166,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Description", "Get IP address in CIDR notation with invalid mask")]
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.253", "System.FormatException", "Invalid mask", new string[0])]
-        public virtual void GetIPAddressInCIDRNotationWithInvalidMask(string iPAddress, string mask, string exceptionType, string message, string[] exampleTags)
+        public void GetIPAddressInCIDRNotationWithInvalidMask(string iPAddress, string mask, string exceptionType, string message, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -191,21 +180,11 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("Mask", mask);
             argumentsOfScenario.Add("Exception Type", exceptionType);
             argumentsOfScenario.Add("Message", message);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation with invalid mask", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation with invalid mask", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -213,19 +192,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 52
- testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 53
- testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 54
- testRunner.When("I call ToCidrString expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I call ToCidrString expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 55
- testRunner.Then(string.Format("an exception of type \'{0}\' is thrown", exceptionType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then(string.Format("an exception of type \'{0}\' is thrown", exceptionType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 56
- testRunner.And(string.Format("the exception message is \'{0}\'", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("the exception message is \'{0}\'", message), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -237,7 +216,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("fe80::200:f8ff:fe21:67cf", "255.255.255.255", "ipAddress", new string[0])]
         [Xunit.InlineDataAttribute("192.168.0.1", "fe80::200:f8ff:fe21:67cf", "mask", new string[0])]
-        public virtual void GetIPAddressInCIDRNotationWithInvalidInput(string iPAddress, string mask, string parameter, string[] exampleTags)
+        public void GetIPAddressInCIDRNotationWithInvalidInput(string iPAddress, string mask, string parameter, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -250,21 +229,11 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Mask", mask);
             argumentsOfScenario.Add("Parameter", parameter);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation with invalid input", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address in CIDR notation with invalid input", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 63
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -272,22 +241,22 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 64
- testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 65
- testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("I have a subnet mask \'{0}\'", mask), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 66
- testRunner.When("I call ToCidrString expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I call ToCidrString expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 67
- testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 68
- testRunner.And(string.Format("the exception message is \'Not an IPv4 address (Parameter \'{0}\')\'", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("the exception message is \'Not an IPv4 address (Parameter \'{0}\')\'", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 69
- testRunner.And(string.Format("the exception parameter name is \'{0}\'", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And(string.Format("the exception parameter name is \'{0}\'", parameter), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -299,7 +268,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("255.255.255.255", "4294967295", new string[0])]
         [Xunit.InlineDataAttribute("204.204.204.204", "3435973836", new string[0])]
-        public virtual void GetIPAddressAsAnUnsigned32BitInteger(string iPAddress, string value, string[] exampleTags)
+        public void GetIPAddressAsAnUnsigned32BitInteger(string iPAddress, string value, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -311,21 +280,11 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Value", value);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 77
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -333,13 +292,13 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 78
- testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 79
- testRunner.When("I call ToUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I call ToUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 80
- testRunner.Then(string.Format("the unsigned 32 bit integer value {0} will be returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then(string.Format("the unsigned 32 bit integer value {0} will be returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -349,26 +308,16 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [Xunit.TraitAttribute("Description", "Create an IP address from an unsigned 32 bit integer")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public virtual void CreateAnIPAddressFromAnUnsigned32BitInteger()
+        public void CreateAnIPAddressFromAnUnsigned32BitInteger()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create an IP address from an unsigned 32 bit integer", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create an IP address from an unsigned 32 bit integer", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 88
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -376,13 +325,13 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 89
- testRunner.Given("I have an unsigned 32 bit integer 3435973836", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have an unsigned 32 bit integer 3435973836", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 90
- testRunner.When("I call FromUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I call FromUInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 91
- testRunner.Then("the IP Address 204.204.204.204 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the IP Address 204.204.204.204 is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -392,26 +341,16 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer with invalid input")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public virtual void GetIPAddressAsAnUnsigned32BitIntegerWithInvalidInput()
+        public void GetIPAddressAsAnUnsigned32BitIntegerWithInvalidInput()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer with invalid input", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get IP address as an unsigned 32 bit integer with invalid input", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -419,19 +358,19 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 95
- testRunner.Given("I have an IP Address \'fe80::200:f8ff:fe21:67cf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have an IP Address \'fe80::200:f8ff:fe21:67cf\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 96
- testRunner.When("I call ToUInt32 expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I call ToUInt32 expecting an exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 97
- testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 98
- testRunner.And("the exception message is \'Not an IPv4 address (Parameter \'ipAddress\')\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the exception message is \'Not an IPv4 address (Parameter \'ipAddress\')\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 99
- testRunner.And("the exception parameter name is \'ipAddress\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the exception parameter name is \'ipAddress\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

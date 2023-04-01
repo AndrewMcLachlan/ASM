@@ -71,7 +71,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
                 problemDetails.Title = "Unexpected error occured";
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Extensions.Add("Code", asmException.ErrorId);
-                problemDetails.Type = "http://andrewmclachlan.com/error/forbidden";
+                problemDetails.Type = "http://andrewmclachlan.com/error/unknown";
                 break;
             default:
                 httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

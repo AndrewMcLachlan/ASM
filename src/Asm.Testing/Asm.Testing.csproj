@@ -3,14 +3,14 @@
   <Import Project="..\..\Common\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Description>ASM Core Library unit testing support.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpecFlow" Version="3.9.40" />
-    <PackageReference Include="xunit.assert" Version="2.4.1" />
-    <PackageReference Include="xunit.core" Version="2.4.1" />
+    <PackageReference Include="SpecFlow" Version="3.9.74" />
+    <PackageReference Include="xunit.assert" Version="2.4.2" />
+    <PackageReference Include="xunit.core" Version="2.4.2" />
   </ItemGroup>
 
 </Project>

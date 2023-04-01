@@ -17,7 +17,7 @@ public static class SpecFlowHelper
 
         Assert.NotNull(scenarioData);
 
-        scenarioData.Result = exception;
+        scenarioData.Value = exception;
 
     }
 }

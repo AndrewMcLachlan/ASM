@@ -20,7 +20,7 @@ public class ExceptionSteps
 
         Assert.NotNull(expected);
 
-        var actual = _result.Result;
+        var actual = _result.Value;
 
         Assert.NotNull(actual);
         Assert.IsType(expected, actual);
@@ -29,14 +29,14 @@ public class ExceptionSteps
     [Then(@"the exception message is '(.*)'")]
     public void ThenTheExceptionMessageIs(string message)
     {
-        Assert.NotNull(_result.Result);
-        Assert.Equal(message.DecodeWhitespace(), _result.Result!.Message);
+        Assert.NotNull(_result.Value);
+        Assert.Equal(message.DecodeWhitespace(), _result.Value!.Message);
     }
 
     [Then(@"the exception parameter name is '(.*)'")]
     public void ThenTheExceptionParameterNameIs(string parameterName)
     {
-        var exception = _result.Result;
+        var exception = _result.Value;
 
         Assert.NotNull(exception);
         Assert.IsAssignableFrom(typeof(ArgumentException), exception);
