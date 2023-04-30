@@ -6,9 +6,9 @@ public interface IRepository<TEntity, TKey>
 {
     IQueryable<TEntity> Queryable();
 
-    Task<IEnumerable<TEntity>> Get();
+    Task<IEnumerable<TEntity>> Get(CancellationToken cancellationToken = default);
 
-    Task<TEntity> Get(TKey Id);
+    Task<TEntity> Get(TKey Id, CancellationToken cancellationToken = default);
 
     TEntity Add(TEntity item);
 }
