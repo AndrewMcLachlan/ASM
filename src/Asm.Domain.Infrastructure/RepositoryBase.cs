@@ -31,12 +31,12 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : IRepository<TEnt
         return Entities.AsQueryable();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> Get()
+    public virtual async Task<IEnumerable<TEntity>> Get(CancellationToken cancellationToken = default)
     {
         return await Entities.ToArrayAsync();
     }
 
-    public virtual async Task<TEntity> Get(TKey id)
+    public virtual async Task<TEntity> Get(TKey id, CancellationToken cancellationToken = default)
     {
         var entity = await Entities.SingleOrDefaultAsync(t => t.Id.Equals(id));
         return entity ?? throw new NotFoundException();
