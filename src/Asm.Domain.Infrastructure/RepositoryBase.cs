@@ -3,8 +3,9 @@
 namespace Asm.Domain.Infrastructure;
 
 public abstract class RepositoryBase<TContext, TEntity, TKey> : IRepository<TEntity, TKey>
-        where TEntity : KeyedEntity<TKey>, new()
-        where TContext : DbContext
+    where TEntity : KeyedEntity<TKey>
+    where TContext : DbContext
+    where TKey : struct
 {
     protected TContext Context { get; private set; }
 
@@ -40,6 +41,4 @@ public abstract class RepositoryBase<TContext, TEntity, TKey> : IRepository<TEnt
         var entity = await Entities.SingleOrDefaultAsync(t => t.Id.Equals(id));
         return entity ?? throw new NotFoundException();
     }
-
-    public abstract void Delete(TKey id);
 }

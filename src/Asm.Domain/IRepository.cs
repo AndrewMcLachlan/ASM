@@ -1,6 +1,8 @@
 ﻿namespace Asm.Domain;
 
-public interface IRepository<TEntity, TKey> where TEntity : KeyedEntity<TKey>
+public interface IRepository<TEntity, TKey>
+    where TEntity : KeyedEntity<TKey>
+    where TKey : struct
 {
     IQueryable<TEntity> Queryable();
 
@@ -9,6 +11,4 @@ public interface IRepository<TEntity, TKey> where TEntity : KeyedEntity<TKey>
     Task<TEntity> Get(TKey Id);
 
     TEntity Add(TEntity item);
-
-    void Delete(TKey id);
 }
