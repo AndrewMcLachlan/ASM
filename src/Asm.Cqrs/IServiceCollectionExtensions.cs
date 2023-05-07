@@ -15,7 +15,7 @@ public static class IServiceCollectionExtensions
             config.RegisterServicesFromAssembly(commandsAssembly);
         });
 
-        services.TryAddTransient<ICommandDispatcher, MediatrCommandDispatcher>();
+        services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
 
         return services;
     }
@@ -24,7 +24,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddMediatR(config => {});
 
-        services.TryAddTransient<ICommandDispatcher, MediatrCommandDispatcher>();
+        services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
 
         services.AddTransient<ICommandHandler<TRequest, TResponse>, THandler>();
 
@@ -35,7 +35,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddMediatR(config => { });
 
-        services.TryAddTransient<ICommandDispatcher, MediatrCommandDispatcher>();
+        services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
 
         services.AddTransient<ICommandHandler<TRequest>, THandler>();
 
