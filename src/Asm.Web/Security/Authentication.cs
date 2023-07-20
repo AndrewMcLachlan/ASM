@@ -37,7 +37,8 @@ public static class Authentication
         {
             Configure(Options.DefaultName, options);
         }
-        public void Configure(string name, JwtBearerOptions options)
+
+        public void Configure(string? name, JwtBearerOptions options)
         {
             options.Audience = _azureOptions.Audience;
             options.Authority = _azureOptions.Authority;
