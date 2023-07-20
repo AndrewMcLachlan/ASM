@@ -4,8 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Description>Asm core library for ASP.NET Core.</Description>
   </PropertyGroup>
 
   <ItemGroup>

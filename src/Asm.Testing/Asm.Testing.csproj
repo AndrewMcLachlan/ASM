@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Description>ASM Core Library unit testing support.</Description>
+    <Description>ASM core library unit testing support.</Description>
   </PropertyGroup>
 
   <ItemGroup>

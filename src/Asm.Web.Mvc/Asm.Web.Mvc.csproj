@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Description>Asm Core Library for ASP.NET Core.</Description>
+    <Description>Asm core library for ASP.NET Core MVC.</Description>
   </PropertyGroup>
 
   <ItemGroup>

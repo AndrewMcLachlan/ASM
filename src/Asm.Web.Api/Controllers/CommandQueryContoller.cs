@@ -3,7 +3,7 @@ using Asm.Cqrs.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Asm.MooBank.Web.Controllers;
+namespace Asm.Web.Controllers;
 
 [ApiController]
 [Authorize]
