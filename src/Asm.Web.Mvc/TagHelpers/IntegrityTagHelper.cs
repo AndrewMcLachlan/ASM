@@ -60,9 +60,7 @@ public abstract class IntegrityTagHelper : TagHelper
             return;
         }
 
-        var hashAlgo = System.Security.Cryptography.HashAlgorithm.Create("SHA-512");
-
-        if (hashAlgo == null) throw new InvalidOperationException("Unable to create SHA-512 hash algorithm");
+        var hashAlgo = System.Security.Cryptography.SHA512.Create() ?? throw new InvalidOperationException("Unable to create SHA-512 hash algorithm");
 
         using FileStream file = File.OpenRead(path);
         byte[] hash = hashAlgo.ComputeHash(file);
