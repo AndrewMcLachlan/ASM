@@ -12,20 +12,23 @@ namespace Asm.Tests
         public class ScenarioInput
         {
             public DateTime Date { get; set; }
+            public DateTime OtherDate { get; set; }
             public IFormatProvider FormatProvider { get; set; }
         }
 
         private ScenarioInput _input;
         private ScenarioResult<DateTime> _result;
+        private ScenarioResult<int> _intResult;
 
-        public DateTimeExtensionsSteps(ScenarioInput input, ScenarioResult<DateTime> result)
+        public DateTimeExtensionsSteps(ScenarioInput input, ScenarioResult<DateTime> result, ScenarioResult<int> intResult)
         {
             _input = input;
             _result = result;
+            _intResult = intResult;
         }
 
-        [Given(@"I have date '(.*)'")]
-        public void GivenIHaveDate(DateTime date)
+        [Given(@"I have a date '(.*)'")]
+        public void GivenIHaveADate(DateTime date)
         {
             _input.Date = date;
         }
@@ -34,6 +37,12 @@ namespace Asm.Tests
         public void GivenMyLocaleIs(string locale)
         {
             _input.FormatProvider = CultureInfo.GetCultureInfoByIetfLanguageTag(locale);
+        }
+
+        [Given(@"I have another date '([^']*)'")]
+        public void GivenIHaveAnotherDate(DateTime date)
+        {
+            _input.OtherDate = date;
         }
 
 
@@ -61,6 +70,12 @@ namespace Asm.Tests
             {
                 _result.Value = _input.Date.LastDayOfWeek();
             }
+        }
+
+        [When(@"I call DifferenceInMonths")]
+        public void WhenICallDifferenceInMonths()
+        {
+            _intResult.Value = _input.Date.DifferenceInMonths(_input.OtherDate);
         }
 
     }

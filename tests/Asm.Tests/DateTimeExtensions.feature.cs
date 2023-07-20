@@ -101,7 +101,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
- testRunner.Given("I have date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
  testRunner.When("I call FirstDayOfWeek", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -143,7 +143,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 12
- testRunner.Given("I have date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 13
  testRunner.And(string.Format("my locale is \'{0}\'", locale), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -179,7 +179,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 25
- testRunner.Given("I have date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 26
  testRunner.When("I call LastDayOfWeek", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -221,7 +221,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 31
- testRunner.Given("I have date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a date \'2019-04-04\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 32
  testRunner.And(string.Format("my locale is \'{0}\'", locale), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -231,6 +231,56 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 34
  testRunner.Then(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Get difference in months")]
+        [Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
+        [Xunit.TraitAttribute("Description", "Get difference in months")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        [Xunit.InlineDataAttribute("2023-01-01", "2023-01-01", "0", new string[0])]
+        [Xunit.InlineDataAttribute("2023-01-01", "2023-02-01", "1", new string[0])]
+        [Xunit.InlineDataAttribute("2023-02-01", "2023-01-01", "1", new string[0])]
+        [Xunit.InlineDataAttribute("2023-01-01", "2022-12-01", "1", new string[0])]
+        [Xunit.InlineDataAttribute("2023-01-01", "2022-01-01", "12", new string[0])]
+        [Xunit.InlineDataAttribute("2023-01-01", "2023-01-02", "1", new string[0])]
+        public void GetDifferenceInMonths(string date, string otherDate, string difference, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Date", date);
+            argumentsOfScenario.Add("Other Date", otherDate);
+            argumentsOfScenario.Add("Difference", difference);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get difference in months", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 42
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 43
+ testRunner.Given(string.Format("I have a date \'{0}\'", date), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 44
+ testRunner.And(string.Format("I have another date \'{0}\'", otherDate), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 45
+ testRunner.When("I call DifferenceInMonths", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 46
+ testRunner.Then(string.Format("the integer value {0} is returned", difference), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
