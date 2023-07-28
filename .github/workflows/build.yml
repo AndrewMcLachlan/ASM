@@ -1,0 +1,34 @@
+name: Build and Publish
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        dotnet-version: 7.x
+        source-url: https://nuget.pkg.github.com/AndrewMcLachlan/index.json
+    - name: Set version number
+      id: set-version-number
+      uses: andrewmclachlan/actions/set-version-number@master
+      with:
+        filePath: 'Common/Common.props'
+        versionPropertyName: 'Version'
+    - name: Restore dependencies
+      run: dotnet restore Asm.sln
+    - name: Package
+      run: dotnet pack Asm.sln --no-restore -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
+    - name: Publish Packages
+      run: dotnet nuget push ${{ github.workspace }}/publish/**/*.nupkg
