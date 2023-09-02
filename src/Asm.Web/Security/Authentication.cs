@@ -11,9 +11,9 @@ namespace Asm.Web.Security;
 
 public static class Authentication
 {
-    public static AuthenticationBuilder AddAzureAdBearer(this AuthenticationBuilder builder) => builder.AddAzureAdBearer(_ => { });
+    public static AuthenticationBuilder AddAzureADBearer(this AuthenticationBuilder builder) => builder.AddAzureADBearer(_ => { });
 
-    public static AuthenticationBuilder AddAzureAdBearer(this AuthenticationBuilder builder, Action<AzureOAuthOptions> configureOptions)
+    public static AuthenticationBuilder AddAzureADBearer(this AuthenticationBuilder builder, Action<AzureADBearerOptions> configureOptions)
     {
         builder.Services.Configure(configureOptions);
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureAzureOptions>();
@@ -24,10 +24,10 @@ public static class Authentication
 
     private class ConfigureAzureOptions : IConfigureNamedOptions<JwtBearerOptions>
     {
-        private readonly AzureOAuthOptions _azureOptions;
+        private readonly AzureADBearerOptions _azureOptions;
         private readonly IHostEnvironment _environment;
 
-        public ConfigureAzureOptions(IOptions<AzureOAuthOptions> azureOptions, IHostEnvironment environment)
+        public ConfigureAzureOptions(IOptions<AzureADBearerOptions> azureOptions, IHostEnvironment environment)
         {
             _azureOptions = azureOptions.Value;
             this._environment = environment;
@@ -40,19 +40,21 @@ public static class Authentication
 
         public void Configure(string? name, JwtBearerOptions options)
         {
-            options.Audience = _azureOptions.Audience;
-            options.Authority = _azureOptions.Authority;
+            options.Audience = _azureOptions.AzureOAuthOptions.Audience;
+            options.Authority = _azureOptions.AzureOAuthOptions.Authority;
 
             if (_environment.IsDevelopment())
             {
                 options.RequireHttpsMetadata = false;
             }
 
+            options.Events = _azureOptions.Events;
+
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
-                ValidateAudience = _azureOptions.ValidateAudience,
+                ValidateAudience = _azureOptions.AzureOAuthOptions.ValidateAudience,
             };
         }
 
