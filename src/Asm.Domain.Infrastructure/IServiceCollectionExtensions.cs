@@ -1,6 +1,7 @@
 ﻿using Asm.Domain;
 using Asm.Domain.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -41,6 +42,15 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
                 return res2!;
             }, ServiceLifetime.Transient));
         }
+        return services;
+    }
+
+    public static IServiceCollection AddDomainEvents<THandler, TRequest>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TRequest> where TRequest : IDomainEvent
+    {
+        services.AddMediatR(config => { });
+
+        services.AddTransient<IDomainEventHandler<TRequest>, THandler>();
+
         return services;
     }
 
@@ -344,5 +354,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         where TContextService : IReadOnlyDbContext
         => serviceCollection.AddDbContext<TContextService, TContextImplementation>(optionsAction, contextLifetime, optionsLifetime);
     #endregion
+
+
 
 }
