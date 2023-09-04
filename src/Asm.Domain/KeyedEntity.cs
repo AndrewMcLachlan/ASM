@@ -8,7 +8,7 @@ namespace Asm.Domain;
 /// Base class for a keyed entity.
 /// </summary>
 /// <typeparam name="TKey">The type of the entity key.</typeparam>
-public abstract class KeyedEntity<TKey> : IIdentifiable<TKey>
+public abstract class KeyedEntity<TKey> : Entity, IIdentifiable<TKey>
 {
     [Key]
     [DisallowNull]
