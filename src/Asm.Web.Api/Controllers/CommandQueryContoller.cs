@@ -7,7 +7,7 @@ namespace Asm.Web.Controllers;
 
 [ApiController]
 [Authorize]
-public abstract class CommandQueryController : Controller
+public abstract class CommandQueryController : ControllerBase
 {
     protected IQueryDispatcher QueryDispatcher { get; private set; }
     protected ICommandDispatcher CommandDispatcher { get; private set; }
@@ -17,4 +17,7 @@ public abstract class CommandQueryController : Controller
         QueryDispatcher = queryDispatcher;
         CommandDispatcher = commandDispatcher;
     }
+
+    protected string ControllerName<T>() where T : ControllerBase =>
+        nameof(T).Replace("Controller", String.Empty);
 }
