@@ -44,11 +44,11 @@ public static class IServiceCollectionExtensions
     #endregion
 
     #region Queries
-    public static IServiceCollection AddQueryHandlers(this IServiceCollection services, Assembly QuerysAssembly)
+    public static IServiceCollection AddQueryHandlers(this IServiceCollection services, Assembly QueriesAssembly)
     {
         services.AddMediatR(config =>
         {
-            config.RegisterServicesFromAssembly(QuerysAssembly);
+            config.RegisterServicesFromAssembly(QueriesAssembly);
         });
 
         services.TryAddTransient<IQueryDispatcher, MediatrQueryDispatcher>();
