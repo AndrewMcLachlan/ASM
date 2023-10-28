@@ -11,4 +11,7 @@ internal class MediatRCommandDispatcher : Mediator, ICommandDispatcher
 
     public Task Dispatch(ICommand command, CancellationToken cancellationToken = default) =>
         Send(command, cancellationToken);
+
+    public Task<object?> Dispatch(object query, CancellationToken cancellationToken = default) =>
+        Send(query, cancellationToken);
 }
