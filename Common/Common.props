@@ -5,7 +5,7 @@
     <Copyright>Copyright © Andrew McLachlan 2011. All rights reserved.</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
     <PackageIcon>Icon-128.png</PackageIcon>
     <PackageIconUrl>https://cdn.andrewmclachlan.com/images/icon-128.png</PackageIconUrl>
