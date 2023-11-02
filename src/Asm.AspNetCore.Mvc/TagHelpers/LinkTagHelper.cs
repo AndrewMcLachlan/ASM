@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Asm.Web.Mvc.TagHelpers;
+namespace Asm.AspNetCore.Mvc.TagHelpers;
 
 public class LinkTagHelper : IntegrityTagHelper
 {

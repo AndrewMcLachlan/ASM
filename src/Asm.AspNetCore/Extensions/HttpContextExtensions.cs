@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Asm.Web;
+namespace Asm.AspNetCore;
 
 public static class HttpContextExtensions
 {

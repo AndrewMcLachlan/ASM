@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace Asm.Web;
+namespace Asm.AspNetCore;
 
 public class WebApplicationStart
 {

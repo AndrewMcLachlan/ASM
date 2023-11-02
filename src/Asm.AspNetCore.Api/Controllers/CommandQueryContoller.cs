@@ -3,7 +3,7 @@ using Asm.Cqrs.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Asm.Web.Controllers;
+namespace Asm.AspNetCore.Controllers;
 
 [ApiController]
 [Authorize]

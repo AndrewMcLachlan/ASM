@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 
-namespace Asm.Web.Mvc.TagHelpers;
+namespace Asm.AspNetCore.Mvc.TagHelpers;
 
 public abstract class IntegrityTagHelper : TagHelper
 {

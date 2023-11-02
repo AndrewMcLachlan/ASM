@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace Asm.Web.Extensions;
+namespace Asm.AspNetCore.Extensions;
 
 public static class IWebHostBuilderExtensions
 {

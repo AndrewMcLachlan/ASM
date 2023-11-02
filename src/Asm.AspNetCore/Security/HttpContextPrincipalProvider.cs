@@ -2,7 +2,7 @@
 using Asm.Security;
 using Microsoft.AspNetCore.Http;
 
-namespace Asm.Web.Security;
+namespace Asm.AspNetCore.Security;
 
 public class HttpContextPrincipalProvider : IPrincipalProvider
 {

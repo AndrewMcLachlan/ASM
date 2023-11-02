@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 
-namespace Asm.Web.Mvc.TagHelpers;
+namespace Asm.AspNetCore.Mvc.TagHelpers;
 
 public class ScriptTagHelper : IntegrityTagHelper
 {

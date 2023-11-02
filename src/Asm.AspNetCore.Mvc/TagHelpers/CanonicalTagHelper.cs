@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace Asm.Web.Mvc.TagHelpers;
+namespace Asm.AspNetCore.Mvc.TagHelpers;
 
 [HtmlTargetElement("canonical", Attributes = "path")]
 public class CanonicalTagHelper : TagHelper

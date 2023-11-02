@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Serilog.Context;
 
-namespace Asm.Web.Middleware
+namespace Asm.AspNetCore.Middleware
 {
     public class SerilogEnrichWithUserMiddleware
     {
@@ -29,6 +29,6 @@ namespace Microsoft.AspNetCore.Builder
     public static class SerilogEnrichmentMiddlewareExtensions
     {
         public static IApplicationBuilder UseSerilogEnrichWithUser(this IApplicationBuilder app) =>
-            app.UseMiddleware<Asm.Web.Middleware.SerilogEnrichWithUserMiddleware>();
+            app.UseMiddleware<Asm.AspNetCore.Middleware.SerilogEnrichWithUserMiddleware>();
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Asm.OAuth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Asm.Web.Security;
+namespace Asm.AspNetCore.Security;
 public class AzureADBearerOptions
 {
     public AzureOAuthOptions AzureOAuthOptions { get; set; } = new();

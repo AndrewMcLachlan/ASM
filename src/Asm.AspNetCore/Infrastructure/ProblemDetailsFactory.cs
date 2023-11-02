@@ -1,20 +1,19 @@
 ﻿using System.Diagnostics;
-using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Hosting;
 
-namespace Asm.Web;
+namespace Asm.AspNetCore;
 
 public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
 {
     private readonly IHostEnvironment _hostEnvironment;
 
-    private static readonly Dictionary<Type, Func<ProblemDetails>> _handers = new();
+    private static readonly Dictionary<Type, Func<ProblemDetails>> _handlers = new();
 
-    public static IReadOnlyDictionary<Type, Func<ProblemDetails>> Handlers { get => _handers; }
+    public static IReadOnlyDictionary<Type, Func<ProblemDetails>> Handlers { get => _handlers; }
 
     public ProblemDetailsFactory(IHostEnvironment hostEnvironment)
     {
@@ -48,34 +47,40 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
 
         switch (errorContext.Error)
         {
+            case InvalidOperationException _:
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                problemDetails.Title = "Bad request";
+                problemDetails.Detail = errorContext.Error.Message;
+                problemDetails.Type = "http://andrewmclachlan.com/error/badrequest";
+                break;
             case NotFoundException _:
-                httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Not found";
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Type = "http://andrewmclachlan.com/error/notfound";
                 break;
             case ExistsException _:
-                httpContext.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
                 problemDetails.Title = "Already exists";
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Type = "http://andrewmclachlan.com/error/exists";
                 break;
             case NotAuthorisedException _:
-                httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
                 problemDetails.Title = "Forbidden";
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Type = "http://andrewmclachlan.com/error/forbidden";
                 break;
             case AsmException asmException:
-                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                problemDetails.Title = "Unexpected error occured";
+                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                problemDetails.Title = "Unexpected error occurred";
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Extensions.Add("Code", asmException.ErrorId);
                 problemDetails.Type = "http://andrewmclachlan.com/error/unknown";
                 break;
             default:
-                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                problemDetails.Title = "Unexpected error occured";
+                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                problemDetails.Title = "Unexpected error occurred";
                 problemDetails.Detail = !_hostEnvironment.IsProduction() ? errorContext.Error.ToString() : null;
                 problemDetails.Type = "http://andrewmclachlan.com/error/unknown";
                 break;
@@ -120,7 +125,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
     {
         if (handler == null) throw new ArgumentNullException(nameof(handler));
 
-        _handers.Add(typeof(T), handler);
+        _handlers.Add(typeof(T), handler);
     }
 
     private static void AddExtensions(HttpContext httpContext, ProblemDetails problemDetails)

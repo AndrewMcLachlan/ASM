@@ -1,10 +1,10 @@
 ﻿using Asm.Serilog;
-using Asm.Web.Extensions;
+using Asm.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace Asm.Web;
+namespace Asm.AspNetCore;
 
 public static class WebStart<T> where T : class
 {

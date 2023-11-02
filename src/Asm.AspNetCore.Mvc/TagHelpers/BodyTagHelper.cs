@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace Asm.Web.Mvc.TagHelpers;
+namespace Asm.AspNetCore.Mvc.TagHelpers;
 
 public class BodyTagHelper : TagHelper
 {
