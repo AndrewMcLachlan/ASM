@@ -27,13 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Tests", "tests\Asm.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Win32.Tests", "tests\Asm.Win32.Tests\Asm.Win32.Tests.csproj", "{183CA34B-EFF7-4AC4-9E2B-3BF6C2AA4492}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Web.Mvc", "src\Asm.Web.Mvc\Asm.Web.Mvc.csproj", "{41E0F168-52FE-45D8-B88A-925BAB92B764}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.AspNetCore.Mvc", "src\Asm.AspNetCore.Mvc\Asm.AspNetCore.Mvc.csproj", "{41E0F168-52FE-45D8-B88A-925BAB92B764}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Drawing", "src\Asm.Drawing\Asm.Drawing.csproj", "{785E81A5-6244-4E47-9F57-CAAFD1A031A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Media", "src\Asm.Media\Asm.Media.csproj", "{67536341-1A2E-4E87-9FE9-0CE9F1120704}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Web", "src\Asm.Web\Asm.Web.csproj", "{BDC5CA36-A2C0-4430-87CE-020617E4F450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.AspNetCore", "src\Asm.AspNetCore\Asm.AspNetCore.csproj", "{BDC5CA36-A2C0-4430-87CE-020617E4F450}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Domain", "src\Asm.Domain\Asm.Domain.csproj", "{D99656A3-6703-4CE5-A618-4BBC2F7BB053}"
 EndProject
@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Cqrs.Tests", "tests\Asm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Domain.Tests", "tests\Asm.Domain.Tests\Asm.Domain.Tests.csproj", "{FC03595D-C7DD-4829-934C-A3A12E219429}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Web.Api", "src\Asm.Web.Api\Asm.Web.Api.csproj", "{E2A64A08-7118-444A-87E4-F20551833527}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.AspNetCore.Api", "src\Asm.AspNetCore.Api\Asm.AspNetCore.Api.csproj", "{E2A64A08-7118-444A-87E4-F20551833527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
