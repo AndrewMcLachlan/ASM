@@ -1,11 +1,12 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace System;
 
 /// <summary>
 /// Extensions for the <see cref="System.String"/> class.
 /// </summary>
-public static class StringExtensions
+public static partial class StringExtensions
 {
     /// <summary>
     /// Appends a string to a string, using the separator string.
@@ -13,19 +14,19 @@ public static class StringExtensions
     /// <remarks>
     /// The separator string is not used if the string is empty.
     /// </remarks>
-    /// <param name="source">The string to append to.</param>
+    /// <param name="str">The string to append to.</param>
     /// <param name="value">The string to append.</param>
     /// <param name="separator">The string that separates the two strings.</param>
     /// <returns>The appended string.</returns>
-    public static string Append(this string source, string value, string separator)
+    public static string Append(this string str, string value, string separator)
     {
-        if (source.Length == 0)
+        if (str.Length == 0)
         {
-            return source + value;
+            return str + value;
         }
         else
         {
-            return source + separator + value;
+            return str + separator + value;
         }
     }
 
@@ -56,31 +57,56 @@ public static class StringExtensions
     /// <remarks>
     /// The separator string is not used if the string is empty.
     /// </remarks>
-    /// <param name="source">The string to prepend to.</param>
+    /// <param name="str">The string to prepend to.</param>
     /// <param name="value">The string to prepend.</param>
     /// <param name="separator">The string that separates the two strings.</param>
     /// <returns>The prepended string.</returns>
-    public static string Prepend(this string source, string value, string separator)
+    public static string Prepend(this string str, string value, string separator)
     {
-        if (source.Length == 0)
+        if (str.Length == 0)
         {
-            return value + source;
+            return value + str;
         }
         else
         {
-            return value + separator + source;
+            return value + separator + str;
         }
     }
 
     /// <summary>
     /// Converts the string to title case.
     /// </summary>
-    /// <param name="input">The string.</param>
+    /// <param name="str">The string.</param>
     /// <returns>A title cased string.</returns>
-    public static string ToTitleCase(this string input)
+    public static string ToTitleCase(this string str)
     {
-        if (input == null) throw new ArgumentNullException(nameof(input));
+        if (str == null) throw new ArgumentNullException(nameof(str));
 
-        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.ToUpperInvariant());
+        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToUpperInvariant());
     }
+
+
+    #region ToMachine
+    [GeneratedRegex("[^a-zA-Z0-9_-]")]
+    private static partial Regex SpecialCharactersRegex();
+    private static readonly Regex SpecialCharacters = SpecialCharactersRegex();
+
+    [GeneratedRegex("--+")]
+    private static partial Regex MultipleDashRegex();
+    private static readonly Regex MultipleDash = MultipleDashRegex();
+
+    /// <summary>
+    /// Converts the string to a machine-readable name, lower case with spaces and special characters replaced with hyphens.
+    /// </summary>
+    /// <example>
+    /// "Fruit & Veg" becomes "fruit-veg".
+    /// </example>
+    /// <param name="str">The string instance that this method extends.</param>
+    /// <returns>A machine-readable version of the string.</returns>
+    public static string ToMachine(this string str) =>
+        MultipleDash.Replace(
+            SpecialCharacters.Replace(str.ToLowerInvariant(), "-"),
+            "-"
+        );
+    #endregion
 }
