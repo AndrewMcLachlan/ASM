@@ -24,24 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="StringExtensions.feature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StringExtensions.feature</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="specflow.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <SpecFlowFeatureFiles Update="StringExtensions.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StringExtensions.feature.cs</LastGenOutput>
-    </SpecFlowFeatureFiles>
-  </ItemGroup>
 
 </Project>

@@ -47,5 +47,12 @@ namespace Asm.Tests
             _result.Value = _input.Squish(chars, chars);
         }
 
+        [When(@"I convert the string to machine format")]
+        public void WhenIConvertTheStringToMachineFormat()
+        {
+            _result.Value = _input.ToMachine();
+        }
+
+
     }
 }
