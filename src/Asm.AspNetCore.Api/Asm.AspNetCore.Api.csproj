@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <PackageId>Asm.Web.Api</PackageId>
     <Description>Asm core library for ASP.NET Core web APIs.</Description>
   </PropertyGroup>
 
