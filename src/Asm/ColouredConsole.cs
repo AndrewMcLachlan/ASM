@@ -16,9 +16,9 @@ public static class ColouredConsole
 
     private static void Write(string value, ConsoleColor colour, Action<string> writer)
     {
-        var currentColor = ForegroundColor;
+        var currentColour = ForegroundColor;
         ForegroundColor = colour;
         writer(value);
-        ForegroundColor = currentColor;
+        ForegroundColor = currentColour;
     }
 }

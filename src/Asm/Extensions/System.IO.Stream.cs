@@ -14,7 +14,7 @@ public static class StreamExtensions
     /// read.
     /// </summary>
     /// <remarks>
-    /// This method supports passing of long values to <see cref="Stream.Read"/>.
+    /// This method supports passing of long values to <see cref="Stream.Read(global::System.Byte[], Int32, Int32)"/>.
     /// </remarks>
     /// <param name="stream">The stream.</param>
     /// <param name="buffer">

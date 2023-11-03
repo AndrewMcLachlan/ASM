@@ -99,7 +99,7 @@ public static partial class StringExtensions
     /// Converts the string to a machine-readable name, lower case with spaces and special characters replaced with hyphens.
     /// </summary>
     /// <example>
-    /// "Fruit & Veg" becomes "fruit-veg".
+    /// "Fruit &amp; Veg" becomes "fruit-veg".
     /// </example>
     /// <param name="str">The string instance that this method extends.</param>
     /// <returns>A machine-readable version of the string.</returns>
