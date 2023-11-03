@@ -6,9 +6,9 @@ namespace Asm.Cqrs.Tests.Commands
     public class CommandTests
     {
         [Fact]
-        public void NegaTest()
+        public async Task NegaTest()
         {
-            ServiceCollection services = new ServiceCollection();
+            ServiceCollection services = new();
 
             services.AddCommandHandlers(GetType().Assembly);
 
@@ -16,15 +16,15 @@ namespace Asm.Cqrs.Tests.Commands
 
             var commandDispatcher = serviceProvider.GetRequiredService<ICommandDispatcher>();
 
-            var result = commandDispatcher.Dispatch(new TestCommand { Input = "Abc" }).Result;
+            var result = await commandDispatcher.Dispatch(new TestCommand { Input = "Abc" });
 
             Assert.False(result);
         }
 
         [Fact]
-        public void PosiTest()
+        public async Task PosiTest()
         {
-            ServiceCollection services = new ServiceCollection();
+            ServiceCollection services = new();
 
             services.AddCommandHandlers(GetType().Assembly);
 
@@ -32,7 +32,7 @@ namespace Asm.Cqrs.Tests.Commands
 
             var commandDispatcher = serviceProvider.GetRequiredService<ICommandDispatcher>();
 
-            var result = commandDispatcher.Dispatch(new TestCommand { Input = "ABC" }).Result;
+            var result = await commandDispatcher.Dispatch(new TestCommand { Input = "ABC" });
 
             Assert.True(result);
         }

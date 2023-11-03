@@ -2,13 +2,13 @@
 
 namespace Asm.Cqrs.Queries;
 
-internal class MediatrQueryDispatcher : Mediator, IQueryDispatcher
+internal class MediatRQueryDispatcher : Mediator, IQueryDispatcher
 {
-    public MediatrQueryDispatcher(IServiceProvider serviceProvider) : base(serviceProvider) { }
+    public MediatRQueryDispatcher(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    public Task<T> Dispatch<T>(IQuery<T> query, CancellationToken cancellationToken = default) =>
-        Send(query, cancellationToken);
+    public async ValueTask<T> Dispatch<T>(IQuery<T> query, CancellationToken cancellationToken = default) =>
+        await Send(query, cancellationToken);
 
-    public Task<object?> Dispatch(object query, CancellationToken cancellationToken = default) =>
-        Send(query, cancellationToken);
+    public async ValueTask<object?> Dispatch(object query, CancellationToken cancellationToken = default) =>
+        await Send(query, cancellationToken);
 }

@@ -6,12 +6,12 @@ internal class MediatRCommandDispatcher : Mediator, ICommandDispatcher
 {
     public MediatRCommandDispatcher(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-    public Task<T> Dispatch<T>(ICommand<T> command, CancellationToken cancellationToken = default) =>
-        Send(command, cancellationToken);
+    public async ValueTask<T> Dispatch<T>(ICommand<T> command, CancellationToken cancellationToken = default) =>
+        await Send(command, cancellationToken);
 
-    public Task Dispatch(ICommand command, CancellationToken cancellationToken = default) =>
-        Send(command, cancellationToken);
+    public async ValueTask Dispatch(ICommand command, CancellationToken cancellationToken = default) =>
+        await Send(command, cancellationToken);
 
-    public Task<object?> Dispatch(object query, CancellationToken cancellationToken = default) =>
-        Send(query, cancellationToken);
+    public async ValueTask<object?> Dispatch(object query, CancellationToken cancellationToken = default) =>
+        await Send(query, cancellationToken);
 }

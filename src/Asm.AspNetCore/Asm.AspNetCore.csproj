@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Description>Asm core library for ASP.NET Core.</Description>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

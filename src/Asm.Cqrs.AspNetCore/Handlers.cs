@@ -6,17 +6,17 @@ namespace Asm.Cqrs.AspNetCore;
 internal static class Handlers
 {
     #region Integrated CQRS Handlers
-    /* static async Task<IResult> HandleQuery<TQuery, TResult>(IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult>
+    /* static async ValueTask<IResult> HandleQuery<TQuery, TResult>(IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult>
     {
         var query = Activator.CreateInstance<TQuery>();
 
         return Results.Ok(await dispatcher.Dispatch(query, cancellationToken));
     }*/
 
-    internal static async Task<IResult> HandleQuery<TQuery, TResult>([AsParameters] TQuery query, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult> =>
+    internal static async ValueTask<IResult> HandleQuery<TQuery, TResult>([AsParameters] TQuery query, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult> =>
        Results.Ok(await dispatcher.Dispatch(query, cancellationToken));
 
-    internal static async Task<IResult> HandlePagedQuery<TQuery, TResult>([AsParameters] TQuery query, HttpContext http, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<PagedResult<TResult>>
+    internal static async ValueTask<IResult> HandlePagedQuery<TQuery, TResult>([AsParameters] TQuery query, HttpContext http, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<PagedResult<TResult>>
     {
         PagedResult<TResult> result = await dispatcher.Dispatch(query, cancellationToken);
 
@@ -24,24 +24,24 @@ internal static class Handlers
         return Results.Ok(result.Results);
     }
 
-    internal static async Task<IResult> HandleDelete<TRequest>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken)
+    internal static async ValueTask<IResult> HandleDelete<TRequest>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken)
     {
         await dispatcher.Dispatch(request!, cancellationToken);
 
         return Results.NoContent();
     }
 
-    internal static async Task<IResult> HandleDelete<TRequest, TResult>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand<TResult>
+    internal static async ValueTask<IResult> HandleDelete<TRequest, TResult>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand<TResult>
     {
         var result = await dispatcher.Dispatch(request!, cancellationToken);
 
         return Results.Ok(result);
     }
 
-    internal static Task<TResult> HandleCommand<TRequest, TResult>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand<TResult> =>
+    internal static ValueTask<TResult> HandleCommand<TRequest, TResult>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand<TResult> =>
        dispatcher.Dispatch(request!, cancellationToken);
 
-    internal static Task HandleCommand<TRequest>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand =>
+    internal static ValueTask HandleCommand<TRequest>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand =>
        dispatcher.Dispatch(request!, cancellationToken);
     #endregion
 
