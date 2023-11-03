@@ -63,7 +63,7 @@ public static class IEndpointRouteBuilderExtensions
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapDelete<TRequest>(this IEndpointRouteBuilder endpoints, string pattern) =>
+    public static RouteHandlerBuilder MapDelete<TRequest>(this IEndpointRouteBuilder endpoints, string pattern) where TRequest : ICommand =>
         endpoints.MapDelete(pattern, Handlers.HandleDelete<TRequest>);
 
     /// <summary>
