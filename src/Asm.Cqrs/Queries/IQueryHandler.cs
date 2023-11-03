@@ -15,7 +15,7 @@ public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, T
     /// <param name="query">The query to handle.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>The query response.</returns>
-    new Task<TResponse> Handle(TQuery query, CancellationToken cancellationToken);
+    new ValueTask<TResponse> Handle(TQuery query, CancellationToken cancellationToken);
 
     /// <summary>
     /// Handles the query. Use this method if you are bypassing the <see cref="IQueryDispatcher"/> and using MediatR directly.
@@ -23,5 +23,5 @@ public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, T
     /// <param name="query">The query to handle.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>The query response.</returns>
-    Task<TResponse> IRequestHandler<TQuery, TResponse>.Handle(TQuery query, CancellationToken cancellationToken) => Handle(query, cancellationToken);
+    Task<TResponse> IRequestHandler<TQuery, TResponse>.Handle(TQuery query, CancellationToken cancellationToken) => Handle(query, cancellationToken).AsTask();
 }
