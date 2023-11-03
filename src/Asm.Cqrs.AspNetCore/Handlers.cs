@@ -24,7 +24,7 @@ internal static class Handlers
         return Results.Ok(result.Results);
     }
 
-    internal static async ValueTask<IResult> HandleDelete<TRequest>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken)
+    internal static async ValueTask<IResult> HandleDelete<TRequest>([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand
     {
         await dispatcher.Dispatch(request!, cancellationToken);
 
