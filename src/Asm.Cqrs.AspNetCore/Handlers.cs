@@ -102,11 +102,20 @@ internal static class Handlers
         };
     }
 
-    internal static Delegate CreateCommandHandler<TRequest>(Func<TRequest, object> createCommand)//, HttpStatusCode statusCode)
+    internal static Delegate CreateCommandHandler<TRequest>(Func<TRequest, object> createCommand)
     {
         return async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
         {
             return await dispatcher.Dispatch(createCommand(request), cancellationToken);
+        };
+    }
+
+    internal static Delegate CreateCommandHandler<TRequest>(int returnStatusCode) where TRequest : ICommand
+    {
+        return async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+        {
+            await dispatcher.Dispatch(request, cancellationToken);
+            return Results.StatusCode(returnStatusCode);
         };
     }
 

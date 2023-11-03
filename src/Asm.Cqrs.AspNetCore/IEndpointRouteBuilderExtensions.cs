@@ -57,7 +57,7 @@ public static class IEndpointRouteBuilderExtensions
         endpoints.MapPut(pattern, Handlers.CreateCreateHandler<TRequest, TResponse>(routeName, getRouteParams));
 
     /// <summary>
-    /// Maps a request to a command to delete a resource.
+    /// Maps a request to a command to delete a resource and returns an empty response with code 204 - No Content.
     /// </summary>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
@@ -76,6 +76,28 @@ public static class IEndpointRouteBuilderExtensions
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
     public static RouteHandlerBuilder MapDelete<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern) where TRequest : ICommand<TResponse> =>
         endpoints.MapDelete(pattern, Handlers.HandleDelete<TRequest, TResponse>);
+
+    /// <summary>
+    /// Maps a POST request to a command and returns a response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPost(pattern, Handlers.HandleCommand<TRequest, TResponse>);
+
+    /// <summary>
+    /// Maps a POST request to a command and returns an empty response with the given status code.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="returnStatusCode">The status code to return. Defaults to 204 - No Content.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, int returnStatusCode = StatusCodes.Status204NoContent) where TRequest : ICommand =>
+        endpoints.MapPost(pattern, Handlers.CreateCommandHandler<TRequest>(returnStatusCode));
 
     /// <summary>
     /// Maps a request to a command to patch a resource.
