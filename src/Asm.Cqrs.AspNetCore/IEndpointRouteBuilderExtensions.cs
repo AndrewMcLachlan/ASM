@@ -44,6 +44,20 @@ public static class IEndpointRouteBuilderExtensions
         endpoints.MapPost(pattern, Handlers.CreateCreateHandler<TRequest, TResponse>(routeName, getRouteParams));
 
     /// <summary>
+    /// Map a POST request to a command that creates a resource.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="routeName">The name of the route that can be used to get the newly created resource.</param>
+    /// <param name="getRouteParams">A delegate that creates the route parameters.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapPostCreate<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, string routeName, Func<TResponse, object> getRouteParams, CommandBinding binding) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPost(pattern, Handlers.CreateCreateHandler<TRequest, TResponse>(routeName, getRouteParams, binding));
+
+    /// <summary>
     /// Map a PUT request to a command that creates a resource.
     /// </summary>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
@@ -55,6 +69,20 @@ public static class IEndpointRouteBuilderExtensions
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
     public static RouteHandlerBuilder MapPutCreate<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, string routeName, Func<TResponse, object> getRouteParams) where TRequest : ICommand<TResponse> =>
         endpoints.MapPut(pattern, Handlers.CreateCreateHandler<TRequest, TResponse>(routeName, getRouteParams));
+
+    /// <summary>
+    /// Map a PUT request to a command that creates a resource.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="routeName">The name of the route that can be used to get the newly created resource.</param>
+    /// <param name="getRouteParams">A delegate that creates the route parameters.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapPutCreate<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, string routeName, Func<TResponse, object> getRouteParams, CommandBinding binding) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPut(pattern, Handlers.CreateCreateHandler<TRequest, TResponse>(routeName, getRouteParams, binding));
 
     /// <summary>
     /// Maps a request to a command to delete a resource and returns an empty response with code 204 - No Content.
@@ -89,6 +117,18 @@ public static class IEndpointRouteBuilderExtensions
         endpoints.MapPost(pattern, Handlers.HandleCommand<TRequest, TResponse>);
 
     /// <summary>
+    /// Maps a POST request to a command and returns a response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPost(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(StatusCodes.Status200OK, binding));
+
+    /// <summary>
     /// Maps a POST request to a command and returns an empty response with the given status code.
     /// </summary>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
@@ -96,8 +136,20 @@ public static class IEndpointRouteBuilderExtensions
     /// <param name="pattern">The route pattern.</param>
     /// <param name="returnStatusCode">The status code to return. Defaults to 204 - No Content.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, int returnStatusCode = StatusCodes.Status204NoContent) where TRequest : ICommand =>
+    public static RouteHandlerBuilder MapCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, int returnStatusCode) where TRequest : ICommand =>
         endpoints.MapPost(pattern, Handlers.CreateCommandHandler<TRequest>(returnStatusCode));
+
+    /// <summary>
+    /// Maps a POST request to a command and returns an empty response with the given status code.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="returnStatusCode">The status code to return. Defaults to 204 - No Content.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, int returnStatusCode, CommandBinding binding) where TRequest : ICommand =>
+        endpoints.MapPost(pattern, Handlers.CreateCommandHandler<TRequest>(returnStatusCode, binding));
 
     /// <summary>
     /// Maps a request to a command to patch a resource.
@@ -111,6 +163,18 @@ public static class IEndpointRouteBuilderExtensions
         endpoints.MapPatch(pattern, Handlers.HandleCommand<TRequest, TResponse>);
 
     /// <summary>
+    /// Maps a request to a command to patch a resource.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapPatchCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPatch(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(StatusCodes.Status200OK, binding));
+
+    /// <summary>
     /// Maps a request to a command to put a resource.
     /// </summary>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
@@ -120,4 +184,16 @@ public static class IEndpointRouteBuilderExtensions
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
     public static RouteHandlerBuilder MapPutCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern) where TRequest : ICommand<TResponse> =>
         endpoints.MapPut(pattern, Handlers.HandleCommand<TRequest, TResponse>);
+
+    /// <summary>
+    /// Maps a request to a command to put a resource.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the command.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
+    /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
+    /// <param name="pattern">The route pattern.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
+    /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
+    public static RouteHandlerBuilder MapPutCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPut(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(StatusCodes.Status200OK, binding));
 }
