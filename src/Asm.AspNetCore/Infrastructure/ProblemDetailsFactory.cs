@@ -7,19 +7,29 @@ using Microsoft.Extensions.Hosting;
 
 namespace Asm.AspNetCore;
 
+/// <inheritdoc/>
 public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
 {
     private readonly IHostEnvironment _hostEnvironment;
 
     private static readonly Dictionary<Type, Func<ProblemDetails>> _handlers = new();
 
+    /// <summary>
+    /// Gets a dictionary of registered handlers.
+    /// </summary>
     public static IReadOnlyDictionary<Type, Func<ProblemDetails>> Handlers { get => _handlers; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref=""/>
+    /// </summary>
+    /// <param name="hostEnvironment"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public ProblemDetailsFactory(IHostEnvironment hostEnvironment)
     {
         _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
     }
 
+    /// <inheritdoc/>
     public override ProblemDetails CreateProblemDetails(HttpContext httpContext, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
     {
         var errorContext = httpContext.Features.Get<IExceptionHandlerFeature>();
@@ -30,7 +40,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
             {
                 Detail = detail,
                 Instance = instance,
-                Status = statusCode ?? 500,
+                Status = statusCode ?? StatusCodes.Status500InternalServerError,
                 Title = title,
                 Type = type,
             };
@@ -47,6 +57,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
 
         switch (errorContext.Error)
         {
+            case BadHttpRequestException _:
             case InvalidOperationException _:
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 problemDetails.Title = "Bad request";
@@ -93,6 +104,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
         return problemDetails;
     }
 
+    /// <inheritdoc/>
     public override ValidationProblemDetails CreateValidationProblemDetails(HttpContext httpContext, ModelStateDictionary modelStateDictionary, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
     {
         if (modelStateDictionary == null)
@@ -100,7 +112,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
             throw new ArgumentNullException(nameof(modelStateDictionary));
         }
 
-        statusCode ??= 400;
+        statusCode ??= StatusCodes.Status400BadRequest;
 
         var problemDetails = new ValidationProblemDetails(modelStateDictionary)
         {
@@ -121,6 +133,12 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
         return problemDetails;
     }
 
+    /// <summary>
+    /// Add a custom handler for a specific exception type.
+    /// </summary>
+    /// <typeparam name="T">The type of exception to handle.</typeparam>
+    /// <param name="handler">A delegate that returns a problem details object.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public static void AddHandler<T>(Func<ProblemDetails> handler) where T : Exception
     {
         if (handler == null) throw new ArgumentNullException(nameof(handler));
