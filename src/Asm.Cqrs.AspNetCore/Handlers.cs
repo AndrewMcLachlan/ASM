@@ -66,7 +66,7 @@ internal static class Handlers
 
     internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams) where TRequest : ICommand<TResult>
     {
-        return async ([FromBody] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+        return async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
         {
             var result = await dispatcher.Dispatch(request!, cancellationToken);
 
@@ -76,7 +76,7 @@ internal static class Handlers
 
     internal static Delegate CreateCreateHandler<TRequest, TCommand, TResult>(Func<TRequest, TCommand> createCommand, string routeName, Func<TResult, object> getRouteParams) where TCommand : ICommand<TResult>
     {
-        return async ([FromBody] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+        return async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
         {
             var result = await dispatcher.Dispatch(createCommand(request), cancellationToken);
 
@@ -86,7 +86,7 @@ internal static class Handlers
 
     internal static Delegate CreateCreateHandler<TRequest, TCommand, TResult>(Func<TRequest, TCommand> createCommand, Func<TRequest, TResult, Uri> uri) where TCommand : ICommand<TResult>
     {
-        return async ([FromBody] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+        return async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
         {
             var result = await dispatcher.Dispatch(createCommand(request), cancellationToken);
 
