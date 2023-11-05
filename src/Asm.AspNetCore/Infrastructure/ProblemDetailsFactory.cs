@@ -20,7 +20,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
     public static IReadOnlyDictionary<Type, Func<ProblemDetails>> Handlers { get => _handlers; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref=""/>
+    /// Initializes a new instance of the <see cref="ProblemDetailsFactory"/> class.
     /// </summary>
     /// <param name="hostEnvironment"></param>
     /// <exception cref="ArgumentNullException"></exception>
