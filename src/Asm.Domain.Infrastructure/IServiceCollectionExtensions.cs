@@ -45,7 +45,13 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddDomainEvents<THandler, TRequest>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TRequest> where TRequest : IDomainEvent
+    public static IServiceCollection AddDomainEvents(this IServiceCollection services, Assembly domainEventsAssembly) =>
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(domainEventsAssembly);
+        });
+
+    public static IServiceCollection AddDomainEvent<THandler, TRequest>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TRequest> where TRequest : IDomainEvent
     {
         services.AddMediatR(config => { });
 
