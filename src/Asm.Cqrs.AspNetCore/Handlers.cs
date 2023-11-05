@@ -67,7 +67,7 @@ internal static class Handlers
     internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult>
     {
         return ParameterBinding<TRequest, TResult>(
-            async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+            async (TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
                 var result = await dispatcher.Dispatch(request!, cancellationToken);
 
