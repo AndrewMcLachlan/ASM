@@ -3,7 +3,6 @@
   <Import Project="..\..\Common\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <Description>Asm core library for ASP.NET Core MVC.</Description>
   </PropertyGroup>
 

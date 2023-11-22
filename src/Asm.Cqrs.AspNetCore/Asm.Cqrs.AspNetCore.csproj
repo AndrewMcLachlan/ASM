@@ -3,16 +3,13 @@
   <Import Project="..\..\Common\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <Description>CQRS support for ASP.NET Core minimal APIs</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <ProjectReference Include="..\Asm.Cqrs\Asm.Cqrs.csproj" />
     <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>

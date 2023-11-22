@@ -3,7 +3,7 @@
   <Import Project="..\..\Common\Common.props"/>
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <Description>ASM Win32 API wrappers.</Description>
   </PropertyGroup>
 
   <ItemGroup>

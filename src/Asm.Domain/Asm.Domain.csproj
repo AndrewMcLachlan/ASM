@@ -3,12 +3,11 @@
 <Import Project="..\..\Common\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <Description>Domain-Driven-Design basics</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 
 </Project>

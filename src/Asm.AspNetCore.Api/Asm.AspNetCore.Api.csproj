@@ -3,13 +3,12 @@
   <Import Project="..\..\Common\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <Description>Asm core library for ASP.NET Core web APIs.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 

@@ -3,7 +3,6 @@
   <Import Project="..\..\Common\Common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <Description>Classes for handling media files and formats</Description>
   </PropertyGroup>
 
