@@ -1,8 +1,18 @@
 ﻿namespace Asm;
 
-public class PagedResult<T>
+/// <summary>
+/// A paged result including the total number of items.
+/// </summary>
+/// <typeparam name="T">The type of the paged item.</typeparam>
+public record PagedResult<T>
 {
-    public IEnumerable<T> Results { get; set; } = Enumerable.Empty<T>();
+    /// <summary>
+    /// Gets the paged items.
+    /// </summary>
+    public required IEnumerable<T> Results { get; init; }
 
-    public int Total { get; set; }
+    /// <summary>
+    /// Gets the total number of items.
+    /// </summary>
+    public required int Total { get; init; }
 }
