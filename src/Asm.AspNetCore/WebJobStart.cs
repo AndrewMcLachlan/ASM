@@ -5,9 +5,19 @@ using Serilog;
 
 namespace Asm.AspNetCore;
 
+/// <summary>
+/// Start a Web Job process.
+/// </summary>
 public static class WebJobStart
 {
-    public static int Run(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices, Action<IHost> runner)
+    /// <summary>
+    /// Run the Web Job process.
+    /// </summary>
+    /// <param name="args">Command line arguments</param>
+    /// <param name="appName">The application name.</param>
+    /// <param name="configureServices">A method to configure services.</param>
+    /// <returns>A return code.</returns>
+    public static int Run(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices)
     {
         Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
 
@@ -15,7 +25,8 @@ public static class WebJobStart
         {
             Log.Information("Starting...");
             var host = CreateHostBuilder(args, appName, configureServices).UseConsoleLifetime().Build();
-            runner(host);
+
+            host.Run();
             return 0;
         }
         catch (Exception ex)
@@ -29,7 +40,14 @@ public static class WebJobStart
         }
     }
 
-    public static async Task<int> RunAsync(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices, Func<IHost, Task> runner)
+    /// <summary>
+    /// Run the Web Job process.
+    /// </summary>
+    /// <param name="args">Command line arguments</param>
+    /// <param name="appName">The application name.</param>
+    /// <param name="configureServices">A method to configure services.</param>
+    /// <returns>A return code.</returns>
+    public static async Task<int> RunAsync(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices)
     {
         Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
 
@@ -37,7 +55,7 @@ public static class WebJobStart
         {
             Log.Information("Starting...");
             var host = CreateHostBuilder(args, appName, configureServices).UseConsoleLifetime().Build();
-            await runner(host);
+            await host.RunAsync();
             return 0;
         }
         catch (Exception ex)
@@ -51,13 +69,21 @@ public static class WebJobStart
         }
     }
 
+    /// <summary>
+    /// Creates teh host builder.
+    /// </summary>
+    /// <param name="args">Command line arguments</param>
+    /// <param name="appName">The application name.</param>
+    /// <param name="configureServices">A method to configure services.</param>
+    /// <returns>A host builder instance.</returns>
     public static IHostBuilder CreateHostBuilder(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices) =>
         Host.CreateDefaultBuilder(args)
+        .ConfigureWebJobs()
         .ConfigureAppConfiguration((context, appBuilder) =>
         {
             context.HostingEnvironment.ApplicationName = appName;
         })
-        .UseEnvironment(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "LocalDev")
+        .UseEnvironment(Environment.GetEnvironmentVariable(EnvironmentVariables.AspNetCoreEnvironment) ?? Environment.GetEnvironmentVariable(EnvironmentVariables.DotNetEnvironment) ?? "Development")
         .UseCustomSerilog()
         .ConfigureServices(configureServices);
 }
