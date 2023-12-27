@@ -11,7 +11,6 @@ public class WebApplicationStart
     {
         Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
 
-
         try
         {
             Log.Information("Starting...");

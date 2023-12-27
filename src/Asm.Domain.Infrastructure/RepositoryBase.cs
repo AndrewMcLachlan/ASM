@@ -2,29 +2,14 @@
 
 namespace Asm.Domain.Infrastructure;
 
-public abstract class RepositoryBase<TContext, TEntity, TKey> : IRepository<TEntity, TKey>
+public abstract class RepositoryBase<TContext, TEntity, TKey>(TContext context) : IRepository<TEntity, TKey>
     where TEntity : KeyedEntity<TKey>
     where TContext : DbContext
     where TKey : struct
 {
-    protected TContext Context { get; private set; }
+    protected TContext Context { get; private init; } = context;
 
     protected DbSet<TEntity> Entities { get => Context.Set<TEntity>(); }
-
-    public RepositoryBase(TContext context)
-    {
-        Context = context;
-    }
-
-    public virtual TEntity Add(TEntity entity)
-    {
-        return Entities.Add(entity).Entity;
-    }
-
-    public virtual void AddRange(IEnumerable<TEntity> entities)
-    {
-        Entities.AddRange(entities);
-    }
 
     public virtual IQueryable<TEntity> Queryable()
     {
