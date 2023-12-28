@@ -55,6 +55,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.AspNetCore.Api", "src\A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Cqrs.AspNetCore", "src\Asm.Cqrs.AspNetCore\Asm.Cqrs.AspNetCore.csproj", "{1E9783E3-F707-4749-BA4D-6734E08C9CA2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02C62C88-DB6B-43B4-9C6D-4FFEA45C5E2A}"
+	ProjectSection(SolutionItems) = preProject
+		.github\dependabot.yml = .github\dependabot.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C6DD18E2-64B9-47DF-9E64-B43B5802A53F}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -327,6 +337,7 @@ Global
 		{183CA34B-EFF7-4AC4-9E2B-3BF6C2AA4492} = {B3A1BFF4-0BAC-4D6C-BFDE-E13122E2199D}
 		{F237B5B1-8F2C-48A6-AD3F-AB9BFAD748E5} = {B3A1BFF4-0BAC-4D6C-BFDE-E13122E2199D}
 		{FC03595D-C7DD-4829-934C-A3A12E219429} = {B3A1BFF4-0BAC-4D6C-BFDE-E13122E2199D}
+		{C6DD18E2-64B9-47DF-9E64-B43B5802A53F} = {02C62C88-DB6B-43B4-9C6D-4FFEA45C5E2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4744CB2B-CE80-41AE-9DFE-5B93A2A583CA}
