@@ -83,6 +83,7 @@ public static class WebJobStart
     public static IHostBuilder CreateHostBuilder(string[] args, string appName, Action<IWebJobsBuilder> configureWebJobs, Action<HostBuilderContext, IServiceCollection> configureServices) =>
         Host.CreateDefaultBuilder(args)
         .ConfigureWebJobs(configureWebJobs)
+        .ConfigureDefaults(args)
         .ConfigureAppConfiguration((context, appBuilder) =>
         {
             context.HostingEnvironment.ApplicationName = appName;
