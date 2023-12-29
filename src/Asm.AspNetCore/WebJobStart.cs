@@ -26,7 +26,7 @@ public static class WebJobStart
         try
         {
             Log.Information("Starting...");
-            var host = CreateHostBuilder(args, appName,configureWebJobs, configureServices).UseConsoleLifetime().Build();
+            var host = CreateHostBuilder(args, configureWebJobs, configureServices).UseConsoleLifetime().Build();
 
             host.Run();
             return 0;
@@ -57,7 +57,7 @@ public static class WebJobStart
         try
         {
             Log.Information("Starting...");
-            var host = CreateHostBuilder(args, appName, configureWebJobs, configureServices).UseConsoleLifetime().Build();
+            var host = CreateHostBuilder(args, configureWebJobs, configureServices).UseConsoleLifetime().Build();
             await host.RunAsync();
             return 0;
         }
@@ -76,17 +76,12 @@ public static class WebJobStart
     /// Creates teh host builder.
     /// </summary>
     /// <param name="args">Command line arguments</param>
-    /// <param name="appName">The application name.</param>
     /// <param name="configureWebJobs">Configures the web jobs.</param>
     /// <param name="configureServices">A method to configure services.</param>
     /// <returns>A host builder instance.</returns>
-    public static IHostBuilder CreateHostBuilder(string[] args, string appName, Action<IWebJobsBuilder> configureWebJobs, Action<HostBuilderContext, IServiceCollection> configureServices) =>
+    public static IHostBuilder CreateHostBuilder(string[] args, Action<IWebJobsBuilder> configureWebJobs, Action<HostBuilderContext, IServiceCollection> configureServices) =>
         Host.CreateDefaultBuilder(args)
         .ConfigureWebJobs(configureWebJobs)
-        .ConfigureAppConfiguration((context, appBuilder) =>
-        {
-            context.HostingEnvironment.ApplicationName = appName;
-        })
         .UseEnvironment(Environment.GetEnvironmentVariable(EnvironmentVariables.AspNetCoreEnvironment) ?? Environment.GetEnvironmentVariable(EnvironmentVariables.DotNetEnvironment) ?? "Development")
         .UseCustomSerilog()
         .ConfigureServices(configureServices);
