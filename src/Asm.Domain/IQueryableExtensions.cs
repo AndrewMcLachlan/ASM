@@ -1,4 +1,6 @@
-﻿namespace Asm.Domain;
+﻿using Asm.Domain;
+
+namespace System.Linq;
 
 /// <summary>
 /// Extensions for the <see cref="IQueryable{T}"/> interface.
