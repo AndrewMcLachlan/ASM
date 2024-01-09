@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="SpecFlow" Version="3.9.74" />
     <PackageReference Include="xunit.assert" Version="2.6.5" />
-    <PackageReference Include="xunit.core" Version="2.6.4" />
+    <PackageReference Include="xunit.core" Version="2.6.5" />
   </ItemGroup>
 
 </Project>
