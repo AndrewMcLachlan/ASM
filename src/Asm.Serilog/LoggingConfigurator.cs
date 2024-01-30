@@ -40,16 +40,14 @@ public static class LoggingConfigurator
 
     public static LoggerConfiguration ConfigureLogging(LoggerConfiguration loggerConfiguration, IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
-        if (loggerConfiguration == null) throw new ArgumentNullException(nameof(loggerConfiguration));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-        if (hostEnvironment == null) throw new ArgumentNullException(nameof(hostEnvironment));
+        ArgumentNullException.ThrowIfNull(loggerConfiguration);
+        ArgumentNullException.ThrowIfNull(configuration);
+        ArgumentNullException.ThrowIfNull(hostEnvironment);
 
         loggerConfiguration
             .Enrich.FromLogContext()
             .Enrich.WithProperty("App", hostEnvironment.ApplicationName)
             .Enrich.WithProperty("Env", hostEnvironment.EnvironmentName)
-            .MinimumLevel.Information()
-            .MinimumLevel.Is(LogEventLevel.Information)
             .WriteTo.Trace()
             .WriteTo.Console()
             .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces);
@@ -61,6 +59,12 @@ public static class LoggingConfigurator
         {
             foreach(IConfigurationSection child in logLevelConfig.GetChildren())
             {
+                if (child.Key == "Default")
+                {
+                    loggerConfiguration.MinimumLevel.Is(logLevelConfig.GetValue<LogEventLevel>(child.Key));
+                    continue;
+                }
+
                 loggerConfiguration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
             }
         }
