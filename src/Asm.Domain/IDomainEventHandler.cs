@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
 namespace Asm.Domain;
-public interface IDomainEventHandler<TRequest> : IRequestHandler<TRequest> where TRequest : IDomainEvent
+public interface IDomainEventHandler<TNotification> : INotificationHandler<TNotification> where TNotification : IDomainEvent
 {
 }
