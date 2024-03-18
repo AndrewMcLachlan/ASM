@@ -26,7 +26,7 @@ public static class WebJobStart
         try
         {
             Log.Information("Starting...");
-            var host = CreateHostBuilder(args, appName,configureWebJobs, configureServices).UseConsoleLifetime().Build();
+            var host = CreateHostBuilder(args, appName, configureWebJobs, configureServices).UseConsoleLifetime().Build();
 
             host.Run();
             return 0;

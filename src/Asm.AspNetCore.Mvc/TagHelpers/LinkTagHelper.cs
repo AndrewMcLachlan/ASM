@@ -13,7 +13,7 @@ public class LinkTagHelper : IntegrityTagHelper
 
     protected override string UrlOutputAttributeName => UrlSourceAttributeName;
 
-    public LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache) : base (actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
+    public LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache) : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
     {
     }
 

@@ -1,7 +1,7 @@
-﻿using Asm.Cqrs.Commands;
+﻿using System.Reflection;
+using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -39,7 +39,7 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddCommandHandler<THandler, TRequest, TResponse>(this IServiceCollection services) where THandler : class, ICommandHandler<TRequest, TResponse> where TRequest : ICommand<TResponse>
     {
-        services.AddMediatR(config => {});
+        services.AddMediatR(config => { });
 
         services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
 

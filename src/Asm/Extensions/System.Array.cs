@@ -1,4 +1,4 @@
-﻿namespace Asm.Extensions;
+﻿namespace System;
 
 /// <summary>
 /// Extensions for the <see cref="Array"/> class.

@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Win32", "src\Asm.Win32\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{98AE5B42-0F55-45F3-9B9B-3E4AA9624457}"
 	ProjectSection(SolutionItems) = preProject
+		.editorConfig = .editorConfig
 		.gitignore = .gitignore
 		Common\Common.props = Common\Common.props
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
@@ -65,7 +66,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Domain.Infrastructure.Tests", "tests\Asm.Domain.Infrastructure.Tests\Asm.Domain.Infrastructure.Tests.csproj", "{35E95029-6F6C-4093-9EB1-45E245077EA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Domain.Infrastructure.Tests", "tests\Asm.Domain.Infrastructure.Tests\Asm.Domain.Infrastructure.Tests.csproj", "{35E95029-6F6C-4093-9EB1-45E245077EA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

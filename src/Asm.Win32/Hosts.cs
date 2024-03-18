@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace Asm.Win32;
 

@@ -14,7 +14,7 @@ public abstract class KeyedEntity<TKey> : Entity, IIdentifiable<TKey>
     [DisallowNull]
     public TKey Id { get; }
 
-    protected KeyedEntity([DisallowNull]TKey id)
+    protected KeyedEntity([DisallowNull] TKey id)
     {
         ArgumentNullException.ThrowIfNull(id);
         Id = id;

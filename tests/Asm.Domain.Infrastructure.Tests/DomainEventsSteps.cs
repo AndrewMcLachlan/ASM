@@ -4,46 +4,45 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TechTalk.SpecFlow;
 
-namespace Asm.Domain.Infrastructure.Tests
+namespace Asm.Domain.Infrastructure.Tests;
+
+[Binding]
+public class DomainEventsSteps(ScenarioResult<bool> result)
 {
-    [Binding]
-    public class DomainEventsSteps(ScenarioResult<bool> result)
+    private IServiceProvider _serviceProvider;
+
+    [BeforeScenario]
+    public void Setup()
     {
-        IServiceProvider _serviceProvider;
+        IServiceCollection services = new ServiceCollection();
 
-        [BeforeScenario]
-        public void Setup()
-        {
-            IServiceCollection services = new ServiceCollection();
+        services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("TestDb"));
+        services.AddDomainEvents(Assembly.GetExecutingAssembly());
+        services.AddSingleton(result);
 
-            services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("TestDb"));
-            services.AddDomainEvents(Assembly.GetExecutingAssembly());
-            services.AddSingleton(result);
+        _serviceProvider = services.BuildServiceProvider();
+    }
 
-            _serviceProvider = services.BuildServiceProvider();
-        }
+    [Given(@"An entity defines a domain event")]
+    public void GivenAnEntityDefinesADomainEvent()
+    {
+        TestEntity testEntity = new(1);
+        testEntity.TriggerDomainEvent();
 
-        [Given(@"An entity defines a domain event")]
-        public void GivenAnEntityDefinesADomainEvent()
-        {
-            TestEntity testEntity = new(1);
-            testEntity.TriggerDomainEvent();
+        TestDbContext dbContext = _serviceProvider.GetRequiredService<TestDbContext>();
+        dbContext.Add(testEntity);
+    }
 
-            TestDbContext dbContext = _serviceProvider.GetRequiredService<TestDbContext>();
-            dbContext.Add(testEntity);
-        }
+    [When(@"I call SaveChanges")]
+    public void WhenICallSaveChanges()
+    {
+        TestDbContext dbContext = _serviceProvider.GetRequiredService<TestDbContext>();
+        dbContext.SaveChanges();
+    }
 
-        [When(@"I call SaveChanges")]
-        public void WhenICallSaveChanges()
-        {
-            TestDbContext dbContext = _serviceProvider.GetRequiredService<TestDbContext>();
-            dbContext.SaveChanges();
-        }
-
-        [Then(@"The domain event is handled")]
-        public void ThenTheDomainEventIsHandled()
-        {
-            Assert.True(result.Value);
-        }
+    [Then(@"The domain event is handled")]
+    public void ThenTheDomainEventIsHandled()
+    {
+        Assert.True(result.Value);
     }
 }

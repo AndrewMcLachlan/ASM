@@ -1,5 +1,5 @@
-﻿using Asm.Security;
-using Asm.AspNetCore.Security;
+﻿using Asm.AspNetCore.Security;
+using Asm.Security;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection;

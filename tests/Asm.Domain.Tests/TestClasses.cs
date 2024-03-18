@@ -1,12 +1,9 @@
 ﻿namespace Asm.Domain.Tests;
 
-class TestKeyedEntity : KeyedEntity<int>
+internal class TestKeyedEntity(int id) : KeyedEntity<int>(id)
 {
-    public TestKeyedEntity(int id) : base(id) { }
 }
 
-
-class TestNamedEntity : NamedEntity<int>
+internal class TestNamedEntity(int id) : NamedEntity<int>(id)
 {
-    public TestNamedEntity(int id) : base(id) { }
 }

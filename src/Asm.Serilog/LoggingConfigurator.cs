@@ -57,7 +57,7 @@ public static class LoggingConfigurator
 
         if (logLevelConfig != null)
         {
-            foreach(IConfigurationSection child in logLevelConfig.GetChildren())
+            foreach (IConfigurationSection child in logLevelConfig.GetChildren())
             {
                 if (child.Key == "Default")
                 {

@@ -1,185 +1,184 @@
-using AscentMedia.Utils;
 using System;
 using System.Collections;
 using System.IO;
+using Asm.Media.Utils;
 
-namespace Asm.Media
+namespace Asm.Media;
+
+/// <summary>
+/// Represents a Quicktime movie file.
+/// </summary>
+public class Quicktime : MediaFile
 {
-	/// <summary>
-	/// Represents a Quicktime movie file.
-	/// </summary>
-	public class Quicktime : MediaFile
-	{
-		#region Fields
-        /// <summary>
-        /// 
-        /// </summary>
-		public new const int KilobitConverter = 1024;
-		#endregion
+    #region Fields
+    /// <summary>
+    ///
+    /// </summary>
+    public new const int KilobitConverter = 1024;
+    #endregion
 
-		#region Properties
-		/// <summary>
-		/// The total bitrate (audio and video streams) of the file in Kb/s.
-		/// </summary>
-		public override double Bitrate
-		{
-			get
-			{
-				//return (((movieSize / 1024.0)* 8.0) / duration);
-				return ((MovieSize * 8.0) / Duration);
-			}
-		}
-		#endregion
+    #region Properties
+    /// <summary>
+    /// The total bitrate (audio and video streams) of the file in Kb/s.
+    /// </summary>
+    public override double Bitrate
+    {
+        get
+        {
+            //return (((movieSize / 1024.0)* 8.0) / duration);
+            return ((MovieSize * 8.0) / Duration);
+        }
+    }
+    #endregion
 
-		#region Constructors
-		/// <summary>
-		/// Creates a new instance of the <see cref="Quicktime"/> class.
-		/// </summary>
-        /// <param name="fileName">The name and path of the file to read.</param>
-		public Quicktime(string fileName) : base(fileName)
-		{
-			this.MediaType = "Quicktime";
-		}
-		#endregion
+    #region Constructors
+    /// <summary>
+    /// Creates a new instance of the <see cref="Quicktime"/> class.
+    /// </summary>
+    /// <param name="fileName">The name and path of the file to read.</param>
+    public Quicktime(string fileName) : base(fileName)
+    {
+        this.MediaType = "Quicktime";
+    }
+    #endregion
 
-		#region Protected Methods
-		/// <summary>
-		/// Retrieve information from a movie header.
-		/// </summary>
-		/// <param name="parent">The parent header to which the following header belongs. Null values accepted.</param>
-		/// <param name="data">The binary reader attached to the file.</param>
-		/// <param name="start">The position in the file (in bytes) to start reading from.</param>
-		/// <param name="length">The number of bytes to read.</param>
-		/// <param name="headerOffset">Any offset relating to the previous header.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="data"/> is null.</exception>
-		protected override void GetMetadata(Header parent, BinaryReader data, long start, long length, short headerOffset)
-		{
-            if (data == null) throw new ArgumentNullException("data");
+    #region Protected Methods
+    /// <summary>
+    /// Retrieve information from a movie header.
+    /// </summary>
+    /// <param name="parent">The parent header to which the following header belongs. Null values accepted.</param>
+    /// <param name="data">The binary reader attached to the file.</param>
+    /// <param name="start">The position in the file (in bytes) to start reading from.</param>
+    /// <param name="length">The number of bytes to read.</param>
+    /// <param name="headerOffset">Any offset relating to the previous header.</param>
+    /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="data"/> is null.</exception>
+    protected override void GetMetadata(Header parent, BinaryReader data, long start, long length, short headerOffset)
+    {
+        if (data == null) throw new ArgumentNullException("data");
 
-			data.BaseStream.Position = start + headerOffset;
+        data.BaseStream.Position = start + headerOffset;
 
-            long bytesRead = start + headerOffset;
-			short offset = 0;
+        long bytesRead = start + headerOffset;
+        short offset = 0;
 
-			while (data.BaseStream.Position < Convert.ToInt64((start + length))-headerOffset)
-			{
-				Header atom = new Header(parent);
+        while (data.BaseStream.Position < Convert.ToInt64((start + length)) - headerOffset)
+        {
+            Header atom = new Header(parent);
 
-				ByteArray atomSize = new ByteArray(4, Endian.BigEndian);
-				ByteArray atomType = new ByteArray(4, Endian.BigEndian);
+            ByteArray atomSize = new ByteArray(4, Endian.BigEndian);
+            ByteArray atomType = new ByteArray(4, Endian.BigEndian);
 
-                data.Read(atomSize.GetBytes(), 0, 4);
-                data.Read(atomType.GetBytes(), 0, 4);
+            data.Read(atomSize.GetBytes(), 0, 4);
+            data.Read(atomType.GetBytes(), 0, 4);
 
-				offset = 8;
+            offset = 8;
 
-				atom.Size = atomSize.ToUInt32();
-				atom.MediaType = atomType.ToString();
+            atom.Size = atomSize.ToUInt32();
+            atom.MediaType = atomType.ToString();
 
-				if (atom.Size == 1)
-				{
-					ByteArray atomExtendedSize = new ByteArray(8, Endian.BigEndian);
-                    data.Read(atomExtendedSize.GetBytes(), 0, 8);
-					atom.Size = (long) atomExtendedSize.ToUInt64();
-					
-					offset += 8;
-				}
-				else if (atom.Size == 0)
-				{
-					Headers.Add(atom);
-					break;
-				}
+            if (atom.Size == 1)
+            {
+                ByteArray atomExtendedSize = new ByteArray(8, Endian.BigEndian);
+                data.Read(atomExtendedSize.GetBytes(), 0, 8);
+                atom.Size = (long)atomExtendedSize.ToUInt64();
 
-				//Set the header size
-				atom.HeaderSize = (short) offset;
+                offset += 8;
+            }
+            else if (atom.Size == 0)
+            {
+                Headers.Add(atom);
+                break;
+            }
 
-				if (atom.MediaType == "moov" ||
-					atom.MediaType == "clip" ||
-					atom.MediaType == "udta" ||
-					atom.MediaType == "trak" ||
-					atom.MediaType == "matt" ||
-					atom.MediaType == "edts" ||
-					atom.MediaType == "mdia" ||
-					atom.MediaType == "minf" ||
-					atom.MediaType == "dinf" ||
-					atom.MediaType == "stbl" ||
-					atom.MediaType == "mdat")
-				{
-					GetMetadata(atom, data, bytesRead, atom.Size, offset);
-				}
-				
-				if (atom.MediaType == "tkhd" && this.Width == 0)
-				{
-					GetHeightWidth(atom, data, bytesRead);
-				}
-				else if (atom.MediaType == "mvhd")
-				{
-					GetDuration(data, bytesRead);
-				}
-				else if (atom.MediaType == "mdat")
-				{
-					this.MovieSize = atom.Size - offset;
-					foreach(Header subAtom in atom.SubHeaders)
-					{
-						this.MovieSize -= subAtom.Size;
-					}
-				}
+            //Set the header size
+            atom.HeaderSize = (short)offset;
 
-				bytesRead += atom.Size;
-				data.BaseStream.Position = Convert.ToInt64(bytesRead);
+            if (atom.MediaType == "moov" ||
+                atom.MediaType == "clip" ||
+                atom.MediaType == "udta" ||
+                atom.MediaType == "trak" ||
+                atom.MediaType == "matt" ||
+                atom.MediaType == "edts" ||
+                atom.MediaType == "mdia" ||
+                atom.MediaType == "minf" ||
+                atom.MediaType == "dinf" ||
+                atom.MediaType == "stbl" ||
+                atom.MediaType == "mdat")
+            {
+                GetMetadata(atom, data, bytesRead, atom.Size, offset);
+            }
 
-				if (parent == null)
-				{
-					this.Headers.Add(atom);
-				}
-				else
-				{
-					parent.SubHeaders.Add(atom);
-				}
-			}
-		}
-        #endregion
+            if (atom.MediaType == "tkhd" && this.Width == 0)
+            {
+                GetHeightWidth(atom, data, bytesRead);
+            }
+            else if (atom.MediaType == "mvhd")
+            {
+                GetDuration(data, bytesRead);
+            }
+            else if (atom.MediaType == "mdat")
+            {
+                this.MovieSize = atom.Size - offset;
+                foreach (Header subAtom in atom.SubHeaders)
+                {
+                    this.MovieSize -= subAtom.Size;
+                }
+            }
 
-        #region Private Methods
-        private void GetDuration(BinaryReader Data, long bytesRead)
-		{
-			long tempPosition = Data.BaseStream.Position;
+            bytesRead += atom.Size;
+            data.BaseStream.Position = Convert.ToInt64(bytesRead);
 
-			Data.BaseStream.Position = Convert.ToInt64(bytesRead) + 20;
-			
-			ByteArray timescale = new ByteArray(4, Endian.BigEndian);
-			ByteArray duration = new ByteArray(4, Endian.BigEndian);
+            if (parent == null)
+            {
+                this.Headers.Add(atom);
+            }
+            else
+            {
+                parent.SubHeaders.Add(atom);
+            }
+        }
+    }
+    #endregion
 
-            Data.Read(timescale.GetBytes(), 0, 4);
-            Data.Read(duration.GetBytes(), 0, 4);
+    #region Private Methods
+    private void GetDuration(BinaryReader Data, long bytesRead)
+    {
+        long tempPosition = Data.BaseStream.Position;
 
-			uint iTimescale = timescale.ToUInt32();
-			uint iDuration = duration.ToUInt32();
+        Data.BaseStream.Position = Convert.ToInt64(bytesRead) + 20;
 
-			this.Duration = Convert.ToSingle(iDuration) / Convert.ToSingle(iTimescale);
+        ByteArray timescale = new ByteArray(4, Endian.BigEndian);
+        ByteArray duration = new ByteArray(4, Endian.BigEndian);
 
-			Data.BaseStream.Position = tempPosition;
-		}
+        Data.Read(timescale.GetBytes(), 0, 4);
+        Data.Read(duration.GetBytes(), 0, 4);
 
-		private void GetHeightWidth(Header atom, BinaryReader Data, long bytesRead)
-		{
-			long tempPosition = Data.BaseStream.Position;
+        uint iTimescale = timescale.ToUInt32();
+        uint iDuration = duration.ToUInt32();
 
-			Data.BaseStream.Position = Convert.ToInt64(bytesRead) + Convert.ToInt64(atom.Size) - 8;
+        this.Duration = Convert.ToSingle(iDuration) / Convert.ToSingle(iTimescale);
 
-			ByteArray height = new ByteArray(2, Endian.BigEndian);
-			ByteArray width = new ByteArray(2, Endian.BigEndian);
+        Data.BaseStream.Position = tempPosition;
+    }
 
-            Data.Read(height.GetBytes(), 0, 2);
-			Data.BaseStream.Position += 2;
-            Data.Read(width.GetBytes(), 0, 2);
+    private void GetHeightWidth(Header atom, BinaryReader Data, long bytesRead)
+    {
+        long tempPosition = Data.BaseStream.Position;
 
-			this.Height = (short) height.ToUInt16();
-			this.Width = (short) width.ToUInt16();
+        Data.BaseStream.Position = Convert.ToInt64(bytesRead) + Convert.ToInt64(atom.Size) - 8;
 
-			Data.BaseStream.Position = tempPosition;
-		}
+        ByteArray height = new ByteArray(2, Endian.BigEndian);
+        ByteArray width = new ByteArray(2, Endian.BigEndian);
 
-		#endregion
-	}
+        Data.Read(height.GetBytes(), 0, 2);
+        Data.BaseStream.Position += 2;
+        Data.Read(width.GetBytes(), 0, 2);
+
+        this.Height = (short)height.ToUInt16();
+        this.Width = (short)width.ToUInt16();
+
+        Data.BaseStream.Position = tempPosition;
+    }
+
+    #endregion
 }

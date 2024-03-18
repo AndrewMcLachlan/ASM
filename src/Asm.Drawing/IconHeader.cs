@@ -1,42 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.IO;
+﻿using System.Runtime.InteropServices;
 
-namespace Asm.Drawing
+namespace Asm.Drawing;
+
+[StructLayout(LayoutKind.Sequential)]
+internal sealed class IconHeader
 {
-    [StructLayout(LayoutKind.Sequential)]
-    internal sealed class IconHeader
+    public short FileMarker { get; private set; }
+    public short FileType { get; set; }
+    public short NumberOfImages { get; set; }
+
+    public IconHeader()
     {
-        public Int16 FileMarker { get; private set; }
-        public Int16 FileType { get; set; }
-        public Int16 NumberOfImages { get; set; }
+        FileMarker = 0;
+    }
 
-        public IconHeader()
+    public void Write(Stream stream)
+    {
+        int headerSize = Marshal.SizeOf(typeof(IconHeader));
+
+        IntPtr headerPtr = Marshal.AllocHGlobal(headerSize);
+
+        try
         {
-            FileMarker = 0;
+            Marshal.StructureToPtr(this, headerPtr, true);
+
+            byte[] buffer = new byte[headerSize];
+            Marshal.Copy(headerPtr, buffer, 0, headerSize);
+            stream.Write(buffer, 0, headerSize);
         }
-
-        public void Write(Stream stream)
+        finally
         {
-            int headerSize = Marshal.SizeOf(typeof(IconHeader));
-
-            IntPtr headerPtr = Marshal.AllocHGlobal(headerSize);
-
-            try
-            {
-                Marshal.StructureToPtr(this, headerPtr, true);
-
-                byte[] buffer = new byte[headerSize];
-                Marshal.Copy(headerPtr, buffer, 0, headerSize);
-                stream.Write(buffer, 0, headerSize);
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(headerPtr);
-            }
+            Marshal.FreeHGlobal(headerPtr);
         }
     }
 }

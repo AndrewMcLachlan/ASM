@@ -19,7 +19,7 @@ public static class IServiceCollectionExtensions
                 .Replace('+', '.'));
         });
 
-    public static IServiceCollection AddStandardSwaggerGen(this IServiceCollection services, Func<OpenApiInfo, OpenApiInfo> setInfo ) =>
+    public static IServiceCollection AddStandardSwaggerGen(this IServiceCollection services, Func<OpenApiInfo, OpenApiInfo> setInfo) =>
             services.AddSwaggerGen(options =>
             {
                 var assembly = System.Reflection.Assembly.GetExecutingAssembly();
