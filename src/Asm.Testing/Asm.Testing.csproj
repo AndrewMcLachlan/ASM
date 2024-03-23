@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <Description>ASM core library unit testing support.</Description>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
