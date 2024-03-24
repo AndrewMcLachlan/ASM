@@ -20,4 +20,14 @@ public static class SpecFlowHelper
         scenarioData.Value = exception;
 
     }
+
+    public static async Task CatchExceptionAsync(Func<Task> testCode, ScenarioResult<Exception> scenarioData)
+    {
+        var exception = await Record.ExceptionAsync(testCode);
+
+        Assert.NotNull(scenarioData);
+
+        scenarioData.Value = exception;
+
+    }
 }

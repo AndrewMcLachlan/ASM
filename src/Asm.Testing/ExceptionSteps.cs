@@ -4,15 +4,8 @@ using Xunit;
 namespace Asm.Testing;
 
 [Binding]
-public class ExceptionSteps
+public class ExceptionSteps(ScenarioResult<Exception> result)
 {
-    private ScenarioResult<Exception> _result;
-
-    public ExceptionSteps(ScenarioResult<Exception> result)
-    {
-        _result = result;
-    }
-
     [Then(@"an exception of type '(.*)' is thrown")]
     public void ThenAnExceptionOfTypeIsThrown(string exceptionType)
     {
@@ -20,7 +13,7 @@ public class ExceptionSteps
 
         Assert.NotNull(expected);
 
-        var actual = _result.Value;
+        var actual = result.Value;
 
         Assert.NotNull(actual);
         Assert.IsType(expected, actual);
@@ -29,14 +22,14 @@ public class ExceptionSteps
     [Then(@"the exception message is '(.*)'")]
     public void ThenTheExceptionMessageIs(string message)
     {
-        Assert.NotNull(_result.Value);
-        Assert.Equal(message.DecodeWhitespace(), _result.Value!.Message);
+        Assert.NotNull(result.Value);
+        Assert.Equal(message.DecodeWhitespace(), result.Value!.Message);
     }
 
     [Then(@"the exception parameter name is '(.*)'")]
     public void ThenTheExceptionParameterNameIs(string parameterName)
     {
-        var exception = _result.Value;
+        var exception = result.Value;
 
         Assert.NotNull(exception);
         Assert.IsAssignableFrom(typeof(ArgumentException), exception);
