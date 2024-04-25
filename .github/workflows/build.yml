@@ -2,8 +2,9 @@ name: Build and Publish
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  pull_request_target:
+    branches:
+      - "master"
   workflow_dispatch:
 jobs:
   build:
@@ -18,7 +19,7 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
-        dotnet-version: 7.x
+        dotnet-version: 8.x
         source-url: https://nuget.pkg.github.com/AndrewMcLachlan/index.json
     - name: Set version number
       id: set-version-number
@@ -31,4 +32,5 @@ jobs:
     - name: Package
       run: dotnet pack Asm.sln --no-restore -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
     - name: Publish Packages
+      if: (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.ref == 'refs/heads/master')
       run: dotnet nuget push ${{ github.workspace }}/publish/**/*.nupkg
