@@ -23,7 +23,7 @@ jobs:
         source-url: https://nuget.pkg.github.com/AndrewMcLachlan/index.json
     - name: Set version number
       id: set-version-number
-      uses: andrewmclachlan/actions/set-version-number@master
+      uses: andrewmclachlan/actions/set-version-number@v1
       with:
         filePath: 'Common/Common.props'
         versionPropertyName: 'Version'
