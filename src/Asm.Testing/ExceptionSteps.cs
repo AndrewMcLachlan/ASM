@@ -32,7 +32,9 @@ public class ExceptionSteps(ScenarioResult<Exception> result)
         var exception = result.Value;
 
         Assert.NotNull(exception);
+#pragma warning disable xUnit2007 // I want to check for derived types.
         Assert.IsAssignableFrom(typeof(ArgumentException), exception);
+#pragma warning restore xUnit2007 // Do not use typeof expression to check the type
         Assert.Equal(parameterName, ((ArgumentException)exception!).ParamName);
     }
 }
