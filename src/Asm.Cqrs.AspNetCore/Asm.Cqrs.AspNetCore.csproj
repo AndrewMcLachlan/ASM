@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
     <ProjectReference Include="..\Asm.Cqrs\Asm.Cqrs.csproj" />
     <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
