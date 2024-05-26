@@ -25,7 +25,7 @@ jobs:
       id: set-version-number
       uses: andrewmclachlan/actions/set-version-number@v2
       with:
-        filePath: 'Common/Common.props'
+        project: 'src/Asm'
         versionPropertyName: 'Version'
     - name: Restore dependencies
       run: dotnet restore Asm.sln
