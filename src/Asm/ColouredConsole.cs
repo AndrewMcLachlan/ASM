@@ -2,13 +2,26 @@
 
 namespace Asm;
 
+/// <summary>
+/// Allows writing to the console in a specified colour.
+/// </summary>
 public static class ColouredConsole
 {
+    /// <summary>
+    /// Writes a line to the console in the specified colour.
+    /// </summary>
+    /// <param name="value">The text to write.</param>
+    /// <param name="colour">The colour to use.</param>
     public static void WriteLine(string value, ConsoleColor colour)
     {
         Write(value, colour, Console.WriteLine);
     }
 
+    /// <summary>
+    /// Writes to the console in the specified colour.
+    /// </summary>
+    /// <param name="value">The text to write.</param>
+    /// <param name="colour">The colour to use.</param>
     public static void Write(string value, ConsoleColor colour)
     {
         Write(value, colour, Console.Write);
