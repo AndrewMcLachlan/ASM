@@ -10,7 +10,7 @@ namespace Asm.AspNetCore.Modules;
 /// </summary>
 public static class Modules
 {
-    private static List<IModule> RegisteredModules = new();
+    private static List<IModule> RegisteredModules = [];
 
     /// <summary>
     /// Registers modules.

@@ -59,7 +59,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
 
                 var genericAsNoTracking = AsNoTrackingMethod.MakeGenericMethod(type);
 
-                var res2 = genericAsNoTracking.Invoke(null, new[] { res });
+                var res2 = genericAsNoTracking.Invoke(null, [res]);
 
                 return res2!;
             }, ServiceLifetime.Transient));

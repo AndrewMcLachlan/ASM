@@ -8,26 +8,21 @@ using Microsoft.Extensions.Hosting;
 namespace Asm.AspNetCore;
 
 /// <inheritdoc/>
-public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
+/// <summary>
+/// Initializes a new instance of the <see cref="ProblemDetailsFactory"/> class.
+/// </summary>
+/// <param name="hostEnvironment"></param>
+/// <exception cref="ArgumentNullException"></exception>
+public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
 {
-    private readonly IHostEnvironment _hostEnvironment;
+    private readonly IHostEnvironment _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
 
-    private static readonly Dictionary<Type, Func<ProblemDetails>> _handlers = new();
+    private static readonly Dictionary<Type, Func<ProblemDetails>> HandlersInternal = [];
 
     /// <summary>
     /// Gets a dictionary of registered handlers.
     /// </summary>
-    public static IReadOnlyDictionary<Type, Func<ProblemDetails>> Handlers { get => _handlers; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ProblemDetailsFactory"/> class.
-    /// </summary>
-    /// <param name="hostEnvironment"></param>
-    /// <exception cref="ArgumentNullException"></exception>
-    public ProblemDetailsFactory(IHostEnvironment hostEnvironment)
-    {
-        _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
-    }
+    public static IReadOnlyDictionary<Type, Func<ProblemDetails>> Handlers { get => HandlersInternal; }
 
     /// <inheritdoc/>
     public override ProblemDetails CreateProblemDetails(HttpContext httpContext, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
@@ -107,10 +102,7 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
     /// <inheritdoc/>
     public override ValidationProblemDetails CreateValidationProblemDetails(HttpContext httpContext, ModelStateDictionary modelStateDictionary, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
     {
-        if (modelStateDictionary == null)
-        {
-            throw new ArgumentNullException(nameof(modelStateDictionary));
-        }
+        ArgumentNullException.ThrowIfNull(modelStateDictionary);
 
         statusCode ??= StatusCodes.Status400BadRequest;
 
@@ -141,9 +133,9 @@ public class ProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.Pro
     /// <exception cref="ArgumentNullException"></exception>
     public static void AddHandler<T>(Func<ProblemDetails> handler) where T : Exception
     {
-        if (handler == null) throw new ArgumentNullException(nameof(handler));
+        ArgumentNullException.ThrowIfNull(handler);
 
-        _handlers.Add(typeof(T), handler);
+        HandlersInternal.Add(typeof(T), handler);
     }
 
     private static void AddExtensions(HttpContext httpContext, ProblemDetails problemDetails)
