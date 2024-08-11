@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -15,7 +16,7 @@ public class CanonicalTagHelper : TagHelper
     /// Gets or sets the path to the canonical URL.
     /// </summary>
     [HtmlAttributeName("path")]
-    public string? Path
+    public required string Path
     {
         get;
         set;
@@ -25,12 +26,12 @@ public class CanonicalTagHelper : TagHelper
     /// Gets or sets the view context.
     /// </summary>
     [ViewContext]
-    public ViewContext? ViewContext { get; set; }
+    public required ViewContext ViewContext { get; set; }
 
     /// <inheritdoc />
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        string href = $"{ViewContext!.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}/{Path}".Replace("//", "/").TrimEnd('/');
+        string href = $"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.OriginHost()}" + ($"/{Path}".Replace("//", "/").TrimEnd('/'));
 
         output.TagName = "link";
 
