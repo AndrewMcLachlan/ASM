@@ -35,13 +35,7 @@ public struct Nybble
     /// <summary>
     /// The byte representation of the nybble's value.
     /// </summary>
-    public byte ByteValue
-    {
-        get
-        {
-            return _byteValue;
-        }
-    }
+    public readonly byte ByteValue => _byteValue;
     #endregion
 
     #region Constructors
@@ -78,7 +72,7 @@ public struct Nybble
     /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="value"/> is null.</exception>
     public static uint ToUInt32(Nybble[] value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         uint temp;
 
@@ -187,7 +181,7 @@ public struct Nybble
     /// </summary>
     /// <param name="obj">The nybble to check against.</param>
     /// <returns>Whether the nybbles are equal.</returns>
-    public override bool Equals(object? obj)
+    public override readonly bool Equals(object? obj)
     {
         if (obj == null) return false;
 
@@ -204,13 +198,10 @@ public struct Nybble
     }
 
     /// <summary>
-    /// Gets the hashcode.
+    /// Gets the hash code.
     /// </summary>
-    /// <returns>A hashcode.</returns>
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    /// <returns>A hash code.</returns>
+    public override readonly int GetHashCode() => base.GetHashCode();
 
     /// <summary>
     /// Checks equality of two nybbles.
@@ -284,7 +275,7 @@ public struct Nybble
         n1._byteValue = b1;
         n2._byteValue = b2;
 
-        return new Nybble[] { n1, n2 };
+        return [n1, n2];
     }
 
     /// <summary>
@@ -295,7 +286,7 @@ public struct Nybble
     /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="value"/> is null.</exception>
     public static Nybble[] ToNybbles(byte[] value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        ArgumentNullException.ThrowIfNull(value);
 
         Nybble[] n = new Nybble[value.Length * 2];
 

@@ -2,14 +2,22 @@
 
 namespace Asm.Domain;
 
-public abstract class NamedEntity<TKey> : KeyedEntity<TKey>, IComparable<NamedEntity<TKey>>
+/// <summary>
+/// A named entity.
+/// </summary>
+/// <typeparam name="TKey">The type of the entity's key.</typeparam>
+/// <remarks>
+/// Initializes a new instance of the <see cref="NamedEntity{TKey}"/> class.
+/// </remarks>
+/// <param name="id">The ID.</param>
+public abstract class NamedEntity<TKey>([DisallowNull] TKey id) : KeyedEntity<TKey>(id), IComparable<NamedEntity<TKey>>
 {
-    protected NamedEntity([DisallowNull] TKey id) : base(id)
-    {
-    }
-
+    /// <summary>
+    /// Gets or sets the name.
+    /// </summary>
     public required string Name { get; set; }
 
+    /// <inheritdoc/>
     public int CompareTo(NamedEntity<TKey>? other)
     {
         if (other == null) return -1;

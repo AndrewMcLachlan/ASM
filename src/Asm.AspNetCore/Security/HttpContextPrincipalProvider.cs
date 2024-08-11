@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace Asm.AspNetCore.Security;
 
-public class HttpContextPrincipalProvider : IPrincipalProvider
+/// <summary>
+/// A principal provider that uses the principal from the current HTTP context.
+/// </summary>
+/// <param name="contextAccessor">An <see cref="IHttpContextAccessor"/> implementation.</param>
+public class HttpContextPrincipalProvider(IHttpContextAccessor contextAccessor) : IPrincipalProvider
 {
-    private readonly IHttpContextAccessor _contextAccessor;
-
-    public HttpContextPrincipalProvider(IHttpContextAccessor contextAccessor)
-    {
-        _contextAccessor = contextAccessor;
-    }
-
-    public ClaimsPrincipal? Principal => _contextAccessor.HttpContext?.User;
+    /// <summary>
+    /// Gets the principal from the current HTTP context.
+    /// </summary>
+    public ClaimsPrincipal? Principal => contextAccessor.HttpContext?.User;
 }

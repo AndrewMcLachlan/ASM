@@ -15,7 +15,7 @@ public static class ArrayExtensions
     /// <exception cref="InvalidOperationException">Thrown if the array is read-only.</exception>
     public static T[] Shuffle<T>(this T[] array)
     {
-        if (array == null) throw new ArgumentNullException(nameof(array));
+        ArgumentNullException.ThrowIfNull(array);
         if (array.IsReadOnly) throw new InvalidOperationException("Array is readonly");
 
         int n = array.Length;

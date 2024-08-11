@@ -1,6 +1,5 @@
-using System;
+#pragma warning disable 8618 // Non-nullable field is uninitialized. To be fixed on review.
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Asm;
@@ -8,6 +7,9 @@ namespace Asm;
 /// <summary>
 /// An array of bits in either little endian or big endian format.
 /// </summary>
+/// <remarks>
+/// This code has not been touched in years and needs unit tests.
+/// </remarks>
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), Serializable]
 [CLSCompliant(false)]
 public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
@@ -23,32 +25,20 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <summary>
     /// Gets the value of the bit at the given position.
     /// </summary>
-    public bool this[int index]
-    {
-        get
-        {
-            return _bitArray[index];
-        }
-    }
+    public bool this[int index] => _bitArray[index];
 
     /// <summary>
     /// Gets the endianness of the array.
     /// </summary>
-    public Endian Endian
-    {
-        get
-        {
-            return _endian;
-        }
-    }
+    public Endian Endian => _endian;
     #endregion
 
     #region Constructors
     /// <summary>
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
-    /// <param name="values">The bitarray to extend.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="values">The bit array to extend.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(BitArray values, Endian endian)
     {
         _endian = endian;
@@ -59,7 +49,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="values">An array of boolean values representing individual bits.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(bool[] values, Endian endian)
     {
         _endian = endian;
@@ -70,7 +60,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="value">A byte array to convert.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(byte[] value, Endian endian)
     {
         _endian = endian;
@@ -82,10 +72,10 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="value">A byte value to convert.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(byte value, Endian endian)
     {
-        _bytes = new byte[] { value };
+        _bytes = [value];
         _endian = endian;
         GetBits();
     }
@@ -94,10 +84,10 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="value">A signed-byte value to convert.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(sbyte value, Endian endian)
     {
-        _bytes = new byte[] { Convert.ToByte(value) };
+        _bytes = [Convert.ToByte(value)];
         _endian = endian;
         GetBits();
     }
@@ -106,7 +96,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="value">A 16 bit integer value to convert.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(short value, Endian endian)
     {
         _bytes = BitConverter.GetBytes(value);
@@ -119,7 +109,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="value">An integer value to convert.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(int value, Endian endian)
     {
         _bytes = BitConverter.GetBytes(value);
@@ -131,7 +121,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
     /// <param name="value">A 64 bit integer value to convert.</param>
-    /// <param name="endian">The endianess of the array.</param>
+    /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(long value, Endian endian)
     {
         _bytes = BitConverter.GetBytes(value);
@@ -159,7 +149,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     public ExtendedBitArray Copy(int start, int length)
     {
         if ((length + start) - 1 > Count) throw new ArgumentOutOfRangeException(nameof(start));
-        if (length > Count) throw new ArgumentOutOfRangeException(nameof(length));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(length, Count);
 
         bool[] temp = new bool[length - start];
 
@@ -175,12 +165,12 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Creates a copy of part of the array.
     /// </summary>
     /// <param name="array">The array to copy to.</param>
-    /// <param name="index">The index whehre copying begins.</param>
+    /// <param name="index">The index where copying begins.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="array"/> is null.</exception>
     /// <exception cref="ArgumentException">Thrown if <paramref name="index"/> is less than 0 or greater than the length of <paramref name="array"/>.</exception>
     public void CopyTo(ExtendedBitArray array, int index)
     {
-        if (array == null) throw new ArgumentNullException(nameof(array));
+        ArgumentNullException.ThrowIfNull(array);
         if (index < 0) throw new ArgumentException("index cannot be less than 0.");
         if (index > array._bitArray.Length - 1) throw new ArgumentException("index cannot be greater than the length of the array.");
 
@@ -197,10 +187,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 8 bits long, only the first 8 bits will be used.
     /// </remarks>
-    public sbyte ToSByte()
-    {
-        return Convert.ToSByte(ToSigned(1));
-    }
+    public sbyte ToSByte() => Convert.ToSByte(ToSigned(1));
 
     /// <summary>
     /// Returns the signed 16 bit integer representation of the array.
@@ -209,10 +196,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 16 bits long, only the first 16 bits will be used.
     /// </remarks>
-    public short ToInt16()
-    {
-        return Convert.ToInt16(ToSigned(2));
-    }
+    public short ToInt16() => Convert.ToInt16(ToSigned(2));
 
     /// <summary>
     /// Returns the signed 32 bit integer representation of the array.
@@ -221,10 +205,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 32 bits long, only the first 32 bits will be used.
     /// </remarks>
-    public int ToInt32()
-    {
-        return Convert.ToInt32(ToSigned(4));
-    }
+    public int ToInt32() => Convert.ToInt32(ToSigned(4));
 
     /// <summary>
     /// Returns the signed 64 bit integer representation of the array.
@@ -233,10 +214,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 64 bits long, only the first 64 bits will be used.
     /// </remarks>
-    public long ToInt64()
-    {
-        return Convert.ToInt64(ToSigned(8));
-    }
+    public long ToInt64() => Convert.ToInt64(ToSigned(8));
 
     /// <summary>
     /// Returns the unsigned 8 bit integer representation of the array.
@@ -245,10 +223,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 8 bits long, only the first 8 bits will be used.
     /// </remarks>
-    public byte ToByte()
-    {
-        return Convert.ToByte(ToUnsigned(1));
-    }
+    public byte ToByte() => Convert.ToByte(ToUnsigned(1));
 
     /// <summary>
     /// Returns the unsigned 16 bit integer representation of the array.
@@ -257,10 +232,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 16 bits long, only the first 16 bits will be used.
     /// </remarks>
-    public ushort ToUInt16()
-    {
-        return Convert.ToUInt16(ToUnsigned(2));
-    }
+    public ushort ToUInt16() => Convert.ToUInt16(ToUnsigned(2));
 
     /// <summary>
     /// Returns the unsigned 32 bit integer representation of the array.
@@ -269,10 +241,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 32 bits long, only the first 32 bits will be used.
     /// </remarks>
-    public uint ToUInt32()
-    {
-        return Convert.ToUInt32(ToUnsigned(4));
-    }
+    public uint ToUInt32() => Convert.ToUInt32(ToUnsigned(4));
 
     /// <summary>
     /// Returns the unsigned 64 bit integer representation of the array.
@@ -281,10 +250,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <remarks>
     /// If the array is greater than 64 bits long, only the first 64 bits will be used.
     /// </remarks>
-    public ulong ToUInt64()
-    {
-        return Convert.ToUInt64(ToUnsigned(8));
-    }
+    public ulong ToUInt64() => Convert.ToUInt64(ToUnsigned(8));
 
     /// <summary>
     /// Returns the string representation of the bits in the array.
@@ -304,16 +270,16 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
 
     #region /**/
     /*public static byte[] ToLittleEndian(byte[] bytes)
-		{
-			ExtendedBitArray b;
-			byte[] output = new byte[bytes.Length];
-			for(int i=0, j=bytes.Length-1;i<bytes.Length;i++, j--)
-			{
-				b = new ExtendedBitArray(bytes[i], Endian.BigEndian);
-			}
+        {
+            ExtendedBitArray b;
+            byte[] output = new byte[bytes.Length];
+            for(int i=0, j=bytes.Length-1;i<bytes.Length;i++, j--)
+            {
+                b = new ExtendedBitArray(bytes[i], Endian.BigEndian);
+            }
 
-			return output;
-		}*/
+            return output;
+        }*/
     #endregion
     #endregion
 
@@ -568,3 +534,4 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     }
     #endregion
 }
+#pragma warning restore 8618

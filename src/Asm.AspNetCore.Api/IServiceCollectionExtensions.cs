@@ -1,8 +1,18 @@
 ﻿using Microsoft.OpenApi.Models;
 
 namespace Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extensions for the <see cref="IServiceCollection"/> interface.
+/// </summary>
 public static class IServiceCollectionExtensions
 {
+    /// <summary>
+    /// Adds standard Swagger generation to the service collection.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> instance that this method extends.</param>
+    /// <param name="title">The Open API title.</param>
+    /// <returns>The <see cref="IServiceCollection"/> instance so that calls can be chained.</returns>
     public static IServiceCollection AddStandardSwaggerGen(this IServiceCollection services, string title) =>
         services.AddSwaggerGen(options =>
         {
@@ -19,6 +29,12 @@ public static class IServiceCollectionExtensions
                 .Replace('+', '.'));
         });
 
+    /// <summary>
+    /// Adds standard Swagger generation to the service collection.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> instance that this method extends.</param>
+    /// <param name="setInfo">A method to set custom info.</param>
+    /// <returns>The <see cref="IServiceCollection"/> instance so that calls can be chained.</returns>
     public static IServiceCollection AddStandardSwaggerGen(this IServiceCollection services, Func<OpenApiInfo, OpenApiInfo> setInfo) =>
             services.AddSwaggerGen(options =>
             {

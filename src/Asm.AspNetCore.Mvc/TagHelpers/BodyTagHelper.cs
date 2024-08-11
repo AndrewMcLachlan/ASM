@@ -4,11 +4,18 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Asm.AspNetCore.Mvc.TagHelpers;
 
+/// <summary>
+/// A tag helper that adds the area, controller, and action as classes to the body tag.
+/// </summary>
 public class BodyTagHelper : TagHelper
 {
+    /// <summary>
+    /// Gets or sets the view context.
+    /// </summary>
     [ViewContext]
     public ViewContext? ViewContext { get; set; }
 
+    /// <inheritdoc />
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         string? area = ViewContext?.RouteData.Values["area"] as string;

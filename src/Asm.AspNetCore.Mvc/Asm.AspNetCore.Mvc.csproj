@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <Description>Asm core library for ASP.NET Core MVC.</Description>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

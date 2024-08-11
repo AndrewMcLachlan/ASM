@@ -7,16 +7,23 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Asm.AspNetCore.Mvc.TagHelpers;
 
-public class LinkTagHelper : IntegrityTagHelper
+/// <summary>
+/// A tag helper that adds the integrity attribute to a link tag.
+/// </summary>
+public sealed class LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache)
+    : IntegrityTagHelper(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
 {
+    /// <summary>
+    /// Gets the URL source attribute name.
+    /// </summary>
     protected override string UrlSourceAttributeName => "href";
 
+    /// <summary>
+    /// Gets the URL output attribute name.
+    /// </summary>
     protected override string UrlOutputAttributeName => UrlSourceAttributeName;
 
-    public LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache) : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
-    {
-    }
-
+    /// <inheritdoc />
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         if (context.AllAttributes["integrity"] != null || context.AllAttributes["rel"] == null || ((HtmlString)context.AllAttributes["rel"].Value).Value != "stylesheet") return;

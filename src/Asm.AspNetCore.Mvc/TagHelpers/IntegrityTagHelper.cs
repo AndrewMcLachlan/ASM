@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,19 +10,50 @@ using Microsoft.Extensions.Hosting;
 
 namespace Asm.AspNetCore.Mvc.TagHelpers;
 
+/// <summary>
+/// A tag helper that adds the integrity attribute to a tag.
+/// </summary>
 public abstract class IntegrityTagHelper : TagHelper
 {
+    /// <summary>
+    /// Gets or sets the view context.
+    /// </summary>
     [ViewContext]
     public ViewContext? ViewContext { get; set; }
 
+    /// <summary>
+    /// Gets the URL helper.
+    /// </summary>
     protected IUrlHelper UrlHelper { get; }
+
+    /// <summary>
+    /// Gets the hosting environment.
+    /// </summary>
     protected IWebHostEnvironment HostingEnvironment { get; }
+
+    /// <summary>
+    /// Gets the memory cache.
+    /// </summary>
     protected IMemoryCache MemoryCache { get; }
 
+    /// <summary>
+    /// Gets the URL source attribute name.
+    /// </summary>
     protected abstract string UrlSourceAttributeName { get; }
 
+    /// <summary>
+    /// Gets the URL output attribute name.
+    /// </summary>
     protected abstract string UrlOutputAttributeName { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IntegrityTagHelper"/> class.
+    /// </summary>
+    /// <param name="actionContextAccessor">An action context accessor.</param>
+    /// <param name="urlHelperFactory">A URL helper factory.</param>
+    /// <param name="hostingEnvironment">The hosting environment.</param>
+    /// <param name="memoryCache">A memory cache.</param>
+    /// <exception cref="InvalidOperationException">If there is no action context.</exception>
     public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache)
     {
         if (actionContextAccessor.ActionContext == null) throw new InvalidOperationException("No ActionContext provided.");
@@ -33,6 +63,7 @@ public abstract class IntegrityTagHelper : TagHelper
         MemoryCache = memoryCache;
     }
 
+    /// <inheritdoc/>
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         var url = context.AllAttributes[UrlSourceAttributeName]?.Value as string;

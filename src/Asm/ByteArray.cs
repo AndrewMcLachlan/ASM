@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-
 namespace Asm;
 
 /// <summary>
@@ -11,6 +5,7 @@ namespace Asm;
 /// </summary>
 /// <remarks>
 /// This class handles conversion of byte arrays into larger integer types using either big or little endianness.
+/// This has not been touched in years and needs unit tests.
 /// </remarks>
 [Serializable]
 [CLSCompliant(false)]
@@ -25,38 +20,24 @@ public struct ByteArray
     /// <summary>
     /// Returns a byte from the array.
     /// </summary>
-    public byte this[int index]
+    public readonly byte this[int index]
     {
-        get
-        {
-            return _bytes[index];
-        }
-        set
-        {
-            _bytes[index] = value;
-        }
+        get => _bytes[index];
+        set => _bytes[index] = value;
     }
 
     /// <summary>
-    /// The ordinary array representaion of the bytes
+    /// The ordinary array representation of the bytes
     /// </summary>
-    public byte[] GetBytes()
-    {
-        return _bytes;
-    }
+    public readonly byte[] GetBytes() => _bytes;
+
     /// <summary>
     /// The Endianness of the array.
     /// </summary>
     public Endian Endian
     {
-        get
-        {
-            return _endian;
-        }
-        set
-        {
-            _endian = value;
-        }
+        readonly get => _endian;
+        set => _endian = value;
     }
     #endregion
 
@@ -111,10 +92,10 @@ public struct ByteArray
     /// <param name="start">The element from which to start the copy.</param>
     /// <param name="length">The number of elements to copy.</param>
     /// <returns>A new ByteArray.</returns>
-    public ByteArray Copy(int start, int length)
+    public readonly ByteArray Copy(int start, int length)
     {
         if ((length + start) - 1 > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(start));
-        if (length > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(length));
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(length, _bytes.Length);
 
         ByteArray newArray = new(length, this._endian);
 
@@ -131,7 +112,7 @@ public struct ByteArray
     /// Converts the byte array into an array of characters.
     /// </summary>
     /// <returns>An array of characters.</returns>
-    public char[] ToCharArray()
+    public readonly char[] ToCharArray()
     {
         char[] chars = new char[_bytes.Length];
         int i = 0;
@@ -148,87 +129,66 @@ public struct ByteArray
     /// Converts the byte array in a string.
     /// </summary>
     /// <returns>A string.</returns>
-    public override string ToString()
-    {
-        return new string(ToCharArray());
-    }
+    public override readonly string ToString() => new(ToCharArray());
 
     /// <summary>
     /// Converts the array into an unsigned short.
     /// </summary>
     /// <returns>An unsigned short.</returns>
-    public ushort ToUInt16()
+    public readonly ushort ToUInt16() => _endian switch
     {
-        return _endian switch
-        {
-            Endian.BigEndian => ToUInt16BE(),
-            Endian.LittleEndian => ToUInt16LE(),
-            _ => 0,
-        };
-    }
+        Endian.BigEndian => ToUInt16BE(),
+        Endian.LittleEndian => ToUInt16LE(),
+        _ => 0,
+    };
 
     /// <summary>
     /// Converts the array into an unsigned int.
     /// </summary>
     /// <returns>An unsigned int.</returns>
-    public uint ToUInt32()
+    public readonly uint ToUInt32() => _endian switch
     {
-        return _endian switch
-        {
-            Endian.BigEndian => ToUInt32BE(),
-            Endian.LittleEndian => ToUInt32LE(),
-            _ => 0,
-        };
-    }
+        Endian.BigEndian => ToUInt32BE(),
+        Endian.LittleEndian => ToUInt32LE(),
+        _ => 0,
+    };
 
     /// <summary>
     /// Converts the array into an unsigned long.
     /// </summary>
     /// <returns>An unsigned long.</returns>
-    public ulong ToUInt64()
+    public readonly ulong ToUInt64() => _endian switch
     {
-        return _endian switch
-        {
-            Endian.BigEndian => ToUInt64BE(),
-            //break;
-            Endian.LittleEndian => ToUInt64LE(),
-            //break;
-            _ => 0,
-        };
-    }
+        Endian.BigEndian => ToUInt64BE(),
+        //break;
+        Endian.LittleEndian => ToUInt64LE(),
+        //break;
+        _ => 0,
+    };
 
     /// <summary>
     /// Converts the array into a signed short.
     /// </summary>
     /// <returns>A short.</returns>
-    public short ToInt16()
-    {
-        return Convert.ToInt16(ToUInt16());
-    }
+    public readonly short ToInt16() => Convert.ToInt16(ToUInt16());
 
     /// <summary>
     /// Converts the array into a signed int.
     /// </summary>
     /// <returns>An int.</returns>
-    public int ToInt32()
-    {
-        return Convert.ToInt32(ToUInt32());
-    }
+    public readonly int ToInt32() => Convert.ToInt32(ToUInt32());
 
     /// <summary>
     /// Converts the array into a signed long.
     /// </summary>
     /// <returns>A long.</returns>
-    public long ToInt64()
-    {
-        return Convert.ToInt32(ToUInt64());
-    }
+    public readonly long ToInt64() => Convert.ToInt32(ToUInt64());
 
     /// <summary>
     /// Converts the array into a GUID.
     /// </summary>
     /// <returns>A GUID.</returns>
-    public Guid ToGuid()
+    public readonly Guid ToGuid()
     {
         if (_bytes.Length > 16)
         {
@@ -249,7 +209,7 @@ public struct ByteArray
     /// </summary>
     /// <param name="obj">The byte array to check against.</param>
     /// <returns>Whether the arrays are equal.</returns>
-    public override bool Equals(object? obj)
+    public override readonly bool Equals(object? obj)
     {
         if (obj == null) return false;
 
@@ -274,13 +234,10 @@ public struct ByteArray
     }
 
     /// <summary>
-    /// Gets the hashcode.
+    /// Gets the hash code.
     /// </summary>
-    /// <returns>A hashcode.</returns>
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    /// <returns>A hash code.</returns>
+    public override readonly int GetHashCode() => base.GetHashCode();
 
     /// <summary>
     /// Checks equality of two byte arrays.
@@ -306,7 +263,7 @@ public struct ByteArray
     #endregion
 
     #region Private Methods
-    private ushort ToUInt16BE()
+    private readonly ushort ToUInt16BE()
     {
         if (_bytes.Length > 2)
         {
@@ -319,7 +276,7 @@ public struct ByteArray
         return temp;
     }
 
-    private ushort ToUInt16LE()
+    private readonly ushort ToUInt16LE()
     {
         if (_bytes.Length > 2)
         {
@@ -332,7 +289,7 @@ public struct ByteArray
         return temp;
     }
 
-    private uint ToUInt32BE()
+    private readonly uint ToUInt32BE()
     {
         if (_bytes.Length > 4)
         {
@@ -362,7 +319,7 @@ public struct ByteArray
         return temp;
     }
 
-    private uint ToUInt32LE()
+    private readonly uint ToUInt32LE()
     {
         if (_bytes.Length > 4)
         {
@@ -379,7 +336,7 @@ public struct ByteArray
         return temp;
     }
 
-    private ulong ToUInt64LE()
+    private readonly ulong ToUInt64LE()
     {
         if (_bytes.Length > 8)
         {
@@ -404,7 +361,7 @@ public struct ByteArray
         return temp;
     }
 
-    private ulong ToUInt64BE()
+    private readonly ulong ToUInt64BE()
     {
         if (_bytes.Length > 8)
         {

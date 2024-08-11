@@ -1,5 +1,4 @@
-﻿using Asm.OAuth;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,10 +8,24 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Asm.AspNetCore.Security;
 
+/// <summary>
+/// Azure authentication extensions.
+/// </summary>
 public static class Authentication
 {
+    /// <summary>
+    /// Adds Azure AD bearer authentication with default options.
+    /// </summary>
+    /// <param name="builder">The <see cref="AuthenticationBuilder"/> that this method extends.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/> so that calls can be chained.</returns>
     public static AuthenticationBuilder AddAzureADBearer(this AuthenticationBuilder builder) => builder.AddAzureADBearer(_ => { });
 
+    /// <summary>
+    /// Adds Azure AD bearer authentication.
+    /// </summary>
+    /// <param name="builder">The <see cref="AuthenticationBuilder"/> that this method extends.</param>
+    /// <param name="configureOptions">An action for configuring options.</param>
+    /// <returns>The <see cref="AuthenticationBuilder"/> so that calls can be chained.</returns>
     public static AuthenticationBuilder AddAzureADBearer(this AuthenticationBuilder builder, Action<AzureADBearerOptions> configureOptions)
     {
         builder.Services.Configure(configureOptions);
@@ -22,16 +35,9 @@ public static class Authentication
         return builder;
     }
 
-    private class ConfigureAzureOptions : IConfigureNamedOptions<JwtBearerOptions>
+    private class ConfigureAzureOptions(IOptions<AzureADBearerOptions> azureOptions, IHostEnvironment environment) : IConfigureNamedOptions<JwtBearerOptions>
     {
-        private readonly AzureADBearerOptions _azureOptions;
-        private readonly IHostEnvironment _environment;
-
-        public ConfigureAzureOptions(IOptions<AzureADBearerOptions> azureOptions, IHostEnvironment environment)
-        {
-            _azureOptions = azureOptions.Value;
-            this._environment = environment;
-        }
+        private readonly AzureADBearerOptions _azureOptions = azureOptions.Value;
 
         public void Configure(JwtBearerOptions options)
         {
@@ -43,7 +49,7 @@ public static class Authentication
             options.Audience = _azureOptions.AzureOAuthOptions.Audience;
             options.Authority = _azureOptions.AzureOAuthOptions.Authority;
 
-            if (_environment.IsDevelopment())
+            if (environment.IsDevelopment())
             {
                 options.RequireHttpsMetadata = false;
             }

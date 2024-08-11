@@ -1,6 +1,13 @@
 ﻿namespace Asm.Domain;
+
+/// <summary>
+/// A basic entity that can raise domain events.
+/// </summary>
 public abstract class Entity : IEntity
 {
-    public ICollection<IDomainEvent> Events { get; } = new List<IDomainEvent>();
+    /// <summary>
+    /// Domain events that have been raised by the entity.
+    /// </summary>
+    public ICollection<IDomainEvent> Events { get; } = [];
 }
 

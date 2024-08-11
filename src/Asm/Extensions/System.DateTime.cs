@@ -69,10 +69,26 @@ public static class DateTimeExtensions
         return lastDayInWeek;
     }
 
+    /// <summary>
+    /// Converts a <see cref="DateTime"/> to a <see cref="DateOnly"/>.
+    /// </summary>
+    /// <param name="dt">The <see cref="DateTime"/> to convert.</param>
+    /// <returns>The <see cref="DateOnly"/> equivalent.</returns>
     public static DateOnly ToDateOnly(this DateTime dt) => DateOnly.FromDateTime(dt);
 
+    /// <summary>
+    /// Converts a <see cref="DateTime"/> to a <see cref="TimeOnly"/>.
+    /// </summary>
+    /// <param name="dt">The <see cref="DateTime"/> to convert.</param>
+    /// <returns>The <see cref="TimeOnly"/> equivalent.</returns>
     public static TimeOnly ToTimeOnly(this DateTime dt) => TimeOnly.FromDateTime(dt);
 
+    /// <summary>
+    /// Returns the number of months between two dates.
+    /// </summary>
+    /// <param name="date">The date.</param>
+    /// <param name="other">The date to compare to.</param>
+    /// <returns>The number of months between the dates.</returns>
     public static int DifferenceInMonths(this DateTime date, DateTime other)
     {
         var months = Math.Abs((date.Year - other.Year) * 12 + (date.Month - other.Month));

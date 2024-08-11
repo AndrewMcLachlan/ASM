@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
+# 17
 VisualStudioVersion = 17.1.31903.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm", "src\Asm\Asm.csproj", "{74248C54-1CC4-4863-846A-3E1E2FCAF013}"
@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		Common\Common.props = Common\Common.props
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
+		Common\GlobalSuppressions.cs = Common\GlobalSuppressions.cs
 		Common\Icon-128.png = Common\Icon-128.png
 	EndProjectSection
 EndProject
@@ -29,10 +30,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Win32.Tests", "tests\Asm.Win32.Tests\Asm.Win32.Tests.csproj", "{183CA34B-EFF7-4AC4-9E2B-3BF6C2AA4492}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.AspNetCore.Mvc", "src\Asm.AspNetCore.Mvc\Asm.AspNetCore.Mvc.csproj", "{41E0F168-52FE-45D8-B88A-925BAB92B764}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Drawing", "src\Asm.Drawing\Asm.Drawing.csproj", "{785E81A5-6244-4E47-9F57-CAAFD1A031A3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Media", "src\Asm.Media\Asm.Media.csproj", "{67536341-1A2E-4E87-9FE9-0CE9F1120704}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.AspNetCore", "src\Asm.AspNetCore\Asm.AspNetCore.csproj", "{BDC5CA36-A2C0-4430-87CE-020617E4F450}"
 EndProject
@@ -174,30 +171,6 @@ Global
 		{41E0F168-52FE-45D8-B88A-925BAB92B764}.Release|Any CPU.Build.0 = Release|Any CPU
 		{41E0F168-52FE-45D8-B88A-925BAB92B764}.Release|x64.ActiveCfg = Release|Any CPU
 		{41E0F168-52FE-45D8-B88A-925BAB92B764}.Release|x64.Build.0 = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Debug|x64.Build.0 = Debug|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release 64|Any CPU.ActiveCfg = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release 64|Any CPU.Build.0 = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release 64|x64.ActiveCfg = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release 64|x64.Build.0 = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release|x64.ActiveCfg = Release|Any CPU
-		{785E81A5-6244-4E47-9F57-CAAFD1A031A3}.Release|x64.Build.0 = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Debug|x64.Build.0 = Debug|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release 64|Any CPU.ActiveCfg = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release 64|Any CPU.Build.0 = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release 64|x64.ActiveCfg = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release 64|x64.Build.0 = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release|x64.ActiveCfg = Release|Any CPU
-		{67536341-1A2E-4E87-9FE9-0CE9F1120704}.Release|x64.Build.0 = Release|Any CPU
 		{BDC5CA36-A2C0-4430-87CE-020617E4F450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDC5CA36-A2C0-4430-87CE-020617E4F450}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDC5CA36-A2C0-4430-87CE-020617E4F450}.Debug|x64.ActiveCfg = Debug|Any CPU
