@@ -1,6 +1,8 @@
 # ASM Library
 A collection of useful assemblies to assist in development
 
+![Build](https://github.com/andrewmclachlan/asm/actions/workflows/build.yml/badge.svg)
+
 ## Asm
 - Extensions to .NET types, such as `Boolean`, `DateTime`, `String` etc.
 - Exception types such as `NotFound`, `Exists`, `NotAuthorised` etc.
