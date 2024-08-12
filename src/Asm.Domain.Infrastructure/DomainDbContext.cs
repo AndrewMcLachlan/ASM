@@ -40,7 +40,7 @@ public abstract class DomainDbContext(DbContextOptions options, IMediator mediat
     ///  <exception cref="System.OperationCanceledException">
     ///  If the <paramref name="cancellationToken"/> is cancelled.
     ///  </exception>
-    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var domainEventEntities = ChangeTracker.Entries<IEntity>()
             .Select(entry => entry.Entity)
