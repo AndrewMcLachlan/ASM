@@ -22,7 +22,7 @@ public interface IUnitOfWork
     /// <returns>
     /// The number of state entries written to the database.
     /// </returns>
-    Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default);
+    Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Save changes to the database.
