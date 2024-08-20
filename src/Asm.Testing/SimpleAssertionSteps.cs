@@ -3,48 +3,63 @@ using Xunit;
 
 namespace Asm.Testing;
 
+/// <summary>
+/// Reusable assertion steps for simple types.
+/// </summary>
+/// <param name="context">The current scenario context.</param>
 [Binding]
-public class SimpleAssertionSteps
+public class SimpleAssertionSteps(ScenarioContext context)
 {
-    private readonly ScenarioResult<string> _strResult;
-    private readonly ScenarioResult<int> _intResult;
-    private readonly ScenarioResult<DateTime> _dateResult;
-    private readonly ScenarioResult<bool> _boolResult;
+    /// <summary>
+    /// The key used to store the result in the context.
+    /// </summary>
+    public const string ResultKey = "Result";
 
-    public SimpleAssertionSteps(ScenarioResult<string> strResult, ScenarioResult<int> intResult, ScenarioResult<DateTime> dateResult, ScenarioResult<bool> boolResult)
-    {
-        _strResult = strResult;
-        _intResult = intResult;
-        _dateResult = dateResult;
-        _boolResult = boolResult;
-    }
+    /// <summary>
+    /// Asserts whether the result is equal to the expected value.
+    /// </summary>
+    /// <param name="expected">The expected value.</param>
+    [Then(@"the string value ""([^""]*)"" is returned")]
+    [Then(@"the string value '([^']*)' is returned")]
+    public void ThenTheStringValueIsReturned(string? expected) => AssertValue(expected);
 
-    [Then(@"the string value '(.*)' is returned")]
-    public void ThenTheStringValueIsReturned(string expected)
-    {
-        Assert.NotNull(_intResult);
-        Assert.Equal(expected, _strResult.Value);
-    }
-
+    /// <summary>
+    /// Asserts whether the result is equal to the expected value.
+    /// </summary>
+    /// <param name="expected">The expected value.</param>
     [Then(@"the integer value (.*) is returned")]
-    public void ThenTheIntegerValueIsReturned(int expected)
-    {
-        Assert.NotNull(_intResult);
-        Assert.Equal(expected, _intResult.Value);
-    }
+    public void ThenTheIntegerValueIsReturned(int? expected) => AssertValue(expected);
 
+    /// <summary>
+    /// Asserts whether the result is equal to the expected value.
+    /// </summary>
+    /// <param name="expected">The expected value.</param>
+    [Then(@"the date ""([^""]*)"" is returned")]
+    [Then(@"the date '([^']*)' is returned")]
+    public void ThenTheDateIsReturned(DateTime? expected) => AssertValue(expected);
 
-    [Then(@"the date '(.*)' is returned")]
-    public void ThenTheDateIsReturned(DateTime expected)
-    {
-        Assert.NotNull(_dateResult);
-        Assert.Equal(expected, _dateResult.Value);
-    }
-
+    /// <summary>
+    /// Asserts whether the result is equal to the expected value.
+    /// </summary>
+    /// <param name="expected">The expected value.</param>
     [Then(@"the boolean value (.*) is returned")]
-    public void ThenTheBooleanValueIsReturned(bool expected)
+    public void ThenTheBooleanValueIsReturned(bool? expected) => AssertValue(expected);
+
+    /// <summary>
+    /// Asserts whether the result is <see langword="null" />.
+    /// </summary>
+    [Then(@"the value is null")]
+    public void ThenTheValueIsNull()
     {
-        Assert.NotNull(_boolResult);
-        Assert.Equal(expected, _boolResult.Value);
+        var result = context.Get<object?>(ResultKey);
+        Assert.Null(result);
+    }
+
+    private void AssertValue<T>(T? expected)
+    {
+        var result = context.Get<T>(ResultKey);
+
+        Assert.Equal(expected, result);
     }
 }
+
