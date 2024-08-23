@@ -21,16 +21,46 @@ jobs:
       with:
         dotnet-version: 8.x
         source-url: https://nuget.pkg.github.com/AndrewMcLachlan/index.json
+
     - name: Set version number
       id: set-version-number
       uses: andrewmclachlan/actions/set-version-number@v2
       with:
         project: 'src/Asm'
         versionPropertyName: 'Version'
-    - name: Restore dependencies
+
+    - name: Restore
       run: dotnet restore Asm.sln
+
+    - name: Build
+      run: dotnet build Asm.sln --no-restore --verbosity normal
+
+    - name: Test
+      run: dotnet test Asm.sln --no-restore --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults
+
     - name: Package
-      run: dotnet pack Asm.sln --no-restore -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
+      run: dotnet pack Asm.sln --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
+
+    - name: Code Coverage Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: coverage/**/coverage.cobertura.xml
+        badge: true
+        fail_below_min: false
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: '50 70'
+
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md
+
     - name: Publish Packages
       if: (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.ref == 'refs/heads/main')
       run: dotnet nuget push ${{ github.workspace }}/publish/**/*.nupkg

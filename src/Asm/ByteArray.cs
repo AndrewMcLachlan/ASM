@@ -9,11 +9,13 @@ namespace Asm;
 /// </remarks>
 [Serializable]
 [CLSCompliant(false)]
-public struct ByteArray
+public readonly struct ByteArray
 {
+    private delegate T Converter<T>(ReadOnlySpan<byte> span);
+
     #region Fields
     private readonly byte[] _bytes;
-    private Endian _endian;
+    private static Endian _systemEndian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
     #endregion
 
     #region Properties
@@ -34,11 +36,7 @@ public struct ByteArray
     /// <summary>
     /// The Endianness of the array.
     /// </summary>
-    public Endian Endian
-    {
-        readonly get => _endian;
-        set => _endian = value;
-    }
+    public readonly Endian Endian { get; } // set; } = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
     #endregion
 
     #region Constructors
@@ -49,7 +47,7 @@ public struct ByteArray
     public ByteArray(int size)
     {
         _bytes = new byte[size];
-        _endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+        Endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
     }
 
     /// <summary>
@@ -60,7 +58,7 @@ public struct ByteArray
     public ByteArray(int size, Endian type)
     {
         _bytes = new byte[size];
-        _endian = type;
+        Endian = type;
     }
 
     /// <summary>
@@ -70,7 +68,7 @@ public struct ByteArray
     public ByteArray(byte[] value)
     {
         this._bytes = value;
-        _endian = _endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+        Endian = Endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
     }
 
     /// <summary>
@@ -81,7 +79,7 @@ public struct ByteArray
     public ByteArray(byte[] value, Endian type)
     {
         this._bytes = value;
-        _endian = type;
+        Endian = type;
     }
     #endregion
 
@@ -97,14 +95,8 @@ public struct ByteArray
         if ((length + start) - 1 > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(start));
         ArgumentOutOfRangeException.ThrowIfGreaterThan(length, _bytes.Length);
 
-        ByteArray newArray = new(length, this._endian);
-
-        int j = 0;
-        for (int i = start; i < start + length; i++)
-        {
-            newArray.GetBytes()[j] = this.GetBytes()[i];
-            j++;
-        }
+        ByteArray newArray = new(length, this.Endian);
+        _bytes.AsSpan(start, length).CopyTo(newArray._bytes);
         return newArray;
     }
 
@@ -115,13 +107,16 @@ public struct ByteArray
     public readonly char[] ToCharArray()
     {
         char[] chars = new char[_bytes.Length];
-        int i = 0;
-        foreach (byte b in this._bytes)
+        Span<byte> byteSpan = _bytes;
+        Span<char> charSpan = chars;
+
+        int subtractor = Endian == Endian.BigEndian ? 0 : byteSpan.Length - 1;
+
+        for (int i = 0; i < byteSpan.Length; i++)
         {
-            char c = Convert.ToChar(b);
-            chars[i] = c;
-            i++;
+            charSpan[Math.Abs(subtractor - i)] = (char)byteSpan[i];
         }
+
         return chars;
     }
 
@@ -135,36 +130,19 @@ public struct ByteArray
     /// Converts the array into an unsigned short.
     /// </summary>
     /// <returns>An unsigned short.</returns>
-    public readonly ushort ToUInt16() => _endian switch
-    {
-        Endian.BigEndian => ToUInt16BE(),
-        Endian.LittleEndian => ToUInt16LE(),
-        _ => 0,
-    };
+    public readonly ushort ToUInt16() => ConvertArray(2, BitConverter.ToUInt16);
 
     /// <summary>
     /// Converts the array into an unsigned int.
     /// </summary>
     /// <returns>An unsigned int.</returns>
-    public readonly uint ToUInt32() => _endian switch
-    {
-        Endian.BigEndian => ToUInt32BE(),
-        Endian.LittleEndian => ToUInt32LE(),
-        _ => 0,
-    };
+    public readonly uint ToUInt32() => ConvertArray(4, BitConverter.ToUInt32);
 
     /// <summary>
     /// Converts the array into an unsigned long.
     /// </summary>
     /// <returns>An unsigned long.</returns>
-    public readonly ulong ToUInt64() => _endian switch
-    {
-        Endian.BigEndian => ToUInt64BE(),
-        //break;
-        Endian.LittleEndian => ToUInt64LE(),
-        //break;
-        _ => 0,
-    };
+    public readonly ulong ToUInt64() => ConvertArray(8, BitConverter.ToUInt64);
 
     /// <summary>
     /// Converts the array into a signed short.
@@ -223,14 +201,7 @@ public struct ByteArray
             return false;
         }
 
-        for (int i = 0; i < _bytes.Length; i++)
-        {
-            if (_bytes[i] != array._bytes[i]) return false;
-        }
-
-        if (this.Endian != array.Endian) return false;
-
-        return true;
+        return _bytes.SequenceEqual(array._bytes) && this.Endian == array.Endian;
     }
 
     /// <summary>
@@ -260,6 +231,18 @@ public struct ByteArray
     {
         return !a.Equals(b);
     }
+
+    /// <summary>
+    /// Implicit conversion from byte array to ByteArray.
+    /// </summary>
+    /// <param name="value">The byte array</param>
+    public static implicit operator ByteArray(byte[] value) => new(value);
+
+    /// <summary>
+    /// Implicit conversion from ByteArray to byte array.
+    /// </summary>
+    /// <param name="value">The ByteArray.</param>
+    public static implicit operator byte[](ByteArray value) => value.GetBytes();
     #endregion
 
     #region Private Methods
@@ -269,11 +252,8 @@ public struct ByteArray
         {
             throw new OverflowException("The array is too big to be converted.");
         }
-        ushort temp = _bytes[0];
-        temp <<= 8;
-        temp |= _bytes[1];
-
-        return temp;
+        Span<byte> span = _bytes;
+        return (ushort)(span[0] << 8 | span[1]);
     }
 
     private readonly ushort ToUInt16LE()
@@ -282,108 +262,20 @@ public struct ByteArray
         {
             throw new OverflowException("The array is too big to be converted.");
         }
-        ushort temp = _bytes[1];
-        temp <<= 8;
-        temp |= _bytes[0];
-
-        return temp;
+        Span<byte> span = _bytes;
+        return (ushort)(span[1] << 8 | span[0]);
     }
 
-    private readonly uint ToUInt32BE()
+    private readonly T ConvertArray<T>(int maxByteLength, Converter<T> converter) where T : struct
     {
-        if (_bytes.Length > 4)
+        if (_bytes.Length > maxByteLength)
         {
             throw new OverflowException("The array is too big to be converted.");
         }
 
-        uint temp = 0;
-
-        for (int i = 0; i < _bytes.Length; i++)
-        {
-            temp |= _bytes[i];
-            if (i + 1 < _bytes.Length)
-            {
-                temp <<= 8;
-            }
-        }
-
-
-        //temp = bytes[0];
-        //temp <<= 8;
-        //temp |= bytes[1];
-        //temp <<= 8;
-        //temp |= bytes[2];
-        //temp <<= 8;
-        //temp |= bytes[3];
-
-        return temp;
+        ReadOnlySpan<byte> span = _systemEndian == Endian ? _bytes : _bytes.Reverse().ToArray();
+        return converter(span);
     }
 
-    private readonly uint ToUInt32LE()
-    {
-        if (_bytes.Length > 4)
-        {
-            throw new OverflowException("The array is too big to be converted.");
-        }
-        uint temp = _bytes[3];
-        temp <<= 8;
-        temp |= _bytes[2];
-        temp <<= 8;
-        temp |= _bytes[1];
-        temp <<= 8;
-        temp |= _bytes[0];
-
-        return temp;
-    }
-
-    private readonly ulong ToUInt64LE()
-    {
-        if (_bytes.Length > 8)
-        {
-            throw new OverflowException("The array is too big to be converted.");
-        }
-        ulong temp = _bytes[7];
-        temp <<= 8;
-        temp |= _bytes[6];
-        temp <<= 8;
-        temp |= _bytes[5];
-        temp <<= 8;
-        temp |= _bytes[4];
-        temp <<= 8;
-        temp |= _bytes[3];
-        temp <<= 8;
-        temp |= _bytes[2];
-        temp <<= 8;
-        temp |= _bytes[1];
-        temp <<= 8;
-        temp |= _bytes[0];
-
-        return temp;
-    }
-
-    private readonly ulong ToUInt64BE()
-    {
-        if (_bytes.Length > 8)
-        {
-            throw new OverflowException("The array is too big to be converted.");
-        }
-        ulong temp = _bytes[0];
-        temp <<= 8;
-        temp |= _bytes[1];
-        temp <<= 8;
-        temp |= _bytes[2];
-        temp <<= 8;
-        temp |= _bytes[3];
-        temp <<= 8;
-        temp |= _bytes[4];
-        temp <<= 8;
-        temp |= _bytes[5];
-        temp <<= 8;
-        temp |= _bytes[6];
-        temp <<= 8;
-        temp |= _bytes[7];
-
-        return temp;
-    }
     #endregion
 }

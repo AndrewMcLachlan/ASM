@@ -5,19 +5,12 @@ namespace Asm.IO;
 /// <summary>
 /// A <see cref="System.IO.StringWriter" /> implementation that allows custom encodings.
 /// </summary>
-public sealed class StringWriterWithEncoding : StringWriter
+/// <remarks>
+/// Initializes a new instance of the <see cref="StringWriterWithEncoding" /> class.
+/// </remarks>
+/// <param name="encoding"> The Encoding in which the output is written.</param>
+public sealed class StringWriterWithEncoding(Encoding encoding) : StringWriter
 {
-    private readonly Encoding _encoding;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StringWriterWithEncoding" /> class.
-    /// </summary>
-    /// <param name="encoding"> The Encoding in which the output is written.</param>
-    public StringWriterWithEncoding(Encoding encoding)
-    {
-        this._encoding = encoding;
-    }
-
     /// <summary>
     /// Gets the System.Text.Encoding in which the output is written.
     /// </summary>
@@ -26,6 +19,6 @@ public sealed class StringWriterWithEncoding : StringWriter
     /// </returns>
     public override Encoding Encoding
     {
-        get { return _encoding; }
+        get { return encoding; }
     }
 }

@@ -1,15 +1,14 @@
-﻿using Asm.Testing;
+﻿namespace Asm.Domain.Infrastructure.Tests;
 
-namespace Asm.Domain.Infrastructure.Tests;
 internal class TestDomainEvent : IDomainEvent
 {
 }
 
-internal class TestDomainEventHandler(ScenarioResult<bool> result) : IDomainEventHandler<TestDomainEvent>
+internal class TestDomainEventHandler(ScenarioContext context) : IDomainEventHandler<TestDomainEvent>
 {
     public Task Handle(TestDomainEvent notification, CancellationToken cancellationToken)
     {
-        result.Value = true;
+        context.AddResult(true);
         return Task.CompletedTask;
     }
 }

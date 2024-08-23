@@ -13,4 +13,9 @@
     <PackageReference Include="xunit" Version="2.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="TechTalk.SpecFlow" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+
 </Project>

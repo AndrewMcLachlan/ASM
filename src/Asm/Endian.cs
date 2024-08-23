@@ -1,7 +1,7 @@
 namespace Asm;
 
 /// <summary>
-/// Indicates binary endianess.
+/// Indicates binary endianness.
 /// </summary>
 public enum Endian
 {

@@ -15,10 +15,7 @@ public static class IListExtensions
     /// <exception cref="InvalidOperationException">Thrown if the list is read-only.</exception>
     public static IList<T> Shuffle<T>(this IList<T> list)
     {
-        if (list == null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
+        ArgumentNullException.ThrowIfNull(list);
 
         if (list.IsReadOnly) throw new InvalidOperationException("List is readonly");
 
