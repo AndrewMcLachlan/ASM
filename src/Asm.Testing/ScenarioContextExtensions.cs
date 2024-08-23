@@ -27,9 +27,32 @@ public static class ScenarioContextExtensions
     /// <summary>
     /// Adds a common result to the context, to be consumed by the <see cref="SimpleAssertionSteps" />.
     /// </summary>
-    /// <typeparam name="T">The type of the result.</typeparam>
+    /// <typeparam name="T">The type of the exception.</typeparam>
     /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
     /// <param name="exception">The exception to add.</param>
     public static void AddException<T>(this ScenarioContext context, T? exception) where T : Exception
         => context.Add(ExceptionSteps.ExceptionKey, exception);
+
+    /// <summary>
+    /// Gets the current exception.
+    /// </summary>
+    /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
+    /// <returns>The current exception or <c>null</c>.</returns>
+    public static Exception? GetException(this ScenarioContext context)
+    {
+        context.TryGetValue(ExceptionSteps.ExceptionKey, out Exception? value);
+        return value;
+    }
+
+    /// <summary>
+    /// Gets the current exception.
+    /// </summary>
+    /// <typeparam name="T">The type of the exception.</typeparam>
+    /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
+    /// <returns>The current exception or <c>null</c>.</returns>
+    public static T? GetException<T>(this ScenarioContext context) where T : Exception
+    {
+        context.TryGetValue(ExceptionSteps.ExceptionKey, out T? value);
+        return value;
+    }
 }

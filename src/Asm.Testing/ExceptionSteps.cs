@@ -15,7 +15,7 @@ public class ExceptionSteps(ScenarioContext context)
 
         Assert.NotNull(expected);
 
-        var actual = context.Get<Exception>(ExceptionKey);
+        var actual = context.GetException();
 
         Assert.NotNull(actual);
         Assert.IsType(expected, actual);
@@ -27,7 +27,7 @@ public class ExceptionSteps(ScenarioContext context)
     [Then(@"the exception message should be ""([^""]*)""")]
     public void ThenTheExceptionMessageIs(string message)
     {
-        var ex = context.Get<Exception>(ExceptionKey);
+        var ex = context.GetException();
         Assert.NotNull(ex);
         Assert.Equal(message.DecodeWhitespace(), ex.Message);
     }
@@ -38,12 +38,20 @@ public class ExceptionSteps(ScenarioContext context)
     [Then(@"the exception parameter name should be ""([^""]*)""")]
     public void ThenTheExceptionParameterNameIs(string parameterName)
     {
-        var ex = context.Get<Exception>(ExceptionKey);
+        var ex = context.GetException();
 
         Assert.NotNull(ex);
 #pragma warning disable xUnit2007 // I want to check for derived types.
         Assert.IsAssignableFrom(typeof(ArgumentException), ex);
 #pragma warning restore xUnit2007 // Do not use typeof expression to check the type
         Assert.Equal(parameterName, ((ArgumentException)ex!).ParamName);
+    }
+
+    [Then(@"no exception is thrown")]
+    public void ThenNoExceptionIsThrown()
+    {
+        var actual = context.GetException();
+
+        Assert.Null(actual);
     }
 }
