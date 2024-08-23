@@ -7,7 +7,7 @@ using TechTalk.SpecFlow;
 namespace Asm.Domain.Infrastructure.Tests;
 
 [Binding]
-public class DomainEventsSteps(ScenarioResult<bool> result)
+public class DomainEventsSteps(ScenarioContext context)
 {
     private IServiceProvider _serviceProvider;
 
@@ -18,7 +18,7 @@ public class DomainEventsSteps(ScenarioResult<bool> result)
 
         services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("TestDb"));
         services.AddDomainEvents(Assembly.GetExecutingAssembly());
-        services.AddSingleton(result);
+        services.AddSingleton(context);
 
         _serviceProvider = services.BuildServiceProvider();
     }
@@ -43,6 +43,6 @@ public class DomainEventsSteps(ScenarioResult<bool> result)
     [Then(@"The domain event is handled")]
     public void ThenTheDomainEventIsHandled()
     {
-        Assert.True(result.Value);
+        Assert.True(context.GetResult<bool>());
     }
 }

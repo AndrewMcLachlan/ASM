@@ -8,11 +8,8 @@ namespace Asm.Net.Tests;
 
 [Binding]
 [Scope(Feature = "IPAddress Extensions")]
-public class IPAddressExtensionsSteps
+public class IPAddressExtensionsSteps(ScenarioContext context, IPAddressExtensionsSteps.ScenarioData scenarioData)
 {
-    private ScenarioData _scenarioData;
-    private ScenarioResult<Exception> _exception;
-
     public class ScenarioData
     {
         public IPAddress IPAddress { get; set; }
@@ -23,76 +20,70 @@ public class IPAddressExtensionsSteps
         public uint IPAddressAsUInt32 { get; set; }
     }
 
-    public IPAddressExtensionsSteps(ScenarioData scenarioData, ScenarioResult<Exception> exception)
-    {
-        _scenarioData = scenarioData;
-        _exception = exception;
-    }
-
     [Given(@"I have an IP Address '(.*)'")]
     public void GivenIHaveAnIPAddress(IPAddress ipAddress)
     {
-        _scenarioData.IPAddress = ipAddress;
+        scenarioData.IPAddress = ipAddress;
     }
 
     [Given(@"I have a subnet mask '(.*)'")]
     public void GivenIHaveASubnetMask(IPAddress subnetMask)
     {
-        _scenarioData.SubnetMask = subnetMask;
+        scenarioData.SubnetMask = subnetMask;
     }
 
     [Given(@"I have an unsigned 32 bit integer (.*)")]
     public void GivenIHaveAnUnsignedBitInteger(uint ipAddressAsUint32)
     {
-        _scenarioData.IPAddressAsUInt32 = ipAddressAsUint32;
+        scenarioData.IPAddressAsUInt32 = ipAddressAsUint32;
     }
 
     [When(@"I call ToCidrString")]
     public void WhenICallToCidrString()
     {
-        _scenarioData.Cidr = _scenarioData.IPAddress.ToCidrString(_scenarioData.SubnetMask);
+        scenarioData.Cidr = scenarioData.IPAddress.ToCidrString(scenarioData.SubnetMask);
     }
 
     [When(@"I call ToCidrString expecting an exception")]
     public void WhenICallToCidrStringWithException()
     {
-        SpecFlowHelper.CatchException(() => _scenarioData.IPAddress.ToCidrString(_scenarioData.SubnetMask), _exception);
+        context.CatchException(() => scenarioData.IPAddress.ToCidrString(scenarioData.SubnetMask));
     }
 
     [When(@"I call ToUInt32")]
     public void WhenICallToUInt32()
     {
-        _scenarioData.IPAddressAsUInt32 = _scenarioData.IPAddress.ToUInt32();
+        scenarioData.IPAddressAsUInt32 = scenarioData.IPAddress.ToUInt32();
     }
 
     [When(@"I call ToUInt32 expecting an exception")]
     public void WhenICallToUInt32WithException()
     {
-        SpecFlowHelper.CatchException(() => _scenarioData.IPAddress.ToUInt32(), _exception);
+        context.CatchException(() => scenarioData.IPAddress.ToUInt32());
     }
 
     [When(@"I call FromUInt32")]
     public void WhenICallFromUInt()
     {
-        _scenarioData.IPAddress = IPAddressExtensions.FromUInt32(_scenarioData.IPAddressAsUInt32);
+        scenarioData.IPAddress = IPAddressExtensions.FromUInt32(scenarioData.IPAddressAsUInt32);
     }
 
     [Then(@"the string value '(.*)' will be returned")]
     public void ThenTheStringValue_WillBeReturned(string expected)
     {
-        Assert.Equal(expected, _scenarioData.Cidr);
+        Assert.Equal(expected, scenarioData.Cidr);
     }
 
     [Then(@"the unsigned 32 bit integer value (.*) will be returned")]
     public void ThenTheUnsigned32BitIntegerValue_WillBeReturned(uint expected)
     {
-        Assert.Equal(expected, _scenarioData.IPAddressAsUInt32);
+        Assert.Equal(expected, scenarioData.IPAddressAsUInt32);
     }
 
     [Then(@"the IP Address (.*) is returned")]
     public void ThenTheIPAddress_IsReturned(IPAddress ipAddress)
     {
-        Assert.Equal(ipAddress, _scenarioData.IPAddress);
+        Assert.Equal(ipAddress, scenarioData.IPAddress);
     }
 
 }

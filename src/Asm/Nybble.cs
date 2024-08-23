@@ -11,10 +11,10 @@ namespace Asm;
 /// </summary>
 [Serializable]
 [CLSCompliant(false)]
-public struct Nybble
+public readonly struct Nybble
 {
     #region Fields
-    private byte _byteValue;
+    private readonly byte _byteValue;
     /// <summary>
     /// Represents the smallest possible value of a Nybble. This field is constant.
     /// </summary>
@@ -51,14 +51,7 @@ public struct Nybble
         }
         else
         {
-            BitArray b = new(new byte[] { Convert.ToByte(value) });
-            _byteValue = Convert.ToByte(b[0]);
-            _byteValue <<= 1;
-            _byteValue |= Convert.ToByte(b[1]);
-            _byteValue <<= 1;
-            _byteValue |= Convert.ToByte(b[2]);
-            _byteValue <<= 1;
-            _byteValue |= Convert.ToByte(b[3]);
+            _byteValue = value;
         }
     }
     #endregion
@@ -135,9 +128,7 @@ public struct Nybble
 
         aa <<= 4;
 
-        int cc = aa | bb;
-
-        return Convert.ToByte(cc);
+        return Convert.ToByte(aa | bb);
     }
 
     /// <summary>
@@ -171,9 +162,7 @@ public struct Nybble
 
         aa <<= 4;
 
-        int cc = aa | bb;
-
-        return cc;
+        return aa | bb;
     }
 
     /// <summary>
@@ -252,9 +241,6 @@ public struct Nybble
             b[i] = bLE[j];
         }
 
-        Nybble n1 = new();
-        Nybble n2 = new();
-
         byte b1, b2;
         b1 = Convert.ToByte(b[0]);
         b1 <<= 1;
@@ -272,8 +258,8 @@ public struct Nybble
         b2 <<= 1;
         b2 |= Convert.ToByte(b[7]);
 
-        n1._byteValue = b1;
-        n2._byteValue = b2;
+        Nybble n1 = new(b1);
+        Nybble n2 = new(b2);
 
         return [n1, n2];
     }

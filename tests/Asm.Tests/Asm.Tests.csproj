@@ -4,10 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
     <PackageReference Include="SpecFlow" Version="3.9.74" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
     <PackageReference Include="SpecFlow.xUnit" Version="3.9.74" />
@@ -29,5 +30,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Asm.Testing" />
+    <Using Include="TechTalk.SpecFlow" />
+    <Using Include="Xunit" />
+  </ItemGroup>
 
 </Project>

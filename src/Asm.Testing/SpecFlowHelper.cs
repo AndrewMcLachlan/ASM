@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace Asm.Testing;
+﻿namespace Asm.Testing;
 
 public static class SpecFlowHelper
 {
@@ -11,23 +9,19 @@ public static class SpecFlowHelper
         return str.Replace(@"\r", "\r").Replace(@"\n", "\n").Replace(@"\t", "\t");
     }
 
-    public static void CatchException(Action action, ScenarioResult<Exception> scenarioData)
+    public static void CatchException(this ScenarioContext context, Action action)
     {
         var exception = Record.Exception(action);
 
-        Assert.NotNull(scenarioData);
-
-        scenarioData.Value = exception;
+        context.AddException(exception);
 
     }
 
-    public static async Task CatchExceptionAsync(Func<Task> testCode, ScenarioResult<Exception> scenarioData)
+    public static async Task CatchExceptionAsync(this ScenarioContext context, Func<Task> testCode)
     {
         var exception = await Record.ExceptionAsync(testCode);
 
-        Assert.NotNull(scenarioData);
-
-        scenarioData.Value = exception;
+        context.AddException(exception);
 
     }
 }
