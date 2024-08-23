@@ -83,12 +83,14 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Copy method should return correct sub-array")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "Copy method should return correct sub-array")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void CopyMethodShouldReturnCorrectSub_Array()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Copy method should return correct sub-array", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 2
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,13 +100,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 3
+#line 5
     testRunner.Given("a ByteArray with values 1, 2, 3, 4, 5 and big endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 4
+#line 6
     testRunner.When("I copy from index 1 with length 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 5
+#line 7
     testRunner.Then("the result should be a ByteArray with values 2, 3, 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -114,17 +116,24 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableTheoryAttribute(DisplayName="ToCharArray method should convert to char array")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToCharArray method should convert to char array")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("big", "65,66,67", "A,B,C", new string[0])]
         [Xunit.InlineDataAttribute("little", "65,66,67", "C,B,A", new string[0])]
         public void ToCharArrayMethodShouldConvertToCharArray(string endian, string values, string expected, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Endian", endian);
             argumentsOfScenario.Add("Values", values);
             argumentsOfScenario.Add("Expected", expected);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToCharArray method should convert to char array", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -134,13 +143,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 11
     testRunner.Given(string.Format("a ByteArray with values {0} and {1} endian", values, endian), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 12
     testRunner.When("I convert to char array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 10
+#line 13
     testRunner.Then(string.Format("the result should be a char array with values {0}", expected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -150,12 +159,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="ToUInt16BE method should convert to UInt16")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt16BE method should convert to UInt16")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ToUInt16BEMethodShouldConvertToUInt16()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt16BE method should convert to UInt16", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 16
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -165,13 +176,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 21
     testRunner.Given("a ByteArray with values 1, 2 and big endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 22
     testRunner.When("I convert to UInt16", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
+#line 23
     testRunner.Then("the ushort result should be 258", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -181,42 +192,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="ToUInt16LE method should convert to UInt16")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt16LE method should convert to UInt16")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ToUInt16LEMethodShouldConvertToUInt16()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt16LE method should convert to UInt16", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 21
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 22
-    testRunner.Given("a ByteArray with values 1, 2 and little endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 23
-    testRunner.When("I convert to UInt16", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 24
-    testRunner.Then("the ushort result should be 513", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="ToUInt32BE method should convert to UInt32")]
-        [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
-        [Xunit.TraitAttribute("Description", "ToUInt32BE method should convert to UInt32")]
-        public void ToUInt32BEMethodShouldConvertToUInt32()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt32BE method should convert to UInt32", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -228,12 +210,45 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 27
-    testRunner.Given("a ByteArray with values 1, 2, 3, 4 and big endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("a ByteArray with values 1, 2 and little endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 28
-    testRunner.When("I convert to UInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("I convert to UInt16", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
+    testRunner.Then("the ushort result should be 513", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="ToUInt32BE method should convert to UInt32")]
+        [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [Xunit.TraitAttribute("Description", "ToUInt32BE method should convert to UInt32")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        public void ToUInt32BEMethodShouldConvertToUInt32()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt32BE method should convert to UInt32", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 32
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 33
+    testRunner.Given("a ByteArray with values 1, 2, 3, 4 and big endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 34
+    testRunner.When("I convert to UInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 35
     testRunner.Then("the uint result should be 16909060", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -243,12 +258,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="ToUInt32LE method should convert to UInt32")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt32LE method should convert to UInt32")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ToUInt32LEMethodShouldConvertToUInt32()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt32LE method should convert to UInt32", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 31
+#line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -258,13 +275,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 32
+#line 39
     testRunner.Given("a ByteArray with values 1, 2, 3, 4 and little endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 33
+#line 40
     testRunner.When("I convert to UInt32", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 41
     testRunner.Then("the uint result should be 67305985", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -274,12 +291,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="ToUInt64BE method should convert to UInt64")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt64BE method should convert to UInt64")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ToUInt64BEMethodShouldConvertToUInt64()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt64BE method should convert to UInt64", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 36
+#line 44
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -289,13 +308,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 37
+#line 45
     testRunner.Given("a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8 and big endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
+#line 46
     testRunner.When("I convert to UInt64", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 39
+#line 47
     testRunner.Then("the ulong result should be 72623859790382856", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -305,12 +324,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="ToUInt64LE method should convert to UInt64")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt64LE method should convert to UInt64")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ToUInt64LEMethodShouldConvertToUInt64()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToUInt64LE method should convert to UInt64", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 41
+#line 50
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -320,13 +341,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 42
+#line 51
     testRunner.Given("a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8 and little endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 43
+#line 52
     testRunner.When("I convert to UInt64", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 53
     testRunner.Then("the ulong result should be 578437695752307201", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -336,12 +357,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="ToGuid method should convert to Guid")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToGuid method should convert to Guid")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ToGuidMethodShouldConvertToGuid()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToGuid method should convert to Guid", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 46
+#line 56
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -351,14 +374,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 47
+#line 57
     testRunner.Given("a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 and" +
                         " big endian", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 48
+#line 58
     testRunner.When("I convert to Guid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 59
     testRunner.Then("the GUID result should be \"04030201-0605-0807-090a-0b0c0d0e0f10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -368,6 +391,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableTheoryAttribute(DisplayName="Check equality")]
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "Check equality")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("1,2,3,4", "big", "1,2,3,4", "big", "true", new string[0])]
         [Xunit.InlineDataAttribute("1,2,3,4", "little", "1,2,3,4", "little", "true", new string[0])]
         [Xunit.InlineDataAttribute("1,2,3,4", "big", "1,2,3,4", "little", "false", new string[0])]
@@ -375,7 +399,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.InlineDataAttribute("1,2,3,4", "big", "1,2,3,5", "big", "false", new string[0])]
         public void CheckEquality(string values1, string endian1, string values2, string endian2, string result, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Values 1", values1);
             argumentsOfScenario.Add("Endian 1", endian1);
@@ -383,7 +413,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("Endian 2", endian2);
             argumentsOfScenario.Add("Result", result);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check equality", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 51
+#line 62
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -393,16 +423,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 52
+#line 63
     testRunner.Given(string.Format("a ByteArray with values {0} and {1} endian", values1, endian1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 64
     testRunner.And(string.Format("another ByteArray with values {0} and {1} endian", values2, endian2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 65
     testRunner.When("I check for equality", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 55
+#line 66
     testRunner.Then(string.Format("the boolean result should be {0}", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

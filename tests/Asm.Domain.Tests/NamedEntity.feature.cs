@@ -83,6 +83,7 @@ namespace Asm.Domain.Tests
         [Xunit.SkippableTheoryAttribute(DisplayName="Compare")]
         [Xunit.TraitAttribute("FeatureTitle", "Named Entity tests")]
         [Xunit.TraitAttribute("Description", "Compare")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("Alice", "Bob", "-1", new string[0])]
         [Xunit.InlineDataAttribute("Bob", "Alice", "1", new string[0])]
         [Xunit.InlineDataAttribute("Alice", "Alice", "0", new string[0])]
@@ -97,13 +98,19 @@ namespace Asm.Domain.Tests
         [Xunit.InlineDataAttribute("Alice", "1", "16", new string[0])]
         public void Compare(string firstName, string secondName, string result, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("First Name", firstName);
             argumentsOfScenario.Add("Second Name", secondName);
             argumentsOfScenario.Add("Result", result);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Compare", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -113,16 +120,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
  testRunner.Given(string.Format("I have a named entity with name \'{0}\'", firstName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 6
+#line 7
  testRunner.And(string.Format("I have a second  named entity with name \'{0}\'", secondName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 7
+#line 8
  testRunner.When("I call first.CompareTo(second)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 8
+#line 9
  testRunner.Then(string.Format("the integer value {0} is returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

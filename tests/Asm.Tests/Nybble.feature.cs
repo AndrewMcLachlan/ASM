@@ -83,13 +83,15 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Create a Nybble with a valid value")]
         [Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [Xunit.TraitAttribute("Description", "Create a Nybble with a valid value")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void CreateANybbleWithAValidValue()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a Nybble with a valid value", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 2
-  this.ScenarioInitialize(scenarioInfo);
+#line 4
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -98,13 +100,13 @@ namespace Asm.Tests
             else
             {
                 this.ScenarioStart();
-#line 3
+#line 5
     testRunner.Given("I have a value 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 4
+#line 6
     testRunner.When("I create a Nybble", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 5
+#line 7
     testRunner.Then("the Nybble value should be 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -114,13 +116,15 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Create a Nybble with an invalid value")]
         [Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [Xunit.TraitAttribute("Description", "Create a Nybble with an invalid value")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void CreateANybbleWithAnInvalidValue()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a Nybble with an invalid value", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
-  this.ScenarioInitialize(scenarioInfo);
+#line 10
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -129,13 +133,13 @@ namespace Asm.Tests
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 11
     testRunner.Given("I have a value 20", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 12
     testRunner.When("I create a Nybble", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 10
+#line 13
     testRunner.Then("an exception of type \"System.OverflowException\" should be thrown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -145,13 +149,15 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Add two Nybbles")]
         [Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [Xunit.TraitAttribute("Description", "Add two Nybbles")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void AddTwoNybbles()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add two Nybbles", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 12
-  this.ScenarioInitialize(scenarioInfo);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -160,16 +166,16 @@ namespace Asm.Tests
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 17
     testRunner.Given("I have a Nybble with value 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 14
+#line 18
     testRunner.And("I have another Nybble with value 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 19
     testRunner.When("I add the two Nybbles", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 16
+#line 20
     testRunner.Then("the byte result should be 83", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -179,44 +185,15 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Convert Nybble array to uint")]
         [Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [Xunit.TraitAttribute("Description", "Convert Nybble array to uint")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void ConvertNybbleArrayToUint()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert Nybble array to uint", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 18
-  this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 19
-    testRunner.Given("I have a Nybble array with values 1, 2, 3, 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 20
-    testRunner.When("I convert the array to uint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 21
-    testRunner.Then("the uint result should be 0x1234", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Check equality of two Nybbles")]
-        [Xunit.TraitAttribute("FeatureTitle", "Nybble")]
-        [Xunit.TraitAttribute("Description", "Check equality of two Nybbles")]
-        public void CheckEqualityOfTwoNybbles()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check equality of two Nybbles", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 23
-  this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -226,15 +203,48 @@ namespace Asm.Tests
             {
                 this.ScenarioStart();
 #line 24
-    testRunner.Given("I have a Nybble with value 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have a Nybble array with values 1, 2, 3, 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 25
-    testRunner.And("I have another Nybble with value 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.When("I convert the array to uint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 26
+    testRunner.Then("the uint result should be 0x1234", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Check equality of two Nybbles")]
+        [Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [Xunit.TraitAttribute("Description", "Check equality of two Nybbles")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        public void CheckEqualityOfTwoNybbles()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check equality of two Nybbles", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 29
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 30
+    testRunner.Given("I have a Nybble with value 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 31
+    testRunner.And("I have another Nybble with value 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
     testRunner.When("I check equality", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 33
     testRunner.Then("the boolean result should be true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

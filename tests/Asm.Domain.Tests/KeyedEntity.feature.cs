@@ -83,18 +83,25 @@ namespace Asm.Domain.Tests
         [Xunit.SkippableTheoryAttribute(DisplayName="Test equality with .Equals")]
         [Xunit.TraitAttribute("FeatureTitle", "Keyed Entity tests")]
         [Xunit.TraitAttribute("Description", "Test equality with .Equals")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("1", "1", "true", new string[0])]
         [Xunit.InlineDataAttribute("1", "2", "false", new string[0])]
         [Xunit.InlineDataAttribute("1", "<NULL>", "false", new string[0])]
         public void TestEqualityWith_Equals(string firstID, string secondID, string result, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("First ID", firstID);
             argumentsOfScenario.Add("Second ID", secondID);
             argumentsOfScenario.Add("Result", result);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test equality with .Equals", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -104,16 +111,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
  testRunner.Given(string.Format("I have a keyed entity with ID {0}", firstID), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 6
+#line 7
  testRunner.And(string.Format("I have a second  keyed entity with ID {0}", secondID), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 7
+#line 8
  testRunner.When("I call first.Equals(second)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 8
+#line 9
  testRunner.Then(string.Format("the boolean value {0} is returned", result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -123,6 +130,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableTheoryAttribute(DisplayName="Test equality with ==")]
         [Xunit.TraitAttribute("FeatureTitle", "Keyed Entity tests")]
         [Xunit.TraitAttribute("Description", "Test equality with ==")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("1", "1", "true", new string[0])]
         [Xunit.InlineDataAttribute("1", "2", "false", new string[0])]
         [Xunit.InlineDataAttribute("2", "1", "false", new string[0])]
@@ -131,7 +139,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.InlineDataAttribute("<NULL>", "1", "false", new string[0])]
         public void TestEqualityWith(string firstID, string secondID, string result, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("First ID", firstID);
             argumentsOfScenario.Add("Second ID", secondID);
@@ -166,6 +180,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableTheoryAttribute(DisplayName="Test inequality with !=")]
         [Xunit.TraitAttribute("FeatureTitle", "Keyed Entity tests")]
         [Xunit.TraitAttribute("Description", "Test inequality with !=")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("1", "1", "false", new string[0])]
         [Xunit.InlineDataAttribute("1", "2", "true", new string[0])]
         [Xunit.InlineDataAttribute("2", "1", "true", new string[0])]
@@ -174,7 +189,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.InlineDataAttribute("<NULL>", "1", "true", new string[0])]
         public void TestInequalityWith(string firstID, string secondID, string result, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("First ID", firstID);
             argumentsOfScenario.Add("Second ID", secondID);
@@ -209,6 +230,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableTheoryAttribute(DisplayName="Test equality with the Eqality Comparer")]
         [Xunit.TraitAttribute("FeatureTitle", "Keyed Entity tests")]
         [Xunit.TraitAttribute("Description", "Test equality with the Eqality Comparer")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("1", "1", "true", new string[0])]
         [Xunit.InlineDataAttribute("1", "2", "false", new string[0])]
         [Xunit.InlineDataAttribute("2", "1", "false", new string[0])]
@@ -217,7 +239,13 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.InlineDataAttribute("<NULL>", "1", "false", new string[0])]
         public void TestEqualityWithTheEqalityComparer(string firstID, string secondID, string result, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("First ID", firstID);
             argumentsOfScenario.Add("Second ID", secondID);
