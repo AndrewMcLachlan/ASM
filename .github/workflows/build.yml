@@ -33,7 +33,7 @@ jobs:
       run: dotnet restore Asm.sln
 
     - name: Build
-      run: dotnet build Asm.sln --no-restore --verbosity normal
+      run: dotnet build Asm.sln --no-restore --configuration Release
 
     - name: Test
       run: dotnet test Asm.sln --no-restore --no-build --filter 'Category=Unit&FullyQualifiedName!~Testing' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults
