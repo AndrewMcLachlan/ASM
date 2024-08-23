@@ -6,6 +6,7 @@ namespace Asm.Cqrs.Tests.Commands;
 public class CommandTests
 {
     [Fact]
+    [Trait("Category", "Unit")]
     public async Task NegaTest()
     {
         ServiceCollection services = new();
@@ -22,6 +23,7 @@ public class CommandTests
     }
 
     [Fact]
+    [Trait("Category", "Unit")]
     public async Task PosiTest()
     {
         ServiceCollection services = new();

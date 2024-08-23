@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using Asm.Win32;
-using Xunit;
 
-namespace Asm.Tests;
+namespace Asm.Win32.Tests;
 
-public class HostsTests
+public partial class HostsTests
 {
-    public static string hostsFile;
-    public static string badHostsFile;
+    private static string hostsFile;
+    private static string badHostsFile;
 
     public static IEnumerable<object[]> HostsFile
     {
@@ -44,6 +38,7 @@ public class HostsTests
 
 
     [Fact]
+    [Trait("Category", "Win32")]
     public void HostsLoadTest1()
     {
         Assert.True(Hosts.Current.Entries.Count() > 0);
@@ -51,6 +46,7 @@ public class HostsTests
 
     [Theory]
     [MemberData(nameof(HostsFile))]
+    [Trait("Category", "Win32")]
     public void HostsLoadTest2(string hostsFile)
     {
         Hosts hosts;
@@ -87,9 +83,10 @@ public class HostsTests
     }
 
     [Fact]
+    [Trait("Category", "Win32")]
     public void HostsLoadTest3()
     {
-        using (MemoryStream stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(badHostsFile)))
+        using (MemoryStream stream = new(Encoding.UTF8.GetBytes(badHostsFile)))
         {
             Assert.Throws<FormatException>(() => new Hosts(stream));
         }
@@ -99,11 +96,14 @@ public class HostsTests
     public void RegexTest()
     {
         string line = "127.0.0.1\tHello";
-        Regex commentMatch = new Regex(@"^[#]{1}?(.*)$");
+        Regex commentMatch = CommentRegex();
         Match match = commentMatch.Match(line);
 
         Assert.False(match.Success);
 
-        match = commentMatch.Match("###Hello");
+        _ = commentMatch.Match("###Hello");
     }
+
+    [GeneratedRegex(@"^[#]{1}?(.*)$")]
+    private static partial Regex CommentRegex();
 }

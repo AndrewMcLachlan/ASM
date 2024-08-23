@@ -6,6 +6,7 @@ namespace Asm.Tests;
 public class NameValueCollectionExtensionsTests
 {
     [Fact]
+    [Trait("Category", "Unit")]
     public void GetValueTest()
     {
         NameValueCollection collection = new NameValueCollection();
