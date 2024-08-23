@@ -1,6 +1,7 @@
 Feature: Named Entity tests
 Prove that named entity comparison works
 
+@Unit
 Scenario Outline: Compare
 	Given I have a named entity with name '<First Name>'
 	And I have a second  named entity with name '<Second Name>'

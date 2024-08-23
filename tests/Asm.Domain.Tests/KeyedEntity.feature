@@ -1,6 +1,7 @@
 Feature: Keyed Entity tests
 Prove that keyed entity equality works
 
+@Unit
 Scenario Outline: Test equality with .Equals
 	Given I have a keyed entity with ID <First ID>
 	And I have a second  keyed entity with ID <Second ID>
@@ -13,8 +14,7 @@ Examples:
 | 1        | 2         | false  |
 | 1        | <NULL>    | false  |
 
-
-
+@Unit
 Scenario Outline: Test equality with ==
 	Given I have a keyed entity with ID <First ID>
 	And I have a second  keyed entity with ID <Second ID>
@@ -30,7 +30,7 @@ Examples:
 | <NULL>   | <NULL>    | true   |
 | <NULL>   | 1         | false  |
 
-
+@Unit
 Scenario Outline: Test inequality with !=
 	Given I have a keyed entity with ID <First ID>
 	And I have a second  keyed entity with ID <Second ID>
@@ -46,7 +46,7 @@ Examples:
 | <NULL>   | <NULL>    | false  |
 | <NULL>   | 1         | true   |
 
-
+@Unit
 Scenario Outline: Test equality with the Eqality Comparer
 	Given I have a keyed entity with ID <First ID>
 	And I have a second  keyed entity with ID <Second ID>
