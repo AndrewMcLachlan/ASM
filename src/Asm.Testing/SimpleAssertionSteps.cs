@@ -97,6 +97,7 @@ public class SimpleAssertionSteps(ScenarioContext context)
     /// Asserts whether the result is <see langword="null" />.
     /// </summary>
     [Then(@"the value is null")]
+    [Then(@"the result should be null")]
     public void ThenTheValueIsNull()
     {
         var result = context.Get<object?>(ResultKey);

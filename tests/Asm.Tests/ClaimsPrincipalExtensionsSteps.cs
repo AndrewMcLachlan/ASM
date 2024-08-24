@@ -6,7 +6,6 @@ namespace Asm.Testing;
 public class ClaimsPrincipalExtensionsSteps(ScenarioContext context)
 {
     private ClaimsPrincipal _claimsPrincipal;
-    private object _result;
 
     [Given(@"I have a ClaimsPrincipal with a claim of type ""(.*)"" and value ""(.*)""")]
     public void GivenIHaveAClaimsPrincipalWithAClaimOfTypeAndValue(string claimType, string claimValue)
@@ -40,23 +39,5 @@ public class ClaimsPrincipalExtensionsSteps(ScenarioContext context)
     public void WhenIGetTheClaimValueAsString()
     {
         context.AddResult(_claimsPrincipal.GetClaimValue<string>("claimType"));
-    }
-
-    [Then(@"the result should be ""(.*)""")]
-    public void ThenTheResultShouldBe(string expected)
-    {
-        Assert.Equal(expected, _result?.ToString());
-    }
-
-    [Then(@"the result should be (.*)")]
-    public void ThenTheResultShouldBe(int expected)
-    {
-        Assert.Equal(expected, _result);
-    }
-
-    [Then(@"the result should be null")]
-    public void ThenTheResultShouldBeNull()
-    {
-        Assert.Null(_result);
     }
 }

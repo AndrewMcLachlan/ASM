@@ -12,6 +12,8 @@ public class IQueryableExtensionsSteps
 
         public override bool Equals(object obj) =>
             obj is Item item && item.Id == Id && item.Name == Name;
+
+        public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
     private IQueryable<Item> _dataSource;
