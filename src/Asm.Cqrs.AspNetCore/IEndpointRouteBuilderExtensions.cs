@@ -1,7 +1,8 @@
-﻿using Asm.Cqrs.Commands;
+﻿using Asm.AspNetCore;
+using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
 
-namespace Asm.Cqrs.AspNetCore;
+namespace Asm.AspNetCore;
 
 /// <summary>
 /// Extensions for the <see cref="IEndpointRouteBuilder"/> interface.

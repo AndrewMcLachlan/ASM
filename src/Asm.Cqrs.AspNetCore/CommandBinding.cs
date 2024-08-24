@@ -1,4 +1,4 @@
-﻿namespace Asm.Cqrs.AspNetCore;
+﻿namespace Asm.AspNetCore;
 
 /// <summary>
 /// Options for binding command parameters.

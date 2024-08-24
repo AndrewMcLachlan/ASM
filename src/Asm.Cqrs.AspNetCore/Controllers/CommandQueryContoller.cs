@@ -8,30 +8,24 @@ namespace Asm.AspNetCore.Controllers;
 /// <summary>
 /// A controller that supports CQRS commands and queries.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="CommandQueryController"/> class.
+/// </remarks>
+/// <param name="queryDispatcher">A query dispatcher instance.</param>
+/// <param name="commandDispatcher">A command dispatcher instance.</param>
 [ApiController]
 [Authorize]
-public abstract class CommandQueryController : ControllerBase
+public abstract class CommandQueryController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher) : ControllerBase
 {
     /// <summary>
     /// A dispatcher for queries.
     /// </summary>
-    protected IQueryDispatcher QueryDispatcher { get; private set; }
+    protected IQueryDispatcher QueryDispatcher { get; private set; } = queryDispatcher;
 
     /// <summary>
     /// A dispatcher for commands.
     /// </summary>
-    protected ICommandDispatcher CommandDispatcher { get; private set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CommandQueryController"/> class.
-    /// </summary>
-    /// <param name="queryDispatcher">A query dispatcher instance.</param>
-    /// <param name="commandDispatcher">A command dispatcher instance.</param>
-    public CommandQueryController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher)
-    {
-        QueryDispatcher = queryDispatcher;
-        CommandDispatcher = commandDispatcher;
-    }
+    protected ICommandDispatcher CommandDispatcher { get; private set; } = commandDispatcher;
 
     /// <summary>
     /// Gets the name of a controller with the "Controller" suffix removed.

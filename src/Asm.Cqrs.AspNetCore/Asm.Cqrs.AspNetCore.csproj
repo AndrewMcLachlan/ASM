@@ -5,6 +5,7 @@
   <PropertyGroup>
     <Description>CQRS support for ASP.NET Core minimal APIs</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <RootNamespace>Asm.AspNetCore</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,12 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
     <ProjectReference Include="..\Asm.Cqrs\Asm.Cqrs.csproj" />
     <ProjectReference Include="..\Asm\Asm.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.AspNetCore.Builder" />
+    <Using Include="Microsoft.AspNetCore.Http" />
+    <Using Include="Microsoft.AspNetCore.Routing" />
   </ItemGroup>
 
 </Project>

@@ -31,6 +31,12 @@ Scenario: Squish
     Then the string value 'llo Wor' is returned
 
 @Unit
+Scenario: Convert string to title case
+    Given I have a string 'hello world'
+    When I convert the string to title case
+    Then the string value 'Hello World' is returned
+
+@Unit
 Scenario Outline: ToMachine
     Given I have a string '<string>'
     When I convert the string to machine format

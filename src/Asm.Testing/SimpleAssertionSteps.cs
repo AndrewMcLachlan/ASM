@@ -51,6 +51,8 @@ public class SimpleAssertionSteps(ScenarioContext context)
     [Then(@"the date '([^']*)' is returned")]
     [Then(@"the date result should be ""([^""]*)""")]
     [Then(@"the date result should be '([^']*)'")]
+    [Then(@"the DateTime result should be ""([^""]*)""")]
+    [Then(@"the DateTime result should be '([^']*)'")]
     public void ThenTheDateIsReturned(DateTime? expected) => AssertValue(expected);
 
     /// <summary>
@@ -97,6 +99,7 @@ public class SimpleAssertionSteps(ScenarioContext context)
     /// Asserts whether the result is <see langword="null" />.
     /// </summary>
     [Then(@"the value is null")]
+    [Then(@"the result should be null")]
     public void ThenTheValueIsNull()
     {
         var result = context.Get<object?>(ResultKey);

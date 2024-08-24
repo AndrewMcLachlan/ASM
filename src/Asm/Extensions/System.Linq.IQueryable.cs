@@ -18,10 +18,8 @@ public static class IQueryableExtensions
     /// An <see cref="IQueryable{T}"/> that contains the specified number of elements from
     /// the page.
     /// </returns>
-    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, int pageSize, int pageNumber)
-    {
-        return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-    }
+    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, int pageSize, int pageNumber) =>
+        source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
     /// <summary>
     /// Converts the supplied expressions into a single where/or expression.
@@ -47,8 +45,6 @@ public static class IQueryableExtensions
 
 file class ParameterSubstitutionVisitor(ParameterExpression source, ParameterExpression destination) : ExpressionVisitor
 {
-    protected override Expression VisitParameter(ParameterExpression node)
-    {
-        return ReferenceEquals(node, source) ? destination : base.VisitParameter(node);
-    }
+    protected override Expression VisitParameter(ParameterExpression node) =>
+        ReferenceEquals(node, source) ? destination : base.VisitParameter(node);
 }

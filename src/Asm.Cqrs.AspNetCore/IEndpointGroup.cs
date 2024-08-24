@@ -1,4 +1,4 @@
-﻿namespace Asm.Cqrs.AspNetCore;
+﻿namespace Asm.AspNetCore;
 
 /// <summary>
 /// Represents a group of endpoints with a common ancestor path.

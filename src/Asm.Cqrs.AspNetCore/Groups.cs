@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Asm.Cqrs.AspNetCore;
+namespace Asm.AspNetCore;
 
 /// <summary>
 /// Helpers to map groups of endpoints.

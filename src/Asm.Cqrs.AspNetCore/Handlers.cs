@@ -1,8 +1,9 @@
-﻿using Asm.Cqrs.Commands;
+﻿using Asm.AspNetCore;
+using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Asm.Cqrs.AspNetCore;
+namespace Asm.AspNetCore;
 internal static class Handlers
 {
     #region Integrated CQRS Handlers

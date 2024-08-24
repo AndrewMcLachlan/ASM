@@ -18,17 +18,8 @@ public static partial class StringExtensions
     /// <param name="value">The string to append.</param>
     /// <param name="separator">The string that separates the two strings.</param>
     /// <returns>The appended string.</returns>
-    public static string Append(this string str, string value, string separator)
-    {
-        if (str.Length == 0)
-        {
-            return str + value;
-        }
-        else
-        {
-            return str + separator + value;
-        }
-    }
+    public static string Append(this string str, string value, string separator) =>
+        str.Length == 0 ? str + value : str + separator + value;
 
     /// <summary>
     /// Reduces a string in length from beginning and/or end.
@@ -42,7 +33,7 @@ public static partial class StringExtensions
     /// <exception cref="InvalidOperationException">Thrown if the total number of characters to be removed exceeds the length of the string.</exception>
     public static string Squish(this string str, int? fromStart = null, int? fromEnd = null)
     {
-        if (str == null) throw new ArgumentNullException(nameof(str));
+        ArgumentNullException.ThrowIfNull(str);
 
         if (fromStart < 0 || fromStart > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), $"{nameof(fromStart)} must be greater than zero and less than the length of the string");
         if (fromEnd < 0 || fromEnd > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), $"{nameof(fromStart)} must be greater than zero and less than the length of the string");
@@ -61,30 +52,16 @@ public static partial class StringExtensions
     /// <param name="value">The string to prepend.</param>
     /// <param name="separator">The string that separates the two strings.</param>
     /// <returns>The prepended string.</returns>
-    public static string Prepend(this string str, string value, string separator)
-    {
-        if (str.Length == 0)
-        {
-            return value + str;
-        }
-        else
-        {
-            return value + separator + str;
-        }
-    }
+    public static string Prepend(this string str, string value, string separator) =>
+        str.Length == 0 ? value + str : value + separator + str;
 
     /// <summary>
     /// Converts the string to title case.
     /// </summary>
     /// <param name="str">The string.</param>
     /// <returns>A title cased string.</returns>
-    public static string ToTitleCase(this string str)
-    {
-        if (str == null) throw new ArgumentNullException(nameof(str));
-
-        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToUpperInvariant());
-    }
-
+    public static string ToTitleCase(this string str) =>
+        str == null ? throw new ArgumentNullException(nameof(str)) : CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLowerInvariant());
 
     #region ToMachine
     [GeneratedRegex("[^a-zA-Z0-9_-]")]

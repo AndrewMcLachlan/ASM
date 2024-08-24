@@ -91,11 +91,16 @@ public static class DateTimeExtensions
     /// <returns>The number of months between the dates.</returns>
     public static int DifferenceInMonths(this DateTime date, DateTime other)
     {
-        var months = Math.Abs((date.Year - other.Year) * 12 + (date.Month - other.Month));
+        DateTime earlier = date < other ? date : other;
+        DateTime later = date < other ? other : date;
+
+        var months = (later.Year - earlier.Year) * 12 + (later.Month - earlier.Month);
+
+        if (months == 0) return months;
 
         // Round part months up or down
-        return date.Day - other.Day < 0 ? months + 1 :
-               date.Day - other.Day > 0 ? months - 1 :
+        return later.Day - earlier.Day < 0 ? months - 1 :
+               later.Day - earlier.Day > 0 ? months + 1 :
                months;
     }
 

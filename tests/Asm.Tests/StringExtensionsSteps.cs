@@ -41,4 +41,11 @@ public class StringExtensionsSteps(ScenarioContext context)
     {
         context.AddResult(_input.ToMachine());
     }
+
+    [When(@"I convert the string to title case")]
+    public void WhenIConvertTheStringToTitleCase()
+    {
+        context.AddResult(_input.ToTitleCase());
+    }
+
 }

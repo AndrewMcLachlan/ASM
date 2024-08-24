@@ -33,11 +33,16 @@ public static class DateOnlyExtensions
     /// <returns>The number of months between the dates.</returns>
     public static int DifferenceInMonths(this DateOnly date, DateOnly other)
     {
-        var months = Math.Abs((date.Year - other.Year) * 12 + (date.Month - other.Month));
+        DateOnly earlier = date < other ? date : other;
+        DateOnly later = date < other ? other : date;
+
+        var months = (later.Year - earlier.Year) * 12 + (later.Month - earlier.Month);
+
+        if (months == 0) return months;
 
         // Round part months up or down
-        return date.Day - other.Day < 0 ? months + 1 :
-               date.Day - other.Day > 0 ? months - 1 :
+        return later.Day - earlier.Day < 0 ? months - 1 :
+               later.Day - earlier.Day > 0 ? months + 1 :
                months;
     }
 }
