@@ -205,6 +205,39 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="Convert string to title case")]
+        [Xunit.TraitAttribute("FeatureTitle", "String Extensions")]
+        [Xunit.TraitAttribute("Description", "Convert string to title case")]
+        [Xunit.TraitAttribute("Category", "Unit")]
+        public void ConvertStringToTitleCase()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert string to title case", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 34
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 35
+    testRunner.Given("I have a string \'hello world\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 36
+    testRunner.When("I convert the string to title case", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 37
+    testRunner.Then("the string value \'Hello World\' is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.SkippableTheoryAttribute(DisplayName="ToMachine")]
         [Xunit.TraitAttribute("FeatureTitle", "String Extensions")]
         [Xunit.TraitAttribute("Description", "ToMachine")]
@@ -225,7 +258,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("string", @string);
             argumentsOfScenario.Add("value", value);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ToMachine", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 34
+#line 40
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -235,13 +268,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 35
+#line 41
     testRunner.Given(string.Format("I have a string \'{0}\'", @string), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 36
+#line 42
     testRunner.When("I convert the string to machine format", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 37
+#line 43
     testRunner.Then(string.Format("the string value \'{0}\' is returned", value), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
