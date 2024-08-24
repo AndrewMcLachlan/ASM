@@ -51,6 +51,8 @@ public class SimpleAssertionSteps(ScenarioContext context)
     [Then(@"the date '([^']*)' is returned")]
     [Then(@"the date result should be ""([^""]*)""")]
     [Then(@"the date result should be '([^']*)'")]
+    [Then(@"the DateTime result should be ""([^""]*)""")]
+    [Then(@"the DateTime result should be '([^']*)'")]
     public void ThenTheDateIsReturned(DateTime? expected) => AssertValue(expected);
 
     /// <summary>

@@ -28,7 +28,7 @@ namespace Asm.Tests
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ClaimsExtensions.feature"
+#line 1 "ClaimsPrincipalExtensions.feature"
 #line hidden
         
         public ClaimsPrincipalExtensionsFeature(ClaimsPrincipalExtensionsFeature.FixtureData fixtureData, Asm_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
@@ -84,12 +84,14 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Get claim value as Guid")]
         [Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [Xunit.TraitAttribute("Description", "Get claim value as Guid")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void GetClaimValueAsGuid()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get claim value as Guid", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -99,14 +101,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 8
     testRunner.Given("I have a ClaimsPrincipal with a claim of type \"claimType\" and value \"d3b07384-d9a" +
                         "1-4d3b-8a3e-8b0a1e4e1e1e\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 9
     testRunner.When("I get the claim value as Guid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 10
     testRunner.Then("the GUID result should be \"d3b07384-d9a1-4d3b-8a3e-8b0a1e4e1e1e\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -116,12 +118,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Get claim value as int")]
         [Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [Xunit.TraitAttribute("Description", "Get claim value as int")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void GetClaimValueAsInt()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get claim value as int", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 11
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -131,13 +135,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 12
+#line 14
     testRunner.Given("I have a ClaimsPrincipal with a claim of type \"claimType\" and value \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
+#line 15
     testRunner.When("I get the claim value as int", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
+#line 16
     testRunner.Then("the integer result should be 123", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -147,12 +151,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Get claim value as string")]
         [Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [Xunit.TraitAttribute("Description", "Get claim value as string")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void GetClaimValueAsString()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get claim value as string", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 16
+#line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -162,13 +168,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 20
     testRunner.Given("I have a ClaimsPrincipal with a claim of type \"claimType\" and value \"testValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 21
     testRunner.When("I get the claim value as string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
+#line 22
     testRunner.Then("the string result should be \"testValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -178,12 +184,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Get claim value when claim does not exist")]
         [Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [Xunit.TraitAttribute("Description", "Get claim value when claim does not exist")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void GetClaimValueWhenClaimDoesNotExist()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get claim value when claim does not exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 21
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -193,13 +201,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 22
+#line 26
     testRunner.Given("I have a ClaimsPrincipal with no claims of type \"nonExistentClaimType\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
+#line 27
     testRunner.When("I get the claim value as string", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 28
     testRunner.Then("the result should be null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

@@ -1,8 +1,4 @@
-﻿using Asm.Cqrs.Commands;
-using Asm.Cqrs.Queries;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Asm.Cqrs.AspNetCore;
+﻿namespace Asm.AspNetCore;
 
 /// <summary>
 /// Base class for a set of endpoints grouped under a common path.
@@ -34,7 +30,7 @@ public abstract class EndpointGroupBase : IEndpointGroup
 
     /// <summary>
     /// Maps the group endpoints.
-    /// </summary>
+    /// </summary>r
     /// <remarks>
     /// Sets the operation name, display name, tags, authorisation policy and maps the endpoints.
     /// </remarks>

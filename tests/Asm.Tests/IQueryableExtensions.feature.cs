@@ -84,12 +84,14 @@ namespace Asm.Tests
         [Xunit.SkippableFactAttribute(DisplayName="Paginate data using Page method")]
         [Xunit.TraitAttribute("FeatureTitle", "IQueryableExtensions")]
         [Xunit.TraitAttribute("Description", "Paginate data using Page method")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void PaginateDataUsingPageMethod()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Paginate data using Page method", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -117,10 +119,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table1.AddRow(new string[] {
                             "5",
                             "Item5"});
-#line 7
+#line 8
     testRunner.Given("I have a data source with the following items", ((string)(null)), table1, "Given ");
 #line hidden
-#line 14
+#line 15
     testRunner.When("I retrieve page 2 with a page size of 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -132,7 +134,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table2.AddRow(new string[] {
                             "4",
                             "Item4"});
-#line 15
+#line 16
     testRunner.Then("the result should contain the following items", ((string)(null)), table2, "Then ");
 #line hidden
             }
@@ -142,12 +144,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Filter data using WhereAny method")]
         [Xunit.TraitAttribute("FeatureTitle", "IQueryableExtensions")]
         [Xunit.TraitAttribute("Description", "Filter data using WhereAny method")]
+        [Xunit.TraitAttribute("Category", "Unit")]
         public void FilterDataUsingWhereAnyMethod()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Filter data using WhereAny method", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -175,10 +179,10 @@ this.ScenarioInitialize(scenarioInfo);
                 table3.AddRow(new string[] {
                             "5",
                             "Item5"});
-#line 21
+#line 23
     testRunner.Given("I have a data source with the following items", ((string)(null)), table3, "Given ");
 #line hidden
-#line 28
+#line 30
     testRunner.When("I filter the data with predicates \"Id == 1\" or \"Name == \'Item3\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -190,7 +194,7 @@ this.ScenarioInitialize(scenarioInfo);
                 table4.AddRow(new string[] {
                             "3",
                             "Item3"});
-#line 29
+#line 31
     testRunner.Then("the result should contain the following items", ((string)(null)), table4, "Then ");
 #line hidden
             }

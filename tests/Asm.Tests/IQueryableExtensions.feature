@@ -3,6 +3,7 @@ Feature: IQueryableExtensions
   As a developer
   I want to have unit tests for the IQueryable extension methods
 
+@Unit
 Scenario: Paginate data using Page method
     Given I have a data source with the following items
         | Id | Name  |
@@ -17,6 +18,7 @@ Scenario: Paginate data using Page method
         | 3  | Item3 |
         | 4  | Item4 |
 
+@Unit
 Scenario: Filter data using WhereAny method
     Given I have a data source with the following items
         | Id | Name  |

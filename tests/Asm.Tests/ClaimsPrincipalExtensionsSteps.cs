@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace Asm.Testing;
+namespace Asm.Tests;
 
 [Binding]
 public class ClaimsPrincipalExtensionsSteps(ScenarioContext context)
