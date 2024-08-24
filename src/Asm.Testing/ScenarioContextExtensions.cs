@@ -55,4 +55,29 @@ public static class ScenarioContextExtensions
         context.TryGetValue(ExceptionSteps.ExceptionKey, out T? value);
         return value;
     }
+
+    /// <summary>
+    /// Executes the action and catches any exceptions, adding them to the context.
+    /// </summary>
+    /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
+    /// <param name="testCode">The action to perform.</param>
+    public static void CatchException(this ScenarioContext context, Action testCode)
+    {
+        var exception = Record.Exception(testCode);
+
+        context.AddException(exception);
+    }
+
+    /// <summary>
+    /// Executes the action and catches any exceptions, adding them to the context.
+    /// </summary>
+    /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
+    /// <param name="testCode">The function to run.</param>
+    /// <returns></returns>
+    public static async Task CatchExceptionAsync(this ScenarioContext context, Func<Task> testCode)
+    {
+        var exception = await Record.ExceptionAsync(testCode);
+
+        context.AddException(exception);
+    }
 }

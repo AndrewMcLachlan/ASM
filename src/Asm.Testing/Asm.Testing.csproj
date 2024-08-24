@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <Description>ASM core library unit testing support.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
