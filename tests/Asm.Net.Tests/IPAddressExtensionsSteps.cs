@@ -3,13 +3,15 @@ using System.Net;
 using Asm.Testing;
 using TechTalk.SpecFlow;
 using Xunit;
+using static Asm.Net.Tests.IPAddressExtensionsSteps;
 
 namespace Asm.Net.Tests;
 
 [Binding]
 [Scope(Feature = "IPAddress Extensions")]
-public class IPAddressExtensionsSteps(ScenarioContext context, IPAddressExtensionsSteps.ScenarioData scenarioData)
+public class IPAddressExtensionsSteps(ScenarioContext context, ScenarioData scenarioData)
 {
+
     public class ScenarioData
     {
         public IPAddress IPAddress { get; set; }

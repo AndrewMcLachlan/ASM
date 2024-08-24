@@ -19,6 +19,7 @@
     <Product>ASM Framework</Product>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/AndrewMcLachlan/ASM</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
