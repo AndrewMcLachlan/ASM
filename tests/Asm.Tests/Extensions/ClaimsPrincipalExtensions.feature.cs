@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Asm.Tests
+namespace Asm.Tests.Extensions
 {
     using TechTalk.SpecFlow;
     using System;
@@ -40,7 +40,7 @@ namespace Asm.Tests
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "ClaimsPrincipalExtensions", "  In order to retrieve claim values from a ClaimsPrincipal\r\n  As a developer\r\n  I" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Extensions", "ClaimsPrincipalExtensions", "  In order to retrieve claim values from a ClaimsPrincipal\r\n  As a developer\r\n  I" +
                     " want to have unit tests for the ClaimsPrincipal extension methods", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Text;
 
 namespace Asm;
@@ -172,17 +173,8 @@ public readonly struct Nybble
     /// <returns>Whether the nybbles are equal.</returns>
     public override readonly bool Equals(object? obj)
     {
-        if (obj == null) return false;
+        if (obj == null || obj is not Nybble nybble) return false;
 
-        Nybble nybble;
-        try
-        {
-            nybble = (Nybble)obj;
-        }
-        catch (InvalidCastException)
-        {
-            return false;
-        }
         return nybble._byteValue == this._byteValue;
     }
 
@@ -190,7 +182,7 @@ public readonly struct Nybble
     /// Gets the hash code.
     /// </summary>
     /// <returns>A hash code.</returns>
-    public override readonly int GetHashCode() => base.GetHashCode();
+    public override readonly int GetHashCode() => _byteValue.GetHashCode();
 
     /// <summary>
     /// Checks equality of two nybbles.
@@ -219,10 +211,10 @@ public readonly struct Nybble
     /// </summary>
     /// <param name="value">The value to convert.</param>
     /// <returns>An array of nybbles.</returns>
-    public static Nybble[] GetNybbles(int value)
+    public static Nybble[] ToNybbles(int value)
     {
-        BitArray b = new(new int[] { value });
-        return ToNybbles(b);
+        BitVector32 bitVector32 = new(value);
+        return ToNybbles(bitVector32);
     }
 
     /// <summary>
@@ -288,18 +280,18 @@ public readonly struct Nybble
     #endregion
 
     #region Private Methods
-    private static Nybble[] ToNybbles(BitArray Bits)
+    private static Nybble[] ToNybbles(BitVector32 bits)
     {
-        Nybble[] nybbles = new Nybble[Bits.Length / 4];
-        for (int i = 0; i < Bits.Length; i += 4)
+        Nybble[] nybbles = new Nybble[8];
+        for (int i = 0; i < 8; i += 4)
         {
-            byte b = Convert.ToByte(Bits[i]);
+            byte b = Convert.ToByte(bits[1 << i + 3]);
             b <<= 1;
-            b |= Convert.ToByte(Bits[i + 1]);
+            b |= Convert.ToByte(bits[1 << i + 2]);
             b <<= 1;
-            b |= Convert.ToByte(Bits[i + 2]);
+            b |= Convert.ToByte(bits[1 << i + 1]);
             b <<= 1;
-            b |= Convert.ToByte(Bits[i + 3]);
+            b |= Convert.ToByte(bits[1 << i]);
             Nybble n = new(b);
             nybbles[i / 4] = n;
         }

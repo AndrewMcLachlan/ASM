@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Asm.Testing.Steps;
+namespace Asm.Tests.Extensions;
 
 [Binding]
 public class IQueryableExtensionsSteps

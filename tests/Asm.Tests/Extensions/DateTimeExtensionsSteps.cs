@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Asm.Tests;
+namespace Asm.Tests.Extensions;
 
 [Binding]
 public class DateTimeExtensionsSteps(ScenarioContext context)
