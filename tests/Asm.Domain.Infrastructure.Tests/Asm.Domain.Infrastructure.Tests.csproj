@@ -34,7 +34,6 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Asm.Domain.Infrastructure\Asm.Domain.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Asm.Testing\Asm.Testing.csproj" />

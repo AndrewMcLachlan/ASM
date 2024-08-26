@@ -1,4 +1,4 @@
-﻿namespace Asm.Tests;
+﻿namespace Asm.Tests.Extensions;
 
 [Binding]
 public class DecimalExtensionsSteps(ScenarioContext context)

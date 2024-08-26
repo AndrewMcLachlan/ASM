@@ -300,7 +300,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     ///         <see cref="IServiceProvider" />. This is useful if you want to setup Entity Framework Core to resolve
     ///         its internal services from the primary application service provider.
     ///         By default, we recommend using
-    ///         <see cref="AddDbContext{TContext}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
+    ///         <see cref="EntityFrameworkServiceCollectionExtensions.AddDbContext{TContext}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
     ///         which allows Entity Framework to create and maintain its own <see cref="IServiceProvider" /> for internal
     ///         Entity Framework services.
     ///     </para>
@@ -359,7 +359,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     ///         its internal services from the primary application service provider.
     ///         By default, we recommend using
     ///         <see
-    ///             cref="AddDbContext{TContext,TContextImplementation}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
+    ///             cref="EntityFrameworkServiceCollectionExtensions.AddDbContext{TContext,TContextImplementation}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
     ///         which allows Entity Framework to create and maintain its own <see cref="IServiceProvider" /> for internal
     ///         Entity Framework services.
     ///     </para>
