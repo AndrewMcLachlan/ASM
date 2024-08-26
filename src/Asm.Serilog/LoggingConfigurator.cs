@@ -6,14 +6,23 @@ using Serilog.Events;
 
 namespace Asm.Serilog;
 
+/// <summary>
+/// Helper class to configure Serilog logging.
+/// </summary>
 public static class LoggingConfigurator
 {
-
+    /// <summary>
+    /// Configures Serilog logging with the specified configuration.
+    /// </summary>
+    /// <param name="configuration">The Serilog configuration.</param>
+    /// <param name="appName">The application name.</param>
+    /// <returns>The configured Serilog logger configuration.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="configuration"/> is <c>null</c>.</exception>
     public static LoggerConfiguration ConfigureLogging(LoggerConfiguration configuration, string appName)
     {
         string? Env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "UNKNOWN";
 
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(configuration);
 
         configuration
             .Enrich.FromLogContext()
@@ -38,6 +47,14 @@ public static class LoggingConfigurator
         return configuration;
     }
 
+    /// <summary>
+    /// Configures Serilog logging with the specified configuration.
+    /// </summary>
+    /// <param name="loggerConfiguration">The Serilog configuration.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="hostEnvironment">The host environment.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="loggerConfiguration"/>, <paramref name="configuration"/>, or <paramref name="hostEnvironment"/> is <c>null</c>.</exception>
+    /// <returns>The configured Serilog logger configuration.</returns>
     public static LoggerConfiguration ConfigureLogging(LoggerConfiguration loggerConfiguration, IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
         ArgumentNullException.ThrowIfNull(loggerConfiguration);

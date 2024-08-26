@@ -1,5 +1,6 @@
 #pragma warning disable 8618 // Non-nullable field is uninitialized. To be fixed on review.
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Asm;
@@ -12,11 +13,9 @@ namespace Asm;
 /// </remarks>
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix"), Serializable]
 [CLSCompliant(false)]
-public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
+public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneable
 {
     #region Fields
-    private readonly byte[] _bytes;
-    //private bool[] bitArray;
     private BitArray _bitArray;
     private readonly Endian _endian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
     #endregion
@@ -26,6 +25,24 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// Gets the value of the bit at the given position.
     /// </summary>
     public bool this[int index] => _bitArray[index];
+
+    /// <summary>
+    /// Gets the range of bits from the given start to end.
+    /// </summary>
+    /// <param name="range"></param>
+    /// <returns></returns>
+    public bool[] this[Range range]
+    {
+        get
+        {
+            bool[] temp = new bool[range.End.Value - range.Start.Value];
+            for (int i = range.Start.Value, j = 0; i < range.End.Value; i++, j++)
+            {
+                temp[j] = this[i];
+            }
+            return temp;
+        }
+    }
 
     /// <summary>
     /// Gets the endianness of the array.
@@ -59,13 +76,34 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <summary>
     /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
     /// </summary>
-    /// <param name="value">A byte array to convert.</param>
+    /// <param name="values">An array of boolean values representing individual bits.</param>
     /// <param name="endian">The endianness of the array.</param>
-    public ExtendedBitArray(byte[] value, Endian endian)
+    public ExtendedBitArray(ReadOnlySpan<bool> values, Endian endian)
     {
         _endian = endian;
-        _bytes = Reverse(value);
-        GetBits();
+        _bitArray = GetBits(values, endian);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
+    /// </summary>
+    /// <param name="values">A byte array to convert.</param>
+    /// <param name="endian">The endianness of the array.</param>
+    public ExtendedBitArray(byte[] values, Endian endian)
+    {
+        _endian = endian;
+        GetBits(values);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExtendedBitArray"/> class.
+    /// </summary>
+    /// <param name="values">A byte array to convert.</param>
+    /// <param name="endian">The endianness of the array.</param>
+    public ExtendedBitArray(ReadOnlySpan<byte> values, Endian endian)
+    {
+        _endian = endian;
+        GetBits(values.ToArray());
     }
 
     /// <summary>
@@ -75,9 +113,8 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(byte value, Endian endian)
     {
-        _bytes = [value];
         _endian = endian;
-        GetBits();
+        GetBits([value]);
     }
 
     /// <summary>
@@ -87,9 +124,8 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(sbyte value, Endian endian)
     {
-        _bytes = [Convert.ToByte(value)];
         _endian = endian;
-        GetBits();
+        GetBits([Convert.ToByte(value)]);
     }
 
     /// <summary>
@@ -99,9 +135,8 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(short value, Endian endian)
     {
-        _bytes = BitConverter.GetBytes(value);
         _endian = endian;
-        GetBits();
+        GetBits(BitConverter.GetBytes(value));
     }
 
 
@@ -112,9 +147,8 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(int value, Endian endian)
     {
-        _bytes = BitConverter.GetBytes(value);
         _endian = endian;
-        GetBits();
+        GetBits(BitConverter.GetBytes(value));
     }
 
     /// <summary>
@@ -124,9 +158,8 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <param name="endian">The endianness of the array.</param>
     public ExtendedBitArray(long value, Endian endian)
     {
-        _bytes = BitConverter.GetBytes(value);
         _endian = endian;
-        GetBits();
+        GetBits(BitConverter.GetBytes(value));
     }
     #endregion
 
@@ -137,7 +170,14 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <returns>A byte array.</returns>
     public byte[] GetBytes()
     {
-        return _bytes;
+        byte[] temp = new byte[(int)Math.Ceiling(_bitArray.Length / 8d)];
+
+        for (int i = 0; i < temp.Length; i+=8)
+        {
+            temp[i] = (byte)ToUnsigned(1, i);
+        }
+
+        return temp;
     }
 
     /// <summary>
@@ -148,15 +188,12 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <returns>A new ExtendedBitArray.</returns>
     public ExtendedBitArray Copy(int start, int length)
     {
-        if ((length + start) - 1 > Count) throw new ArgumentOutOfRangeException(nameof(start));
+        int end = start + length;
+
+        if (end - 1 > Count) throw new ArgumentOutOfRangeException(nameof(start));
         ArgumentOutOfRangeException.ThrowIfGreaterThan(length, Count);
 
-        bool[] temp = new bool[length - start];
-
-        for (int i = start, j = 0; i < length; i++, j++)
-        {
-            temp[j] = this[i];
-        }
+        ReadOnlySpan<bool> temp = this[start..end];
 
         return new ExtendedBitArray(temp, Endian);
     }
@@ -267,60 +304,16 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
 
         return temp.ToString();
     }
-
-    #region /**/
-    /*public static byte[] ToLittleEndian(byte[] bytes)
-        {
-            ExtendedBitArray b;
-            byte[] output = new byte[bytes.Length];
-            for(int i=0, j=bytes.Length-1;i<bytes.Length;i++, j--)
-            {
-                b = new ExtendedBitArray(bytes[i], Endian.BigEndian);
-            }
-
-            return output;
-        }*/
-    #endregion
     #endregion
 
     #region Private Methods
-    private static void GetBits()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void GetBits(byte[] bytes)
     {
-        /*bitArray = new bool[bytes.Length * 8];
-        short quotient;
-        byte element;
-
-        for (int i=0;i<bytes.Length;i++)
-        {
-            element = bytes[i];
-            quotient = bytes[i];
-
-            for (int j=0;j<8 && quotient > 0;j++)
-            {
-                bitArray[j+(i*8)] = Convert.ToBoolean(element % 2);
-                element = Convert.ToByte(element / 2);
-            }
-        }
-
-        switch (endian)
-        {
-            case Endian.BigEndian :
-                for (int i=bitArray.Length-1, k=0;i>=0;i--,k++)
-                {
-                    thisCollection[k] = bitArray[i];
-                }
-                break;
-            case Endian.LittleEndian :
-                //foreach (bool b in bitArray)
-                for (int i=0;i<bitArray.Length;i++)
-                {
-                    thisCollection[i] = bitArray[i];
-                }
-                break;
-        }*/
+        _bitArray = new(bytes);
     }
 
-    private static BitArray GetBits(bool[] values, Endian endian)
+    private static BitArray GetBits(ReadOnlySpan<bool> values, Endian endian)
     {
         BitArray temp = new(values.Length);
 
@@ -343,19 +336,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
         return temp;
     }
 
-    private static byte[] Reverse(byte[] bytes)
-    {
-        byte[] newBytes = new byte[bytes.Length];
-
-        for (int i = 0, j = bytes.Length - 1; i < bytes.Length; i++, j--)
-        {
-            newBytes[j] = bytes[i];
-        }
-
-        return newBytes;
-    }
-
-    private long ToSigned(int BytesToRead)
+    private long ToSigned(int bytesToRead)
     {
         long temp = 0;
         switch (_endian)
@@ -365,7 +346,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
                 {
                     //Negative
                     case true:
-                        for (int i = 0, j = Count - 2; i < Count - 1 && i < (BytesToRead * 8) - 1; i++, j--)
+                        for (int i = 0, j = Count - 2; i < Count - 1 && i < (bytesToRead * 8) - 1; i++, j--)
                         {
                             if (!this[i])
                             {
@@ -377,7 +358,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
                         break;
                     //Positive
                     case false:
-                        for (int i = 0, j = Count - 2; i < Count - 1 && i < (BytesToRead * 8) - 1; i++, j--)
+                        for (int i = 0, j = Count - 2; i < Count - 1 && i < (bytesToRead * 8) - 1; i++, j--)
                         {
                             if (this[i])
                             {
@@ -416,13 +397,13 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
         return temp;
     }
 
-    private ulong ToUnsigned(int BytesToRead)
+    private ulong ToUnsigned(int bytesToRead, int start = 0)
     {
         ulong temp = 0;
         switch (_endian)
         {
             case Endian.BigEndian:
-                for (int i = 0, j = Count - 1; i < Count && i < BytesToRead * 8; i++, j--)
+                for (int i = start, j = Count - 1; i < Count && i < bytesToRead * 8; i++, j--)
                 {
                     if (this[i])
                     {
@@ -431,7 +412,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
                 }
                 break;
             case Endian.LittleEndian:
-                for (int i = 0; i < Count; i++)
+                for (int i = start; i < Count; i++)
                 {
                     if (this[i])
                     {
@@ -517,7 +498,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     /// <returns>
     /// An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="ExtendedBitArray"/>.
     /// </returns>
-    public IEnumerator GetEnumerator()
+    IEnumerator IEnumerable.GetEnumerator()
     {
         return _bitArray.GetEnumerator();
     }
@@ -531,6 +512,15 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable, ICloneable
     public object Clone()
     {
         return new ExtendedBitArray((BitArray)_bitArray.Clone(), _endian);
+    }
+
+    IEnumerator<bool> IEnumerable<bool>.GetEnumerator()
+    {
+        var enumerator = _bitArray.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            yield return (bool)enumerator.Current;
+        }
     }
     #endregion
 }
