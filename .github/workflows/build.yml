@@ -38,7 +38,7 @@ jobs:
       run: dotnet build Asm.sln --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test Asm.sln --no-restore --no-build --filter 'Category=Unit&FullyQualifiedName!~Testing' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults --configuration Release
+      run: dotnet test Asm.sln --no-restore --no-build --filter 'Category=Unit&FullyQualifiedName!~Testing&FullyQualifiedName!~Win32' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults --configuration Release
 
     - name: Package
       run: dotnet pack Asm.sln --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
