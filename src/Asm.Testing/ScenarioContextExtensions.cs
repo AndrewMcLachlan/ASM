@@ -80,4 +80,19 @@ public static class ScenarioContextExtensions
 
         context.AddException(exception);
     }
+
+    /// <summary>
+    /// Executes the action and catches any exceptions, adding them to the context.
+    /// </summary>
+    /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
+    /// <param name="testCode">The function to run.</param>
+    /// <returns></returns>
+    public static async ValueTask CatchExceptionAsync(this ScenarioContext context, Func<ValueTask> testCode)
+    {
+        Func<Task> testCodeAsync = async () => await testCode();
+
+        var exception = await Record.ExceptionAsync(testCodeAsync);
+
+        context.AddException(exception);
+    }
 }
