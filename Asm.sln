@@ -67,6 +67,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Domain.Infrastructure.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Cqrs.AspNetCore.Tests", "tests\Asm.Cqrs.AspNetCore.Tests\Asm.Cqrs.AspNetCore.Tests.csproj", "{0FCA6213-7373-478A-A139-21FA1318D23B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Testing.Domain", "src\Asm.Testing.Domain\Asm.Testing.Domain.csproj", "{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -329,6 +331,18 @@ Global
 		{0FCA6213-7373-478A-A139-21FA1318D23B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FCA6213-7373-478A-A139-21FA1318D23B}.Release|x64.ActiveCfg = Release|Any CPU
 		{0FCA6213-7373-478A-A139-21FA1318D23B}.Release|x64.Build.0 = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release 64|Any CPU.ActiveCfg = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release 64|Any CPU.Build.0 = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release 64|x64.ActiveCfg = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release 64|x64.Build.0 = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D669E24-45B6-458E-831C-CEA7AA4C7AFA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
