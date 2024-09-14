@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -66,7 +67,8 @@ public abstract class IntegrityTagHelper : TagHelper
     /// <inheritdoc/>
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        var url = context.AllAttributes[UrlSourceAttributeName]?.Value as string;
+        var urlHtmlString = context.AllAttributes[UrlSourceAttributeName]?.Value as HtmlString;
+        var url = urlHtmlString?.Value ?? context.AllAttributes[UrlSourceAttributeName]?.Value as string;
 
         if (String.IsNullOrEmpty(url)) return;
 
