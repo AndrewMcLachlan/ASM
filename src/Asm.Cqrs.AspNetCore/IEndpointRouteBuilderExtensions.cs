@@ -97,8 +97,12 @@ public static class IEndpointRouteBuilderExtensions
     /// <typeparam name="TRequest">The type of the command.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="routeName">The name of the route that can be used to get the newly created resource.</param>
+    /// <param name="getRouteParams">A delegate that creates the route parameters.</param>
+    /// <param name="binding">How the handler should bind parameters.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapPutCreate<TRequest>(this IEndpointRouteBuilder endpoints, string pattern) where TRequest : ICommand =>
+    public static RouteHandlerBuilder MapPutCreate<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, string routeName, Func<TResponse, object> getRouteParams,
+        CommandBinding binding) where TRequest : ICommand =>
         endpoints.MapPut(pattern, Handlers.HandleCommand<TRequest>)
                  .Produces(StatusCodes.Status201Created);
 
