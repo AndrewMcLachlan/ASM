@@ -1,4 +1,6 @@
-﻿namespace Asm.AspNetCore;
+﻿using Microsoft.AspNetCore.Routing;
+
+namespace Asm.AspNetCore.Routing;
 
 /// <summary>
 /// Represents a group of endpoints with a common ancestor path.
