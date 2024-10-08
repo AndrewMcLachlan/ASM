@@ -7,8 +7,12 @@ using Microsoft.OpenApi.Models;
 
 namespace Asm.AspNetCore.Api;
 
-internal sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider, IOptions<AzureOAuthOptions> oAuthOptions) : IOpenApiDocumentTransformer
+/// <summary>
+/// Adds the OIDC security scheme to the Open API document.
+/// </summary>
+public sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider, IOptions<AzureOAuthOptions> oAuthOptions) : IOpenApiDocumentTransformer
 {
+    /// <inheritdoc />
     public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
