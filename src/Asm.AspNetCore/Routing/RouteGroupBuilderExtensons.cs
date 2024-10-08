@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Routing;
 
-namespace Asm.AspNetCore;
+namespace Asm.AspNetCore.Routing;
 
 /// <summary>
 /// Helpers to map groups of endpoints.
 /// </summary>
-public static class Groups
+public static class RouteGroupBuilderExtensons
 {
     /// <summary>
     /// Map <see cref="IEndpointGroup"/> groups in the executing assembly.

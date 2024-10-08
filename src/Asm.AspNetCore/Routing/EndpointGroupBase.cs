@@ -1,4 +1,8 @@
-﻿namespace Asm.AspNetCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+
+namespace Asm.AspNetCore.Routing;
 
 /// <summary>
 /// Base class for a set of endpoints grouped under a common path.
