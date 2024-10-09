@@ -1,5 +1,4 @@
-﻿using Asm.AspNetCore;
-using Asm.Cqrs.Commands;
+﻿using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +6,6 @@ namespace Asm.AspNetCore;
 internal static class Handlers
 {
     #region Integrated CQRS Handlers
-    /* static async ValueTask<IResult> HandleQuery<TQuery, TResult>(IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult>
-    {
-        var query = Activator.CreateInstance<TQuery>();
-
-        return Results.Ok(await dispatcher.Dispatch(query, cancellationToken));
-    }*/
 
     internal static async ValueTask<IResult> HandleQuery<TQuery, TResult>([AsParameters] TQuery query, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult> =>
        Results.Ok(await dispatcher.Dispatch(query, cancellationToken));
@@ -47,24 +40,6 @@ internal static class Handlers
     #endregion
 
     #region Advanced CQRS Handlers
-    /*internal static Delegate CreateQueryHandler<TRequest, TQuery, TResult>(Func<TRequest, TQuery> func) where TQuery : IQuery<TResult> =>
-       async ([AsParameters] TRequest request, IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
-       {
-           var query = func(request);
-
-           return Results.Ok(await dispatcher.Dispatch(query, cancellationToken));
-       };
-
-    internal static Delegate CreateQueryHandler<TRequest>(Func<TRequest, object> createQuery)
-    {
-        return async ([AsParameters] TRequest request, IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
-        {
-            var query = createQuery(request);
-
-            return Results.Ok(await dispatcher.Dispatch(query, cancellationToken));
-        };
-    }*/
-
     internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult>
     {
         return ParameterBinding<TRequest, TResult>(

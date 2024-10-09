@@ -6,7 +6,7 @@ namespace Asm.AspNetCore.Routing;
 /// <summary>
 /// Helpers to map groups of endpoints.
 /// </summary>
-public static class RouteGroupBuilderExtensons
+public static class RouteGroupBuilderExtensions
 {
     /// <summary>
     /// Map <see cref="IEndpointGroup"/> groups in the executing assembly.

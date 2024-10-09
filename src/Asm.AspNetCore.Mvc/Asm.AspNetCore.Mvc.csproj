@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\Asm.AspNetCore\Asm.AspNetCore.csproj" />
     <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
 

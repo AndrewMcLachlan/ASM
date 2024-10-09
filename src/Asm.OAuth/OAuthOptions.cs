@@ -1,19 +1,32 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace Asm.OAuth;
 
-namespace Asm.OAuth;
-
-public class OAuthOptions
+/// <summary>
+/// OAuth options.
+/// </summary>
+public record OAuthOptions
 {
-    [AllowNull]
-    public string Domain { get; init; }
+    /// <summary>
+    /// Gets the domain.
+    /// </summary>
+    public required string Domain { get; init; }
 
-    [AllowNull]
-    public string Audience { get; init; }
+    /// <summary>
+    /// Gets the audience.
+    /// </summary>
+    public required string Audience { get; init; }
 
-    [AllowNull]
-    public string ClientId { get; init; }
+    /// <summary>
+    /// Gets or sets the client ID.
+    /// </summary>
+    public required string ClientId { get; init; }
 
+    /// <summary>
+    /// Gets the authority.
+    /// </summary>
     public virtual string Authority { get => Domain; }
 
+    /// <summary>
+    /// Gets a value indicating whether to validate the audience.
+    /// </summary>
     public bool ValidateAudience { get; init; }
 }
