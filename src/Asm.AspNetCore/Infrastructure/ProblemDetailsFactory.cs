@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,18 +54,27 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
 
         switch (errorContext.Error)
         {
+            case ValidationException validationException:
+                problemDetails = new HttpValidationProblemDetails(validationException.Errors.ToDictionary<ValidationFailure, string, string[]>(e => e.ErrorMessage, e => [e.PropertyName]))
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Title = "Validation error",
+                    Detail = validationException.Message,
+                    Type = "about:blank",
+                };
+                break;
             case BadHttpRequestException _:
             case InvalidOperationException _:
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 problemDetails.Title = "Bad request";
                 problemDetails.Detail = errorContext.Error.Message;
-                problemDetails.Type = "http://andrewmclachlan.com/error/badrequest";
+                problemDetails.Type = "about:blank";
                 break;
             case NotFoundException _:
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Not found";
                 problemDetails.Detail = errorContext.Error.Message;
-                problemDetails.Type = "http://andrewmclachlan.com/error/notfound";
+                problemDetails.Type = "about:blank";
                 break;
             case ExistsException _:
                 httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
@@ -75,20 +86,20 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
                 httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
                 problemDetails.Title = "Forbidden";
                 problemDetails.Detail = errorContext.Error.Message;
-                problemDetails.Type = "http://andrewmclachlan.com/error/forbidden";
+                problemDetails.Type = "about:blank";
                 break;
             case AsmException asmException:
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 problemDetails.Title = "Unexpected error occurred";
                 problemDetails.Detail = errorContext.Error.Message;
                 problemDetails.Extensions.Add("Code", asmException.ErrorId);
-                problemDetails.Type = "http://andrewmclachlan.com/error/unknown";
+                problemDetails.Type = "about:blank";
                 break;
             default:
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 problemDetails.Title = "Unexpected error occurred";
                 problemDetails.Detail = !_hostEnvironment.IsProduction() ? errorContext.Error.ToString() : null;
-                problemDetails.Type = "http://andrewmclachlan.com/error/unknown";
+                problemDetails.Type = "about:blank";
                 break;
         }
 
