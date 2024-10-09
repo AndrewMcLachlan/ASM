@@ -11,7 +11,7 @@ public record AzureADBearerOptions
     /// <summary>
     /// Gets or sets the Azure OAuth options.
     /// </summary>
-    public AzureOAuthOptions AzureOAuthOptions { get; set; } = new();
+    public required AzureOAuthOptions AzureOAuthOptions { get; set; }
 
     /// <summary>
     /// Gets or sets the JWT bearer events.
