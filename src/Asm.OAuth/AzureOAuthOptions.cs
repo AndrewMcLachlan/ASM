@@ -8,7 +8,7 @@ public record AzureOAuthOptions : OAuthOptions
     /// <summary>
     /// Gets or sets the tenant ID.
     /// </summary>
-    public Guid TenantId { get; set; }
+    public Guid TenantId { get; init; }
 
     /// <summary>
     /// The authority for Azure.

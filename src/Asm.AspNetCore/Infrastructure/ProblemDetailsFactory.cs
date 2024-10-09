@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Net.Http;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Diagnostics;
@@ -20,12 +19,12 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
 {
     private readonly IHostEnvironment _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
 
-    private static readonly Dictionary<Type, Func<HttpContext, ProblemDetails>> HandlersInternal = [];
+    private static readonly Dictionary<Type, Func<HttpContext, IExceptionHandlerFeature, ProblemDetails>> HandlersInternal = [];
 
     /// <summary>
     /// Gets a dictionary of registered handlers.
     /// </summary>
-    public static IReadOnlyDictionary<Type, Func<HttpContext, ProblemDetails>> Handlers { get => HandlersInternal; }
+    public static IReadOnlyDictionary<Type, Func<HttpContext, IExceptionHandlerFeature, ProblemDetails>> Handlers { get => HandlersInternal; }
 
     /// <inheritdoc/>
     public override ProblemDetails CreateProblemDetails(HttpContext httpContext, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
@@ -46,7 +45,7 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
 
         if (Handlers.ContainsKey(errorContext.Error.GetType()))
         {
-            var customProblemDetails = Handlers[errorContext.Error.GetType()](httpContext);
+            var customProblemDetails = Handlers[errorContext.Error.GetType()](httpContext, errorContext);
             customProblemDetails.Status ??= 500;
             return customProblemDetails;
         }
@@ -143,7 +142,7 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
     /// <typeparam name="T">The type of exception to handle.</typeparam>
     /// <param name="handler">A delegate that returns a problem details object.</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public static void AddHandler<T>(Func<HttpContext, ProblemDetails> handler) where T : Exception
+    public static void AddHandler<T>(Func<HttpContext, IExceptionHandlerFeature, ProblemDetails> handler) where T : Exception
     {
         ArgumentNullException.ThrowIfNull(handler);
 
