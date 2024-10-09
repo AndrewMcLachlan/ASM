@@ -6,14 +6,14 @@ namespace Asm.AspNetCore.Http;
 
 internal class ValidatorFilter<T>(int parameterIndex) : IEndpointFilter
 {
-    public ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
+    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
         T? arg = context.GetArgument<T>(parameterIndex);
 
         IValidator<T>? validator = context.HttpContext.RequestServices.GetRequiredService<IValidator<T>>();
 
-        validator.ValidateAndThrow(arg);
+        await validator.ValidateAndThrowAsync(arg);
 
-        return next(context);
+        return await next(context);
     }
 }
