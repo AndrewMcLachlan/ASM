@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\Common\Common.props" />
-
   <PropertyGroup>
     <Description>ASM core library unit testing support.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

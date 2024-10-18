@@ -36,4 +36,5 @@
     <None Include="..\..\Common\Icon-128.png" Pack="true" PackagePath="\"/>
     <Compile Include="..\..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
   </ItemGroup>
+
 </Project>

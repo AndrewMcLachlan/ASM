@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\Common\Common.props" />
-
   <PropertyGroup>
     <Description>Asm core library for ASP.NET Core web APIs.</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>

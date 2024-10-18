@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-<Import Project="..\..\Common\Common.props" />
-
   <PropertyGroup>
     <Description>Domain infrastructure</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
