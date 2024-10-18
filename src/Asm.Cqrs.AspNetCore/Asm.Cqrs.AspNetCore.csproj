@@ -1,6 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <Import Project="..\..\Common\Common.props" />
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>CQRS support for ASP.NET Core minimal APIs</Description>
@@ -10,7 +8,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <ProjectReference Include="..\Asm.Cqrs\Asm.Cqrs.csproj" />
     <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
