@@ -1,17 +1,17 @@
 ﻿using Asm.OAuth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Asm.AspNetCore.Security;
+namespace Asm.AspNetCore.Authentication;
 
 /// <summary>
 /// Azure AD bearer token authentication options.
 /// </summary>
-public record AzureADBearerOptions
+public record StandardJwtBearerOptions
 {
     /// <summary>
     /// Gets or sets the Azure OAuth options.
     /// </summary>
-    public required AzureOAuthOptions AzureOAuthOptions { get; set; }
+    public required OAuthOptions OAuthOptions { get; set; }
 
     /// <summary>
     /// Gets or sets the JWT bearer events.
