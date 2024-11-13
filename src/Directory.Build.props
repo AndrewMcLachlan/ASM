@@ -1,5 +1,31 @@
 <Project>
 
-  <Import Project="..\Common\Common.props" />
+  <Import Project="..\Common\Common.props"/>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
+    <PackageIcon>Icon-128.png</PackageIcon>
+    <PackageIconUrl>https://cdn.andrewmclachlan.com/images/icon-128.png</PackageIconUrl>
+    <Product>ASM Framework</Product>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/AndrewMcLachlan/ASM</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Common\Icon-128.png" Pack="true" PackagePath="\"/>
+    <Compile Include="..\..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
+  </ItemGroup>
 
 </Project>

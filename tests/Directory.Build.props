@@ -1,0 +1,11 @@
+<Project>
+
+  <Import Project="..\Common\Common.props"/>
+
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+</Project>
