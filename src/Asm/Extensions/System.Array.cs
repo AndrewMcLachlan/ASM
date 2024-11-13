@@ -36,7 +36,7 @@ public static class ArrayExtensions
     /// <param name="array">The array to check.</param>
     /// <returns><c>true</c> if the array is <c>null</c> or empty; otherwise, <c>false</c>.</returns>
     public static bool IsNullOrEmpty<T>(this T[]? array) =>
-        (array?.Length ?? 0) > 0;
+        (array?.Length ?? 0) == 0;
 
     /// <summary>
     /// Determines whether a array is empty.
@@ -45,5 +45,5 @@ public static class ArrayExtensions
     /// <param name="array">The array to check.</param>
     /// <returns><c>true</c> if the array is empty; otherwise, <c>false</c>.</returns>
     public static bool Empty<T>(this T[] array) =>
-        array.Length > 0;
+        array.Length == 0;
 }

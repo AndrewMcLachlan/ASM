@@ -37,7 +37,7 @@ public static class IListExtensions
     /// <param name="list">The list to check.</param>
     /// <returns><c>true</c> if the list is <c>null</c> or empty; otherwise, <c>false</c>.</returns>
     public static bool IsNullOrEmpty<T>(this IList<T>? list) =>
-        (list?.Count ?? 0) > 0;
+        (list?.Count ?? 0) == 0;
 
     /// <summary>
     /// Determines whether a list is empty.
@@ -46,5 +46,5 @@ public static class IListExtensions
     /// <param name="list">The list to check.</param>
     /// <returns><c>true</c> if the list is empty; otherwise, <c>false</c>.</returns>
     public static bool Empty<T>(this IList<T> list) =>
-        list.Count > 0;
+        list.Count == 0;
 }
