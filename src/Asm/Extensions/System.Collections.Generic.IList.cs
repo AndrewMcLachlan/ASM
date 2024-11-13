@@ -29,4 +29,22 @@ public static class IListExtensions
 
         return list;
     }
+
+    /// <summary>
+    /// Determines whether a list is <c>null</c> or empty.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the list.</typeparam>
+    /// <param name="list">The list to check.</param>
+    /// <returns><c>true</c> if the list is <c>null</c> or empty; otherwise, <c>false</c>.</returns>
+    public static bool IsNullOrEmpty<T>(this IList<T>? list) =>
+        (list?.Count ?? 0) > 0;
+
+    /// <summary>
+    /// Determines whether a list is empty.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the list.</typeparam>
+    /// <param name="list">The list to check.</param>
+    /// <returns><c>true</c> if the list is empty; otherwise, <c>false</c>.</returns>
+    public static bool Empty<T>(this IList<T> list) =>
+        list.Count > 0;
 }

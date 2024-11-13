@@ -28,4 +28,22 @@ public static class ArrayExtensions
 
         return array;
     }
+
+    /// <summary>
+    /// Determines whether a array is <c>null</c> or empty.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the array.</typeparam>
+    /// <param name="array">The array to check.</param>
+    /// <returns><c>true</c> if the array is <c>null</c> or empty; otherwise, <c>false</c>.</returns>
+    public static bool IsNullOrEmpty<T>(this T[]? array) =>
+        (array?.Length ?? 0) > 0;
+
+    /// <summary>
+    /// Determines whether a array is empty.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the array.</typeparam>
+    /// <param name="array">The array to check.</param>
+    /// <returns><c>true</c> if the array is empty; otherwise, <c>false</c>.</returns>
+    public static bool Empty<T>(this T[] array) =>
+        array.Length > 0;
 }
