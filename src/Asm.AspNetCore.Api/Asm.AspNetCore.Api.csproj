@@ -11,4 +11,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Asm.OAuth\Asm.OAuth.csproj" />
+  </ItemGroup>
+
 </Project>

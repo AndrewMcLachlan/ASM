@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -10,31 +10,9 @@
     <Authors>Andrew McLachlan</Authors>
     <Company />
     <Copyright>Copyright © Andrew McLachlan 2011. All rights reserved.</Copyright>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <Version>3.3.0</Version>
-    <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
-    <PackageIcon>Icon-128.png</PackageIcon>
-    <PackageIconUrl>https://cdn.andrewmclachlan.com/images/icon-128.png</PackageIconUrl>
-    <Product>ASM Framework</Product>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/AndrewMcLachlan/ASM</RepositoryUrl>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>3.4.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\Common\Icon-128.png" Pack="true" PackagePath="\"/>
-    <Compile Include="..\..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
-  </ItemGroup>
 
 </Project>

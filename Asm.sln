@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm", "src\Asm\Asm.csproj", "{74248C54-1CC4-4863-846A-3E1E2FCAF013}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B3A1BFF4-0BAC-4D6C-BFDE-E13122E2199D}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Win32", "src\Asm.Win32\Asm.Win32.csproj", "{93F4BB6B-C120-4FCF-AB4B-8252ACFBBB9A}"
 EndProject
@@ -16,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Common\Common.props = Common\Common.props
 		src\Directory.Build.props = src\Directory.Build.props
 		Directory.Build.Targets = Directory.Build.Targets
+		Directory.Packages.props = Directory.Packages.props
 		Common\GlobalSuppressions.cs = Common\GlobalSuppressions.cs
 		Common\Icon-128.png = Common\Icon-128.png
 	EndProjectSection
