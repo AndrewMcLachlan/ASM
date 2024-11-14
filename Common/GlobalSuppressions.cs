@@ -6,6 +6,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:System")]
+[assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:System.IO")]
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:System.Linq")]
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Microsoft.AspNetCore.Builder")]
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Microsoft.AspNetCore.Routing")]

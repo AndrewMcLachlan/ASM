@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Asm;
 
 namespace System.Linq;
 
@@ -7,6 +8,19 @@ namespace System.Linq;
 /// </summary>
 public static class IQueryableExtensions
 {
+    /// <summary>
+    /// Skip / takes a page of data.
+    /// </summary>
+    /// <typeparam name="TSource"> The type of the data in the data source.</typeparam>
+    /// <param name="source">The sequence to return elements from.</param>
+    /// <param name="page">The page specification.</param>
+    /// <returns>
+    /// An <see cref="IQueryable{T}"/> that contains the specified number of elements from
+    /// the page.
+    /// </returns>
+    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, IPageable page) =>
+        source.Page(page.PageSize, page.PageNumber);
+
     /// <summary>
     /// Skip / takes a page of data.
     /// </summary>

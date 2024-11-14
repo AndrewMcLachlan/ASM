@@ -43,7 +43,7 @@ public static class StreamExtensions
     /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
     public static long Read(this Stream stream, byte[] buffer, long offset, long count)
     {
-        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        ArgumentNullException.ThrowIfNull(stream);
 
         if (count <= Int32.MaxValue && offset <= Int32.MaxValue)
         {
@@ -96,7 +96,7 @@ public static class StreamExtensions
     /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
     public static void Write(this Stream stream, byte[] buffer, long offset, long count)
     {
-        if (stream == null) throw new ArgumentNullException(nameof(stream));
+        ArgumentNullException.ThrowIfNull(stream);
 
         if (count <= Int32.MaxValue && offset <= Int32.MaxValue)
         {
