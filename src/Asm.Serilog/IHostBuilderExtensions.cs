@@ -13,8 +13,6 @@ public static class IHostBuilderExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IHostBuilder"/> instance that this method extends.</param>
     /// <returns>The <see cref="IHostBuilder"/> instance so that calls can be chained.</returns>
-    public static IHostBuilder UseCustomSerilog(this IHostBuilder builder)
-    {
-        return builder.UseSerilog((context, configuration) => LoggingConfigurator.ConfigureLogging(configuration, context.Configuration, context.HostingEnvironment));
-    }
+    public static IHostBuilder UseCustomSerilog(this IHostBuilder builder) =>
+        builder.UseSerilog((context, configuration) => LoggingConfigurator.ConfigureLogging(configuration, context.Configuration, context.HostingEnvironment));
 }

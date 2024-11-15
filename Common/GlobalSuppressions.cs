@@ -11,4 +11,5 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Microsoft.AspNetCore.Builder")]
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Microsoft.AspNetCore.Routing")]
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Microsoft.Extensions.DependencyInjection")]
+[assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Microsoft.Extensions.Hosting")]
 [assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "It doesn't always make sense to do this", Scope = "namespace", Target = "~N:Asm.AspNetCore")]

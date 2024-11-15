@@ -1,5 +1,4 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
@@ -31,12 +30,17 @@ public static class LoggingConfigurator
             .MinimumLevel.Information()
             .MinimumLevel.Is(LogEventLevel.Information)
             .WriteTo.Trace()
-            .WriteTo.Console()
-            .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces);
+            .WriteTo.Console();
 
-        if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("Seq:Host")))
+        var seqHost = Environment.GetEnvironmentVariable("Seq:Host");
+
+        if (!String.IsNullOrEmpty(seqHost))
         {
-            configuration.WriteTo.Seq(Environment.GetEnvironmentVariable("Seq:Host")!, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
+            configuration.WriteTo.Seq(seqHost, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
+        }
+        else
+        {
+            Console.WriteLine("Seq:Host not defined, seq logging disabled.");
         }
 
         if (Env == "Development")
@@ -66,9 +70,7 @@ public static class LoggingConfigurator
             .Enrich.WithProperty("App", hostEnvironment.ApplicationName)
             .Enrich.WithProperty("Env", hostEnvironment.EnvironmentName)
             .WriteTo.Trace()
-            .WriteTo.Console()
-            .WriteTo.ApplicationInsights(TelemetryConfiguration.CreateDefault(), TelemetryConverter.Traces);
-
+            .WriteTo.Console();
 
         IConfigurationSection? logLevelConfig = configuration.GetSection("Logging").GetSection("LogLevel");
 
@@ -86,9 +88,15 @@ public static class LoggingConfigurator
             }
         }
 
-        if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("Seq:Host")))
+        var seqHost = configuration.GetValue<string>("Seq:Host");
+
+        if (!String.IsNullOrEmpty(seqHost))
         {
-            loggerConfiguration.WriteTo.Seq(Environment.GetEnvironmentVariable("Seq:Host")!, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
+            loggerConfiguration.WriteTo.Seq(seqHost, apiKey: configuration.GetValue<string>("Seq:APIKey"));
+        }
+        else
+        {
+            Console.WriteLine("Seq:Host not defined, seq logging disabled.");
         }
 
         if (hostEnvironment.IsDevelopment())
