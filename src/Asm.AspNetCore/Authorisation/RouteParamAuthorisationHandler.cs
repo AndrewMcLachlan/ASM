@@ -7,10 +7,10 @@ namespace Asm.AspNetCore.Authorisation;
 /// Route parameter authorisation handler.
 /// </summary>
 /// <param name="httpContextAccessor">An <see cref="IHttpContextAccessor"/> instance.</param>
-public abstract class RouteParamAuthorisationHandler(IHttpContextAccessor httpContextAccessor) : AuthorizationHandler<RouteParamAuthorisationRequirement>
+public abstract class RouteParamAuthorisationHandler<TRequirement>(IHttpContextAccessor httpContextAccessor) : AuthorizationHandler<TRequirement> where TRequirement : RouteParamAuthorisationRequirement
 {
     /// <inheritdoc />
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, RouteParamAuthorisationRequirement requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, TRequirement requirement)
     {
         if (httpContextAccessor.HttpContext?.Request.RouteValues.TryGetValue(requirement.Name, out var value) == true && value is not null)
         {
