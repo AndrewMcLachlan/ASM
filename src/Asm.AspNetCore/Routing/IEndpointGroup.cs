@@ -12,5 +12,5 @@ public interface IEndpointGroup
     /// </summary>
     /// <param name="builder">The builder instance that this group attaches to.</param>
     /// <returns>The same instance as <paramref name="builder"/>, for call chaining.</returns>
-    IEndpointRouteBuilder MapGroup(IEndpointRouteBuilder builder);
+    RouteGroupBuilder MapGroup(IEndpointRouteBuilder builder);
 }
