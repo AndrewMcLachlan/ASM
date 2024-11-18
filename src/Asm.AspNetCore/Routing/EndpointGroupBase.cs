@@ -39,8 +39,13 @@ public abstract class EndpointGroupBase : IEndpointGroup
     /// Sets the operation name, display name, tags, authorisation policy and maps the endpoints.
     /// </remarks>
     /// <param name="builder">The builder instance that this group attaches to.</param>
-    /// <returns>The same instance as <paramref name="builder"/>, for chaining.</returns>
-    public virtual IEndpointRouteBuilder MapGroup(IEndpointRouteBuilder builder)
+    /// <returns>
+    /// A Microsoft.AspNetCore.Routing.RouteGroupBuilder that is both an Microsoft.AspNetCore.Routing.IEndpointRouteBuilder
+    /// and an Microsoft.AspNetCore.Builder.IEndpointConventionBuilder. The same builder
+    /// can be used to add endpoints with the given prefix, and to customize those endpoints
+    /// using conventions.
+    /// </returns>
+    public virtual RouteGroupBuilder MapGroup(IEndpointRouteBuilder builder)
     {
         var subBuilder = builder.MapGroup(Path)
             .WithName(Name)
@@ -50,7 +55,7 @@ public abstract class EndpointGroupBase : IEndpointGroup
 
         MapEndpoints(subBuilder);
 
-        return builder;
+        return subBuilder;
     }
 
     /// <summary>
