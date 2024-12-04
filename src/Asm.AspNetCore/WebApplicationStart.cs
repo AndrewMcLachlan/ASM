@@ -1,4 +1,5 @@
-﻿using Asm.Serilog;
+﻿using Asm.AspNetCore.Extensions;
+using Asm.Serilog;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -29,6 +30,7 @@ public class WebApplicationStart
             var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ApplicationName = appName, Args = args, });
 
             builder.Host.UseCustomSerilog();
+            builder.AddStandardOpenTelemetry();
 
             addServices(builder);
 

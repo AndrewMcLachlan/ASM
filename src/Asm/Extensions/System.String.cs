@@ -39,7 +39,7 @@ public static partial class StringExtensions
         if (fromEnd < 0 || fromEnd > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), $"{nameof(fromStart)} must be greater than zero and less than the length of the string");
         if (fromStart + fromEnd > str.Length) throw new InvalidOperationException("The total number of characters to be removed exceeds the length of the string");
 
-        return str.Substring(fromStart ?? 0, str.Length - (fromStart + fromEnd ?? 0));
+        return str[(fromStart ?? 0)..^(fromEnd ?? 0)];
     }
 
     /// <summary>
