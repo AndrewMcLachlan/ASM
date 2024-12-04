@@ -17,7 +17,7 @@ public static class HttpContextExtensions
     {
         string name;
 
-        if (context?.User?.Identity is ClaimsIdentity identity)
+        if (context?.User?.Identity is ClaimsIdentity identity && identity.Claims.SingleOrDefault(c => c.Type == "name")?.Value is not null)
         {
             name = $"{identity.Claims.SingleOrDefault(c => c.Type == "name")?.Value} ({identity.Claims.SingleOrDefault(c => c.Type == "preferred_username")?.Value})";
         }

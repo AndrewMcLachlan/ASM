@@ -5,20 +5,14 @@ namespace Asm.Win32.Tests;
 
 public partial class HostsTests
 {
-    private static string hostsFile;
-    private static string badHostsFile;
+    private readonly static string HostsFileInternal;
+    private readonly static string BadHostsFile;
 
-    public static IEnumerable<object[]> HostsFile
-    {
-        get
-        {
-            yield return new object[] { hostsFile };
-        }
-    }
+    public static TheoryData<string> HostsFile => [HostsFileInternal];
 
     static HostsTests()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
 
         sb.AppendLine("###Comment###");
         sb.AppendLine();
@@ -29,11 +23,11 @@ public partial class HostsTests
         sb.AppendLine("127.0.0.1 commented ##With comment");
         sb.AppendLine("#127.0.0.1 commented ##With comment");
 
-        hostsFile = sb.ToString();
+        HostsFileInternal = sb.ToString();
 
         sb.AppendLine("Wibble");
 
-        badHostsFile = sb.ToString();
+        BadHostsFile = sb.ToString();
     }
 
 
@@ -41,7 +35,7 @@ public partial class HostsTests
     [Trait("Category", "Win32")]
     public void HostsLoadTest1()
     {
-        Assert.True(Hosts.Current.Entries.Count() > 0);
+        Assert.True(Hosts.Current.Entries.Count > 0);
     }
 
     [Theory]
@@ -50,7 +44,7 @@ public partial class HostsTests
     public void HostsLoadTest2(string hostsFile)
     {
         Hosts hosts;
-        using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(hostsFile)))
+        using (MemoryStream stream = new(Encoding.UTF8.GetBytes(hostsFile)))
         {
             hosts = new Hosts(stream);
         }
@@ -86,10 +80,8 @@ public partial class HostsTests
     [Trait("Category", "Win32")]
     public void HostsLoadTest3()
     {
-        using (MemoryStream stream = new(Encoding.UTF8.GetBytes(badHostsFile)))
-        {
-            Assert.Throws<FormatException>(() => new Hosts(stream));
-        }
+        using MemoryStream stream = new(Encoding.UTF8.GetBytes(BadHostsFile));
+        Assert.Throws<FormatException>(() => new Hosts(stream));
     }
 
     [Fact]
