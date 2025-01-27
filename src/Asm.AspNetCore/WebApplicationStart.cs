@@ -1,6 +1,8 @@
 ﻿using Asm.AspNetCore.Extensions;
 using Asm.Serilog;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -18,8 +20,9 @@ public class WebApplicationStart
     /// <param name="appName">The name of the application.</param>
     /// <param name="addServices">A method to add service mappings.</param>
     /// <param name="addApp">Set up custom middleware.</param>
+    /// <param name="addHealthChecks">A method to add health checks.</param>
     /// <returns>An integer return code.</returns>
-    public static int Run(string[] args, string appName, Action<WebApplicationBuilder> addServices, Action<WebApplication> addApp)
+    public static int Run(string[] args, string appName, Action<WebApplicationBuilder> addServices, Action<WebApplication> addApp, Action<IHealthChecksBuilder, WebApplicationBuilder> addHealthChecks)
     {
         Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
 
@@ -34,9 +37,16 @@ public class WebApplicationStart
 
             addServices(builder);
 
+            addHealthChecks(builder.Services.AddHealthChecks(), builder);
+
             var application = builder.Build();
 
             addApp(application);
+
+            application.MapHealthChecks("/health", new HealthCheckOptions
+            {
+                Predicate = p => p.Tags.IsNullOrEmpty() || p.Tags.Contains("health"),
+            });
 
             application.Run();
 

@@ -11,7 +11,7 @@
     <Company />
     <Copyright>Copyright © Andrew McLachlan 2011. All rights reserved.</Copyright>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <Version>3.4.0</Version>
+    <Version>3.5.0</Version>
   </PropertyGroup>
 
 
