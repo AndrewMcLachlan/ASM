@@ -12,9 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="SpecFlow" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" />
-    <PackageReference Include="SpecFlow.xUnit" />
+    <PackageReference Include="Reqnroll.Tools.MsBuild.Generation" />
+    <PackageReference Include="Reqnroll.xUnit" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
       <PrivateAssets>all</PrivateAssets>
@@ -28,14 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="specflow.json">
+    <None Update="reqnroll.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Asm.Testing" />
-    <Using Include="TechTalk.SpecFlow" />
+    <Using Include="Reqnroll" />
     <Using Include="Xunit" />
   </ItemGroup>
 
