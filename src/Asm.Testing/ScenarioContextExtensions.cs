@@ -1,6 +1,4 @@
-﻿using TechTalk.SpecFlow;
-
-namespace Asm.Testing;
+﻿namespace Asm.Testing;
 
 /// <summary>
 /// Extensions for the <see cref="ScenarioContext"/> class.

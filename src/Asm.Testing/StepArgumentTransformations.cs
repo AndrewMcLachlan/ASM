@@ -4,7 +4,7 @@ using System.Net;
 namespace Asm.Testing;
 
 /// <summary>
-/// Step argument transformations for SpecFlow.
+/// Step argument transformations for Reqneoll.
 /// </summary>
 [Binding]
 public class StepArgumentTransformations

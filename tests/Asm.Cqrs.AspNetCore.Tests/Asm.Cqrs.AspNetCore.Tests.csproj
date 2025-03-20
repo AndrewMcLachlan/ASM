@@ -15,9 +15,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
-    <PackageReference Include="SpecFlow" />
-    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" />
-    <PackageReference Include="SpecFlow.xUnit" />
+    <PackageReference Include="Reqnroll.Tools.MsBuild.Generation" />
+    <PackageReference Include="Reqnroll.xUnit" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,7 +31,7 @@
   <ItemGroup>
     <Using Include="Asm.Testing" />
     <Using Include="Moq" />
-    <Using Include="TechTalk.SpecFlow" />
+    <Using Include="Reqnroll" />
     <Using Include="Xunit" />
     <Using Include="Asm.AspNetCore" />
     <Using Include="Asm.Cqrs" />

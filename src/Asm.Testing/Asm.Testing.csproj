@@ -17,12 +17,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyModel" />
-    <PackageReference Include="SpecFlow" />
+    <PackageReference Include="Reqnroll" />
     <PackageReference Include="xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="TechTalk.SpecFlow" />
+    <Using Include="Reqnroll" />
     <Using Include="Xunit" />
   </ItemGroup>
 
