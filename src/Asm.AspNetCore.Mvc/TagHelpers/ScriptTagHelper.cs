@@ -27,7 +27,7 @@ public class ScriptTagHelper : IntegrityTagHelper
     /// <exception cref="InvalidOperationException">If the configuration value EmitMinifiedUrls is defined but is not a <see langword="bool"/>.</exception>
     public ScriptTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration) : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
     {
-        if (!Boolean.TryParse(configuration["EmitMinifiedUrls"] ?? "false", out _emitMinifiedUrls)) throw new InvalidOperationException("EmitMinifiedUrls is not a boolean value");
+        _emitMinifiedUrls = configuration.GetValue("EmitMinifiedUrls", false);
     }
 
     /// <inheritdoc/>

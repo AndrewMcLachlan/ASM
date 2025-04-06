@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Asm.AspNetCore.Mvc.TagHelpers;
 
@@ -16,6 +17,8 @@ namespace Asm.AspNetCore.Mvc.TagHelpers;
 /// </summary>
 public abstract class IntegrityTagHelper : TagHelper
 {
+    private readonly ILogger<IntegrityTagHelper> _logger;
+
     /// <summary>
     /// Gets or sets the view context.
     /// </summary>
@@ -55,13 +58,14 @@ public abstract class IntegrityTagHelper : TagHelper
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="memoryCache">A memory cache.</param>
     /// <exception cref="InvalidOperationException">If there is no action context.</exception>
-    public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache)
+    public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, ILogger<IntegrityTagHelper> logger)
     {
         if (actionContextAccessor.ActionContext == null) throw new InvalidOperationException("No ActionContext provided.");
 
         UrlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
         HostingEnvironment = hostingEnvironment;
         MemoryCache = memoryCache;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -89,7 +93,7 @@ public abstract class IntegrityTagHelper : TagHelper
 
         if (!File.Exists(path))
         {
-            output.SuppressOutput();
+            _logger.LogWarning("Integrity Tag Helper - File not found: {Path}", path);
             return;
         }
 
