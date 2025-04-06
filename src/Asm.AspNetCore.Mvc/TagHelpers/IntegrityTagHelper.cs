@@ -57,6 +57,7 @@ public abstract class IntegrityTagHelper : TagHelper
     /// <param name="urlHelperFactory">A URL helper factory.</param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="memoryCache">A memory cache.</param>
+    /// <param name="logger">Logger for this tag helper.</param>
     /// <exception cref="InvalidOperationException">If there is no action context.</exception>
     public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, ILogger<IntegrityTagHelper> logger)
     {

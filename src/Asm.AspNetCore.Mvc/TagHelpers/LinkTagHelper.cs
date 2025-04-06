@@ -4,14 +4,20 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Asm.AspNetCore.Mvc.TagHelpers;
 
 /// <summary>
 /// A tag helper that adds the integrity attribute to a link tag.
 /// </summary>
-public sealed class LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache)
-    : IntegrityTagHelper(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache)
+/// <param name="actionContextAccessor">An action context accessor.</param>
+/// <param name="urlHelperFactory">A URL helper factory.</param>
+/// <param name="hostingEnvironment">The hosting environment.</param>
+/// <param name="memoryCache">A memory cache.</param>
+/// <param name="logger" >Logger for this tag helper.</param>
+public sealed class LinkTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, ILogger<LinkTagHelper> logger)
+    : IntegrityTagHelper(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache, logger)
 {
     /// <summary>
     /// Gets the URL source attribute name.
