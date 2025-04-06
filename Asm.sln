@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 		Common\GlobalSuppressions.cs = Common\GlobalSuppressions.cs
 		Common\Icon-128.png = Common\Icon-128.png
+		LICENSE = LICENSE
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asm.Net", "src\Asm.Net\Asm.Net.csproj", "{4EF4AD03-3FC1-4415-8FE6-DB345E9D6D3E}"
