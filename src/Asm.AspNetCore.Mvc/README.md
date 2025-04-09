@@ -21,32 +21,9 @@ Or via the NuGet Package Manager:
 
 ## Usage
 
-### Controller Extensions
+### Tag Helpers
 
-Enhance your controllers with additional functionality:
-
-```csharp
-using Asm.AspNetCore.Mvc;
-public class MyController : ControllerBase { public IActionResult Get() { return this.OkWithMetadata(new { Message = "Success" }); } }
-```
-
-### Custom Model Binding
-
-Use custom model binders for advanced binding scenarios:
-
-```csharp
-using Asm.AspNetCore.Mvc.ModelBinding;
-public class MyModelBinder : IModelBinder { public Task BindModelAsync(ModelBindingContext bindingContext) { // Custom binding logic return Task.CompletedTask; } }
-```
-
-### Action Result Utilities
-
-Create consistent action results with helper methods:
-
-```csharp
-using Asm.AspNetCore.Mvc;
-public class MyController : ControllerBase { public IActionResult Get() { return this.CreatedWithMetadata(new { Id = 1 }, "Resource created successfully"); } }
-```
+// TODO
 
 ### Validation Integration
 

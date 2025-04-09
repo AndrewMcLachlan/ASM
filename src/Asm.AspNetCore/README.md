@@ -88,11 +88,14 @@ var builder = WebApplication.CreateBuilder(args); builder.Services.AddValidators
 var app = builder.Build(); app.Run();
 ```
 
-### OpenTelemetry Integration
+### Authentication
 
-#### HttpContextLogProcessor
+// TODO
 
-Add custom attributes to log records based on the current HTTP context:
+### Authorisation
+
+// TODO
+
 
 ## Dependencies
 

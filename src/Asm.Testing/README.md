@@ -24,7 +24,7 @@ Or via the NuGet Package Manager:
 
 ### Setting Up a Test Project
 
-Create a new xUnit test project
+// TODO
 
 ### Writing a Reqnroll Test
 
