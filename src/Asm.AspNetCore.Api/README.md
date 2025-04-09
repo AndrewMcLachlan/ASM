@@ -4,10 +4,8 @@ The `Asm.AspNetCore.Api` project provides foundational components and utilities 
 
 ## Features
 
-- **Custom Middleware**: Middleware for handling common API concerns such as error handling and logging.
-- **ProblemDetails Factory**: Custom implementation of `ProblemDetailsFactory` for consistent error responses.
-- **Validation Utilities**: Tools for integrating FluentValidation and other validation frameworks.
-- **API Extensions**: Helper methods and extensions for configuring and enhancing ASP.NET Core APIs.
+- **Standard Open API Configuration**: Standardised, opinionated configuration for OpenAPI (Swagger) documentation.
+- **Metadata Endpoint**: An endpoint for exposing API metadata.
 
 ## Installation
 

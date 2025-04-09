@@ -94,6 +94,19 @@ var app = builder.Build(); app.Run();
 
 Add custom attributes to log records based on the current HTTP context:
 
+## Dependencies
+
+The `Asm.AspNetCore` library depends on the following packages:
+
+- `Azure.Montor.OpenTelemetry.AspNetCore`
+- `Azure.Monitor.OpenTelemetry.Exporter`
+- `FluentValidation`
+- `Microsoft.AspNetCore.Authentication.JwtBearer`
+- `Microsoft.Azurre.WebJobs.Extensions`
+- `OpenTelemetry.Exporter.Console`
+- `OpenTelemetry.Exporeter.OpenTelemetryProtocol`
+- `OpenTelemetry.Extensions.Hosting`
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request on GitHub.

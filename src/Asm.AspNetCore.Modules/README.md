@@ -1,14 +1,10 @@
 # Asm.AspNetCore.Modules
 
-The `Asm.AspNetCore.Modules` project provides a modular framework for ASP.NET Core applications, enabling developers to organize application features into independent, reusable modules. This approach improves scalability, maintainability, and separation of concerns.
+The `Asm.AspNetCore.Modules` project provides a modular framework for ASP.NET Core applications, enabling developers to organise application features into independent, reusable modules. This approach improves scalability, maintainability, and separation of concerns.
 
 ## Features
 
-- **Modular Architecture**: Build applications with a modular design for better organization and flexibility.
-- **Dynamic Module Loading**: Load and configure modules dynamically at runtime.
-- **Module Lifecycle Management**: Support for initializing, configuring, and disposing of modules.
-- **Dependency Injection Integration**: Seamless integration with ASP.NET Core's DI container.
-- **Middleware Support**: Modules can define their own middleware pipelines.
+- **Modular Architecture**: Build applications with a modular design for better organisation and flexibility.
 
 ## Installation
 
