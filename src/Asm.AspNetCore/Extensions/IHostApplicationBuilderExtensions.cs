@@ -38,7 +38,6 @@ public static class IHostApplicationBuilderExtensions
             {
                 options.AddAspNetCoreInstrumentation();
                 options.AddHttpClientInstrumentation();
-                options.AddSqlClientInstrumentation();
                 options.AddProcessor<HttpContextTraceProcessor>();
                 options.AddOtlpExporter();
             })
