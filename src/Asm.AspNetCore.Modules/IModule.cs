@@ -13,12 +13,12 @@ public interface IModule
     /// </summary>
     /// <param name="services">A service collection instance.</param>
     /// <returns>The service collection instance.</returns>
-    public IServiceCollection AddServices(IServiceCollection services);
+    IServiceCollection AddServices(IServiceCollection services);
 
     /// <summary>
     /// Maps endpoints to the application.
     /// </summary>
     /// <param name="endpoints">An endpoint route builder instance to attach the endpoints to.</param>
     /// <returns>The end point route builder.</returns>
-    public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints);
+    IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints);
 }

@@ -96,7 +96,7 @@ public class OrderCreatedEventHandler : INotificationHandler<OrderCreatedEvent>
 
 ### Specifications
 
-Use specifications to apply common patters to queries.
+Use specifications to apply common patterns to queries.
 
 ```csharp
 using Asm.Domain;

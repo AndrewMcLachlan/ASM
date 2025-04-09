@@ -21,48 +21,30 @@ Or via the NuGet Package Manager:
 
 ## Usage
 
-### Custom Middleware
+### Standard Open API Configuration
 
-Add custom middleware to handle exceptions and provide consistent error responses:
-
-```csharp
-using Asm.AspNetCore.Api.Middleware;
-var builder = WebApplication.CreateBuilder(args); var app = builder.Build();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.Run();
-```
-
-### ProblemDetails Factory
-
-Use the custom `ProblemDetailsFactory` to standardize error responses:
+Add Swagger with a set of simple, but opinionated, default:
 
 ```csharp
-using Microsoft.AspNetCore.Mvc; using Asm.AspNetCore.Api;
-var builder = WebApplication.CreateBuilder(args); builder.Services.AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
-var app = builder.Build(); app.Run();
+using Microsoft.OpenApi.Models;
+var builder = WebApplication.CreateBuilder(args); 
+
+builder.Services.AddStandardSwaggerGen("My API");
 ```
 
-### Validation Utilities
+### Metadata Endpoint
 
-Integrate FluentValidation for model validation:
+Add a metadata endpoint to your API:
 
 ```csharp
-using FluentValidation; using Asm.AspNetCore.Api.Validation;
-public class MyModelValidator : AbstractValidator<MyModel> { public MyModelValidator() { RuleFor(x => x.Name).NotEmpty(); } }
-var builder = WebApplication.CreateBuilder(args); builder.Services.AddValidatorsFromAssemblyContaining<MyModelValidator>();
-var app = builder.Build(); app.Run();
-```
+using Microsoft.AspNetCore.Routing;
 
-### API Extensions
+var builder = WebApplication.CreateBuilder(args);
 
-Simplify API configuration with helper methods:
+var app = builder.Build();
 
-```csharp
-using Asm.AspNetCore.Api.Extensions;
-var builder = WebApplication.CreateBuilder(args); builder.Services.AddApiServices();
-var app = builder.Build(); app.UseApiDefaults();
-app.Run();
-```
+app.MapMeta();
+```    
 
 ## Contributing
 

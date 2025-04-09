@@ -63,24 +63,28 @@ Use the `ICommandDispatcher` and `IQueryDispatcher` to dispatch commands and que
 
 ```csharp
 using Asm.Cqrs;
-public class OrderService { private readonly ICommandDispatcher _commandDispatcher; private readonly IQueryDispatcher _queryDispatcher;
-public OrderService(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
-{
-    _commandDispatcher = commandDispatcher;
-    _queryDispatcher = queryDispatcher;
-}
+public class OrderService
+{ 
+    private readonly ICommandDispatcher _commandDispatcher;
+    private readonly IQueryDispatcher _queryDispatcher;
 
-public async Task CreateOrderAsync()
-{
-    var command = new CreateOrderCommand { OrderId = "123", CustomerName = "Jane Doe" };
-    await _commandDispatcher.DispatchAsync(command);
-}
+    public OrderService(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+    {
+        _commandDispatcher = commandDispatcher;
+        _queryDispatcher = queryDispatcher;
+    }
 
-public async Task<Order> GetOrderAsync(string orderId)
-{
-    var query = new GetOrderQuery { OrderId = orderId };
-    return await _queryDispatcher.DispatchAsync(query);
-}
+    public async Task CreateOrderAsync()
+    {
+        var command = new CreateOrderCommand { OrderId = "123", CustomerName = "Jane Doe" };
+        await _commandDispatcher.DispatchAsync(command);
+    }
+
+    public async Task<Order> GetOrderAsync(string orderId)
+    {
+        var query = new GetOrderQuery { OrderId = orderId };
+        return await _queryDispatcher.DispatchAsync(query);
+    }
 }
 ```
 

@@ -19,16 +19,73 @@ Or via the NuGet Package Manager:
 
 ## Usage
 
+### Modules
+
+Register modules in your ASP.NET Core application:
+
+```csharp
+using Asm.AspNetCore.Api.Modules;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.RegisterModules(() => 
+{
+    new MyModule(),
+});
+```
+
+Map module endpoints:
+
+```csharp
+var app = builder.Build();
+
+app.MapModuleEndpoints();
+```
+
 ### RouteHandlerBuilderExtensions
 
 Add validation to route handlers:
 
 ```csharp
-using Asm.AspNetCore.Builder; using FluentValidation; using Microsoft.AspNetCore.Builder;
-public class MyValidator : AbstractValidator<MyModel> { public MyValidator() { RuleFor(x => x.Name).NotEmpty(); } }
+using Asm.AspNetCore.Builder;
+using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+
+public class MyValidator : AbstractValidator<MyModel>
+{
+    public MyValidator() { RuleFor(x => x.Name).NotEmpty(); } 
+}
+
 var builder = WebApplication.CreateBuilder(args); var app = builder.Build();
+
 app.MapPost("/endpoint", (MyModel model) => { /* ... */ }) .WithValidation<MyValidator>();
+
 app.Run();
+```
+
+### ProblemDetails Factory
+
+Use the custom `ProblemDetailsFactory` to standardize error responses:
+
+```csharp
+using Microsoft.AspNetCore.Mvc; using Asm.AspNetCore.Api;
+
+var builder = WebApplication.CreateBuilder(args); 
+
+builder.Services.AddProblemDetailsFactory();
+
+var app = builder.Build(); app.Run();
+```
+
+### Validation Utilities
+
+Integrate FluentValidation for model validation:
+
+```csharp
+using FluentValidation; using Asm.AspNetCore.Api.Validation;
+public class MyModelValidator : AbstractValidator<MyModel> { public MyModelValidator() { RuleFor(x => x.Name).NotEmpty(); } }
+var builder = WebApplication.CreateBuilder(args); builder.Services.AddValidatorsFromAssemblyContaining<MyModelValidator>();
+var app = builder.Build(); app.Run();
 ```
 
 ### OpenTelemetry Integration

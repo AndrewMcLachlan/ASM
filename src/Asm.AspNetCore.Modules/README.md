@@ -13,7 +13,13 @@ The `Asm.AspNetCore.Modules` project provides a modular framework for ASP.NET Co
 ## Installation
 
 To install the `Asm.AspNetCore.Modules` library, use the .NET CLI:
+
+`dotnet add package Asm.AspNetCore.Modules`
+
 Or via the NuGet Package Manager:
+
+`Install-Package Asm.AspNetCore.Modules`
+
 ## Usage
 
 ### Defining a Module
@@ -21,57 +27,17 @@ Or via the NuGet Package Manager:
 Create a module by implementing the `IModule` interface:
 
 ```csharp
-using Asm.AspNetCore.Modules;
-
 public class MyModule : IModule
 { 
-    public void ConfigureServices(IServiceCollection services) 
-    { // Register services for this module 
-    }
-
-    public void Configure(IApplicationBuilder app)
+    public IServiceCollection AddServices(IServiceCollection services)
     {
-        // Configure middleware for this module
+        // Initialization logic
     }
-}
-```
-
-### Registering Modules
-
-Register modules in your `Program.cs` or `Startup.cs`:
-
-```csharp
-using Asm.AspNetCore.Modules;
-var builder = WebApplication.CreateBuilder(args);
-// Register modules builder.Services.AddModules();
-var app = builder.Build();
-// Use modules app.UseModules();
-app.Run();
-```
-
-### Dynamic Module Loading
-
-Modules can be loaded dynamically from assemblies:
-
-```csharp
-builder.Services.AddModulesFromAssembly(typeof(MyModule).Assembly);
-```
-
-### Module Lifecycle
-
-Modules can define logic for initialization, configuration, and cleanup:
-
-```csharp
-public class MyModule : IModule { public void ConfigureServices(IServiceCollection services) { // Initialization logic }
-public void Configure(IApplicationBuilder app)
-{
-    // Middleware configuration
-}
-
-public void Dispose()
-{
-    // Cleanup logic
-}
+    
+    public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints)
+    {
+        // Endpoint configuration
+    }
 }
 ```
 
