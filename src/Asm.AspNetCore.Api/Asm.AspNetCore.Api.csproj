@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Asm.AspNetCore\Asm.AspNetCore.csproj" />
     <ProjectReference Include="..\Asm.OAuth\Asm.OAuth.csproj" />
+    <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
 
 </Project>

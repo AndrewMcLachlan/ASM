@@ -1,6 +1,6 @@
 <Project>
 
-  <Import Project="..\Common\Common.props"/>
+  <Import Project="..\Directory.Build.props"/>
 
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

@@ -1,4 +1,5 @@
 ﻿using Asm.AspNetCore.Extensions;
+using Asm.AspNetCore.HealthChecks;
 using Asm.Serilog;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -43,12 +44,15 @@ public class WebApplicationStart
 
             addApp(application);
 
-            application.MapHealthChecks("/health", new HealthCheckOptions
+            application.MapHealthChecks("/healthz", new HealthCheckOptions
             {
                 Predicate = p => p.Tags.IsNullOrEmpty() || p.Tags.Contains("health"),
+                ResponseWriter = ResponseWriter.WriteResponse,
             });
 
             application.Run();
+
+            Log.Information($"{appName} Stopping...");
 
             return 0;
         }
