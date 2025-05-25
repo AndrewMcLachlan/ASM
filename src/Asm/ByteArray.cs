@@ -15,7 +15,7 @@ public readonly struct ByteArray
 
     #region Fields
     private readonly byte[] _bytes;
-    private static Endian _systemEndian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
+    private readonly static Endian SystemEndian = BitConverter.IsLittleEndian ? Endian.LittleEndian : Endian.BigEndian;
     #endregion
 
     #region Properties
@@ -273,7 +273,7 @@ public readonly struct ByteArray
             throw new OverflowException("The array is too big to be converted.");
         }
 
-        ReadOnlySpan<byte> span = _systemEndian == Endian ? _bytes : _bytes.Reverse().ToArray();
+        ReadOnlySpan<byte> span = SystemEndian == Endian ? _bytes : [.. ((IEnumerable<byte>)_bytes).Reverse()];
         return converter(span);
     }
 
