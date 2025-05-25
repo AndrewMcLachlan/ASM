@@ -6,6 +6,17 @@
 public static class DateOnlyExtensions
 {
     /// <summary>
+    /// Extensions.
+    /// </summary>
+    extension(DateOnly)
+    {
+        /// <summary>
+        /// Gets the current date.
+        /// </summary>
+        public static DateOnly Today => DateOnly.FromDateTime(DateTime.Today);
+    }
+
+    /// <summary>
     /// Gets the current date.
     /// </summary>
     /// <returns>The current date.</returns>
