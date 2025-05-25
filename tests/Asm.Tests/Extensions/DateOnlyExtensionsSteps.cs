@@ -9,7 +9,7 @@ public class DateOnlyExtensionsSteps(ScenarioContext context)
     [When(@"I get today's date")]
     public void WhenIGetTodaySDate()
     {
-        _date = DateOnlyExtensions.Today();
+        _date = DateOnly.Today;
     }
 
     [Then(@"the result should be today's date")]
