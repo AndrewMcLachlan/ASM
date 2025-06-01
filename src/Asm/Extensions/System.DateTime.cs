@@ -104,4 +104,20 @@ public static class DateTimeExtensions
                months;
     }
 
+    /// <summary>
+    /// Extensions for DateTime instances.
+    /// </summary>
+    extension(DateTime dt)
+    {
+        /// <summary>
+        /// Gets the current date.
+        /// </summary>
+        public DateOnly DateOnly => DateOnly.FromDateTime(dt);
+
+        /// <summary>
+        /// Gets the current time.
+        /// </summary>
+        public TimeOnly TimeOnly => TimeOnly.FromDateTime(dt);
+    }
+
 }

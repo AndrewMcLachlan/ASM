@@ -6,7 +6,7 @@
 public static class DateOnlyExtensions
 {
     /// <summary>
-    /// Extensions.
+    /// Static extensions for <see cref="DateOnly"/>.
     /// </summary>
     extension(DateOnly)
     {
