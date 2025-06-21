@@ -10,15 +10,13 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
+using Reqnroll;
 namespace Asm.Tests
 {
-    using Reqnroll;
-    using System;
-    using System.Linq;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
-    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public partial class ByteArrayFeature : object, Xunit.IClassFixture<ByteArrayFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
@@ -26,7 +24,7 @@ namespace Asm.Tests
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "ByteArray", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "ByteArray", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -38,32 +36,54 @@ namespace Asm.Tests
             this._testOutputHelper = testOutputHelper;
         }
         
-        public static async System.Threading.Tasks.Task FeatureSetupAsync()
+        public static async global::System.Threading.Tasks.Task FeatureSetupAsync()
         {
         }
         
-        public static async System.Threading.Tasks.Task FeatureTearDownAsync()
+        public static async global::System.Threading.Tasks.Task FeatureTearDownAsync()
         {
         }
         
-        public async System.Threading.Tasks.Task TestInitializeAsync()
+        public async global::System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
+            try
             {
-                await testRunner.OnFeatureEndAsync();
+                if (((testRunner.FeatureContext != null) 
+                            && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
+                {
+                    await testRunner.OnFeatureEndAsync();
+                }
             }
-            if ((testRunner.FeatureContext == null))
+            finally
             {
-                await testRunner.OnFeatureStartAsync(featureInfo);
+                if (((testRunner.FeatureContext != null) 
+                            && testRunner.FeatureContext.BeforeFeatureHookFailed))
+                {
+                    throw new global::Reqnroll.ReqnrollException("Scenario skipped because of previous before feature hook error");
+                }
+                if ((testRunner.FeatureContext == null))
+                {
+                    await testRunner.OnFeatureStartAsync(featureInfo);
+                }
             }
         }
         
-        public async System.Threading.Tasks.Task TestTearDownAsync()
+        public async global::System.Threading.Tasks.Task TestTearDownAsync()
         {
-            await testRunner.OnScenarioEndAsync();
-            global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
+            if ((testRunner == null))
+            {
+                return;
+            }
+            try
+            {
+                await testRunner.OnScenarioEndAsync();
+            }
+            finally
+            {
+                global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
+                testRunner = null;
+            }
         }
         
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo)
@@ -72,22 +92,37 @@ namespace Asm.Tests
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
-        public async System.Threading.Tasks.Task ScenarioStartAsync()
+        public async global::System.Threading.Tasks.Task ScenarioStartAsync()
         {
             await testRunner.OnScenarioStartAsync();
         }
         
-        public async System.Threading.Tasks.Task ScenarioCleanupAsync()
+        public async global::System.Threading.Tasks.Task ScenarioCleanupAsync()
         {
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
+        async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
         {
-            await this.TestInitializeAsync();
+            try
+            {
+                await this.TestInitializeAsync();
+            }
+            catch (System.Exception e1)
+            {
+                try
+                {
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                }
+                catch (System.Exception e2)
+                {
+                    throw new System.AggregateException("Test initialization failed", e1, e2);
+                }
+                throw;
+            }
         }
         
-        async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
+        async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
@@ -96,11 +131,11 @@ namespace Asm.Tests
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "Copy method should return correct sub-array")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task CopyMethodShouldReturnCorrectSub_Array()
+        public async global::System.Threading.Tasks.Task CopyMethodShouldReturnCorrectSub_Array()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy method should return correct sub-array", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
@@ -131,7 +166,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("big", "65,66,67", "A,B,C", new string[0])]
         [Xunit.InlineDataAttribute("little", "65,66,67", "C,B,A", new string[0])]
-        public async System.Threading.Tasks.Task ToCharArrayMethodShouldConvertToCharArray(string endian, string values, string expected, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task ToCharArrayMethodShouldConvertToCharArray(string endian, string values, string expected, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -140,7 +175,7 @@ this.ScenarioInitialize(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Endian", endian);
             argumentsOfScenario.Add("Values", values);
             argumentsOfScenario.Add("Expected", expected);
@@ -172,11 +207,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt16BE method should convert to UInt16")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToUInt16BEMethodShouldConvertToUInt16()
+        public async global::System.Threading.Tasks.Task ToUInt16BEMethodShouldConvertToUInt16()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToUInt16BE method should convert to UInt16", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 20
 this.ScenarioInitialize(scenarioInfo);
@@ -205,11 +240,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt16LE method should convert to UInt16")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToUInt16LEMethodShouldConvertToUInt16()
+        public async global::System.Threading.Tasks.Task ToUInt16LEMethodShouldConvertToUInt16()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToUInt16LE method should convert to UInt16", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 26
 this.ScenarioInitialize(scenarioInfo);
@@ -238,11 +273,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt32BE method should convert to UInt32")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToUInt32BEMethodShouldConvertToUInt32()
+        public async global::System.Threading.Tasks.Task ToUInt32BEMethodShouldConvertToUInt32()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToUInt32BE method should convert to UInt32", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 32
 this.ScenarioInitialize(scenarioInfo);
@@ -271,11 +306,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt32LE method should convert to UInt32")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToUInt32LEMethodShouldConvertToUInt32()
+        public async global::System.Threading.Tasks.Task ToUInt32LEMethodShouldConvertToUInt32()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToUInt32LE method should convert to UInt32", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 38
 this.ScenarioInitialize(scenarioInfo);
@@ -304,11 +339,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt64BE method should convert to UInt64")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToUInt64BEMethodShouldConvertToUInt64()
+        public async global::System.Threading.Tasks.Task ToUInt64BEMethodShouldConvertToUInt64()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToUInt64BE method should convert to UInt64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 44
 this.ScenarioInitialize(scenarioInfo);
@@ -337,11 +372,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToUInt64LE method should convert to UInt64")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToUInt64LEMethodShouldConvertToUInt64()
+        public async global::System.Threading.Tasks.Task ToUInt64LEMethodShouldConvertToUInt64()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToUInt64LE method should convert to UInt64", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 50
 this.ScenarioInitialize(scenarioInfo);
@@ -370,11 +405,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [Xunit.TraitAttribute("Description", "ToGuid method should convert to Guid")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task ToGuidMethodShouldConvertToGuid()
+        public async global::System.Threading.Tasks.Task ToGuidMethodShouldConvertToGuid()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToGuid method should convert to Guid", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 56
 this.ScenarioInitialize(scenarioInfo);
@@ -409,7 +444,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.InlineDataAttribute("1,2,3,4", "big", "1,2,3,4", "little", "false", new string[0])]
         [Xunit.InlineDataAttribute("1,2,3,4", "little", "1,2,3,4", "big", "false", new string[0])]
         [Xunit.InlineDataAttribute("1,2,3,4", "big", "1,2,3,5", "big", "false", new string[0])]
-        public async System.Threading.Tasks.Task CheckEquality(string values1, string endian1, string values2, string endian2, string result, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task CheckEquality(string values1, string endian1, string values2, string endian2, string result, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -418,7 +453,7 @@ this.ScenarioInitialize(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Values 1", values1);
             argumentsOfScenario.Add("Endian 1", endian1);
             argumentsOfScenario.Add("Values 2", values2);
@@ -451,17 +486,17 @@ this.ScenarioInitialize(scenarioInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
-        [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
+            async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ByteArrayFeature.FeatureSetupAsync();
             }
             
-            async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
+            async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
             {
                 await ByteArrayFeature.FeatureTearDownAsync();
             }

@@ -10,15 +10,13 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
+using Reqnroll;
 namespace Asm.Net.Tests
 {
-    using Reqnroll;
-    using System;
-    using System.Linq;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
-    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "IPAddressExtensions")]
     public partial class IPAddressExtensionsFeature : object, Xunit.IClassFixture<IPAddressExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
@@ -28,7 +26,7 @@ namespace Asm.Net.Tests
         private static string[] featureTags = new string[] {
                 "IPAddressExtensions"};
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "", "IPAddress Extensions", "    In order to get IP addresses in different notations\r\n    I want to be able to" +
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "IPAddress Extensions", "    In order to get IP addresses in different notations\r\n    I want to be able to" +
                 " convert from a subnet mask to CIDR\r\n    So that I can see IP addresses with CID" +
                 "R notation", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
@@ -42,32 +40,54 @@ namespace Asm.Net.Tests
             this._testOutputHelper = testOutputHelper;
         }
         
-        public static async System.Threading.Tasks.Task FeatureSetupAsync()
+        public static async global::System.Threading.Tasks.Task FeatureSetupAsync()
         {
         }
         
-        public static async System.Threading.Tasks.Task FeatureTearDownAsync()
+        public static async global::System.Threading.Tasks.Task FeatureTearDownAsync()
         {
         }
         
-        public async System.Threading.Tasks.Task TestInitializeAsync()
+        public async global::System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
+            try
             {
-                await testRunner.OnFeatureEndAsync();
+                if (((testRunner.FeatureContext != null) 
+                            && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
+                {
+                    await testRunner.OnFeatureEndAsync();
+                }
             }
-            if ((testRunner.FeatureContext == null))
+            finally
             {
-                await testRunner.OnFeatureStartAsync(featureInfo);
+                if (((testRunner.FeatureContext != null) 
+                            && testRunner.FeatureContext.BeforeFeatureHookFailed))
+                {
+                    throw new global::Reqnroll.ReqnrollException("Scenario skipped because of previous before feature hook error");
+                }
+                if ((testRunner.FeatureContext == null))
+                {
+                    await testRunner.OnFeatureStartAsync(featureInfo);
+                }
             }
         }
         
-        public async System.Threading.Tasks.Task TestTearDownAsync()
+        public async global::System.Threading.Tasks.Task TestTearDownAsync()
         {
-            await testRunner.OnScenarioEndAsync();
-            global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
+            if ((testRunner == null))
+            {
+                return;
+            }
+            try
+            {
+                await testRunner.OnScenarioEndAsync();
+            }
+            finally
+            {
+                global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
+                testRunner = null;
+            }
         }
         
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo)
@@ -76,22 +96,37 @@ namespace Asm.Net.Tests
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
-        public async System.Threading.Tasks.Task ScenarioStartAsync()
+        public async global::System.Threading.Tasks.Task ScenarioStartAsync()
         {
             await testRunner.OnScenarioStartAsync();
         }
         
-        public async System.Threading.Tasks.Task ScenarioCleanupAsync()
+        public async global::System.Threading.Tasks.Task ScenarioCleanupAsync()
         {
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
+        async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
         {
-            await this.TestInitializeAsync();
+            try
+            {
+                await this.TestInitializeAsync();
+            }
+            catch (System.Exception e1)
+            {
+                try
+                {
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                }
+                catch (System.Exception e2)
+                {
+                    throw new System.AggregateException("Test initialization failed", e1, e2);
+                }
+                throw;
+            }
         }
         
-        async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
+        async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
@@ -133,7 +168,7 @@ namespace Asm.Net.Tests
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.252", "192.168.1.0/30", new string[0])]
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.254", "192.168.1.0/31", new string[0])]
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.255", "192.168.1.1/32", new string[0])]
-        public async System.Threading.Tasks.Task GetIPAddressInCIDRNotation(string iPAddress, string mask, string value, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetIPAddressInCIDRNotation(string iPAddress, string mask, string value, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -142,7 +177,7 @@ namespace Asm.Net.Tests
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Mask", mask);
             argumentsOfScenario.Add("Value", value);
@@ -178,7 +213,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Description", "Get IP address in CIDR notation with invalid mask")]
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("192.168.1.1", "255.255.255.253", "System.FormatException", "Invalid mask", new string[0])]
-        public async System.Threading.Tasks.Task GetIPAddressInCIDRNotationWithInvalidMask(string iPAddress, string mask, string exceptionType, string message, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetIPAddressInCIDRNotationWithInvalidMask(string iPAddress, string mask, string exceptionType, string message, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -187,7 +222,7 @@ this.ScenarioInitialize(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Mask", mask);
             argumentsOfScenario.Add("Exception Type", exceptionType);
@@ -228,7 +263,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("fe80::200:f8ff:fe21:67cf", "255.255.255.255", "ipAddress", new string[0])]
         [Xunit.InlineDataAttribute("192.168.0.1", "fe80::200:f8ff:fe21:67cf", "mask", new string[0])]
-        public async System.Threading.Tasks.Task GetIPAddressInCIDRNotationWithInvalidInput(string iPAddress, string mask, string parameter, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetIPAddressInCIDRNotationWithInvalidInput(string iPAddress, string mask, string parameter, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -237,7 +272,7 @@ this.ScenarioInitialize(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Mask", mask);
             argumentsOfScenario.Add("Parameter", parameter);
@@ -280,7 +315,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("Category", "Unit")]
         [Xunit.InlineDataAttribute("255.255.255.255", "4294967295", new string[0])]
         [Xunit.InlineDataAttribute("204.204.204.204", "3435973836", new string[0])]
-        public async System.Threading.Tasks.Task GetIPAddressAsAnUnsigned32BitInteger(string iPAddress, string value, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetIPAddressAsAnUnsigned32BitInteger(string iPAddress, string value, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -289,7 +324,7 @@ this.ScenarioInitialize(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             string[] tagsOfScenario = @__tags;
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("IP Address", iPAddress);
             argumentsOfScenario.Add("Value", value);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get IP address as an unsigned 32 bit integer", null, tagsOfScenario, argumentsOfScenario, featureTags);
@@ -320,11 +355,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [Xunit.TraitAttribute("Description", "Create an IP address from an unsigned 32 bit integer")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task CreateAnIPAddressFromAnUnsigned32BitInteger()
+        public async global::System.Threading.Tasks.Task CreateAnIPAddressFromAnUnsigned32BitInteger()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create an IP address from an unsigned 32 bit integer", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 88
 this.ScenarioInitialize(scenarioInfo);
@@ -353,11 +388,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer with invalid input")]
         [Xunit.TraitAttribute("Category", "Unit")]
-        public async System.Threading.Tasks.Task GetIPAddressAsAnUnsigned32BitIntegerWithInvalidInput()
+        public async global::System.Threading.Tasks.Task GetIPAddressAsAnUnsigned32BitIntegerWithInvalidInput()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get IP address as an unsigned 32 bit integer with invalid input", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 94
 this.ScenarioInitialize(scenarioInfo);
@@ -388,17 +423,17 @@ this.ScenarioInitialize(scenarioInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
-        [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
+            async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await IPAddressExtensionsFeature.FeatureSetupAsync();
             }
             
-            async System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
+            async global::System.Threading.Tasks.Task Xunit.IAsyncLifetime.DisposeAsync()
             {
                 await IPAddressExtensionsFeature.FeatureTearDownAsync();
             }
