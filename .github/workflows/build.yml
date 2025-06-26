@@ -35,7 +35,7 @@ jobs:
       uses: andrewmclachlan/actions/set-version-number@v4
       with:
         project: 'src/Asm'
-        versionPropertyName: 'Version'
+        version-property-name: 'Version'
 
     - name: Restore
       run: dotnet restore Asm.sln
