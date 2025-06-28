@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>Asm core library extending Microsoft hosting.</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

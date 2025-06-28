@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>Domain infrastructure</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
