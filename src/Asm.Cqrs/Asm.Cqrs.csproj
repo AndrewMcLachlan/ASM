@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>CQRS Implementation</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

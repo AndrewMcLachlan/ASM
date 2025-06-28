@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>CQRS support for ASP.NET Core minimal APIs</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <RootNamespace>Asm.AspNetCore</RootNamespace>
   </PropertyGroup>
 

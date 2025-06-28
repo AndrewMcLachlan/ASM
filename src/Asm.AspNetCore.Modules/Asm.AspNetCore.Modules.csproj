@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Description>ASM core library for ASP.NET Core modules.</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

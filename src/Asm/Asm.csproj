@@ -3,7 +3,6 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <Description>ASM Core Library</Description>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
