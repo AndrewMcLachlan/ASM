@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - "main"
-  pull_request_target:
+  pull_request:
     branches:
       - "main"
   workflow_dispatch:
@@ -70,5 +70,5 @@ jobs:
         path: code-coverage-results.md
 
     - name: Publish Packages
-      if: (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.ref == 'refs/heads/main')
-      run: dotnet nuget push ${{ github.workspace }}/publish/**/*.nupkg --api-key ${{secrets.GITHUB_TOKEN}} --source ${{ env.NUGET_SOURCE }} --skip-duplicate
+      if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+      run: dotnet nuget push ${{ github.workspace }}/publish/**/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source ${{ env.NUGET_SOURCE }} --skip-duplicate
