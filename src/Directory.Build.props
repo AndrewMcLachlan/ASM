@@ -1,6 +1,6 @@
 <Project>
 
-  <Import Project="..\Directory.Build.props"/>
+  <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -28,12 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="README.md" Pack="true" PackagePath="\"/>
+    <Content Include="README.md" Pack="true" PackagePath="\" />
     <Content Include="..\..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\Common\Icon-128.png" Pack="true" PackagePath="\"/>
+    <None Include="..\..\Common\Icon-128.png" Pack="true" PackagePath="\" />
     <Compile Include="..\..\Common\GlobalSuppressions.cs" Link="Properties\GlobalSuppressions.cs" />
   </ItemGroup>
 
