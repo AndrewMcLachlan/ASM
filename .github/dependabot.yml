@@ -12,6 +12,9 @@ updates:
       timezone: Australia/Brisbane
       day: monday
       time: "06:00"
+    ignore:
+      - dependency-name: "MediatR"
+
     reviewers:
       - andrewmcLachlan
 
