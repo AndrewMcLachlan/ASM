@@ -16,4 +16,9 @@ internal class TestEntity([DisallowNull] int id) : KeyedEntity<int>(id)
     {
         this.Events.Add(new TestDomainEvent());
     }
+
+    public void TriggerDomainEventMulti()
+    {
+        this.Events.Add(new TestDomainEventMulti());
+    }
 }

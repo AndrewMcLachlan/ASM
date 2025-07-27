@@ -43,7 +43,7 @@ internal static class Handlers
     internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult>
     {
         return ParameterBinding<TRequest, TResult>(
-            async (TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+            async (request, dispatcher, cancellationToken) =>
             {
                 var result = await dispatcher.Dispatch(request!, cancellationToken);
 
@@ -51,43 +51,6 @@ internal static class Handlers
             },
             binding
         );
-    }
-
-    /*internal static Delegate CreateCreateHandler<TRequest, TCommand, TResult>(Func<TRequest, TCommand> createCommand, string routeName, Func<TResult, object> getRouteParams) where TCommand : ICommand<TResult>
-    {
-        return async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
-        {
-            var result = await dispatcher.Dispatch(createCommand(request), cancellationToken);
-
-            return Results.CreatedAtRoute(routeName, getRouteParams(result), result);
-        };
-    }
-
-
-    internal static Delegate CreateCreateHandler<TRequest, TCommand, TResult>(Func<TRequest, TCommand> createCommand, Func<TRequest, TResult, Uri> uri) where TCommand : ICommand<TResult>
-    {
-        return async (TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
-        {
-            var result = await dispatcher.Dispatch(createCommand(request), cancellationToken);
-
-            return Results.Created(uri(request, result), result);
-        };
-    }
-
-    internal static Delegate CreateCommandHandler<TRequest, TCommand, TResult>(Func<TRequest, TCommand> createCommand) where TCommand : ICommand<TResult>
-    {
-        return async (TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
-        {
-            return await dispatcher.Dispatch(createCommand(request), cancellationToken);
-        };
-    }*/
-
-    internal static Delegate CreateCommandHandler<TRequest>(Func<TRequest, object> createCommand)
-    {
-        return async (TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
-        {
-            return await dispatcher.Dispatch(createCommand(request), cancellationToken);
-        };
     }
 
     internal static Delegate CreateCommandHandler<TRequest>(int returnStatusCode, CommandBinding binding = CommandBinding.None) where TRequest : ICommand
@@ -100,13 +63,12 @@ internal static class Handlers
             },
             binding
         );
-
     }
 
     internal static Delegate CreateCommandHandler<TRequest, TResponse>(int returnStatusCode, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResponse>
     {
         return ParameterBinding<TRequest, TResponse>(
-            async (TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+            async (request, dispatcher, cancellationToken) =>
             {
                 await dispatcher.Dispatch(request, cancellationToken);
                 return Results.StatusCode(returnStatusCode);
@@ -115,24 +77,15 @@ internal static class Handlers
         );
 
     }
-
-    internal static Delegate CreateDeleteHandler<TRequest>(Func<TRequest, object> func) =>
-       async ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
-       {
-           await dispatcher.Dispatch(func(request), cancellationToken);
-
-           return Results.NoContent();
-       };
     #endregion
-
 
     private static Delegate ParameterBinding<TRequest>(Func<TRequest, ICommandDispatcher, CancellationToken, Task<IResult>> func, CommandBinding binding) where TRequest : ICommand
     {
         return binding switch
         {
             CommandBinding.None => func,
-            CommandBinding.Body => ([FromBody] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) => func(request, dispatcher, cancellationToken),
-            CommandBinding.Parameters => ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) => func(request, dispatcher, cancellationToken),
+            CommandBinding.Body => ([FromBody] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),
+            CommandBinding.Parameters => ([AsParameters] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),
             _ => func
         };
     }
@@ -142,8 +95,8 @@ internal static class Handlers
         return binding switch
         {
             CommandBinding.None => func,
-            CommandBinding.Body => ([FromBody] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) => func(request, dispatcher, cancellationToken),
-            CommandBinding.Parameters => ([AsParameters] TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) => func(request, dispatcher, cancellationToken),
+            CommandBinding.Body => ([FromBody] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),
+            CommandBinding.Parameters => ([AsParameters] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),
             _ => func
         };
     }

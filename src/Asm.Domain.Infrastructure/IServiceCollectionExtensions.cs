@@ -2,6 +2,7 @@
 using Asm.Domain;
 using Asm.Domain.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class AsmDomainInfrastructureIServiceCollectionExtensions
 {
     private static readonly Type IQueryableType = typeof(IQueryable<>);
+    private static readonly Type EventHandlerGenericType = typeof(IDomainEventHandler<>);
     private static readonly MethodInfo DbContextSetMethod = typeof(IReadOnlyDbContext).GetTypeInfo().GetDeclaredMethod(nameof(IReadOnlyDbContext.Set))!;
     private static readonly MethodInfo AsNoTrackingMethod = typeof(EntityFrameworkQueryableExtensions).GetTypeInfo().GetDeclaredMethod(nameof(EntityFrameworkQueryableExtensions.AsNoTracking))!;
 
@@ -23,7 +25,6 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     public static IServiceCollection AddUnitOfWork<T>(this IServiceCollection services) where T : class, IUnitOfWork =>
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<T>());
 
-
     /// <summary>
     /// Allows injection of a <see cref="IQueryable{TEntity}"/> for the given entity type.
     /// </summary>
@@ -35,7 +36,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         services.AddTransient(sp => sp.GetRequiredService<TContext>().Set<TEntity>().AsNoTracking());
 
     /// <summary>
-    /// Adds all aggregate roots as queryables.
+    /// Adds all aggregate roots as <see cref="IQueryable"/> types.
     /// </summary>
     /// <typeparam name="TContext">The DB Context type.</typeparam>
     /// <param name="services">The <see cref="IServiceCollection"/> instance that this method extends.</param>
@@ -73,11 +74,29 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     /// <param name="services">The <see cref="IServiceCollection"/> instance that this method extends.</param>
     /// <param name="domainEventsAssembly">The assembly containing the domain events.</param>
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
-    public static IServiceCollection AddDomainEvents(this IServiceCollection services, Assembly domainEventsAssembly) =>
-        services.AddMediatR(config =>
+    public static IServiceCollection AddDomainEvents(this IServiceCollection services, Assembly domainEventsAssembly)
+    {
+        foreach (var type in domainEventsAssembly.DefinedTypes)
         {
-            config.RegisterServicesFromAssembly(domainEventsAssembly);
-        });
+            if (!type.IsClass || type.IsAbstract || type.IsGenericTypeDefinition)
+                continue;
+
+            var eventHandlerInterfaces = type.GetInterfaces()
+                .Where(i => i.IsGenericType &&
+                           (i.GetGenericTypeDefinition() == EventHandlerGenericType))
+                .ToArray();
+
+            foreach (var interfaceType in eventHandlerInterfaces)
+            {
+                services.AddTransient(interfaceType, type);
+            }
+        }
+
+        services.TryAddSingleton<IPublisher, Publisher>();
+        services.AddLazyCache();
+
+        return services;
+    }
 
     /// <summary>
     /// Adds a specific domain event.
@@ -88,9 +107,9 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddDomainEvent<THandler, TDomainEvent>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        services.AddMediatR(config => { });
-
         services.AddTransient<IDomainEventHandler<TDomainEvent>, THandler>();
+        services.TryAddSingleton<IPublisher, Publisher>();
+        services.AddLazyCache();
 
         return services;
     }

@@ -4,8 +4,4 @@
     <Description>Domain-Driven-Design basics.</Description>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" />
-  </ItemGroup>
-
 </Project>

@@ -1,10 +1,8 @@
-﻿using MediatR;
-
-namespace Asm.Domain;
+﻿namespace Asm.Domain;
 
 /// <summary>
 /// A domain event.
 /// </summary>
-public interface IDomainEvent : INotification
+public interface IDomainEvent
 {
 }

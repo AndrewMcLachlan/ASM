@@ -1,8 +1,7 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Asm.Domain.Infrastructure.Tests;
-internal class TestDbContext(DbContextOptions options, IMediator mediator) : DomainDbContext(options, mediator)
+internal class TestDbContext(DbContextOptions options, IPublisher publisher) : DomainDbContext(options, publisher)
 {
     public DbSet<TestEntity> TestEntities { get; set; }
 }

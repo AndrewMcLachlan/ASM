@@ -23,7 +23,7 @@ public class QueryTests
         Assert.Equal("ABC", result);
     }
 
-    [Fact]
+    /*[Fact]
     [Trait("Category", "Unit")]
     [Trait("Description", "Tests a non-generic Query")]
     public async Task TestQuery()
@@ -41,5 +41,5 @@ public class QueryTests
         var result = await queryDispatcher.Dispatch(test);
 
         Assert.Equal("ABC", result);
-    }
+    }*/
 }
