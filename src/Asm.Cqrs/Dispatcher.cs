@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
-using Asm.Cqrs.Commands;
 using LazyCache;
-using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Asm.Cqrs;
 
