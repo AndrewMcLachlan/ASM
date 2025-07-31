@@ -31,6 +31,16 @@ public class DomainEventsSteps(ScenarioContext context)
         dbContext.Add(testEntity);
     }
 
+    [Given("An entity defines a multi domain event")]
+    public void GivenAnEntityDefinesAMultiDomainEvent()
+    {
+        TestEntity testEntity = new(1);
+        testEntity.TriggerDomainEventMulti();
+
+        TestDbContext dbContext = _serviceProvider.GetRequiredService<TestDbContext>();
+        dbContext.Add(testEntity);
+    }
+
     [When(@"I call SaveChanges")]
     public void WhenICallSaveChanges()
     {
@@ -43,4 +53,15 @@ public class DomainEventsSteps(ScenarioContext context)
     {
         Assert.True(context.GetResult<bool>());
     }
+
+    [Then("The domain event is handled multiple times")]
+    public void ThenTheDomainEventIsHandledMultipleTimes()
+    {
+        var result1 = context.Get<int>("Handler1");
+        var result2 = context.Get<int>("Handler2");
+
+        Assert.Equal(1, result1);
+        Assert.Equal(2, result2);
+    }
+
 }

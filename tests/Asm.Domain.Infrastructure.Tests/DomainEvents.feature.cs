@@ -160,6 +160,39 @@ this.ScenarioInitialize(scenarioInfo);
             await this.ScenarioCleanupAsync();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="Domain Event is Handled Multiple Times")]
+        [Xunit.TraitAttribute("FeatureTitle", "Domain Events")]
+        [Xunit.TraitAttribute("Description", "Domain Event is Handled Multiple Times")]
+        [Xunit.TraitAttribute("Category", "integration")]
+        public async global::System.Threading.Tasks.Task DomainEventIsHandledMultipleTimes()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "integration"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Domain Event is Handled Multiple Times", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 10
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 11
+    await testRunner.GivenAsync("An entity defines a multi domain event", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 12
+    await testRunner.WhenAsync("I call SaveChanges", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 13
+    await testRunner.ThenAsync("The domain event is handled multiple times", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : object, Xunit.IAsyncLifetime

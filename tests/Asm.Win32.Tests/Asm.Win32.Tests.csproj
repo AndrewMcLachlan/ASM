@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Asm.Win32\Asm.Win32.csproj" />
     <ProjectReference Include="..\..\src\Asm.Testing\Asm.Testing.csproj" />
+    <ProjectReference Include="..\..\src\Asm\Asm.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Asm.Cqrs;
 using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -10,6 +11,11 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// </summary>
 public static class IServiceCollectionExtensions
 {
+    // Cache generic type definitions to avoid repeated reflection calls
+    private static readonly Type CommandHandlerGenericType = typeof(ICommandHandler<,>);
+    private static readonly Type CommandHandlerVoidGenericType = typeof(ICommandHandler<>);
+    private static readonly Type QueryHandlerGenericType = typeof(IQueryHandler<,>);
+
     #region Commands
     /// <summary>
     /// Adds command handlers from the given assembly.
@@ -19,12 +25,26 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddCommandHandlers(this IServiceCollection services, Assembly commandsAssembly)
     {
-        services.AddMediatR(config =>
+        // Single pass: find and register in one go
+        foreach (var type in commandsAssembly.DefinedTypes)
         {
-            config.RegisterServicesFromAssembly(commandsAssembly);
-        });
+            if (!type.IsClass || type.IsAbstract || type.IsGenericTypeDefinition)
+                continue;
 
-        services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
+            var commandHandlerInterfaces = type.GetInterfaces()
+                .Where(i => i.IsGenericType &&
+                           (i.GetGenericTypeDefinition() == CommandHandlerGenericType ||
+                            i.GetGenericTypeDefinition() == CommandHandlerVoidGenericType))
+                .ToArray();
+
+            foreach (var interfaceType in commandHandlerInterfaces)
+            {
+                services.TryAddTransient(interfaceType, type);
+            }
+        }
+
+        services.TryAddSingleton<ICommandDispatcher, Dispatcher>();
+        services.AddLazyCache();
 
         return services;
     }
@@ -39,11 +59,10 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddCommandHandler<THandler, TRequest, TResponse>(this IServiceCollection services) where THandler : class, ICommandHandler<TRequest, TResponse> where TRequest : ICommand<TResponse>
     {
-        services.AddMediatR(config => { });
-
-        services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
-
         services.AddTransient<ICommandHandler<TRequest, TResponse>, THandler>();
+
+        services.TryAddSingleton<ICommandDispatcher, Dispatcher>();
+        services.AddLazyCache();
 
         return services;
     }
@@ -57,11 +76,10 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddCommandHandler<THandler, TRequest>(this IServiceCollection services) where THandler : class, ICommandHandler<TRequest> where TRequest : ICommand
     {
-        services.AddMediatR(config => { });
-
-        services.TryAddTransient<ICommandDispatcher, MediatRCommandDispatcher>();
-
         services.AddTransient<ICommandHandler<TRequest>, THandler>();
+
+        services.TryAddSingleton<ICommandDispatcher, Dispatcher>();
+        services.AddLazyCache();
 
         return services;
     }
@@ -72,16 +90,27 @@ public static class IServiceCollectionExtensions
     /// Adds query handlers
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection" /> to add services to.</param>
-    /// <param name="QueriesAssembly"></param>
+    /// <param name="assembly"></param>
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
-    public static IServiceCollection AddQueryHandlers(this IServiceCollection services, Assembly QueriesAssembly)
+    public static IServiceCollection AddQueryHandlers(this IServiceCollection services, Assembly assembly)
     {
-        services.AddMediatR(config =>
+        // Single pass: find and register in one go
+        foreach (var type in assembly.DefinedTypes)
         {
-            config.RegisterServicesFromAssembly(QueriesAssembly);
-        });
+            if (!type.IsClass || type.IsAbstract || type.IsGenericTypeDefinition) continue;
 
-        services.TryAddTransient<IQueryDispatcher, MediatRQueryDispatcher>();
+            var queryHandlerInterfaces = type.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == QueryHandlerGenericType)
+                .ToArray();
+
+            foreach (var interfaceType in queryHandlerInterfaces)
+            {
+                services.TryAddTransient(interfaceType, type);
+            }
+        }
+
+        services.TryAddSingleton<IQueryDispatcher, Dispatcher>();
+        services.AddLazyCache();
 
         return services;
     }
@@ -96,11 +125,10 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddQueryHandler<THandler, TRequest, TResponse>(this IServiceCollection services) where THandler : class, IQueryHandler<TRequest, TResponse> where TRequest : IQuery<TResponse>
     {
-        services.AddMediatR(config => { });
-
-        services.TryAddTransient<IQueryDispatcher, MediatRQueryDispatcher>();
-
         services.AddTransient<IQueryHandler<TRequest, TResponse>, THandler>();
+
+        services.TryAddSingleton<IQueryDispatcher, Dispatcher>();
+        services.AddLazyCache();
 
         return services;
     }

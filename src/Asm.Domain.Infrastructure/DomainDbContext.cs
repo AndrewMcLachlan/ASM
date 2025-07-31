@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Asm.Domain.Infrastructure;
 
@@ -7,14 +6,14 @@ namespace Asm.Domain.Infrastructure;
 /// A <see cref="DbContext"/> that raises domain events.
 /// </summary>
 /// <param name="options">Options for the context.</param>
-/// <param name="mediator">A mediator instance for orchestrating domain events.</param>
-public abstract class DomainDbContext(DbContextOptions options, IMediator mediator) : DbContext(options), IUnitOfWork
+/// <param name="publisher">A publisher instance for orchestrating domain events.</param>
+public abstract class DomainDbContext(DbContextOptions options, IPublisher publisher) : DbContext(options), IUnitOfWork
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="DomainDbContext"/> class.
     /// </summary>
-    /// <param name="mediator">A mediator instance for orchestrating domain events.</param>
-    protected DomainDbContext(IMediator mediator) : this(new DbContextOptions<DbContext>(), mediator) { }
+    /// <param name="publisher">A publisher instance for orchestrating domain events.</param>
+    protected DomainDbContext(IPublisher publisher) : this(new DbContextOptions<DbContext>(), publisher) { }
 
     /// <summary>
     /// Saves changes to the database and raises domain events.
@@ -53,7 +52,7 @@ public abstract class DomainDbContext(DbContextOptions options, IMediator mediat
             entity.Events.Clear();
             foreach (var domainEvent in events)
             {
-                await mediator.Publish(domainEvent, cancellationToken);
+                await publisher.Publish(domainEvent, cancellationToken);
             }
         }
 
@@ -114,7 +113,7 @@ public abstract class DomainDbContext(DbContextOptions options, IMediator mediat
             entity.Events.Clear();
             foreach (var domainEvent in events)
             {
-                mediator.Publish(domainEvent).Wait();
+                publisher.Publish(domainEvent).AsTask().GetAwaiter().GetResult();
             }
         }
 
