@@ -92,7 +92,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
             }
         }
 
-        services.TryAddSingleton<IPublisher, Publisher>();
+        services.TryAddTransient<IPublisher, Publisher>();
         services.AddLazyCache();
 
         return services;
@@ -108,7 +108,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     public static IServiceCollection AddDomainEvent<THandler, TDomainEvent>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         services.AddTransient<IDomainEventHandler<TDomainEvent>, THandler>();
-        services.TryAddSingleton<IPublisher, Publisher>();
+        services.TryAddTransient<IPublisher, Publisher>();
         services.AddLazyCache();
 
         return services;

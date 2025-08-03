@@ -43,7 +43,7 @@ public static class IServiceCollectionExtensions
             }
         }
 
-        services.TryAddSingleton<ICommandDispatcher, Dispatcher>();
+        services.TryAddTransient<ICommandDispatcher, Dispatcher>();
         services.AddLazyCache();
 
         return services;
@@ -61,7 +61,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddTransient<ICommandHandler<TRequest, TResponse>, THandler>();
 
-        services.TryAddSingleton<ICommandDispatcher, Dispatcher>();
+        services.TryAddTransient<ICommandDispatcher, Dispatcher>();
         services.AddLazyCache();
 
         return services;
@@ -78,7 +78,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddTransient<ICommandHandler<TRequest>, THandler>();
 
-        services.TryAddSingleton<ICommandDispatcher, Dispatcher>();
+        services.TryAddTransient<ICommandDispatcher, Dispatcher>();
         services.AddLazyCache();
 
         return services;
@@ -109,7 +109,7 @@ public static class IServiceCollectionExtensions
             }
         }
 
-        services.TryAddSingleton<IQueryDispatcher, Dispatcher>();
+        services.TryAddTransient<IQueryDispatcher, Dispatcher>();
         services.AddLazyCache();
 
         return services;
@@ -127,7 +127,7 @@ public static class IServiceCollectionExtensions
     {
         services.AddTransient<IQueryHandler<TRequest, TResponse>, THandler>();
 
-        services.TryAddSingleton<IQueryDispatcher, Dispatcher>();
+        services.TryAddTransient<IQueryDispatcher, Dispatcher>();
         services.AddLazyCache();
 
         return services;
