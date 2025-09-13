@@ -1,6 +1,7 @@
 ﻿namespace Asm.Tests;
 
 [Binding]
+[Scope(Feature = "String Extensions")]
 public class StringExtensionsSteps(ScenarioContext context)
 {
     private string _input;

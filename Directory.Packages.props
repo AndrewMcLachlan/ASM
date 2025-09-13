@@ -10,18 +10,22 @@
     <PackageVersion Include="FluentValidation" Version="12.0.0" />
     <PackageVersion Include="LazyCache" Version="2.4.0" />
     <PackageVersion Include="LazyCache.AspNetCore" Version="2.4.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
@@ -33,6 +37,7 @@
     <PackageVersion Include="Reqnroll" Version="3.0.2" />
     <PackageVersion Include="Reqnroll.Tools.MsBuild.Generation" Version="3.0.2" />
     <PackageVersion Include="Reqnroll.xUnit" Version="3.0.2" />
+    <PackageVersion Include="Seq.Extensions.Logging" Version="8.0.0" />
     <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="8.0.3" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
@@ -42,7 +47,7 @@
     <PackageVersion Include="Serilog.Sinks.Seq" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Trace" Version="4.0.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="9.0.4" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.8" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.9" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
   </ItemGroup>

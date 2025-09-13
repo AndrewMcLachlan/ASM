@@ -3,8 +3,10 @@ using Asm.AspNetCore.HealthChecks;
 using Asm.Serilog;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace Asm.AspNetCore;
@@ -27,11 +29,19 @@ public class WebApplicationStart
     {
         Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
 
+
         try
         {
             Log.Information($"{appName} Starting...");
 
-            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ApplicationName = appName, Args = args, });
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ApplicationName = appName, Args = args,  });
+
+            if (builder.Environment.IsDevelopment())
+            {
+                builder.Configuration.AddUserSecrets(System.Reflection.Assembly.GetCallingAssembly(), true);
+                builder.Logging.AddDebug();
+                builder.Logging.AddConsole();
+            }
 
             builder.Host.UseCustomSerilog();
             builder.AddStandardOpenTelemetry();
