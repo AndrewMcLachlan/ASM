@@ -1,0 +1,104 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="Release 64" />
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/.github/">
+    <File Path=".github/CODEOWNERS" />
+    <File Path=".github/dependabot.yml" />
+  </Folder>
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/build.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorConfig" />
+    <File Path=".gitignore" />
+    <File Path="Common/GlobalSuppressions.cs" />
+    <File Path="Common/Icon-128.png" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.Targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path="LICENSE" />
+  </Folder>
+  <Folder Name="/Src/">
+    <File Path="src/Directory.Build.props" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/Asm.Cqrs.AspNetCore.Tests/Asm.Cqrs.AspNetCore.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Cqrs.Tests/Asm.Cqrs.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Domain.Infrastructure.Tests/Asm.Domain.Infrastructure.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Domain.Tests/Asm.Domain.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Net.Tests/Asm.Net.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Tests/Asm.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Win32.Tests/Asm.Win32.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Project Path="src/Asm.AspNetCore.Api/Asm.AspNetCore.Api.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.AspNetCore.Modules/Asm.AspNetCore.Modules.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.AspNetCore.Mvc/Asm.AspNetCore.Mvc.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.AspNetCore/Asm.AspNetCore.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Cqrs.AspNetCore/Asm.Cqrs.AspNetCore.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Cqrs/Asm.Cqrs.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Domain.Infrastructure/Asm.Domain.Infrastructure.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Domain/Asm.Domain.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Hosting/Asm.Hosting.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Logging/Asm.Logging.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Net/Asm.Net.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.OAuth/Asm.OAuth.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Serilog/Asm.Serilog.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Testing.Domain/Asm.Testing.Domain.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Testing/Asm.Testing.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Win32/Asm.Win32.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm/Asm.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+</Solution>

@@ -82,6 +82,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{02EA681E-C7D
 		src\Directory.Build.props = src\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asm.Logging", "src\Asm.Logging\Asm.Logging.csproj", "{2E193B3E-12CB-456B-9A26-4209F433FE7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -368,6 +370,18 @@ Global
 		{39E446B1-08FE-4BD4-9963-95C903929D49}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39E446B1-08FE-4BD4-9963-95C903929D49}.Release|x64.ActiveCfg = Release|Any CPU
 		{39E446B1-08FE-4BD4-9963-95C903929D49}.Release|x64.Build.0 = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Debug|x64.Build.0 = Debug|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release 64|Any CPU.ActiveCfg = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release 64|Any CPU.Build.0 = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release 64|x64.ActiveCfg = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release 64|x64.Build.0 = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2E193B3E-12CB-456B-9A26-4209F433FE7E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
