@@ -90,24 +90,70 @@ var app = builder.Build(); app.Run();
 
 ### Authentication
 
-// TODO
+Configure JWT Bearer authentication in your ASP.NET Core application:
+
+```csharp
+using Asm.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://your-authority.com";
+        options.Audience = "your-audience";
+    });
+
+var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.Run();
+```
 
 ### Authorisation
 
-// TODO
+Add authorization policies to your application:
+
+```csharp
+using Microsoft.AspNetCore.Authorization;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+        
+    options.AddPolicy("RequireScope", policy =>
+        policy.RequireClaim("scope", "api.read"));
+});
+
+var app = builder.Build();
+
+app.UseAuthorization();
+
+// Use on endpoints
+app.MapGet("/admin", () => "Admin content")
+    .RequireAuthorization("AdminOnly");
+
+app.Run();
+```
 
 
 ## Dependencies
 
 The `Asm.AspNetCore` library depends on the following packages:
 
-- `Azure.Montor.OpenTelemetry.AspNetCore`
+- `Azure.Monitor.OpenTelemetry.AspNetCore`
 - `Azure.Monitor.OpenTelemetry.Exporter`
 - `FluentValidation`
 - `Microsoft.AspNetCore.Authentication.JwtBearer`
-- `Microsoft.Azurre.WebJobs.Extensions`
+- `Microsoft.Azure.WebJobs.Extensions`
 - `OpenTelemetry.Exporter.Console`
-- `OpenTelemetry.Exporeter.OpenTelemetryProtocol`
+- `OpenTelemetry.Exporter.OpenTelemetryProtocol`
 - `OpenTelemetry.Extensions.Hosting`
 
 ## Contributing
