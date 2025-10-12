@@ -5,10 +5,14 @@ The `Asm.Testing` library provides utilities and abstractions to simplify Behavi
 
 ## Features
 
-- **Test Utilities**: Common utilities to streamline unit testing.
-- **Integration with xUnit**: Preconfigured support for xUnit-based test projects.
-- **Mocking Support**: Simplifies mocking dependencies using libraries like Moq.
-- **Code Coverage Exclusion**: Automatically excludes test-related code from coverage reports.
+- **Test Utilities**: Common utilities to streamline unit testing
+- **Integration with xUnit**: Preconfigured support for xUnit-based test projects
+- **Reqnroll Step Definitions**: Reusable step definitions for common testing scenarios
+- **Exception Handling Steps**: Built-in steps for testing exception scenarios
+- **Simple Assertion Steps**: Common assertion steps for BDD scenarios
+- **Scenario Context Extensions**: Helper methods for working with Reqnroll's `ScenarioContext`
+- **Step Argument Transformations**: Custom transformations for common test data types
+- **Code Coverage Exclusion**: Automatically excludes test-related code from coverage reports
 
 ## Installation
 
@@ -24,11 +28,201 @@ Or via the NuGet Package Manager:
 
 ### Setting Up a Test Project
 
-// TODO
+Create a test project and add the required packages:
+
+```bash
+dotnet new xunit -n MyApp.Tests
+cd MyApp.Tests
+dotnet add package Asm.Testing
+dotnet add package Reqnroll
+dotnet add package Reqnroll.xUnit
+```
+
+Configure your test project file (`.csproj`):
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asm.Testing" />
+    <PackageReference Include="Reqnroll" />
+    <PackageReference Include="Reqnroll.xUnit" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Reqnroll" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
+```
 
 ### Writing a Reqnroll Test
 
-//TODO
+Create a feature file (`Calculator.feature`):
+
+```gherkin
+Feature: Calculator
+  Simple calculator for adding two numbers
+
+@Unit
+Scenario: Add two numbers
+  Given I have entered 50 into the calculator
+  And I have entered 70 into the calculator
+  When I press add
+  Then the result should be 120
+```
+
+Create step definitions using the built-in steps:
+
+```csharp
+using Asm.Testing;
+using Reqnroll;
+
+[Binding]
+public class CalculatorSteps
+{
+    private readonly ScenarioContext _context;
+    private int _result;
+
+    public CalculatorSteps(ScenarioContext context)
+    {
+        _context = context;
+    }
+
+    [Given(@"I have entered (.*) into the calculator")]
+    public void GivenIHaveEnteredIntoTheCalculator(int number)
+    {
+        var numbers = _context.Get<List<int>>("numbers", new List<int>());
+        numbers.Add(number);
+        _context.Set("numbers", numbers);
+    }
+
+    [When(@"I press add")]
+    public void WhenIPressAdd()
+    {
+        var numbers = _context.Get<List<int>>("numbers");
+        _result = numbers.Sum();
+    }
+
+    [Then(@"the result should be (.*)")]
+    public void ThenTheResultShouldBe(int expected)
+    {
+        Assert.Equal(expected, _result);
+    }
+}
+```
+
+### Using Built-In Exception Steps
+
+The library provides built-in steps for testing exceptions:
+
+```gherkin
+Feature: HexColour Validation
+
+@Unit
+Scenario: Create a HexColour from invalid string
+  Given I have a string 'INVALID'
+  When I create a new HexColour from the string
+  Then an exception of type 'System.FormatException' should be thrown
+  And the exception message is 'Invalid hex colour format: INVALID'
+```
+
+These exception steps are automatically available through `ExceptionSteps` class.
+
+### Using Scenario Context Extensions
+
+The library provides helpful extensions for working with `ScenarioContext`:
+
+```csharp
+using Asm.Testing;
+
+// Store and retrieve exceptions
+context.SetException(new InvalidOperationException("Error"));
+var exception = context.GetException();
+
+// Store and retrieve typed values
+context.Set("key", myValue);
+var value = context.Get<MyType>("key");
+
+// Get with default value
+var value = context.Get("key", defaultValue);
+```
+
+### Using Step Argument Transformations
+
+The library includes transformations for common test data:
+
+```csharp
+// Automatically transforms special tokens in feature files:
+// - <NULL> ? null
+// - \n ? newline
+// - \t ? tab
+// - Other whitespace escape sequences
+```
+
+Example in a feature file:
+
+```gherkin
+Scenario: Handle null values
+  Given I have a string '<NULL>'
+  When I process the string
+  Then an exception should be thrown
+```
+
+### Using Simple Assertion Steps
+
+Built-in assertion steps for common scenarios:
+
+```gherkin
+Scenario: Boolean assertions
+  When I call the IsValid method
+  Then the boolean value true is returned
+
+Scenario: String assertions
+  When I call the GetName method
+  Then the string value 'John Doe' is returned
+
+Scenario: Integer assertions  
+  When I call the GetCount method
+  Then the integer value 42 is returned
+```
+
+## Common Test Patterns
+
+### Testing Exceptions
+
+```gherkin
+Scenario: Test argument validation
+  Given I have an invalid input
+  When I call the method
+  Then an exception of type 'System.ArgumentException' should be thrown
+  And the exception parameter name is 'input'
+  And the exception message is 'Input cannot be null or empty'
+```
+
+### Testing No Exception
+
+```gherkin
+Scenario: Test valid operation
+  Given I have valid input
+  When I call the method
+  Then no exception is thrown
+```
+
+## Dependencies
+
+The `Asm.Testing` library depends on the following packages:
+
+- `Reqnroll`
+- `xUnit`
+- `Microsoft.Extensions.DependencyModel`
 
 ## Contributing
 

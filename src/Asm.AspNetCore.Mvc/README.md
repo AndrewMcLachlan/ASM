@@ -23,7 +23,27 @@ Or via the NuGet Package Manager:
 
 ### Tag Helpers
 
-// TODO
+The library provides custom tag helpers to enhance your Razor views:
+
+```csharp
+// In your _ViewImports.cshtml, add:
+@addTagHelper *, Asm.AspNetCore.Mvc
+```
+
+Use the tag helpers in your views to simplify common tasks and improve code readability. Tag helpers can be used to:
+
+- Enhance form controls
+- Add conditional rendering
+- Simplify complex HTML generation
+
+Example usage in a Razor view:
+
+```html
+@* Custom tag helpers will be automatically available after adding to _ViewImports.cshtml *@
+<form asp-controller="Home" asp-action="Submit">
+    <!-- Your form content -->
+</form>
+```
 
 ### Validation Integration
 
