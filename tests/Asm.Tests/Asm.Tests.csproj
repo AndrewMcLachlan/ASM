@@ -2,11 +2,8 @@
 
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
+    
   <ItemGroup>
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>

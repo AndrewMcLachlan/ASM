@@ -37,88 +37,6 @@ dotnet add package Asm.Testing
 dotnet add package Reqnroll
 dotnet add package Reqnroll.xUnit
 ```
-
-Configure your test project file (`.csproj`):
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Asm.Testing" />
-    <PackageReference Include="Reqnroll" />
-    <PackageReference Include="Reqnroll.xUnit" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Reqnroll" />
-    <Using Include="Xunit" />
-  </ItemGroup>
-</Project>
-```
-
-### Writing a Reqnroll Test
-
-Create a feature file (`Calculator.feature`):
-
-```gherkin
-Feature: Calculator
-  Simple calculator for adding two numbers
-
-@Unit
-Scenario: Add two numbers
-  Given I have entered 50 into the calculator
-  And I have entered 70 into the calculator
-  When I press add
-  Then the result should be 120
-```
-
-Create step definitions using the built-in steps:
-
-```csharp
-using Asm.Testing;
-using Reqnroll;
-
-[Binding]
-public class CalculatorSteps
-{
-    private readonly ScenarioContext _context;
-    private int _result;
-
-    public CalculatorSteps(ScenarioContext context)
-    {
-        _context = context;
-    }
-
-    [Given(@"I have entered (.*) into the calculator")]
-    public void GivenIHaveEnteredIntoTheCalculator(int number)
-    {
-        var numbers = _context.Get<List<int>>("numbers", new List<int>());
-        numbers.Add(number);
-        _context.Set("numbers", numbers);
-    }
-
-    [When(@"I press add")]
-    public void WhenIPressAdd()
-    {
-        var numbers = _context.Get<List<int>>("numbers");
-        _result = numbers.Sum();
-    }
-
-    [Then(@"the result should be (.*)")]
-    public void ThenTheResultShouldBe(int expected)
-    {
-        Assert.Equal(expected, _result);
-    }
-}
-```
-
 ### Using Built-In Exception Steps
 
 The library provides built-in steps for testing exceptions:
@@ -146,13 +64,6 @@ using Asm.Testing;
 // Store and retrieve exceptions
 context.SetException(new InvalidOperationException("Error"));
 var exception = context.GetException();
-
-// Store and retrieve typed values
-context.Set("key", myValue);
-var value = context.Get<MyType>("key");
-
-// Get with default value
-var value = context.Get("key", defaultValue);
 ```
 
 ### Using Step Argument Transformations
