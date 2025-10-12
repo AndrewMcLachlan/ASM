@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <CoverletInclude>Asm.Domain</CoverletInclude>
+    <CoverletInclude>[Asm.Domain]*</CoverletInclude>
   </PropertyGroup>
 
   <ItemGroup>

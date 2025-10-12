@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <CoverletInclude>Asm.Cqrs.AspNetCore</CoverletInclude>
+    <CoverletInclude>[Asm.Cqrs.AspNetCore]*</CoverletInclude>
   </PropertyGroup>
 
   <ItemGroup>

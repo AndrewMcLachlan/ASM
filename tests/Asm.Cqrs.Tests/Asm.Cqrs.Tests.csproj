@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <CoverletInclude>Asm.Cqrs</CoverletInclude>
+    <CoverletInclude>[Asm.Cqrs]*</CoverletInclude>
   </PropertyGroup>
 
   <ItemGroup>
