@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Net]*</CoverletInclude>
+    <CoverletExclude>[Asm]*</CoverletExclude>
   </PropertyGroup>
 
   <ItemGroup>
