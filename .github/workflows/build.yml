@@ -19,10 +19,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      pull-requests: write
     steps:
     - uses: actions/checkout@v5
     - name: Setup .NET
@@ -43,16 +39,94 @@ jobs:
     - name: Build
       run: dotnet build Asm.slnx --no-restore --configuration Release
 
-    - name: Test
-      run: dotnet test Asm.slnx --no-restore --no-build --filter 'Category=Unit&FullyQualifiedName!~Testing&FullyQualifiedName!~Win32' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults --configuration Release
-
     - name: Package
       run: dotnet pack Asm.slnx --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: |
+          ${{ github.workspace }}/publish
+          **/bin/Release/**
+        retention-days: 1
+
+    - name: Upload packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: ${{ github.workspace }}/publish/**/*.nupkg
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      packages: write
+      contents: read
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        test-project:
+          - { name: "Asm.Tests", path: "tests/Asm.Tests" }
+          - { name: "Asm.Net.Tests", path: "tests/Asm.Net.Tests" }
+          - { name: "Asm.Cqrs.Tests", path: "tests/Asm.Cqrs.Tests" }
+          - { name: "Asm.Domain.Tests", path: "tests/Asm.Domain.Tests" }
+          - { name: "Asm.Domain.Infrastructure.Tests", path: "tests/Asm.Domain.Infrastructure.Tests" }
+          - { name: "Asm.Cqrs.AspNetCore.Tests", path: "tests/Asm.Cqrs.AspNetCore.Tests" }
+          - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
+    steps:
+    - uses: actions/checkout@v5
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 9.x
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-output
+
+    - name: Restore
+      run: dotnet restore Asm.slnx
+
+    - name: Test ${{ matrix.test-project.name }}
+      run: dotnet test ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj --no-restore --no-build --filter 'Category=Unit&FullyQualifiedName!~Testing&FullyQualifiedName!~Win32' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults/${{ matrix.test-project.name }} --configuration Release --settings coverlet.runsettings
+
+    - name: Upload coverage for ${{ matrix.test-project.name }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-${{ matrix.test-project.name }}
+        path: testresults/${{ matrix.test-project.name }}/**/coverage.cobertura.xml
+
+  coverage-report:
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v5
+    
+    - name: Download all coverage reports
+      uses: actions/download-artifact@v4
+      with:
+        pattern: coverage-*
+        path: ./all-coverage
+        merge-multiple: true
+
+    - name: Install ReportGenerator
+      run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+    - name: Combine Coverage Reports
+      run: |
+        mkdir -p ./combined-coverage
+        reportgenerator -reports:"./all-coverage/**/coverage.cobertura.xml" -targetdir:"./combined-coverage" -reporttypes:"Cobertura"
 
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        filename: testresults/**/coverage.cobertura.xml
+        filename: combined-coverage/Cobertura.xml
         badge: true
         fail_below_min: false
         format: markdown
@@ -69,6 +143,19 @@ jobs:
         recreate: true
         path: code-coverage-results.md
 
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    permissions:
+      packages: write
+      contents: read
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    steps:
+    - name: Download packages
+      uses: actions/download-artifact@v4
+      with:
+        name: packages
+        path: ./packages
+
     - name: Publish Packages
-      if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-      run: dotnet nuget push ${{ github.workspace }}/publish/**/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source ${{ env.NUGET_SOURCE }} --skip-duplicate
+      run: dotnet nuget push ./packages/**/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source ${{ env.NUGET_SOURCE }} --skip-duplicate
