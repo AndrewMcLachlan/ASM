@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Cqrs.AspNetCore]*</CoverletInclude>
-    <CoverletExclude>[Asm];[Asm.Cqrs]</CoverletExclude>
+    <CoverletExcludeByFile>**/*</CoverletExcludeByFile>
   </PropertyGroup>
 
   <ItemGroup>
