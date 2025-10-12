@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Win32]*</CoverletInclude>
-    <CoverletExclude>[Asm]*</CoverletExclude>
+    <CoverletExclude>[Asm]</CoverletExclude>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Domain.Infrastructure]*</CoverletInclude>
-    <CoverletExclude>[Asm]*</CoverletExclude>
+    <CoverletExclude>[Asm]</CoverletExclude>
   </PropertyGroup>
 
   <ItemGroup>

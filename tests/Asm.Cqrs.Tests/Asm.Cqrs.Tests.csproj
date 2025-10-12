@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Cqrs]*</CoverletInclude>
-    <CoverletExclude>[Asm]*</CoverletExclude>
+    <CoverletExclude>[Asm]</CoverletExclude>
   </PropertyGroup>
 
   <ItemGroup>
