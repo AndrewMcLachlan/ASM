@@ -83,7 +83,7 @@ jobs:
         dotnet-version: 9.x
 
     - name: Download build artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: build-output
 
@@ -109,7 +109,7 @@ jobs:
     - uses: actions/checkout@v5
     
     - name: Download all coverage reports
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         pattern: coverage-*
         path: ./all-coverage
@@ -152,7 +152,7 @@ jobs:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     steps:
     - name: Download packages
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: packages
         path: ./packages
