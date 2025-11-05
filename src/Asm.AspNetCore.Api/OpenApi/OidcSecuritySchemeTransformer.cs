@@ -9,11 +9,16 @@ namespace Asm.AspNetCore.Api;
 /// <summary>
 /// Adds the OIDC security scheme to the Open API document.
 /// </summary>
-public sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider, IOptions<AzureOAuthOptions> oAuthOptions) : IOpenApiDocumentTransformer
+public sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider, IOptions<OAuthOptions> oAuthOptions) : IOpenApiDocumentTransformer
 {
     /// <inheritdoc />
     public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
+        if (String.IsNullOrEmpty(oAuthOptions.Value.Authority))
+        {
+            return;
+        }
+
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
         if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
         {
