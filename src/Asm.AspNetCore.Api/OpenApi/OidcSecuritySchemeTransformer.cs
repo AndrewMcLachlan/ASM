@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Asm.AspNetCore.Api;
 
@@ -22,7 +22,7 @@ public sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider 
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
         if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
         {
-            var requirements = new Dictionary<string, OpenApiSecurityScheme>
+            var requirements = new Dictionary<string, IOpenApiSecurityScheme>
             {
                 ["oidc"] = new OpenApiSecurityScheme
                 {
@@ -37,13 +37,15 @@ public sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider 
             };
             document.Components ??= new OpenApiComponents();
             document.Components.SecuritySchemes = requirements;
-            document.SecurityRequirements.Add(new OpenApiSecurityRequirement()
+
+            foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations ?? []))
             {
-                { new OpenApiSecurityScheme()
+                operation.Value.Security ??= [];
+                operation.Value.Security.Add(new OpenApiSecurityRequirement
                 {
-                    Reference = new OpenApiReference() { Id = "oidc", Type = ReferenceType.SecurityScheme },
-                }, new List<string>() },
-            });
+                    [new OpenApiSecuritySchemeReference("oidc", document)] = []
+                });
+            }
         }
     }
 }
