@@ -40,7 +40,7 @@
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.13.1" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.13.0-beta.2" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.13.0-beta.2" />
-    <PackageVersion Include="Reqnroll" Version="3.2.0" />
+    <PackageVersion Include="Reqnroll" Version="3.2.1" />
     <PackageVersion Include="Reqnroll.Tools.MsBuild.Generation" Version="3.2.0" />
     <PackageVersion Include="Reqnroll.xUnit" Version="3.2.0" />
     <PackageVersion Include="Seq.Extensions.Logging" Version="9.0.0" />
