@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -53,17 +52,16 @@ public abstract class IntegrityTagHelper : TagHelper
     /// <summary>
     /// Initializes a new instance of the <see cref="IntegrityTagHelper"/> class.
     /// </summary>
-    /// <param name="actionContextAccessor">An action context accessor.</param>
     /// <param name="urlHelperFactory">A URL helper factory.</param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="memoryCache">A memory cache.</param>
     /// <param name="logger">Logger for this tag helper.</param>
     /// <exception cref="InvalidOperationException">If there is no action context.</exception>
-    public IntegrityTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, ILogger<IntegrityTagHelper> logger)
+    public IntegrityTagHelper(IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, ILogger<IntegrityTagHelper> logger)
     {
-        if (actionContextAccessor.ActionContext == null) throw new InvalidOperationException("No ActionContext provided.");
+        if (ViewContext == null) throw new InvalidOperationException("No ViewContext provided.");
 
-        UrlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+        UrlHelper = urlHelperFactory.GetUrlHelper(ViewContext!);
         HostingEnvironment = hostingEnvironment;
         MemoryCache = memoryCache;
         _logger = logger;

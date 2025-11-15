@@ -19,7 +19,6 @@ public class ScriptTagHelper : IntegrityTagHelper
     /// <summary>
     /// Initializes a new instance of the <see cref="ScriptTagHelper"/> class.
     /// </summary>
-    /// <param name="actionContextAccessor">An action context accessor.</param>
     /// <param name="urlHelperFactory">A URL helper factory.</param>
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="memoryCache">A memory cache.</param>
@@ -27,8 +26,8 @@ public class ScriptTagHelper : IntegrityTagHelper
     /// <param name="logger">Logger for this tag helper.</param>
     /// <exception cref="InvalidOperationException">If there is no action context.</exception>
     /// <exception cref="InvalidOperationException">If the configuration value EmitMinifiedUrls is defined but is not a <see langword="bool"/>.</exception>
-    public ScriptTagHelper(IActionContextAccessor actionContextAccessor, IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration, ILogger<ScriptTagHelper> logger)
-        : base(actionContextAccessor, urlHelperFactory, hostingEnvironment, memoryCache, logger)
+    public ScriptTagHelper(IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration, ILogger<ScriptTagHelper> logger)
+        : base(urlHelperFactory, hostingEnvironment, memoryCache, logger)
     {
         _emitMinifiedUrls = configuration.GetValue("EmitMinifiedUrls", false);
     }
