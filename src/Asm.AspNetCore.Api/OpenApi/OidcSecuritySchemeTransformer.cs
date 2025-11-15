@@ -39,14 +39,12 @@ public sealed class OidcSecuritySchemeTransformer(IAuthenticationSchemeProvider 
             document.Components ??= new OpenApiComponents();
             document.Components.SecuritySchemes = requirements;
 
-            foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations ?? []))
+            // Add security requirement at document root level
+            document.Security ??= [];
+            document.Security.Add(new OpenApiSecurityRequirement
             {
-                operation.Value.Security ??= [];
-                operation.Value.Security.Add(new OpenApiSecurityRequirement
-                {
-                    [new OpenApiSecuritySchemeReference("oidc", document)] = []
-                });
-            }
+                [new OpenApiSecuritySchemeReference("oidc", document)] = []
+            });
         }
     }
 }
