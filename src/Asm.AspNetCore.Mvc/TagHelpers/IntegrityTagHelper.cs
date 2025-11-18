@@ -17,6 +17,7 @@ namespace Asm.AspNetCore.Mvc.TagHelpers;
 public abstract class IntegrityTagHelper : TagHelper
 {
     private readonly ILogger<IntegrityTagHelper> _logger;
+    private readonly IUrlHelperFactory _urlHelperFactory;
 
     /// <summary>
     /// Gets or sets the view context.
@@ -27,7 +28,7 @@ public abstract class IntegrityTagHelper : TagHelper
     /// <summary>
     /// Gets the URL helper.
     /// </summary>
-    protected IUrlHelper UrlHelper { get; }
+    protected IUrlHelper UrlHelper => _urlHelperFactory.GetUrlHelper(ViewContext!);
 
     /// <summary>
     /// Gets the hosting environment.
@@ -56,12 +57,9 @@ public abstract class IntegrityTagHelper : TagHelper
     /// <param name="hostingEnvironment">The hosting environment.</param>
     /// <param name="memoryCache">A memory cache.</param>
     /// <param name="logger">Logger for this tag helper.</param>
-    /// <exception cref="InvalidOperationException">If there is no action context.</exception>
     public IntegrityTagHelper(IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, ILogger<IntegrityTagHelper> logger)
     {
-        if (ViewContext == null) throw new InvalidOperationException("No ViewContext provided.");
-
-        UrlHelper = urlHelperFactory.GetUrlHelper(ViewContext!);
+        _urlHelperFactory = urlHelperFactory;
         HostingEnvironment = hostingEnvironment;
         MemoryCache = memoryCache;
         _logger = logger;
