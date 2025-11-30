@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v6.0.0
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -76,7 +76,7 @@ jobs:
           - { name: "Asm.Cqrs.AspNetCore.Tests", path: "tests/Asm.Cqrs.AspNetCore.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v6.0.0
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -106,7 +106,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v6.0.0
     
     - name: Download all coverage reports
       uses: actions/download-artifact@v6
