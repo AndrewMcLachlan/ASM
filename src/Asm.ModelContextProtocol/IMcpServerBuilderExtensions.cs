@@ -11,7 +11,7 @@ public static class IMcpServerBuilderExtensions
     /// <param name="builder">The <see cref="IMcpServerBuilder"/> instance that this method extends.</param>
     /// <param name="pattern">Only search assemblies where the name contains this pattern.</param>
     /// <returns>The <see cref="IMcpServerBuilder"/> so that calls can be chained.</returns>
-    public static IMcpServerBuilder WithToolFromAssemblies(this IMcpServerBuilder builder, string pattern)
+    public static IMcpServerBuilder WithToolsFromAssemblies(this IMcpServerBuilder builder, string pattern)
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name?.Contains(pattern) == true);
         foreach (var assembly in assemblies)
