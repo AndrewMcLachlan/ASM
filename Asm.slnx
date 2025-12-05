@@ -80,6 +80,9 @@
   <Project Path="src/Asm.Logging/Asm.Logging.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
+  <Project Path="src/Asm.ModelContextProtocol/Asm.ModelContextProtocol.csproj" Id="5fefc6a8-a630-41b0-81e6-4d2b77382fb4">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
   <Project Path="src/Asm.Net/Asm.Net.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>

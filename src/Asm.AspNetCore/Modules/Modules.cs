@@ -13,6 +13,40 @@ public static class Modules
     private static List<IModule> RegisteredModules = [];
 
     /// <summary>
+    /// Discovers and registers modules from all assemblies.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance that this method extends.</param>
+    /// <returns>The <see cref="WebApplicationBuilder"/> instance so that calls can be chained.</returns>
+    public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder)
+    {
+        var modulesAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+        RegisteredModules = [.. modulesAssemblies.SelectMany(m => m.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo(typeof(IModule)))
+                                            .Select(Activator.CreateInstance).Cast<IModule>())];
+        builder.Services.AddModules();
+        return builder;
+    }
+
+    /// <summary>
+    /// Discovers and registers modules from assemblies matching a specific pattern.
+    /// </summary>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance that this method extends.</param>
+    /// <param name="pattern">Only search assemblies where the name contains this pattern.</param>
+    /// <example>
+    /// builder.RegisterModules("MyApp.Modules");
+    /// </example>
+    /// <returns>The <see cref="WebApplicationBuilder"/> instance so that calls can be chained.</returns>
+    public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder, string pattern)
+    {
+        var modulesAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name?.Contains(pattern) == true);
+
+        RegisteredModules = [.. modulesAssemblies.SelectMany(m => m.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo(typeof(IModule)))
+                                            .Select(Activator.CreateInstance).Cast<IModule>())];
+        builder.Services.AddModules();
+        return builder;
+    }
+
+    /// <summary>
     /// Registers modules.
     /// </summary>
     /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance that this method extends.</param>
@@ -20,7 +54,7 @@ public static class Modules
     /// <returns>The <see cref="WebApplicationBuilder"/> instance so that calls can be chained.</returns>
     public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder, Func<IEnumerable<IModule>> modules)
     {
-        RegisteredModules = modules().ToList();
+        RegisteredModules = [.. modules()];
         builder.Services.AddModules();
         return builder;
     }
@@ -33,9 +67,8 @@ public static class Modules
     /// <returns>The <see cref="WebApplicationBuilder"/> instance so that calls can be chained.</returns>
     public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder, Assembly modulesAssembly)
     {
-        RegisteredModules = modulesAssembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo(typeof(IModule)))
-                                            .Select(Activator.CreateInstance).Cast<IModule>()
-                                            .ToList();
+        RegisteredModules = [.. modulesAssembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo(typeof(IModule)))
+                                            .Select(Activator.CreateInstance).Cast<IModule>()];
         builder.Services.AddModules();
         return builder;
     }
