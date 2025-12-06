@@ -205,22 +205,20 @@ Examples:
     | Hex      |
     | 16777216 |
 
-#| Hex     | HexValue |
-#| #FF5733 | #FF5733  |
-#| FF5733  | #FF5733  |
-#| #ff5733 | #FF5733  |
-#| ff5733  | #FF5733  |
-#| #FFF    | #FFFFFF  |
-#| FFF     | #FFFFFF  |
-#| #fff    | #FFFFFF  |
-#| fff     | #FFFFFF  |
-#| #123    | #112233  |
-#| 123     | #112233  |
-#| #000    | #000000  |
-#| 000     | #000000  |
-#| #FFFFFF | #FFFFFF  |
-#| FFFFFF  | #FFFFFF  |
-#| #ffffff | #FFFFFF  |
-#| ffffff  | #FFFFFF  |
-#| #000000 | #000000  |
-#| 000000  | #000000  |
+@Unit
+Scenario: Serialize HexColour to JSON
+    Given I have a HexColour with value '#FF5733'
+    When I serialize the HexColour to JSON
+    Then the JSON should be '"#FF5733"'
+
+@Unit
+Scenario: Deserialize HexColour from JSON
+    Given I have a JSON string '"#00FF00"'
+    When I deserialize the JSON to HexColour
+    Then the result should be a HexColour with value '#00FF00'
+
+@Unit
+Scenario: Deserialize empty string returns default HexColour
+    Given I have a JSON string '""'
+    When I deserialize the JSON to HexColour
+    Then the result should be a HexColour with value '#000000'
