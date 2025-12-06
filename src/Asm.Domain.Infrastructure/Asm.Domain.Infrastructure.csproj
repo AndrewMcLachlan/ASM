@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Asm.Domain.Infrastructure.Tests" />
+  </ItemGroup>
+
 </Project>

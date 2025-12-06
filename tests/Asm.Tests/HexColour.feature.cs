@@ -105,7 +105,7 @@ namespace Asm.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("HexColour.feature.ndjson", 96);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("HexColour.feature.ndjson", 99);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -796,6 +796,114 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 203
     await testRunner.ThenAsync("an exception of type \'System.ArgumentOutOfRangeException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Serialize HexColour to JSON")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
+        [global::Xunit.TraitAttribute("Description", "Serialize HexColour to JSON")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task SerializeHexColourToJSON()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "94";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Serialize HexColour to JSON", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 209
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 210
+    await testRunner.GivenAsync("I have a HexColour with value \'#FF5733\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 211
+    await testRunner.WhenAsync("I serialize the HexColour to JSON", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 212
+    await testRunner.ThenAsync("the JSON should be \'\"#FF5733\"\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Deserialize HexColour from JSON")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
+        [global::Xunit.TraitAttribute("Description", "Deserialize HexColour from JSON")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task DeserializeHexColourFromJSON()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "95";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Deserialize HexColour from JSON", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 215
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 216
+    await testRunner.GivenAsync("I have a JSON string \'\"#00FF00\"\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 217
+    await testRunner.WhenAsync("I deserialize the JSON to HexColour", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 218
+    await testRunner.ThenAsync("the result should be a HexColour with value \'#00FF00\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Deserialize empty string returns default HexColour")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
+        [global::Xunit.TraitAttribute("Description", "Deserialize empty string returns default HexColour")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task DeserializeEmptyStringReturnsDefaultHexColour()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "96";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Deserialize empty string returns default HexColour", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 221
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 222
+    await testRunner.GivenAsync("I have a JSON string \'\"\"\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 223
+    await testRunner.WhenAsync("I deserialize the JSON to HexColour", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 224
+    await testRunner.ThenAsync("the result should be a HexColour with value \'#000000\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

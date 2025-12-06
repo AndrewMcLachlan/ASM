@@ -4,4 +4,8 @@
     <Description>Domain-Driven-Design basics.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Asm.Domain.Infrastructure.Tests" />
+  </ItemGroup>
+
 </Project>
