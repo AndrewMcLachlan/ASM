@@ -116,20 +116,12 @@ jobs:
         path: ./all-coverage
         merge-multiple: true
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v5
+    - name: ReportGenerator
+      uses: danielpalme/reportgenerator-action@5
       with:
-        dotnet-version: 10.x
-
-    - name: Install ReportGenerator
-      run: dotnet tool install -g dotnet-reportgenerator-globaltool
-
-    - name: Generate Coverage Report
-      run: |
-        reportgenerator \
-          -reports:"./all-coverage/**/coverage.cobertura.xml" \
-          -targetdir:"./coverage-report" \
-          -reporttypes:"MarkdownSummaryGithub;Cobertura;Badges"
+        reports: './all-coverage/**/coverage.cobertura.xml'
+        targetdir: './coverage-report'
+        reporttypes: 'MarkdownAssembliesSummary;Cobertura;Badges'
 
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
