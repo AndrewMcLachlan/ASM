@@ -17,10 +17,10 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyModel" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.11" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
