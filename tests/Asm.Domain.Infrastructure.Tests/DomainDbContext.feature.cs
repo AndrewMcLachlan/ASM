@@ -136,11 +136,11 @@ namespace Asm.Domain.Infrastructure.Tests
         [global::Xunit.SkippableFactAttribute(DisplayName="SaveChangesAsync with no tracked entities does not publish")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChangesAsync with no tracked entities does not publish")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task SaveChangesAsyncWithNoTrackedEntitiesDoesNotPublish()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("SaveChangesAsync with no tracked entities does not publish", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -177,11 +177,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChangesAsync with acceptAllChangesOnSuccess false does not publish when no en" +
             "tities")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task SaveChangesAsyncWithAcceptAllChangesOnSuccessFalseDoesNotPublishWhenNoEntities()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("SaveChangesAsync with acceptAllChangesOnSuccess false does not publish when no en" +
@@ -217,11 +217,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="SaveChangesAsync with default cancellation token does not publish when no events")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChangesAsync with default cancellation token does not publish when no events")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task SaveChangesAsyncWithDefaultCancellationTokenDoesNotPublishWhenNoEvents()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("SaveChangesAsync with default cancellation token does not publish when no events", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -256,11 +256,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="SaveChanges with no entities returns zero and does not publish")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChanges with no entities returns zero and does not publish")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task SaveChangesWithNoEntitiesReturnsZeroAndDoesNotPublish()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("SaveChanges with no entities returns zero and does not publish", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);

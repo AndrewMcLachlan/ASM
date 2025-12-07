@@ -14,13 +14,8 @@ public class DomainDbContextSteps
 
     #region Test Types
 
-    public class TestDomainDbContext : DomainDbContext
+    public class TestDomainDbContext(DbContextOptions options, IPublisher publisher) : DomainDbContext(options, publisher)
     {
-        public TestDomainDbContext(DbContextOptions options, IPublisher publisher)
-            : base(options, publisher)
-        {
-        }
-
         public DbSet<DomainDbContextTestEntity> TestEntities { get; set; } = null!;
     }
 

@@ -18,21 +18,21 @@ Scenario: AddReadOnlyDbContext with optionsAction returns service collection
     When I call AddReadOnlyDbContext with an optionsAction
     Then the same service collection should be returned
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext registers IReadOnlyDbContext service
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with an in-memory database
     And I build the DbContext service provider
     Then IReadOnlyDbContext can be resolved
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext with scoped lifetime can resolve within scope
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with scoped lifetime
     And I build the DbContext service provider
     Then IReadOnlyDbContext can be resolved within a scope
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext invokes optionsAction on resolve
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with a tracking optionsAction
@@ -40,14 +40,14 @@ Scenario: AddReadOnlyDbContext invokes optionsAction on resolve
     And I resolve IReadOnlyDbContext
     Then the optionsAction should have been invoked
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext with singleton lifetime returns same instance
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with singleton lifetime
     And I build the DbContext service provider
     Then resolving IReadOnlyDbContext twice returns the same instance
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext with transient lifetime returns different instances
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with transient lifetime
@@ -80,7 +80,7 @@ Scenario: AddReadOnlyDbContext called multiple times does not throw
     When I call AddReadOnlyDbContext twice
     Then no exception is thrown
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with IServiceProvider optionsAction
@@ -100,7 +100,7 @@ Scenario Outline: AddReadOnlyDbContext registers with correct context lifetime
         | Singleton |
         | Transient |
 
-@Unit
+@Integration
 Scenario: AddReadOnlyDbContext with service interface registers correctly
     Given I have a service collection for DbContext
     When I call AddReadOnlyDbContext with TContextService and TContextImplementation

@@ -12,7 +12,7 @@ namespace Asm.Win32;
 public sealed class Hosts : IDisposable
 {
     #region Constants
-    private static readonly string HostsFile = Environment.GetEnvironmentVariable("SystemRoot") + @"\system32\drivers\etc\hosts";
+    private static readonly string DefaultHostsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers", "etc", "hosts");
     #endregion
 
     #region Events
@@ -23,7 +23,8 @@ public sealed class Hosts : IDisposable
     #endregion
 
     #region Fields
-    private static readonly Hosts _instance = new();
+    private static Hosts? _instance;
+    private static readonly Lock _lock = new();
     private readonly string? _hostsFile;
     private readonly Timer? _pollTimer;
     private DateTime _hostsFileLastUpdated;
@@ -32,9 +33,31 @@ public sealed class Hosts : IDisposable
 
     #region Properties
     /// <summary>
+    /// Gets or sets the path to the system hosts file.
+    /// </summary>
+    /// <remarks>
+    /// This property can be set to a custom path for testing purposes.
+    /// Setting this property resets the <see cref="Current"/> singleton instance.
+    /// </remarks>
+    public static string SystemHostsFile { get; set; } = DefaultHostsFile;
+
+    /// <summary>
     /// The current Windows hosts file.
     /// </summary>
-    public static Hosts Current { get { return _instance; } }
+    public static Hosts Current
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    _instance ??= new Hosts();
+                }
+            }
+            return _instance;
+        }
+    }
 
     /// <summary>
     /// The raw content of the hosts file.
@@ -58,7 +81,7 @@ public sealed class Hosts : IDisposable
     #endregion
 
     #region Constructors
-    private Hosts() : this(HostsFile)
+    private Hosts() : this(SystemHostsFile)
     {
         _pollTimer = new Timer(10000);
         _pollTimer.Elapsed += new ElapsedEventHandler(PollTimer_Elapsed);
@@ -95,6 +118,21 @@ public sealed class Hosts : IDisposable
 
     #region Public Methods
     /// <summary>
+    /// Resets the singleton instance, allowing it to be recreated with a new hosts file path.
+    /// </summary>
+    /// <remarks>
+    /// This method is primarily intended for testing purposes.
+    /// </remarks>
+    public static void ResetInstance()
+    {
+        lock (_lock)
+        {
+            _instance?.Dispose();
+            _instance = null;
+        }
+    }
+
+    /// <summary>
     /// Writes the host entries to the given stream.
     /// </summary>
     /// <param name="stream">The stream to write to.</param>
@@ -109,7 +147,7 @@ public sealed class Hosts : IDisposable
     /// </summary>
     public void WriteHostsToFile()
     {
-        WriteHostsToFile(HostsFile);
+        WriteHostsToFile(SystemHostsFile);
         OnHostsFileChanged();
     }
 

@@ -136,11 +136,11 @@ namespace Asm.Domain.Infrastructure.Tests
         [global::Xunit.SkippableFactAttribute(DisplayName="Domain Event is Handled")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Events")]
         [global::Xunit.TraitAttribute("Description", "Domain Event is Handled")]
-        [global::Xunit.TraitAttribute("Category", "integration")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task DomainEventIsHandled()
         {
             string[] tagsOfScenario = new string[] {
-                    "integration"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Domain Event is Handled", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -172,11 +172,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="Domain Event is Handled Multiple Times")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Events")]
         [global::Xunit.TraitAttribute("Description", "Domain Event is Handled Multiple Times")]
-        [global::Xunit.TraitAttribute("Category", "integration")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task DomainEventIsHandledMultipleTimes()
         {
             string[] tagsOfScenario = new string[] {
-                    "integration"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Domain Event is Handled Multiple Times", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);

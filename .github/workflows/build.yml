@@ -69,11 +69,12 @@ jobs:
       matrix:
         test-project:
           - { name: "Asm.Tests", path: "tests/Asm.Tests" }
-          - { name: "Asm.Net.Tests", path: "tests/Asm.Net.Tests" }
+          - { name: "Asm.AspNetCore.Tests", path: "tests/Asm.Tests" }
           - { name: "Asm.Cqrs.Tests", path: "tests/Asm.Cqrs.Tests" }
+          - { name: "Asm.Cqrs.AspNetCore.Tests", path: "tests/Asm.Cqrs.AspNetCore.Tests" }
           - { name: "Asm.Domain.Tests", path: "tests/Asm.Domain.Tests" }
           - { name: "Asm.Domain.Infrastructure.Tests", path: "tests/Asm.Domain.Infrastructure.Tests" }
-          - { name: "Asm.Cqrs.AspNetCore.Tests", path: "tests/Asm.Cqrs.AspNetCore.Tests" }
+          - { name: "Asm.Net.Tests", path: "tests/Asm.Net.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
     steps:
     - uses: actions/checkout@v6.0.0
@@ -91,7 +92,7 @@ jobs:
       run: dotnet restore Asm.slnx
 
     - name: Test ${{ matrix.test-project.name }}
-      run: dotnet test ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj --no-restore --no-build --filter 'Category=Unit&FullyQualifiedName!~Testing&FullyQualifiedName!~Win32' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults/${{ matrix.test-project.name }} --configuration Release --settings coverlet.runsettings
+      run: dotnet test ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj --no-restore --no-build --filter '(Category=Unit|Category=Integration)&FullyQualifiedName!~Testing' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults/${{ matrix.test-project.name }} --configuration Release --settings coverlet.runsettings
 
     - name: Upload coverage for ${{ matrix.test-project.name }}
       uses: actions/upload-artifact@v5

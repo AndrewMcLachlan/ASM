@@ -244,11 +244,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext registers IReadOnlyDbContext service")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext registers IReadOnlyDbContext service")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextRegistersIReadOnlyDbContextService()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext registers IReadOnlyDbContext service", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -283,11 +283,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with scoped lifetime can resolve within scope")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with scoped lifetime can resolve within scope")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextWithScopedLifetimeCanResolveWithinScope()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext with scoped lifetime can resolve within scope", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -322,11 +322,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext invokes optionsAction on resolve")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext invokes optionsAction on resolve")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextInvokesOptionsActionOnResolve()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "5";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext invokes optionsAction on resolve", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -364,11 +364,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with singleton lifetime returns same instance")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with singleton lifetime returns same instance")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextWithSingletonLifetimeReturnsSameInstance()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "6";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext with singleton lifetime returns same instance", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -403,11 +403,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with transient lifetime returns different instances")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with transient lifetime returns different instances")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextWithTransientLifetimeReturnsDifferentInstances()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "7";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext with transient lifetime returns different instances", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -563,11 +563,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextWithIServiceProviderOptionsActionReceivesValidProvider()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "15";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
@@ -650,11 +650,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with service interface registers correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with service interface registers correctly")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
         public async global::System.Threading.Tasks.Task AddReadOnlyDbContextWithServiceInterfaceRegistersCorrectly()
         {
             string[] tagsOfScenario = new string[] {
-                    "Unit"};
+                    "Integration"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "19";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext with service interface registers correctly", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
