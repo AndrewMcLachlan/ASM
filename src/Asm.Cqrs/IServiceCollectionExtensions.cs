@@ -39,7 +39,7 @@ public static class IServiceCollectionExtensions
 
             foreach (var interfaceType in commandHandlerInterfaces)
             {
-                services.TryAddTransient(interfaceType, type);
+                services.TryAddEnumerable(ServiceDescriptor.Transient(interfaceType, type));
             }
         }
 
@@ -59,7 +59,7 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddCommandHandler<THandler, TRequest, TResponse>(this IServiceCollection services) where THandler : class, ICommandHandler<TRequest, TResponse> where TRequest : ICommand<TResponse>
     {
-        services.AddTransient<ICommandHandler<TRequest, TResponse>, THandler>();
+        services.TryAddEnumerable(ServiceDescriptor.Transient<ICommandHandler<TRequest, TResponse>, THandler>());
 
         services.TryAddTransient<ICommandDispatcher, Dispatcher>();
         services.AddLazyCache();
@@ -76,7 +76,7 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddCommandHandler<THandler, TRequest>(this IServiceCollection services) where THandler : class, ICommandHandler<TRequest> where TRequest : ICommand
     {
-        services.AddTransient<ICommandHandler<TRequest>, THandler>();
+        services.TryAddEnumerable(ServiceDescriptor.Transient<ICommandHandler<TRequest>, THandler>());
 
         services.TryAddTransient<ICommandDispatcher, Dispatcher>();
         services.AddLazyCache();
@@ -105,7 +105,7 @@ public static class IServiceCollectionExtensions
 
             foreach (var interfaceType in queryHandlerInterfaces)
             {
-                services.TryAddTransient(interfaceType, type);
+                services.TryAddEnumerable(ServiceDescriptor.Transient(interfaceType, type));
             }
         }
 
@@ -125,7 +125,7 @@ public static class IServiceCollectionExtensions
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
     public static IServiceCollection AddQueryHandler<THandler, TRequest, TResponse>(this IServiceCollection services) where THandler : class, IQueryHandler<TRequest, TResponse> where TRequest : IQuery<TResponse>
     {
-        services.AddTransient<IQueryHandler<TRequest, TResponse>, THandler>();
+        services.TryAddEnumerable(ServiceDescriptor.Transient<IQueryHandler<TRequest, TResponse>, THandler>());
 
         services.TryAddTransient<IQueryDispatcher, Dispatcher>();
         services.AddLazyCache();

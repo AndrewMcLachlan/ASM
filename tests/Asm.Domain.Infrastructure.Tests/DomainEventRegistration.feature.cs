@@ -670,17 +670,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent called multiple times registers multiple handlers")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent called multiple times registers single handler")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
-        [global::Xunit.TraitAttribute("Description", "AddDomainEvent called multiple times registers multiple handlers")]
+        [global::Xunit.TraitAttribute("Description", "AddDomainEvent called multiple times registers single handler")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task AddDomainEventCalledMultipleTimesRegistersMultipleHandlers()
+        public async global::System.Threading.Tasks.Task AddDomainEventCalledMultipleTimesRegistersSingleHandler()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "14";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddDomainEvent called multiple times registers multiple handlers", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddDomainEvent called multiple times registers single handler", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 99
@@ -700,7 +700,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.WhenAsync("I call AddDomainEvent twice for the same handler", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 102
-    await testRunner.ThenAsync("two handler registrations should exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("one handler registration should exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

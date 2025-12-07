@@ -326,14 +326,14 @@ public class DomainEventRegistrationSteps(ScenarioContext context)
         Assert.NotNull(ex);
     }
 
-    [Then(@"two handler registrations should exist")]
+    [Then(@"one handler registration should exist")]
     public void ThenTwoHandlerRegistrationsShouldExist()
     {
         var handlerCount = _services.Count(d =>
             d.ServiceType == typeof(IDomainEventHandler<TestDomainEvent>) &&
             d.ImplementationType == typeof(TestDomainEventHandler));
 
-        Assert.Equal(2, handlerCount);
+        Assert.Equal(1, handlerCount);
     }
 
     [Then(@"IAppCache should be registered")]

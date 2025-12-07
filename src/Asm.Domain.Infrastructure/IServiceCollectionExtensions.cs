@@ -82,13 +82,14 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
                 continue;
 
             var eventHandlerInterfaces = type.GetInterfaces()
-                .Where(i => i.IsGenericType &&
-                           (i.GetGenericTypeDefinition() == EventHandlerGenericType))
+                .Where(i => i.IsGenericType && (i.GetGenericTypeDefinition() == EventHandlerGenericType))
                 .ToArray();
 
             foreach (var interfaceType in eventHandlerInterfaces)
             {
-                services.AddTransient(interfaceType, type);
+                // Use TryAddEnumerable to prevent duplicate handler registrations
+                // while still allowing multiple different handlers for the same event
+                services.TryAddEnumerable(ServiceDescriptor.Transient(interfaceType, type));
             }
         }
 
@@ -107,7 +108,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddDomainEvent<THandler, TDomainEvent>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        services.AddTransient<IDomainEventHandler<TDomainEvent>, THandler>();
+        services.TryAddEnumerable(ServiceDescriptor.Transient<IDomainEventHandler<TDomainEvent>, THandler>());
         services.TryAddTransient<IPublisher, Publisher>();
         services.AddLazyCache();
 
@@ -306,22 +307,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     ///         in parallel. See <see href="https://aka.ms/efcore-docs-threading">Avoiding DbContext threading issues</see> for more information.
     ///     </para>
     ///     <para>
-    ///         Entity Framework Core does not support multiple parallel operations being run on the same <see cref="DbContext" />
-    ///         instance. This includes both parallel execution of async queries and any explicit concurrent use from multiple threads.
-    ///         Therefore, always await async calls immediately, or use separate DbContext instances for operations that execute
-    ///         in parallel. See <see href="https://aka.ms/efcore-docs-threading">Avoiding DbContext threading issues</see> for more information.
-    ///     </para>
-    ///     <para>
     ///         See <see href="https://aka.ms/efcore-docs-di">Using DbContext with dependency injection</see> for more information.
-    ///     </para>
-    ///     <para>
-    ///         This overload has an <paramref name="optionsAction" /> that provides the application's
-    ///         <see cref="IServiceProvider" />. This is useful if you want to setup Entity Framework Core to resolve
-    ///         its internal services from the primary application service provider.
-    ///         By default, we recommend using
-    ///         <see cref="EntityFrameworkServiceCollectionExtensions.AddDbContext{TContext}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
-    ///         which allows Entity Framework to create and maintain its own <see cref="IServiceProvider" /> for internal
-    ///         Entity Framework services.
     ///     </para>
     /// </summary>
     /// <typeparam name="TContext">The type of context to be registered.</typeparam>
@@ -377,8 +363,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     ///         <see cref="IServiceProvider" />. This is useful if you want to setup Entity Framework Core to resolve
     ///         its internal services from the primary application service provider.
     ///         By default, we recommend using
-    ///         <see
-    ///             cref="EntityFrameworkServiceCollectionExtensions.AddDbContext{TContext,TContextImplementation}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
+    ///         <see cref="EntityFrameworkServiceCollectionExtensions.AddDbContext{TContext}(IServiceCollection,Action{DbContextOptionsBuilder},ServiceLifetime,ServiceLifetime)" />
     ///         which allows Entity Framework to create and maintain its own <see cref="IServiceProvider" /> for internal
     ///         Entity Framework services.
     ///     </para>

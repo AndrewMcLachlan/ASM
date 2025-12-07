@@ -96,10 +96,10 @@ Scenario: AddDomainEvent with null services throws exception
     Then an exception is thrown
 
 @Unit
-Scenario: AddDomainEvent called multiple times registers multiple handlers
+Scenario: AddDomainEvent called multiple times registers single handler
     Given I have a service collection
     When I call AddDomainEvent twice for the same handler
-    Then two handler registrations should exist
+    Then one handler registration should exist
 
 @Unit
 Scenario: AddDomainEvent registers IPublisher only once
