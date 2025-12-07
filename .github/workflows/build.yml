@@ -128,7 +128,7 @@ jobs:
       if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
       with:
         recreate: true
-        path: coverage-report/SummaryGithub.md
+        path: coverage-report/Summary.md
 
     - name: Write Coverage to Job Summary
       run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
