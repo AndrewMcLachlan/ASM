@@ -131,7 +131,7 @@ jobs:
         path: coverage-report/Summary.md
 
     - name: Write Coverage to Job Summary
-      run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      run: cat coverage-report/Summary.md >> $GITHUB_STEP_SUMMARY
 
   publish:
     runs-on: ubuntu-latest
