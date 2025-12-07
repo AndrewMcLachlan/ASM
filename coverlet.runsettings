@@ -11,6 +11,11 @@
           <ExcludeByFile>**/bin/**/*,**/obj/**/*,**/Migrations/**/*,**/Program.cs,**/Startup.cs</ExcludeByFile>
           <!-- Exclude auto-generated code -->
           <ExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute,System.CodeDom.Compiler.GeneratedCodeAttribute,System.Diagnostics.DebuggerNonUserCodeAttribute</ExcludeByAttribute>
+          <!-- Coverage thresholds - build fails if coverage falls below these values -->
+          <!-- 60% line, 80% branch, 80% method -->
+          <Threshold>60,80,80</Threshold>
+          <ThresholdType>line,branch,method</ThresholdType>
+          <ThresholdStat>total</ThresholdStat>
         </Configuration>
       </DataCollector>
     </DataCollectors>

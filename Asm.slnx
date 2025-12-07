@@ -16,18 +16,24 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorConfig" />
     <File Path=".gitignore" />
+    <File Path="AGENTS.md" />
+    <File Path="CLAUDE.md" />
     <File Path="Common/GlobalSuppressions.cs" />
     <File Path="Common/Icon-128.png" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.Targets" />
     <File Path="Directory.Packages.props" />
     <File Path="LICENSE" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/Src/">
     <File Path="src/Directory.Build.props" />
   </Folder>
   <Folder Name="/Tests/">
     <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/Asm.AspNetCore.Tests/Asm.AspNetCore.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.Cqrs.AspNetCore.Tests/Asm.Cqrs.AspNetCore.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>

@@ -14,7 +14,7 @@ public class DomainEventsSteps(ScenarioContext context)
     {
         IServiceCollection services = new ServiceCollection();
 
-        services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase("TestDb"));
+        services.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase($"TestDb_{Guid.NewGuid()}"));
         services.AddDomainEvents(Assembly.GetExecutingAssembly());
         services.AddSingleton(context);
 
@@ -63,5 +63,4 @@ public class DomainEventsSteps(ScenarioContext context)
         Assert.Equal(1, result1);
         Assert.Equal(2, result2);
     }
-
 }
