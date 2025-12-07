@@ -116,33 +116,30 @@ jobs:
         path: ./all-coverage
         merge-multiple: true
 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.x
+
     - name: Install ReportGenerator
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
-    - name: Combine Coverage Reports
+    - name: Generate Coverage Report
       run: |
-        mkdir -p ./combined-coverage
-        reportgenerator -reports:"./all-coverage/**/coverage.cobertura.xml" -targetdir:"./combined-coverage" -reporttypes:"Cobertura"
-
-    - name: Code Coverage Report
-      uses: irongut/CodeCoverageSummary@v1.3.0
-      with:
-        filename: combined-coverage/Cobertura.xml
-        badge: true
-        fail_below_min: false
-        format: markdown
-        hide_branch_rate: false
-        hide_complexity: true
-        indicators: true
-        output: both
-        thresholds: '50 70'
+        reportgenerator \
+          -reports:"./all-coverage/**/coverage.cobertura.xml" \
+          -targetdir:"./coverage-report" \
+          -reporttypes:"MarkdownSummaryGithub;Cobertura;Badges"
 
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
       if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target')
       with:
         recreate: true
-        path: code-coverage-results.md
+        path: coverage-report/SummaryGithub.md
+
+    - name: Write Coverage to Job Summary
+      run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
 
   publish:
     runs-on: ubuntu-latest
