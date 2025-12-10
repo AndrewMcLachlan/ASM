@@ -47,4 +47,35 @@ public class DateOnlyExtensionsSteps(ScenarioContext context)
     {
         context.AddResult(_date.DifferenceInMonths(_otherDate));
     }
+
+    [Given(@"I have a DateOnly '(.*)'")]
+    public void GivenIHaveADateOnly(string date)
+    {
+        _date = DateOnly.Parse(date);
+    }
+
+    [Given(@"I have another DateOnly '(.*)'")]
+    public void GivenIHaveAnotherDateOnly(string otherDate)
+    {
+        _otherDate = DateOnly.Parse(otherDate);
+    }
+
+    [When(@"I get today as DateOnly")]
+    public void WhenIGetTodayAsDateOnly()
+    {
+        context.AddResult(DateOnly.Today);
+    }
+
+    [When(@"I call DifferenceInMonths on DateOnly")]
+    public void WhenICallDifferenceInMonthsOnDateOnly()
+    {
+        context.AddResult(_date.DifferenceInMonths(_otherDate));
+    }
+
+    [Then(@"the result should be today")]
+    public void ThenTheResultShouldBeToday()
+    {
+        var result = context.Get<DateOnly>(Asm.Testing.SimpleAssertionSteps.ResultKey);
+        Assert.Equal(DateOnly.FromDateTime(DateTime.Today), result);
+    }
 }

@@ -31,6 +31,36 @@ Scenario: Squish
     Then the string value 'llo Wor' is returned
 
 @Unit
+Scenario: Squish with negative fromStart throws ArgumentOutOfRangeException
+    Given I have a string 'Hello World'
+    When I Squish the string with fromStart -1 and fromEnd 0
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
+Scenario: Squish with fromStart exceeding length throws ArgumentOutOfRangeException
+    Given I have a string 'Hello'
+    When I Squish the string with fromStart 10 and fromEnd 0
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
+Scenario: Squish with negative fromEnd throws ArgumentOutOfRangeException
+    Given I have a string 'Hello World'
+    When I Squish the string with fromStart 0 and fromEnd -1
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
+Scenario: Squish with fromEnd exceeding length throws ArgumentOutOfRangeException
+    Given I have a string 'Hello'
+    When I Squish the string with fromStart 0 and fromEnd 10
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
+Scenario: Squish with sum exceeding length throws InvalidOperationException
+    Given I have a string 'Hello'
+    When I Squish the string with fromStart 3 and fromEnd 3
+    Then an exception of type 'System.InvalidOperationException' should be thrown
+
+@Unit
 Scenario: Convert string to title case
     Given I have a string 'hello world'
     When I convert the string to title case

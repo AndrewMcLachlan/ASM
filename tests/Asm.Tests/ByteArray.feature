@@ -7,6 +7,18 @@ Scenario: Copy method should return correct sub-array
     Then the result should be a ByteArray with values 2, 3, 4
 
 @Unit
+Scenario: Copy method throws when start index is out of range
+    Given a ByteArray with values 1, 2, 3, 4, 5 and big endian
+    When I copy from index 10 with length 1
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
+Scenario: Copy method throws when length exceeds array size
+    Given a ByteArray with values 1, 2, 3, 4, 5 and big endian
+    When I copy from index 0 with length 10
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
 Scenario: ToCharArray method should convert to char array
     Given a ByteArray with values <Values> and <Endian> endian
     When I convert to char array
@@ -29,6 +41,12 @@ Scenario: ToUInt16LE method should convert to UInt16
     Then the ushort result should be 513
 
 @Unit
+Scenario: ToUInt16 throws OverflowException when array is too large
+    Given a ByteArray with values 1, 2, 3, 4 and big endian
+    When I convert to UInt16
+    Then an exception of type 'System.OverflowException' should be thrown
+
+@Unit
 Scenario: ToUInt32BE method should convert to UInt32
     Given a ByteArray with values 1, 2, 3, 4 and big endian
     When I convert to UInt32
@@ -39,6 +57,12 @@ Scenario: ToUInt32LE method should convert to UInt32
     Given a ByteArray with values 1, 2, 3, 4 and little endian
     When I convert to UInt32
     Then the uint result should be 67305985
+
+@Unit
+Scenario: ToUInt32 throws OverflowException when array is too large
+    Given a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8 and big endian
+    When I convert to UInt32
+    Then an exception of type 'System.OverflowException' should be thrown
 
 @Unit
 Scenario: ToUInt64BE method should convert to UInt64
@@ -53,10 +77,28 @@ Scenario: ToUInt64LE method should convert to UInt64
     Then the ulong result should be 578437695752307201
 
 @Unit
+Scenario: ToUInt64 throws OverflowException when array is too large
+    Given a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 and big endian
+    When I convert to UInt64
+    Then an exception of type 'System.OverflowException' should be thrown
+
+@Unit
 Scenario: ToGuid method should convert to Guid
     Given a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 and big endian
     When I convert to Guid
     Then the GUID result should be "04030201-0605-0807-090a-0b0c0d0e0f10"
+
+@Unit
+Scenario: ToGuid throws when array is too large
+    Given a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 and big endian
+    When I convert to Guid
+    Then an exception of type 'System.InvalidOperationException' should be thrown
+
+@Unit
+Scenario: ToGuid throws when array is too small
+    Given a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 and big endian
+    When I convert to Guid
+    Then an exception of type 'System.InvalidOperationException' should be thrown
 
 @Unit
 Scenario: Check equality
@@ -72,3 +114,15 @@ Examples:
     | 1,2,3,4  | big      | 1,2,3,4  | little   | false  |
     | 1,2,3,4  | little   | 1,2,3,4  | big      | false  |
     | 1,2,3,4  | big      | 1,2,3,5  | big      | false  |
+
+@Unit
+Scenario: Check equality with null object returns false
+    Given a ByteArray with values 1, 2, 3, 4 and big endian
+    When I check equality with null
+    Then the boolean result should be false
+
+@Unit
+Scenario: Check equality with incompatible object returns false
+    Given a ByteArray with values 1, 2, 3, 4 and big endian
+    When I check equality with incompatible object
+    Then the boolean result should be false

@@ -11,27 +11,27 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace Asm.Tests.Extensions
+namespace Asm.Tests
 {
     
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class DateTimeExtensionsFeature : object, global::Xunit.IClassFixture<DateTimeExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class AssemblyExtensionsFeature : object, global::Xunit.IClassFixture<AssemblyExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "DateTime Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Assembly Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "DateTimeExtensions.feature"
+#line 1 "AssemblyExtensions.feature"
 #line hidden
         
-        public DateTimeExtensionsFeature(DateTimeExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public AssemblyExtensionsFeature(AssemblyExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace Asm.Tests.Extensions
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/DateTimeExtensions.feature.ndjson", 22);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("AssemblyExtensions.feature.ndjson", 8);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,17 +133,17 @@ namespace Asm.Tests.Extensions
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get First Day of Week")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get First Day of Week")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get assembly version")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Get assembly version")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetFirstDayOfWeek()
+        public async global::System.Threading.Tasks.Task GetAssemblyVersion()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get First Day of Week", "    This scenario depends on the locale in which the test is run", tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get assembly version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 4
@@ -156,39 +156,33 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
+#line 5
+    await testRunner.GivenAsync("I have the Asm library assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
 #line 6
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.WhenAsync("I get the assembly version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 7
-    await testRunner.WhenAsync("I call FirstDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.ThenAsync("the version should exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 8
-    await testRunner.ThenAsync("the date \'2019-03-31\' is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("the version should contain a version number", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get First Day of Week for a specific locale")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get First Day of Week for a specific locale")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get assembly file version")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Get assembly file version")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("en-US", "2019-03-31", "1", new string[0])]
-        [global::Xunit.InlineDataAttribute("en-GB", "2019-04-01", "2", new string[0])]
-        public async global::System.Threading.Tasks.Task GetFirstDayOfWeekForASpecificLocale(string locale, string result, string @__pickleIndex, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetAssemblyFileVersion()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "Unit"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Locale", locale);
-            argumentsOfScenario.Add("Result", result);
-            string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get First Day of Week for a specific locale", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "1";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get assembly file version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 11
@@ -202,35 +196,71 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 12
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have the Asm library assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 13
-    await testRunner.AndAsync(string.Format("my locale is \'{0}\'", locale), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("I get the assembly file version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 14
-    await testRunner.WhenAsync("I call FirstDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 15
-    await testRunner.ThenAsync(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("the version should contain a version number", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get Last Day of Week")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get Last Day of Week")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get assembly informational version")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Get assembly informational version")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetLastDayOfWeek()
+        public async global::System.Threading.Tasks.Task GetAssemblyInformationalVersion()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get assembly informational version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 18
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 19
+    await testRunner.GivenAsync("I have the Asm library assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 20
+    await testRunner.WhenAsync("I get the assembly informational version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 21
+    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get test assembly version")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Get test assembly version")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task GetTestAssemblyVersion()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get Last Day of Week", "    This scenario depends on the locale in which the test is run", tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get test assembly version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 23
+#line 24
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -241,38 +271,29 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 25
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have the current assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 26
-    await testRunner.WhenAsync("I call LastDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I get the assembly version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 27
-    await testRunner.ThenAsync("the date \'2019-04-06\' is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the version should exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get Last Day of Week for a specific locale")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get Last Day of Week for a specific locale")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get test assembly file version")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Get test assembly file version")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("en-US", "2019-04-06", "4", new string[0])]
-        [global::Xunit.InlineDataAttribute("en-GB", "2019-04-07", "5", new string[0])]
-        public async global::System.Threading.Tasks.Task GetLastDayOfWeekForASpecificLocale(string locale, string result, string @__pickleIndex, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetTestAssemblyFileVersion()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "Unit"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Locale", locale);
-            argumentsOfScenario.Add("Result", result);
-            string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get Last Day of Week for a specific locale", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "4";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get test assembly file version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 30
@@ -286,57 +307,32 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 31
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have the current assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 32
-    await testRunner.AndAsync(string.Format("my locale is \'{0}\'", locale), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("I get the assembly file version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 33
-    await testRunner.WhenAsync("I call LastDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 34
-    await testRunner.ThenAsync(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get difference in months")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get difference in months")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get test assembly informational version")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Get test assembly informational version")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2023-01-01", "0", "6", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2023-02-01", "1", "7", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-02-01", "2023-01-01", "1", "8", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2022-12-01", "1", "9", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2022-01-01", "12", "10", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2023-01-02", "0", "11", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-10-01", "2022-08-15", "13", "12", new string[0])]
-        [global::Xunit.InlineDataAttribute("2022-08-15", "2023-10-01", "13", "13", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-08-01", "2022-10-15", "9", "14", new string[0])]
-        [global::Xunit.InlineDataAttribute("2022-10-15", "2023-08-01", "9", "15", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-31", "2023-03-01", "1", "16", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-15", "2023-03-15", "2", "17", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-15", "2023-02-01", "0", "18", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-31", "2023-02-01", "0", "19", new string[0])]
-        public async global::System.Threading.Tasks.Task GetDifferenceInMonths(string date, string otherDate, string difference, string @__pickleIndex, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task GetTestAssemblyInformationalVersion()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "Unit"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Date", date);
-            argumentsOfScenario.Add("Other Date", otherDate);
-            argumentsOfScenario.Add("Difference", difference);
-            string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get difference in months", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "5";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get test assembly informational version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 42
+#line 36
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -346,17 +342,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 43
-    await testRunner.GivenAsync(string.Format("I have a date \'{0}\'", date), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 37
+    await testRunner.GivenAsync("I have the current assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 44
-    await testRunner.AndAsync(string.Format("I have another date \'{0}\'", otherDate), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 38
+    await testRunner.WhenAsync("I get the assembly informational version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 45
-    await testRunner.WhenAsync("I call DifferenceInMonths", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 46
-    await testRunner.ThenAsync(string.Format("the integer value {0} is returned", difference), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 39
+    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -369,12 +362,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await DateTimeExtensionsFeature.FeatureSetupAsync();
+                await AssemblyExtensionsFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await DateTimeExtensionsFeature.FeatureTearDownAsync();
+                await AssemblyExtensionsFeature.FeatureTearDownAsync();
             }
         }
     }

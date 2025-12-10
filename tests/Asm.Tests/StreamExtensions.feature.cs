@@ -17,22 +17,21 @@ namespace Asm.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ExtendedBitArrayFeature : object, global::Xunit.IClassFixture<ExtendedBitArrayFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class StreamExtensionsFeature : object, global::Xunit.IClassFixture<StreamExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "ExtendedBitArray", "  As a developer\r\n  I want to test the ExtendedBitArray class\r\n  So that I can en" +
-                "sure it behaves correctly", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Stream Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ExtendedBitArray.feature"
+#line 1 "StreamExtensions.feature"
 #line hidden
         
-        public ExtendedBitArrayFeature(ExtendedBitArrayFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public StreamExtensionsFeature(StreamExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -106,7 +105,7 @@ namespace Asm.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ExtendedBitArray.feature.ndjson", 10);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("StreamExtensions.feature.ndjson", 10);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -134,18 +133,20 @@ namespace Asm.Tests
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with BitArray")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with BitArray")]
-        public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithBitArray()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Read all bytes from stream to buffer")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Read all bytes from stream to buffer")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ReadAllBytesFromStreamToBuffer()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with BitArray", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Read all bytes from stream to buffer", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 4
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -155,37 +156,39 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
+#line 5
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 6
+    await testRunner.AndAsync("I have a destination buffer of 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
 #line 7
-    await testRunner.GivenAsync("I have a BitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.WhenAsync("I read from the source stream to the destination buffer", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 8
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("100 bytes should be read", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 9
-    await testRunner.WhenAsync("I create an ExtendedBitArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 10
-    await testRunner.ThenAsync("the ExtendedBitArray should have 4 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 11
-    await testRunner.AndAsync("the bits should be [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("the destination buffer should contain the source data", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to byte array")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to byte array")]
-        public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToByteArray()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Read partial bytes from stream")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Read partial bytes from stream")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ReadPartialBytesFromStream()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to byte array", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Read partial bytes from stream", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 13
+#line 12
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -195,34 +198,39 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
+#line 13
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
 #line 14
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.AndAsync("I have a destination buffer of 50 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 15
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("I read from the source stream to the destination buffer", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 16
-    await testRunner.WhenAsync("I convert the ExtendedBitArray to a byte array", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.ThenAsync("50 bytes should be read", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 17
-    await testRunner.ThenAsync("the byte array should be [5]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("the destination buffer should contain the source data", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy part of ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Copy part of ExtendedBitArray")]
-        public async global::System.Threading.Tasks.Task CopyPartOfExtendedBitArray()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Read bytes from specific position")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Read bytes from specific position")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ReadBytesFromSpecificPosition()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy part of ExtendedBitArray", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Read bytes from specific position", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 19
+#line 20
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -232,38 +240,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 20
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false, true, false, tr" +
-                        "ue, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
 #line 21
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 22
-    await testRunner.WhenAsync("I copy from index 2 to length 4", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.AndAsync("I have a destination buffer of 20 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 23
-    await testRunner.ThenAsync("the new ExtendedBitArray should have 4 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.WhenAsync("I read 20 bytes from position 50 to offset 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 24
-    await testRunner.AndAsync("the bits should be [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("20 bytes should be read", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy throws when start index is out of range")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Copy throws when start index is out of range")]
-        public async global::System.Threading.Tasks.Task CopyThrowsWhenStartIndexIsOutOfRange()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Read exceeds available bytes")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Read exceeds available bytes")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ReadExceedsAvailableBytes()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy throws when start index is out of range", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Read exceeds available bytes", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 26
+#line 27
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -273,34 +279,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 27
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
 #line 28
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 29
-    await testRunner.WhenAsync("I copy from index 10 to length 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.AndAsync("I have a destination buffer of 200 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 30
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentOutOfRangeException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.WhenAsync("I read from the source stream to the destination buffer", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 31
+    await testRunner.ThenAsync("100 bytes should be read", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy throws when length exceeds array size")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Copy throws when length exceeds array size")]
-        public async global::System.Threading.Tasks.Task CopyThrowsWhenLengthExceedsArraySize()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write all bytes from buffer to stream")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Write all bytes from buffer to stream")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task WriteAllBytesFromBufferToStream()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy throws when length exceeds array size", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write all bytes from buffer to stream", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 32
+#line 34
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -310,34 +318,39 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 33
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 34
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
 #line 35
-    await testRunner.WhenAsync("I copy from index 0 to length 10", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 36
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentOutOfRangeException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("I have a destination buffer of 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 37
+    await testRunner.WhenAsync("I write from the source buffer to the destination stream", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 38
+    await testRunner.ThenAsync("100 bytes should be written", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 39
+    await testRunner.AndAsync("the destination stream should contain the source data", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo throws when index is negative")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "CopyTo throws when index is negative")]
-        public async global::System.Threading.Tasks.Task CopyToThrowsWhenIndexIsNegative()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write partial bytes to stream")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Write partial bytes to stream")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task WritePartialBytesToStream()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when index is negative", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write partial bytes to stream", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 38
+#line 42
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -347,37 +360,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 39
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 40
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 41
-    await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 42
-    await testRunner.WhenAsync("I copy to the other array with index -1", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 43
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 44
+    await testRunner.AndAsync("I have a destination buffer of 50 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 45
+    await testRunner.WhenAsync("I write from the source buffer to the destination stream", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 46
+    await testRunner.ThenAsync("50 bytes should be written", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo throws when index exceeds array length")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "CopyTo throws when index exceeds array length")]
-        public async global::System.Threading.Tasks.Task CopyToThrowsWhenIndexExceedsArrayLength()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write bytes to specific stream position")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Write bytes to specific stream position")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task WriteBytesToSpecificStreamPosition()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "6";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when index exceeds array length", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write bytes to specific stream position", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 45
+#line 49
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -387,37 +399,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 46
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 47
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 48
-    await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 49
-    await testRunner.WhenAsync("I copy to the other array with index 10", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 50
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have a source stream with 50 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 51
+    await testRunner.AndAsync("I have a destination buffer of 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 52
+    await testRunner.WhenAsync("I write 50 bytes from offset 0 starting at position 25", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 53
+    await testRunner.ThenAsync("50 bytes should be written", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo throws when array is null")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "CopyTo throws when array is null")]
-        public async global::System.Threading.Tasks.Task CopyToThrowsWhenArrayIsNull()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write with buffer offset")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Stream Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Write with buffer offset")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task WriteWithBufferOffset()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "7";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when array is null", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write with buffer offset", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 52
+#line 56
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -427,17 +438,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 53
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 57
+    await testRunner.GivenAsync("I have a source stream with 100 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 54
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 58
+    await testRunner.AndAsync("I have a destination buffer of 50 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 55
-    await testRunner.WhenAsync("I copy to null array with index 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 59
+    await testRunner.WhenAsync("I write 30 bytes from offset 10 starting at position 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 56
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentNullException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 60
+    await testRunner.ThenAsync("30 bytes should be written", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -450,12 +461,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await ExtendedBitArrayFeature.FeatureSetupAsync();
+                await StreamExtensionsFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await ExtendedBitArrayFeature.FeatureTearDownAsync();
+                await StreamExtensionsFeature.FeatureTearDownAsync();
             }
         }
     }

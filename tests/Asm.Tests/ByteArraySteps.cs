@@ -7,6 +7,8 @@ public class ByteArraySteps(ScenarioContext context)
     private ByteArray _byteArray2;
     private ByteArray _resultByteArray;
     private char[] _resultCharArray;
+    private object _conversionResult;
+    private string _conversionResultString;
 
     [Given(@"a ByteArray with values (.*) and (.*) endian")]
     public void GivenAByteArrayWithValues(string values, string endian)
@@ -25,7 +27,7 @@ public class ByteArraySteps(ScenarioContext context)
     [When(@"I copy from index (.*) with length (.*)")]
     public void WhenICopyFromIndexWithLength(int index, int length)
     {
-        _resultByteArray = _byteArray.Copy(index, length);
+        context.CatchException(() => _resultByteArray = _byteArray.Copy(index, length));
     }
 
     [When(@"I convert to char array")]
@@ -37,31 +39,43 @@ public class ByteArraySteps(ScenarioContext context)
     [When(@"I convert to UInt16")]
     public void WhenIConvertToUInt16()
     {
-        context.AddResult(_byteArray.ToUInt16());
+        context.CatchException(() => context.AddResult(_byteArray.ToUInt16()));
     }
 
     [When(@"I convert to UInt32")]
     public void WhenIConvertToUInt32()
     {
-        context.AddResult(_byteArray.ToUInt32());
+        context.CatchException(() => context.AddResult(_byteArray.ToUInt32()));
     }
 
     [When(@"I convert to UInt64")]
     public void WhenIConvertToUInt64()
     {
-        context.AddResult(_byteArray.ToUInt64());
+        context.CatchException(() => context.AddResult(_byteArray.ToUInt64()));
     }
 
     [When(@"I convert to Guid")]
     public void WhenIConvertToGuid()
     {
-        context.AddResult(_byteArray.ToGuid());
+        context.CatchException(() => context.AddResult(_byteArray.ToGuid()));
     }
 
     [When(@"I check for equality")]
     public void WhenICheckForEquality()
     {
         context.AddResult(_byteArray == _byteArray2);
+    }
+
+    [When(@"I check equality with null")]
+    public void WhenICheckEqualityWithNull()
+    {
+        context.AddResult(_byteArray.Equals(null));
+    }
+
+    [When(@"I check equality with incompatible object")]
+    public void WhenICheckEqualityWithIncompatibleObject()
+    {
+        context.AddResult(_byteArray.Equals("not a byte array"));
     }
 
     [Then(@"the result should be a ByteArray with values (.*)")]
