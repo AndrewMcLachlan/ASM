@@ -27,7 +27,7 @@ public class AssemblyExtensionsSteps
         try
         {
             var version = _assembly.Version();
-            _versionString = version?.ToString() ?? string.Empty;
+            _versionString = version?.ToString() ?? String.Empty;
             _versionExists = version != null;
         }
         catch
@@ -42,8 +42,8 @@ public class AssemblyExtensionsSteps
         try
         {
             var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(_assembly.Location);
-            _versionString = fileVersionInfo?.FileVersion ?? string.Empty;
-            _versionExists = !string.IsNullOrEmpty(_versionString);
+            _versionString = fileVersionInfo?.FileVersion ?? String.Empty;
+            _versionExists = !String.IsNullOrEmpty(_versionString);
         }
         catch
         {
@@ -57,8 +57,8 @@ public class AssemblyExtensionsSteps
         try
         {
             var infoVersion = _assembly.InformationalVersion();
-            _versionString = infoVersion ?? string.Empty;
-            _versionExists = !string.IsNullOrEmpty(infoVersion);
+            _versionString = infoVersion ?? String.Empty;
+            _versionExists = !String.IsNullOrEmpty(infoVersion);
         }
         catch
         {
@@ -75,7 +75,7 @@ public class AssemblyExtensionsSteps
     [Then(@"the version string should not be empty")]
     public void ThenTheVersionStringShouldNotBeEmpty()
     {
-        Assert.False(string.IsNullOrEmpty(_versionString), "Version string should not be empty");
+        Assert.False(String.IsNullOrEmpty(_versionString), "Version string should not be empty");
     }
 
     [Then(@"the version should contain a version number")]

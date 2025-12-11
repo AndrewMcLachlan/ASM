@@ -69,7 +69,7 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     {
         context.CatchException(() => 
         {
-            ExtendedBitArray? nullArray = null;
+            ExtendedBitArray nullArray = null;
             _extendedBitArray.CopyTo(nullArray, index);
         });
     }
@@ -241,7 +241,7 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     [Then(@"the string representation should contain binary digits")]
     public void ThenTheStringRepresentationShouldContainBinaryDigits()
     {
-        if (!string.IsNullOrEmpty(_conversionResultString))
+        if (!String.IsNullOrEmpty(_conversionResultString))
         {
             Assert.Matches(@"[01]+", _conversionResultString);
         }

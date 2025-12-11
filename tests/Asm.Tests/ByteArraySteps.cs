@@ -7,8 +7,6 @@ public class ByteArraySteps(ScenarioContext context)
     private ByteArray _byteArray2;
     private ByteArray _resultByteArray;
     private char[] _resultCharArray;
-    private object _conversionResult;
-    private string _conversionResultString;
 
     [Given(@"a ByteArray with values (.*) and (.*) endian")]
     public void GivenAByteArrayWithValues(string values, string endian)

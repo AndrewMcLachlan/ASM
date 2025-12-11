@@ -6,9 +6,6 @@ public class StringExtensionsSteps(ScenarioContext context)
 {
     private string _input;
     private string _separator;
-    private string _result;
-    private int? _fromStart;
-    private int? _fromEnd;
 
     [Given(@"I have a string '(.*)'")]
     public void GivenIHaveAString(string input)
@@ -91,7 +88,7 @@ public class StringExtensionsSteps(ScenarioContext context)
     [When(@"I Squish an empty string by (.*) characters")]
     public void WhenISquishAnEmptyStringByCharacters(int chars)
     {
-        _input = string.Empty;
+        _input = String.Empty;
         context.AddResult(_input.Squish(chars, chars));
     }
 
@@ -119,7 +116,7 @@ public class StringExtensionsSteps(ScenarioContext context)
     public void ThenTheResultShouldBeEmptyOrShorter()
     {
         var result = context.GetResult<string>();
-        Assert.True(string.IsNullOrEmpty(result) || result.Length <= _input.Length);
+        Assert.True(String.IsNullOrEmpty(result) || result.Length <= _input.Length);
     }
 
     [Then(@"the result should equal the original string")]
