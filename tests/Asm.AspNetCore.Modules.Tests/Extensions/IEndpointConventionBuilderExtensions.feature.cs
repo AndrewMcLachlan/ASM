@@ -11,27 +11,28 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace Asm.Tests.Extensions
+namespace Asm.AspNetCore.Modules.Tests.Extensions
 {
     
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class DateTimeExtensionsFeature : object, global::Xunit.IClassFixture<DateTimeExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class IEndpointConventionBuilderExtensionsFeature : object, global::Xunit.IClassFixture<IEndpointConventionBuilderExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "DateTime Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "IEndpointConventionBuilderExtensions", "    As a developer\r\n    I want to add names to endpoints with a simplified API\r\n " +
+                "   So that I can set both the display name and operation name in one call", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "DateTimeExtensions.feature"
+#line 1 "IEndpointConventionBuilderExtensions.feature"
 #line hidden
         
-        public DateTimeExtensionsFeature(DateTimeExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IEndpointConventionBuilderExtensionsFeature(IEndpointConventionBuilderExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +106,7 @@ namespace Asm.Tests.Extensions
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/DateTimeExtensions.feature.ndjson", 22);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/IEndpointConventionBuilderExtensions.feature.ndjson", 11);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,20 +134,20 @@ namespace Asm.Tests.Extensions
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get First Day of Week")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get First Day of Week")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="WithNames sets display name and converted name")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointConventionBuilderExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WithNames sets display name and converted name")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetFirstDayOfWeek()
+        public async global::System.Threading.Tasks.Task WithNamesSetsDisplayNameAndConvertedName()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get First Day of Week", "    This scenario depends on the locale in which the test is run", tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WithNames sets display name and converted name", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 4
+#line 7
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -156,42 +157,33 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 6
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 7
-    await testRunner.WhenAsync("I call FirstDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 8
-    await testRunner.ThenAsync("the date \'2019-03-31\' is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have an endpoint", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 9
+    await testRunner.WhenAsync("I set the names to \'Test Endpoint\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 10
+    await testRunner.ThenAsync("the endpoint should have the names set", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get First Day of Week for a specific locale")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get First Day of Week for a specific locale")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="WithNames returns the builder for method chaining")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointConventionBuilderExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WithNames returns the builder for method chaining")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("en-US", "2019-03-31", "1", new string[0])]
-        [global::Xunit.InlineDataAttribute("en-GB", "2019-04-01", "2", new string[0])]
-        public async global::System.Threading.Tasks.Task GetFirstDayOfWeekForASpecificLocale(string locale, string result, string @__pickleIndex, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task WithNamesReturnsTheBuilderForMethodChaining()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "Unit"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Locale", locale);
-            argumentsOfScenario.Add("Result", result);
-            string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get First Day of Week for a specific locale", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "1";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WithNames returns the builder for method chaining", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 11
+#line 13
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -201,36 +193,72 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 12
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 13
-    await testRunner.AndAsync(string.Format("my locale is \'{0}\'", locale), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
 #line 14
-    await testRunner.WhenAsync("I call FirstDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I have an endpoint", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 15
-    await testRunner.ThenAsync(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.WhenAsync("I set the names to \'Test Endpoint\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 16
+    await testRunner.AndAsync("I call WithOpenApi", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 17
+    await testRunner.ThenAsync("the builder should be returned for chaining", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get Last Day of Week")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get Last Day of Week")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="WithNames works with simple display names")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointConventionBuilderExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WithNames works with simple display names")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetLastDayOfWeek()
+        public async global::System.Threading.Tasks.Task WithNamesWorksWithSimpleDisplayNames()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WithNames works with simple display names", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 20
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 21
+    await testRunner.GivenAsync("I have an endpoint", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 22
+    await testRunner.WhenAsync("I set the names to \'Hello\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 23
+    await testRunner.ThenAsync("the endpoint should have the names set", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="WithNames works with multiple word display names")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointConventionBuilderExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WithNames works with multiple word display names")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task WithNamesWorksWithMultipleWordDisplayNames()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get Last Day of Week", "    This scenario depends on the locale in which the test is run", tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WithNames works with multiple word display names", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 23
+#line 26
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -240,26 +268,28 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 25
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 26
-    await testRunner.WhenAsync("I call LastDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 27
-    await testRunner.ThenAsync("the date \'2019-04-06\' is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have an endpoint", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 28
+    await testRunner.WhenAsync("I set the names to \'Update User Endpoint\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 29
+    await testRunner.ThenAsync("the endpoint should have the names set", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get Last Day of Week for a specific locale")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get Last Day of Week for a specific locale")]
+        [global::Xunit.SkippableTheoryAttribute(DisplayName="WithNames works with different HTTP methods")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointConventionBuilderExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WithNames works with different HTTP methods")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("en-US", "2019-04-06", "4", new string[0])]
-        [global::Xunit.InlineDataAttribute("en-GB", "2019-04-07", "5", new string[0])]
-        public async global::System.Threading.Tasks.Task GetLastDayOfWeekForASpecificLocale(string locale, string result, string @__pickleIndex, string[] exampleTags)
+        [global::Xunit.InlineDataAttribute("GET", "/api/items", "Get All Items", "4", new string[0])]
+        [global::Xunit.InlineDataAttribute("POST", "/api/items", "Create New Item", "5", new string[0])]
+        [global::Xunit.InlineDataAttribute("PUT", "/api/items/{id}", "Update Existing Item", "6", new string[0])]
+        [global::Xunit.InlineDataAttribute("DELETE", "/api/items/{id}", "Delete Item", "7", new string[0])]
+        public async global::System.Threading.Tasks.Task WithNamesWorksWithDifferentHTTPMethods(string method, string route, string displayName, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -269,13 +299,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             }
             string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Locale", locale);
-            argumentsOfScenario.Add("Result", result);
+            argumentsOfScenario.Add("Method", method);
+            argumentsOfScenario.Add("Route", route);
+            argumentsOfScenario.Add("DisplayName", displayName);
             string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get Last Day of Week for a specific locale", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WithNames works with different HTTP methods", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 30
+#line 32
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -285,58 +316,33 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 31
-    await testRunner.GivenAsync("I have a date \'2019-04-04\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 32
-    await testRunner.AndAsync(string.Format("my locale is \'{0}\'", locale), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
 #line 33
-    await testRunner.WhenAsync("I call LastDayOfWeek", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync(string.Format("I have a \'{0}\' endpoint at \'{1}\'", method, route), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 34
-    await testRunner.ThenAsync(string.Format("the date \'{0}\' is returned", result), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.WhenAsync(string.Format("I set the names to \'{0}\'", displayName), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 35
+    await testRunner.ThenAsync("the endpoint should have the names set", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get difference in months")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DateTime Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get difference in months")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="WithNames works with route group builder")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointConventionBuilderExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WithNames works with route group builder")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2023-01-01", "0", "6", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2023-02-01", "1", "7", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-02-01", "2023-01-01", "1", "8", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2022-12-01", "1", "9", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2022-01-01", "12", "10", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-01", "2023-01-02", "0", "11", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-10-01", "2022-08-15", "13", "12", new string[0])]
-        [global::Xunit.InlineDataAttribute("2022-08-15", "2023-10-01", "13", "13", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-08-01", "2022-10-15", "9", "14", new string[0])]
-        [global::Xunit.InlineDataAttribute("2022-10-15", "2023-08-01", "9", "15", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-31", "2023-03-01", "1", "16", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-15", "2023-03-15", "2", "17", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-15", "2023-02-01", "0", "18", new string[0])]
-        [global::Xunit.InlineDataAttribute("2023-01-31", "2023-02-01", "0", "19", new string[0])]
-        public async global::System.Threading.Tasks.Task GetDifferenceInMonths(string date, string otherDate, string difference, string @__pickleIndex, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task WithNamesWorksWithRouteGroupBuilder()
         {
-            string[] @__tags = new string[] {
+            string[] tagsOfScenario = new string[] {
                     "Unit"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Date", date);
-            argumentsOfScenario.Add("Other Date", otherDate);
-            argumentsOfScenario.Add("Difference", difference);
-            string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get difference in months", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "8";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WithNames works with route group builder", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 42
+#line 45
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -346,17 +352,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 43
-    await testRunner.GivenAsync(string.Format("I have a date \'{0}\'", date), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 44
-    await testRunner.AndAsync(string.Format("I have another date \'{0}\'", otherDate), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 45
-    await testRunner.WhenAsync("I call DifferenceInMonths", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 46
-    await testRunner.ThenAsync(string.Format("the integer value {0} is returned", difference), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have a route group at \'/api\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 47
+    await testRunner.WhenAsync("I set the names to \'API Group\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 48
+    await testRunner.ThenAsync("the route group builder should have the names set", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -369,12 +372,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await DateTimeExtensionsFeature.FeatureSetupAsync();
+                await IEndpointConventionBuilderExtensionsFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await DateTimeExtensionsFeature.FeatureTearDownAsync();
+                await IEndpointConventionBuilderExtensionsFeature.FeatureTearDownAsync();
             }
         }
     }

@@ -222,3 +222,79 @@ Scenario: Deserialize empty string returns default HexColour
     Given I have a JSON string '""'
     When I deserialize the JSON to HexColour
     Then the result should be a HexColour with value '#000000'
+
+@Unit
+Scenario: Get HexString property
+    Given I have a HexColour with value '#FF5733'
+    When I get the HexString
+    Then the string representation should contain hex digits
+
+@Unit
+Scenario: Convert HexColour to string
+    Given I have a HexColour with value '#FF5733'
+    When I convert to string
+    Then the string representation should contain hex digits
+
+@Unit
+Scenario: Convert HexColour to UInt32 implicitly
+    Given I have a HexColour with value '#FF5733'
+    When I convert to UInt32 implicitly
+    Then the result should not be null
+
+@Unit
+Scenario: Convert UInt32 to HexColour explicitly
+    Given I have a uint 16711680
+    When I convert to HexColour from UInt32 explicitly
+    Then the result should not be null
+
+@Unit
+Scenario: Check equality with another HexColour
+    Given I have a HexColour with value '#FF5733'
+    And I have another HexColour with value '#FF5733'
+    When I check equality with another HexColour
+    Then the equality check should be true
+
+@Unit
+Scenario: Check inequality with different HexColour
+    Given I have a HexColour with value '#FF5733'
+    And I have another HexColour with value '#00FF00'
+    When I check inequality with another HexColour
+    Then the equality check should be true
+
+@Unit
+Scenario: Check equality with object
+    Given I have a HexColour with value '#FF5733'
+    And I have another HexColour with value '#FF5733'
+    When I check equality with object
+    Then the equality check should be true
+
+@Unit
+Scenario: Check equality with null object
+    Given I have a HexColour with value '#FF5733'
+    When I check equality with null object
+    Then the equality check should be false
+
+@Unit
+Scenario: Check equality with HexColour value
+    Given I have a HexColour with value '#FF5733'
+    And I have another HexColour with value '#FF5733'
+    When I check equality with another HexColour value
+    Then the equality check should be true
+
+@Unit
+Scenario: Get hash code
+    Given I have a HexColour with value '#FF5733'
+    When I get the hash code
+    Then the result should be a valid hash code
+
+@Unit
+Scenario: Convert HexColour to string implicitly
+    Given I have a HexColour with value '#FF5733'
+    When I convert HexColour to string implicitly
+    Then the string result should not be null
+
+@Unit
+Scenario: Get Value property
+    Given I have a HexColour with value '#FF5733'
+    When I get the Value property
+    Then the result should not be null

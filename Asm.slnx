@@ -31,6 +31,9 @@
   </Folder>
   <Folder Name="/Tests/">
     <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/Asm.AspNetCore.Modules.Tests/Asm.AspNetCore.Modules.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.AspNetCore.Tests/Asm.AspNetCore.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>

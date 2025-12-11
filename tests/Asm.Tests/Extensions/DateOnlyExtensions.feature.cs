@@ -106,7 +106,7 @@ namespace Asm.Tests.Extensions
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/DateOnlyExtensions.feature.ndjson", 15);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/DateOnlyExtensions.feature.ndjson", 20);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -239,9 +239,9 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Calculate difference in months between two dates")]
+        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get difference in months")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DateOnlyExtensions")]
-        [global::Xunit.TraitAttribute("Description", "Calculate difference in months between two dates")]
+        [global::Xunit.TraitAttribute("Description", "Get difference in months")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
         [global::Xunit.InlineDataAttribute("2023-01-01", "2023-01-01", "0", "3", new string[0])]
         [global::Xunit.InlineDataAttribute("2023-01-01", "2023-02-01", "1", "4", new string[0])]
@@ -253,7 +253,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.InlineDataAttribute("2022-08-15", "2023-10-01", "13", "10", new string[0])]
         [global::Xunit.InlineDataAttribute("2023-08-01", "2022-10-15", "9", "11", new string[0])]
         [global::Xunit.InlineDataAttribute("2022-10-15", "2023-08-01", "9", "12", new string[0])]
-        public async global::System.Threading.Tasks.Task CalculateDifferenceInMonthsBetweenTwoDates(string date, string otherDate, string result, string @__pickleIndex, string[] exampleTags)
+        [global::Xunit.InlineDataAttribute("2023-01-31", "2023-03-01", "1", "13", new string[0])]
+        [global::Xunit.InlineDataAttribute("2023-01-15", "2023-03-15", "2", "14", new string[0])]
+        [global::Xunit.InlineDataAttribute("2023-01-15", "2023-02-01", "0", "15", new string[0])]
+        [global::Xunit.InlineDataAttribute("2023-01-31", "2023-02-01", "0", "16", new string[0])]
+        public async global::System.Threading.Tasks.Task GetDifferenceInMonths(string date, string otherDate, string difference, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "Unit"};
@@ -265,9 +269,9 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Date", date);
             argumentsOfScenario.Add("Other Date", otherDate);
-            argumentsOfScenario.Add("Result", result);
+            argumentsOfScenario.Add("Difference", difference);
             string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Calculate difference in months between two dates", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get difference in months", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 24
@@ -281,16 +285,49 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 25
-    await testRunner.GivenAsync(string.Format("I have a date \"{0}\"", date), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync(string.Format("I have a DateOnly \'{0}\'", date), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 26
-    await testRunner.AndAsync(string.Format("I have another date \"{0}\"", otherDate), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync(string.Format("I have another DateOnly \'{0}\'", otherDate), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 27
-    await testRunner.WhenAsync("I calculate the difference in months between the dates", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I call DifferenceInMonths on DateOnly", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 28
-    await testRunner.ThenAsync(string.Format("the integer result should be {0}", result), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync(string.Format("the integer value {0} is returned", difference), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get today")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "DateOnlyExtensions")]
+        [global::Xunit.TraitAttribute("Description", "Get today")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task GetToday()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "17";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get today", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 48
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 49
+    await testRunner.WhenAsync("I get today as DateOnly", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 50
+    await testRunner.ThenAsync("the result should be today", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
