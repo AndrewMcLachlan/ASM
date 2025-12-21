@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.Security.Claims;
 using Asm.AspNetCore.Authorisation;
 using Microsoft.AspNetCore.Authorization;
