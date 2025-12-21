@@ -18,10 +18,12 @@ namespace Asm.Net.Tests
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::Xunit.TraitAttribute("Category", "IPAddressExtensions")]
-    public partial class IPAddressExtensionsFeature : object, global::Xunit.IClassFixture<IPAddressExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class IPAddressExtensionsFeature : object, Xunit.IClassFixture<IPAddressExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = new string[] {
                 "IPAddressExtensions"};
@@ -30,12 +32,10 @@ namespace Asm.Net.Tests
                 " convert from a subnet mask to CIDR\r\n    So that I can see IP addresses with CID" +
                 "R notation", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "IPAddressExtensions.feature"
 #line hidden
         
-        public IPAddressExtensionsFeature(IPAddressExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IPAddressExtensionsFeature(IPAddressExtensionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -94,7 +94,7 @@ namespace Asm.Net.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -112,7 +112,7 @@ namespace Asm.Net.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("IPAddressExtensions.feature.ndjson", 42);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -122,7 +122,7 @@ namespace Asm.Net.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -132,12 +132,12 @@ namespace Asm.Net.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get IP address in CIDR notation")]
+        [global::Xunit.TheoryAttribute(DisplayName="Get IP address in CIDR notation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [global::Xunit.TraitAttribute("Description", "Get IP address in CIDR notation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -217,7 +217,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get IP address in CIDR notation with invalid mask")]
+        [global::Xunit.TheoryAttribute(DisplayName="Get IP address in CIDR notation with invalid mask")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [global::Xunit.TraitAttribute("Description", "Get IP address in CIDR notation with invalid mask")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -269,7 +269,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get IP address in CIDR notation with invalid input")]
+        [global::Xunit.TheoryAttribute(DisplayName="Get IP address in CIDR notation with invalid input")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [global::Xunit.TraitAttribute("Description", "Get IP address in CIDR notation with invalid input")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -324,7 +324,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Get IP address as an unsigned 32 bit integer")]
+        [global::Xunit.TheoryAttribute(DisplayName="Get IP address as an unsigned 32 bit integer")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [global::Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -369,7 +369,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create an IP address from an unsigned 32 bit integer")]
+        [global::Xunit.FactAttribute(DisplayName="Create an IP address from an unsigned 32 bit integer")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [global::Xunit.TraitAttribute("Description", "Create an IP address from an unsigned 32 bit integer")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -405,7 +405,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get IP address as an unsigned 32 bit integer with invalid input")]
+        [global::Xunit.FactAttribute(DisplayName="Get IP address as an unsigned 32 bit integer with invalid input")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
         [global::Xunit.TraitAttribute("Description", "Get IP address as an unsigned 32 bit integer with invalid input")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -449,15 +449,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await IPAddressExtensionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await IPAddressExtensionsFeature.FeatureTearDownAsync();
             }

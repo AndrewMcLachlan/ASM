@@ -17,22 +17,22 @@ namespace Asm.AspNetCore.Modules.Tests.Routing
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class IModuleFeature : object, global::Xunit.IClassFixture<IModuleFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class IModuleFeature : object, Xunit.IClassFixture<IModuleFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Routing", "IModule", "    As a developer\r\n    I want to use modules to register services and map endpoi" +
                 "nts\r\n    So that I can organize my application with modular components", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "IModule.feature"
 #line hidden
         
-        public IModuleFeature(IModuleFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IModuleFeature(IModuleFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -91,7 +91,7 @@ namespace Asm.AspNetCore.Modules.Tests.Routing
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -109,7 +109,7 @@ namespace Asm.AspNetCore.Modules.Tests.Routing
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Routing/IModule.feature.ndjson", 5);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Asm.AspNetCore.Modules.Tests.Routing
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -129,12 +129,12 @@ namespace Asm.AspNetCore.Modules.Tests.Routing
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Module can add services to the service collection")]
+        [global::Xunit.FactAttribute(DisplayName="Module can add services to the service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IModule")]
         [global::Xunit.TraitAttribute("Description", "Module can add services to the service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -176,7 +176,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Module can map endpoints to the endpoint route builder")]
+        [global::Xunit.FactAttribute(DisplayName="Module can map endpoints to the endpoint route builder")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IModule")]
         [global::Xunit.TraitAttribute("Description", "Module can map endpoints to the endpoint route builder")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -218,7 +218,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Module methods return the builders for chaining")]
+        [global::Xunit.FactAttribute(DisplayName="Module methods return the builders for chaining")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IModule")]
         [global::Xunit.TraitAttribute("Description", "Module methods return the builders for chaining")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -268,15 +268,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await IModuleFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await IModuleFeature.FeatureTearDownAsync();
             }

@@ -17,21 +17,21 @@ namespace Asm.AspNetCore.Tests.Extensions
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class IServiceCollectionExtensionsFeature : object, global::Xunit.IClassFixture<IServiceCollectionExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class IServiceCollectionExtensionsFeature : object, Xunit.IClassFixture<IServiceCollectionExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "IServiceCollection Extensions", "    Extension methods for registering ASP.NET Core services", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "IServiceCollectionExtensions.feature"
 #line hidden
         
-        public IServiceCollectionExtensionsFeature(IServiceCollectionExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IServiceCollectionExtensionsFeature(IServiceCollectionExtensionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.AspNetCore.Tests.Extensions
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.AspNetCore.Tests.Extensions
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/IServiceCollectionExtensions.feature.ndjson", 5);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.AspNetCore.Tests.Extensions
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.AspNetCore.Tests.Extensions
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddProblemDetailsFactory registers custom ProblemDetailsFactory")]
+        [global::Xunit.FactAttribute(DisplayName="AddProblemDetailsFactory registers custom ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IServiceCollection Extensions")]
         [global::Xunit.TraitAttribute("Description", "AddProblemDetailsFactory registers custom ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddPrincipalProvider registers HttpContextPrincipalProvider")]
+        [global::Xunit.FactAttribute(DisplayName="AddPrincipalProvider registers HttpContextPrincipalProvider")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IServiceCollection Extensions")]
         [global::Xunit.TraitAttribute("Description", "AddPrincipalProvider registers HttpContextPrincipalProvider")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -208,7 +208,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddPrincipalProvider returns the service collection for chaining")]
+        [global::Xunit.FactAttribute(DisplayName="AddPrincipalProvider returns the service collection for chaining")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IServiceCollection Extensions")]
         [global::Xunit.TraitAttribute("Description", "AddPrincipalProvider returns the service collection for chaining")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -246,15 +246,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await IServiceCollectionExtensionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await IServiceCollectionExtensionsFeature.FeatureTearDownAsync();
             }

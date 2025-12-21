@@ -17,21 +17,21 @@ namespace Asm.Domain.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class EntityTestsFeature : object, global::Xunit.IClassFixture<EntityTestsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class EntityTestsFeature : object, Xunit.IClassFixture<EntityTestsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Entity tests", "Verify that Entity base class functionality works correctly", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "Entity.feature"
 #line hidden
         
-        public EntityTestsFeature(EntityTestsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public EntityTestsFeature(EntityTestsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Domain.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Domain.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Entity.feature.ndjson", 6);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Domain.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Domain.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="New entity has empty events collection")]
+        [global::Xunit.FactAttribute(DisplayName="New entity has empty events collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Entity tests")]
         [global::Xunit.TraitAttribute("Description", "New entity has empty events collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -166,7 +166,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Add domain event to entity")]
+        [global::Xunit.FactAttribute(DisplayName="Add domain event to entity")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Entity tests")]
         [global::Xunit.TraitAttribute("Description", "Add domain event to entity")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -202,7 +202,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Add multiple domain events to entity")]
+        [global::Xunit.FactAttribute(DisplayName="Add multiple domain events to entity")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Entity tests")]
         [global::Xunit.TraitAttribute("Description", "Add multiple domain events to entity")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -238,7 +238,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Clear domain events from entity")]
+        [global::Xunit.FactAttribute(DisplayName="Clear domain events from entity")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Entity tests")]
         [global::Xunit.TraitAttribute("Description", "Clear domain events from entity")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -276,15 +276,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await EntityTestsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await EntityTestsFeature.FeatureTearDownAsync();
             }

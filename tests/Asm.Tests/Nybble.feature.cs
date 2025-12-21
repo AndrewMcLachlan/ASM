@@ -17,21 +17,21 @@ namespace Asm.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class NybbleFeature : object, global::Xunit.IClassFixture<NybbleFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class NybbleFeature : object, Xunit.IClassFixture<NybbleFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Nybble", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "Nybble.feature"
 #line hidden
         
-        public NybbleFeature(NybbleFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public NybbleFeature(NybbleFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Nybble.feature.ndjson", 19);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create a Nybble with a valid value")]
+        [global::Xunit.FactAttribute(DisplayName="Create a Nybble with a valid value")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Create a Nybble with a valid value")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create a Nybble with an invalid value")]
+        [global::Xunit.FactAttribute(DisplayName="Create a Nybble with an invalid value")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Create a Nybble with an invalid value")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Add two Nybbles")]
+        [global::Xunit.FactAttribute(DisplayName="Add two Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Add two Nybbles")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -244,7 +244,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert Nybble array to uint")]
+        [global::Xunit.FactAttribute(DisplayName="Convert Nybble array to uint")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Convert Nybble array to uint")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -280,7 +280,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Check equality of two Nybbles")]
+        [global::Xunit.TheoryAttribute(DisplayName="Check equality of two Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Check equality of two Nybbles")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -330,7 +330,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert byte to Nybbles")]
+        [global::Xunit.FactAttribute(DisplayName="Convert byte to Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Convert byte to Nybbles")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -366,7 +366,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert bytes to Nybbles")]
+        [global::Xunit.FactAttribute(DisplayName="Convert bytes to Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Convert bytes to Nybbles")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -402,7 +402,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert int to Nybbles")]
+        [global::Xunit.FactAttribute(DisplayName="Convert int to Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Convert int to Nybbles")]
         public async global::System.Threading.Tasks.Task ConvertIntToNybbles()
@@ -436,7 +436,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Add uint and Nybble")]
+        [global::Xunit.FactAttribute(DisplayName="Add uint and Nybble")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Add uint and Nybble")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -475,7 +475,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Add byte and Nybble")]
+        [global::Xunit.FactAttribute(DisplayName="Add byte and Nybble")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Add byte and Nybble")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -514,7 +514,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality of two Nybbles")]
+        [global::Xunit.FactAttribute(DisplayName="Check inequality of two Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Check inequality of two Nybbles")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -553,7 +553,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality returns false for equal Nybbles")]
+        [global::Xunit.FactAttribute(DisplayName="Check inequality returns false for equal Nybbles")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Check inequality returns false for equal Nybbles")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -592,7 +592,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get Nybble hash code")]
+        [global::Xunit.FactAttribute(DisplayName="Get Nybble hash code")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Get Nybble hash code")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -628,7 +628,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check Nybble equality with null object")]
+        [global::Xunit.FactAttribute(DisplayName="Check Nybble equality with null object")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Check Nybble equality with null object")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -664,7 +664,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check Nybble equality with non-Nybble object")]
+        [global::Xunit.FactAttribute(DisplayName="Check Nybble equality with non-Nybble object")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
         [global::Xunit.TraitAttribute("Description", "Check Nybble equality with non-Nybble object")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -702,15 +702,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await NybbleFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await NybbleFeature.FeatureTearDownAsync();
             }

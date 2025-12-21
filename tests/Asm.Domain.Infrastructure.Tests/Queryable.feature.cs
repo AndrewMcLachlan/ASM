@@ -17,21 +17,21 @@ namespace Asm.Domain.Infrastructure.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class QueryableRegistrationFeature : object, global::Xunit.IClassFixture<QueryableRegistrationFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class QueryableRegistrationFeature : object, Xunit.IClassFixture<QueryableRegistrationFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Queryable Registration", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "Queryable.feature"
 #line hidden
         
-        public QueryableRegistrationFeature(QueryableRegistrationFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public QueryableRegistrationFeature(QueryableRegistrationFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Domain.Infrastructure.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Domain.Infrastructure.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Queryable.feature.ndjson", 7);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Domain.Infrastructure.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Domain.Infrastructure.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddQueryable returns same service collection")]
+        [global::Xunit.FactAttribute(DisplayName="AddQueryable returns same service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Queryable Registration")]
         [global::Xunit.TraitAttribute("Description", "AddQueryable returns same service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddQueryable registers transient IQueryable service")]
+        [global::Xunit.FactAttribute(DisplayName="AddQueryable registers transient IQueryable service")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Queryable Registration")]
         [global::Xunit.TraitAttribute("Description", "AddQueryable registers transient IQueryable service")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddQueryable for multiple entity types registers all")]
+        [global::Xunit.FactAttribute(DisplayName="AddQueryable for multiple entity types registers all")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Queryable Registration")]
         [global::Xunit.TraitAttribute("Description", "AddQueryable for multiple entity types registers all")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -241,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddQueryable on empty collection adds one descriptor")]
+        [global::Xunit.FactAttribute(DisplayName="AddQueryable on empty collection adds one descriptor")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Queryable Registration")]
         [global::Xunit.TraitAttribute("Description", "AddQueryable on empty collection adds one descriptor")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -277,7 +277,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddQueryable allows duplicate registrations")]
+        [global::Xunit.FactAttribute(DisplayName="AddQueryable allows duplicate registrations")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Queryable Registration")]
         [global::Xunit.TraitAttribute("Description", "AddQueryable allows duplicate registrations")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -315,15 +315,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await QueryableRegistrationFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await QueryableRegistrationFeature.FeatureTearDownAsync();
             }

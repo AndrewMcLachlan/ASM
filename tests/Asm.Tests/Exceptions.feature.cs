@@ -17,21 +17,21 @@ namespace Asm.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ExceptionsFeature : object, global::Xunit.IClassFixture<ExceptionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ExceptionsFeature : object, Xunit.IClassFixture<ExceptionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Exceptions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "Exceptions.feature"
 #line hidden
         
-        public ExceptionsFeature(ExceptionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ExceptionsFeature(ExceptionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Exceptions.feature.ndjson", 8);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create AsmException with default constructor")]
+        [global::Xunit.FactAttribute(DisplayName="Create AsmException with default constructor")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Exceptions")]
         [global::Xunit.TraitAttribute("Description", "Create AsmException with default constructor")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create AsmException with message")]
+        [global::Xunit.FactAttribute(DisplayName="Create AsmException with message")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Exceptions")]
         [global::Xunit.TraitAttribute("Description", "Create AsmException with message")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -211,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create AsmException with message and inner exception")]
+        [global::Xunit.FactAttribute(DisplayName="Create AsmException with message and inner exception")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Exceptions")]
         [global::Xunit.TraitAttribute("Description", "Create AsmException with message and inner exception")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -253,7 +253,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create AsmException with error id")]
+        [global::Xunit.FactAttribute(DisplayName="Create AsmException with error id")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Exceptions")]
         [global::Xunit.TraitAttribute("Description", "Create AsmException with error id")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -289,7 +289,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create AsmException with message and error id")]
+        [global::Xunit.FactAttribute(DisplayName="Create AsmException with message and error id")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Exceptions")]
         [global::Xunit.TraitAttribute("Description", "Create AsmException with message and error id")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -328,7 +328,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create AsmException with message, error id and inner exception")]
+        [global::Xunit.FactAttribute(DisplayName="Create AsmException with message, error id and inner exception")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Exceptions")]
         [global::Xunit.TraitAttribute("Description", "Create AsmException with message, error id and inner exception")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -376,15 +376,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ExceptionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ExceptionsFeature.FeatureTearDownAsync();
             }

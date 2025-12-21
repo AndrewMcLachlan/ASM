@@ -17,21 +17,21 @@ namespace Asm.Tests.Extensions
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class IListExtensionsFeature : object, global::Xunit.IClassFixture<IListExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class IListExtensionsFeature : object, Xunit.IClassFixture<IListExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "IList Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "IListExtensions.feature"
 #line hidden
         
-        public IListExtensionsFeature(IListExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IListExtensionsFeature(IListExtensionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Tests.Extensions
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Tests.Extensions
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/IListExtensions.feature.ndjson", 10);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Tests.Extensions
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Tests.Extensions
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Shuffle list returns same elements in different order")]
+        [global::Xunit.FactAttribute(DisplayName="Shuffle list returns same elements in different order")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "Shuffle list returns same elements in different order")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Shuffle null list throws ArgumentNullException")]
+        [global::Xunit.FactAttribute(DisplayName="Shuffle null list throws ArgumentNullException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "Shuffle null list throws ArgumentNullException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -208,7 +208,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Shuffle readonly list throws InvalidOperationException")]
+        [global::Xunit.FactAttribute(DisplayName="Shuffle readonly list throws InvalidOperationException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "Shuffle readonly list throws InvalidOperationException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -247,7 +247,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="IsNullOrEmpty returns true for null list")]
+        [global::Xunit.FactAttribute(DisplayName="IsNullOrEmpty returns true for null list")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "IsNullOrEmpty returns true for null list")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -283,7 +283,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="IsNullOrEmpty returns true for empty list")]
+        [global::Xunit.FactAttribute(DisplayName="IsNullOrEmpty returns true for empty list")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "IsNullOrEmpty returns true for empty list")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -319,7 +319,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="IsNullOrEmpty returns false for non-empty list")]
+        [global::Xunit.FactAttribute(DisplayName="IsNullOrEmpty returns false for non-empty list")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "IsNullOrEmpty returns false for non-empty list")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -355,7 +355,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Empty returns true for empty list")]
+        [global::Xunit.FactAttribute(DisplayName="Empty returns true for empty list")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "Empty returns true for empty list")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -391,7 +391,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Empty returns false for non-empty list")]
+        [global::Xunit.FactAttribute(DisplayName="Empty returns false for non-empty list")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IList Extensions")]
         [global::Xunit.TraitAttribute("Description", "Empty returns false for non-empty list")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -429,15 +429,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await IListExtensionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await IListExtensionsFeature.FeatureTearDownAsync();
             }

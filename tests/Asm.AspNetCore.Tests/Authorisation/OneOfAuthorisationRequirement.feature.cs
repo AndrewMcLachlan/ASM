@@ -17,21 +17,21 @@ namespace Asm.AspNetCore.Tests.Authorisation
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class OneOfAuthorisationRequirementFeature : object, global::Xunit.IClassFixture<OneOfAuthorisationRequirementFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class OneOfAuthorisationRequirementFeature : object, Xunit.IClassFixture<OneOfAuthorisationRequirementFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Authorisation", "OneOfAuthorisationRequirement", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "OneOfAuthorisationRequirement.feature"
 #line hidden
         
-        public OneOfAuthorisationRequirementFeature(OneOfAuthorisationRequirementFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public OneOfAuthorisationRequirementFeature(OneOfAuthorisationRequirementFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.AspNetCore.Tests.Authorisation
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.AspNetCore.Tests.Authorisation
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Authorisation/OneOfAuthorisationRequirement.feature.ndjson", 5);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.AspNetCore.Tests.Authorisation
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.AspNetCore.Tests.Authorisation
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create OneOfAuthorisationRequirement with multiple requirements")]
+        [global::Xunit.FactAttribute(DisplayName="Create OneOfAuthorisationRequirement with multiple requirements")]
         [global::Xunit.TraitAttribute("FeatureTitle", "OneOfAuthorisationRequirement")]
         [global::Xunit.TraitAttribute("Description", "Create OneOfAuthorisationRequirement with multiple requirements")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -177,7 +177,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create OneOfAuthorisationRequirement with single requirement")]
+        [global::Xunit.FactAttribute(DisplayName="Create OneOfAuthorisationRequirement with single requirement")]
         [global::Xunit.TraitAttribute("FeatureTitle", "OneOfAuthorisationRequirement")]
         [global::Xunit.TraitAttribute("Description", "Create OneOfAuthorisationRequirement with single requirement")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -217,7 +217,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create OneOfAuthorisationRequirement with no requirements")]
+        [global::Xunit.FactAttribute(DisplayName="Create OneOfAuthorisationRequirement with no requirements")]
         [global::Xunit.TraitAttribute("FeatureTitle", "OneOfAuthorisationRequirement")]
         [global::Xunit.TraitAttribute("Description", "Create OneOfAuthorisationRequirement with no requirements")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -255,15 +255,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await OneOfAuthorisationRequirementFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await OneOfAuthorisationRequirementFeature.FeatureTearDownAsync();
             }

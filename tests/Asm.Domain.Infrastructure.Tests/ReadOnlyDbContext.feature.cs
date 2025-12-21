@@ -17,21 +17,21 @@ namespace Asm.Domain.Infrastructure.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ReadOnlyDbContextRegistrationFeature : object, global::Xunit.IClassFixture<ReadOnlyDbContextRegistrationFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ReadOnlyDbContextRegistrationFeature : object, Xunit.IClassFixture<ReadOnlyDbContextRegistrationFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "ReadOnly DbContext Registration", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "ReadOnlyDbContext.feature"
 #line hidden
         
-        public ReadOnlyDbContextRegistrationFeature(ReadOnlyDbContextRegistrationFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ReadOnlyDbContextRegistrationFeature(ReadOnlyDbContextRegistrationFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Domain.Infrastructure.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Domain.Infrastructure.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ReadOnlyDbContext.feature.ndjson", 22);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Domain.Infrastructure.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Domain.Infrastructure.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext returns same service collection")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext returns same service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext returns same service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with null optionsAction returns service collection")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with null optionsAction returns service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with null optionsAction returns service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with optionsAction returns service collection")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with optionsAction returns service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with optionsAction returns service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -241,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext registers IReadOnlyDbContext service")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext registers IReadOnlyDbContext service")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext registers IReadOnlyDbContext service")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -280,7 +280,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with scoped lifetime can resolve within scope")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with scoped lifetime can resolve within scope")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with scoped lifetime can resolve within scope")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -319,7 +319,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext invokes optionsAction on resolve")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext invokes optionsAction on resolve")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext invokes optionsAction on resolve")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -361,7 +361,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with singleton lifetime returns same instance")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with singleton lifetime returns same instance")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with singleton lifetime returns same instance")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -400,7 +400,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with transient lifetime returns different instances")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with transient lifetime returns different instances")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with transient lifetime returns different instances")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -439,7 +439,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="AddReadOnlyDbContext with various lifetimes returns service collection")]
+        [global::Xunit.TheoryAttribute(DisplayName="AddReadOnlyDbContext with various lifetimes returns service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with various lifetimes returns service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -488,7 +488,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext registers concrete DbContext type")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext registers concrete DbContext type")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext registers concrete DbContext type")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -524,7 +524,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext called multiple times does not throw")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext called multiple times does not throw")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext called multiple times does not throw")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -560,7 +560,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with IServiceProvider optionsAction receives valid provider")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -602,7 +602,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="AddReadOnlyDbContext registers with correct context lifetime")]
+        [global::Xunit.TheoryAttribute(DisplayName="AddReadOnlyDbContext registers with correct context lifetime")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext registers with correct context lifetime")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -647,7 +647,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddReadOnlyDbContext with service interface registers correctly")]
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with service interface registers correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
         [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with service interface registers correctly")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -688,15 +688,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ReadOnlyDbContextRegistrationFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ReadOnlyDbContextRegistrationFeature.FeatureTearDownAsync();
             }

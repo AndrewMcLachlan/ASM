@@ -17,22 +17,22 @@ namespace Asm.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ExtendedBitArrayFeature : object, global::Xunit.IClassFixture<ExtendedBitArrayFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ExtendedBitArrayFeature : object, Xunit.IClassFixture<ExtendedBitArrayFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "ExtendedBitArray", "  As a developer\r\n  I want to test the ExtendedBitArray class\r\n  So that I can en" +
                 "sure it behaves correctly", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "ExtendedBitArray.feature"
 #line hidden
         
-        public ExtendedBitArrayFeature(ExtendedBitArrayFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ExtendedBitArrayFeature(ExtendedBitArrayFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -91,7 +91,7 @@ namespace Asm.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -109,7 +109,7 @@ namespace Asm.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ExtendedBitArray.feature.ndjson", 32);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Asm.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -129,12 +129,12 @@ namespace Asm.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with BitArray")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with BitArray")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with BitArray")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithBitArray()
@@ -174,7 +174,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to byte array")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to byte array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to byte array")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToByteArray()
@@ -211,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy part of ExtendedBitArray")]
+        [global::Xunit.FactAttribute(DisplayName="Copy part of ExtendedBitArray")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Copy part of ExtendedBitArray")]
         public async global::System.Threading.Tasks.Task CopyPartOfExtendedBitArray()
@@ -252,7 +252,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy throws when start index is out of range")]
+        [global::Xunit.FactAttribute(DisplayName="Copy throws when start index is out of range")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Copy throws when start index is out of range")]
         public async global::System.Threading.Tasks.Task CopyThrowsWhenStartIndexIsOutOfRange()
@@ -289,7 +289,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy throws when length exceeds array size")]
+        [global::Xunit.FactAttribute(DisplayName="Copy throws when length exceeds array size")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Copy throws when length exceeds array size")]
         public async global::System.Threading.Tasks.Task CopyThrowsWhenLengthExceedsArraySize()
@@ -326,7 +326,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo throws when index is negative")]
+        [global::Xunit.FactAttribute(DisplayName="CopyTo throws when index is negative")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "CopyTo throws when index is negative")]
         public async global::System.Threading.Tasks.Task CopyToThrowsWhenIndexIsNegative()
@@ -366,7 +366,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo throws when index exceeds array length")]
+        [global::Xunit.FactAttribute(DisplayName="CopyTo throws when index exceeds array length")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "CopyTo throws when index exceeds array length")]
         public async global::System.Threading.Tasks.Task CopyToThrowsWhenIndexExceedsArrayLength()
@@ -406,7 +406,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo throws when array is null")]
+        [global::Xunit.FactAttribute(DisplayName="CopyTo throws when array is null")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "CopyTo throws when array is null")]
         public async global::System.Threading.Tasks.Task CopyToThrowsWhenArrayIsNull()
@@ -443,7 +443,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with byte array")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with byte array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with byte array")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithByteArray()
@@ -480,7 +480,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with single byte")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with single byte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with single byte")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithSingleByte()
@@ -517,7 +517,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with sbyte")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with sbyte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with sbyte")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithSbyte()
@@ -554,7 +554,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with short")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with short")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with short")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithShort()
@@ -591,7 +591,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with int")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with int")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with int")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithInt()
@@ -628,7 +628,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with long")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with long")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with long")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithLong()
@@ -665,7 +665,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithReadOnlySpanOfBytes()
@@ -702,7 +702,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to SByte")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to SByte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to SByte")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToSByte()
@@ -740,7 +740,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to Int16 little endian")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Int16 little endian")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Int16 little endian")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToInt16LittleEndian()
@@ -778,7 +778,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to Int32 little endian")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Int32 little endian")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Int32 little endian")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToInt32LittleEndian()
@@ -815,7 +815,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to Int64 little endian")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Int64 little endian")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Int64 little endian")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToInt64LittleEndian()
@@ -852,7 +852,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to Byte")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Byte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Byte")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToByte()
@@ -890,7 +890,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to UInt16")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to UInt16")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to UInt16")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToUInt16()
@@ -928,7 +928,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to UInt32")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to UInt32")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to UInt32")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToUInt32()
@@ -965,7 +965,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to UInt64")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to UInt64")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to UInt64")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToUInt64()
@@ -1002,7 +1002,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert ExtendedBitArray to string")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to string")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToString()
@@ -1039,7 +1039,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Access IsSynchronized property")]
+        [global::Xunit.FactAttribute(DisplayName="Access IsSynchronized property")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Access IsSynchronized property")]
         public async global::System.Threading.Tasks.Task AccessIsSynchronizedProperty()
@@ -1076,7 +1076,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Access SyncRoot property")]
+        [global::Xunit.FactAttribute(DisplayName="Access SyncRoot property")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Access SyncRoot property")]
         public async global::System.Threading.Tasks.Task AccessSyncRootProperty()
@@ -1113,7 +1113,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Clone ExtendedBitArray")]
+        [global::Xunit.FactAttribute(DisplayName="Clone ExtendedBitArray")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Clone ExtendedBitArray")]
         public async global::System.Threading.Tasks.Task CloneExtendedBitArray()
@@ -1150,7 +1150,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get IEnumerable enumerator")]
+        [global::Xunit.FactAttribute(DisplayName="Get IEnumerable enumerator")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Get IEnumerable enumerator")]
         public async global::System.Threading.Tasks.Task GetIEnumerableEnumerator()
@@ -1187,7 +1187,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Access bits using range indexer")]
+        [global::Xunit.FactAttribute(DisplayName="Access bits using range indexer")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Access bits using range indexer")]
         public async global::System.Threading.Tasks.Task AccessBitsUsingRangeIndexer()
@@ -1225,7 +1225,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CopyTo ExtendedBitArray successfully")]
+        [global::Xunit.FactAttribute(DisplayName="CopyTo ExtendedBitArray successfully")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "CopyTo ExtendedBitArray successfully")]
         public async global::System.Threading.Tasks.Task CopyToExtendedBitArraySuccessfully()
@@ -1267,15 +1267,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ExtendedBitArrayFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ExtendedBitArrayFeature.FeatureTearDownAsync();
             }

@@ -17,21 +17,21 @@ namespace Asm.Cqrs.AspNetCore.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class HandlersFeature : object, global::Xunit.IClassFixture<HandlersFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class HandlersFeature : object, Xunit.IClassFixture<HandlersFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Handlers", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "Handlers.feature"
 #line hidden
         
-        public HandlersFeature(HandlersFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public HandlersFeature(HandlersFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Handlers.feature.ndjson", 11);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Cqrs.AspNetCore.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="HandleQuery dispatches query and returns Ok result")]
+        [global::Xunit.FactAttribute(DisplayName="HandleQuery dispatches query and returns Ok result")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "HandleQuery dispatches query and returns Ok result")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="HandlePagedQuery dispatches query and returns results with header")]
+        [global::Xunit.FactAttribute(DisplayName="HandlePagedQuery dispatches query and returns results with header")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "HandlePagedQuery dispatches query and returns results with header")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -211,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="HandleDelete dispatches command and returns NoContent")]
+        [global::Xunit.FactAttribute(DisplayName="HandleDelete dispatches command and returns NoContent")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "HandleDelete dispatches command and returns NoContent")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -247,7 +247,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="HandleDelete with response dispatches command and returns Ok with result")]
+        [global::Xunit.FactAttribute(DisplayName="HandleDelete with response dispatches command and returns Ok with result")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "HandleDelete with response dispatches command and returns Ok with result")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -283,7 +283,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="HandleCommand dispatches command and returns result")]
+        [global::Xunit.FactAttribute(DisplayName="HandleCommand dispatches command and returns result")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "HandleCommand dispatches command and returns result")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -319,7 +319,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="HandleCommand without response dispatches command")]
+        [global::Xunit.FactAttribute(DisplayName="HandleCommand without response dispatches command")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "HandleCommand without response dispatches command")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -355,7 +355,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateCreateHandler returns CreatedAtRoute result")]
+        [global::Xunit.FactAttribute(DisplayName="CreateCreateHandler returns CreatedAtRoute result")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "CreateCreateHandler returns CreatedAtRoute result")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -391,7 +391,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateCommandHandler returns specified status code")]
+        [global::Xunit.FactAttribute(DisplayName="CreateCommandHandler returns specified status code")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "CreateCommandHandler returns specified status code")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -427,7 +427,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateCommandHandler with response returns specified status code")]
+        [global::Xunit.FactAttribute(DisplayName="CreateCommandHandler with response returns specified status code")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "CreateCommandHandler with response returns specified status code")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -465,15 +465,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await HandlersFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await HandlersFeature.FeatureTearDownAsync();
             }
