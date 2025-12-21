@@ -53,3 +53,49 @@ Scenario: Convert int to Nybbles
     Given I have an int with value 0x12
     When I convert the int to Nybbles
     Then the Nybble array should be 2, 1, 0, 0
+
+@Unit
+Scenario: Add uint and Nybble
+    Given I have a uint value 5
+    And I have a Nybble with value 3
+    When I add the uint and Nybble
+    Then the ulong result should be 83
+
+@Unit
+Scenario: Add byte and Nybble
+    Given I have a byte value 5
+    And I have a Nybble with value 3
+    When I add the byte and Nybble
+    Then the integer result should be 83
+
+@Unit
+Scenario: Check inequality of two Nybbles
+    Given I have a Nybble with value 5
+    And I have another Nybble with value 3
+    When I check inequality
+    Then the boolean result should be true
+
+@Unit
+Scenario: Check inequality returns false for equal Nybbles
+    Given I have a Nybble with value 5
+    And I have another Nybble with value 5
+    When I check inequality
+    Then the boolean result should be false
+
+@Unit
+Scenario: Get Nybble hash code
+    Given I have a Nybble with value 10
+    When I get the Nybble hash code
+    Then the hash code should match the byte value hash code
+
+@Unit
+Scenario: Check Nybble equality with null object
+    Given I have a Nybble with value 5
+    When I check equality with null object
+    Then the boolean result should be false
+
+@Unit
+Scenario: Check Nybble equality with non-Nybble object
+    Given I have a Nybble with value 5
+    When I check equality with a string object
+    Then the boolean result should be false

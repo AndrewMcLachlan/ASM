@@ -12,6 +12,15 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     private byte[] _byteArray;
     private object _conversionResult;
     private string _conversionResultString;
+    private bool[] _rangeResult;
+
+    // Primitive value holders for constructors
+    private byte _singleByte;
+    private sbyte _sbyte;
+    private short _short;
+    private int _int;
+    private long _long;
+    private ReadOnlyMemory<byte> _byteSpan;
 
     [Given(@"I have a BitArray with values \[(.*)\]")]
     public void GivenIHaveABitArrayWithValues(string values)
@@ -40,10 +49,100 @@ public class ExtendedBitArraySteps(ScenarioContext context)
         _extendedBitArray2 = new ExtendedBitArray(boolValues, _endian);
     }
 
+    [Given(@"a byte array with values \[(.*)\]")]
+    public void GivenAByteArrayWithValues(string values)
+    {
+        _byteArray = values.Split(',').Select(v => Byte.Parse(v.Trim())).ToArray();
+    }
+
+    [Given(@"a single byte with value (.*)")]
+    public void GivenASingleByteWithValue(byte value)
+    {
+        _singleByte = value;
+    }
+
+    [Given(@"a signed byte with value (.*)")]
+    public void GivenASignedByteWithValue(sbyte value)
+    {
+        _sbyte = value;
+    }
+
+    [Given(@"a short with value (.*)")]
+    public void GivenAShortWithValue(short value)
+    {
+        _short = value;
+    }
+
+    [Given(@"an int with value (.*)")]
+    public void GivenAnIntWithValue(int value)
+    {
+        _int = value;
+    }
+
+    [Given(@"a long with value (.*)")]
+    public void GivenALongWithValue(long value)
+    {
+        _long = value;
+    }
+
+    [Given(@"a byte span with values \[(.*)\]")]
+    public void GivenAByteSpanWithValues(string values)
+    {
+        _byteSpan = values.Split(',').Select(v => Byte.Parse(v.Trim())).ToArray();
+    }
+
     [When(@"I create an ExtendedBitArray")]
     public void WhenICreateAnExtendedBitArray()
     {
         _extendedBitArray = new ExtendedBitArray(_bitArray, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from bytes")]
+    public void WhenICreateAnExtendedBitArrayFromBytes()
+    {
+        _extendedBitArray = new ExtendedBitArray(_byteArray, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from single byte")]
+    public void WhenICreateAnExtendedBitArrayFromSingleByte()
+    {
+        _extendedBitArray = new ExtendedBitArray(_singleByte, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from sbyte")]
+    public void WhenICreateAnExtendedBitArrayFromSbyte()
+    {
+        _extendedBitArray = new ExtendedBitArray(_sbyte, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from short")]
+    public void WhenICreateAnExtendedBitArrayFromShort()
+    {
+        _extendedBitArray = new ExtendedBitArray(_short, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from int")]
+    public void WhenICreateAnExtendedBitArrayFromInt()
+    {
+        _extendedBitArray = new ExtendedBitArray(_int, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from long")]
+    public void WhenICreateAnExtendedBitArrayFromLong()
+    {
+        _extendedBitArray = new ExtendedBitArray(_long, _endian);
+    }
+
+    [When(@"I create an ExtendedBitArray from byte span")]
+    public void WhenICreateAnExtendedBitArrayFromByteSpan()
+    {
+        _extendedBitArray = new ExtendedBitArray(_byteSpan.Span, _endian);
+    }
+
+    [When(@"I access bits from index (\d+) to (\d+)")]
+    public void WhenIAccessBitsFromIndexTo(int start, int end)
+    {
+        _rangeResult = _extendedBitArray[start..end];
     }
 
     [When(@"I convert the ExtendedBitArray to a byte array")]
@@ -77,49 +176,49 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     [When(@"I convert the ExtendedBitArray to SByte")]
     public void WhenIConvertTheExtendedBitArrayToSByte()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToSByte());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToSByte()));
     }
 
     [When(@"I convert the ExtendedBitArray to Int16")]
     public void WhenIConvertTheExtendedBitArrayToInt16()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToInt16());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToInt16()));
     }
 
     [When(@"I convert the ExtendedBitArray to Int32")]
     public void WhenIConvertTheExtendedBitArrayToInt32()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToInt32());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToInt32()));
     }
 
     [When(@"I convert the ExtendedBitArray to Int64")]
     public void WhenIConvertTheExtendedBitArrayToInt64()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToInt64());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToInt64()));
     }
 
     [When(@"I convert the ExtendedBitArray to Byte")]
     public void WhenIConvertTheExtendedBitArrayToByte()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToByte());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToByte()));
     }
 
     [When(@"I convert the ExtendedBitArray to UInt16")]
     public void WhenIConvertTheExtendedBitArrayToUInt16()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToUInt16());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToUInt16()));
     }
 
     [When(@"I convert the ExtendedBitArray to UInt32")]
     public void WhenIConvertTheExtendedBitArrayToUInt32()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToUInt32());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToUInt32()));
     }
 
     [When(@"I convert the ExtendedBitArray to UInt64")]
     public void WhenIConvertTheExtendedBitArrayToUInt64()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.ToUInt64());
+        context.CatchException(() => context.AddResult(_extendedBitArray.ToUInt64()));
     }
 
     [When(@"I convert the ExtendedBitArray to string")]
@@ -131,28 +230,28 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     [When(@"I access the IsSynchronized property")]
     public void WhenIAccessTheIsSynchronizedProperty()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.IsSynchronized);
+        context.CatchException(() => context.AddResult(_extendedBitArray.IsSynchronized));
     }
 
     [When(@"I access the SyncRoot property")]
     public void WhenIAccessTheSyncRootProperty()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.SyncRoot);
+        context.CatchException(() => context.AddResult(_extendedBitArray.SyncRoot));
     }
 
     [When(@"I clone the ExtendedBitArray")]
     public void WhenICloneTheExtendedBitArray()
     {
-        context.CatchException(() => _conversionResult = _extendedBitArray.Clone());
+        context.CatchException(() => context.AddResult(_extendedBitArray.Clone()));
     }
 
     [When(@"I get the enumerator for the ExtendedBitArray")]
     public void WhenIGetTheEnumeratorForTheExtendedBitArray()
     {
-        context.CatchException(() => 
+        context.CatchException(() =>
         {
             var enumerator = ((System.Collections.IEnumerable)_extendedBitArray).GetEnumerator();
-            _conversionResult = enumerator;
+            context.AddResult(enumerator);
         });
     }
 
@@ -250,12 +349,54 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     [Then(@"the result should not be null")]
     public void ThenTheResultShouldNotBeNull()
     {
-        Assert.NotNull(_conversionResult);
+        var result = context.Get<object>("Result");
+        Assert.NotNull(result);
     }
 
     [Then(@"I should get an exception")]
     public void ThenIShouldGetAnException()
     {
         Assert.NotNull(context.GetException());
+    }
+
+    [Then(@"the sbyte result should be (.*)")]
+    public void ThenTheSbyteResultShouldBe(sbyte expected)
+    {
+        var result = context.Get<sbyte>("Result");
+        Assert.Equal(expected, result);
+    }
+
+    [Then(@"the short result should be (.*)")]
+    public void ThenTheShortResultShouldBe(short expected)
+    {
+        var result = context.Get<short>("Result");
+        Assert.Equal(expected, result);
+    }
+
+    [Then(@"the int result should be (.*)")]
+    public void ThenTheIntResultShouldBe(int expected)
+    {
+        var result = context.Get<int>("Result");
+        Assert.Equal(expected, result);
+    }
+
+    [Then(@"the long result should be (.*)")]
+    public void ThenTheLongResultShouldBe(long expected)
+    {
+        var result = context.Get<long>("Result");
+        Assert.Equal(expected, result);
+    }
+
+    [Then(@"the range result should be \[(.*)\]")]
+    public void ThenTheRangeResultShouldBe(string values)
+    {
+        var expectedValues = values.Split(',').Select(v => Boolean.Parse(v.Trim())).ToArray();
+        Assert.Equal(expectedValues, _rangeResult);
+    }
+
+    [Then(@"the operation should complete without exception")]
+    public void ThenTheOperationShouldCompleteWithoutException()
+    {
+        Assert.Null(context.GetException());
     }
 }

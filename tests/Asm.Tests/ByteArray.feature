@@ -126,3 +126,65 @@ Scenario: Check equality with incompatible object returns false
     Given a ByteArray with values 1, 2, 3, 4 and big endian
     When I check equality with incompatible object
     Then the boolean result should be false
+
+@Unit
+Scenario: ToInt16 method should convert to Int16
+    Given a ByteArray with values 1, 2 and little endian
+    When I convert to Int16
+    Then the short result should be 513
+
+@Unit
+Scenario: ToInt32 method should convert to Int32
+    Given a ByteArray with values 1, 2, 3, 4 and little endian
+    When I convert to Int32
+    Then the int result should be 67305985
+
+@Unit
+Scenario: ToInt64 method should convert to Int64
+    Given a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8 and little endian
+    When I convert to Int64
+    Then the long result should be 578437695752307201
+
+@Unit
+Scenario: ToString method should convert to string
+    Given a ByteArray with values 65, 66, 67 and big endian
+    When I convert to string
+    Then the string result should be "ABC"
+
+@Unit
+Scenario: Check inequality returns true for different arrays
+    Given a ByteArray with values 1, 2, 3, 4 and big endian
+    And another ByteArray with values 1, 2, 3, 5 and big endian
+    When I check for inequality
+    Then the boolean result should be true
+
+@Unit
+Scenario: Check inequality returns false for same arrays
+    Given a ByteArray with values 1, 2, 3, 4 and big endian
+    And another ByteArray with values 1, 2, 3, 4 and big endian
+    When I check for inequality
+    Then the boolean result should be false
+
+@Unit
+Scenario: Indexer get returns correct byte
+    Given a ByteArray with values 10, 20, 30 and big endian
+    When I access index 1
+    Then the byte result should be 20
+
+@Unit
+Scenario: GetHashCode returns a value
+    Given a ByteArray with values 1, 2, 3, 4 and big endian
+    When I get the hash code
+    Then the result should not be null
+
+@Unit
+Scenario: Implicit conversion from byte array
+    Given a raw byte array with values 1, 2, 3
+    When I implicitly convert to ByteArray
+    Then the ByteArray should have 3 bytes
+
+@Unit
+Scenario: Implicit conversion to byte array
+    Given a ByteArray with values 1, 2, 3 and big endian
+    When I implicitly convert to byte array
+    Then the byte array should have 3 bytes

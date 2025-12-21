@@ -61,3 +61,27 @@ Examples:
     | 2023-01-15 | 2023-03-15 | 2          |
     | 2023-01-15 | 2023-02-01 | 0          |
     | 2023-01-31 | 2023-02-01 | 0          |
+
+@Unit
+Scenario: Convert DateTime to DateOnly
+    Given I have a datetime '2023-06-15 14:30:00'
+    When I call ToDateOnly
+    Then the DateOnly result should be '2023-06-15'
+
+@Unit
+Scenario: Convert DateTime to TimeOnly
+    Given I have a datetime '2023-06-15 14:30:45'
+    When I call ToTimeOnly
+    Then the TimeOnly result should be '14:30:45'
+
+@Unit
+Scenario: Access DateOnly extension property
+    Given I have a datetime '2023-12-25 10:00:00'
+    When I access the DateOnly extension property
+    Then the DateOnly result should be '2023-12-25'
+
+@Unit
+Scenario: Access TimeOnly extension property
+    Given I have a datetime '2023-12-25 18:45:30'
+    When I access the TimeOnly extension property
+    Then the TimeOnly result should be '18:45:30'

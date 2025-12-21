@@ -105,7 +105,7 @@ namespace Asm.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ByteArray.feature.ndjson", 26);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ByteArray.feature.ndjson", 36);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -843,6 +843,372 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 128
     await testRunner.ThenAsync("the boolean result should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="ToInt16 method should convert to Int16")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "ToInt16 method should convert to Int16")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ToInt16MethodShouldConvertToInt16()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "24";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToInt16 method should convert to Int16", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 131
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 132
+    await testRunner.GivenAsync("a ByteArray with values 1, 2 and little endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 133
+    await testRunner.WhenAsync("I convert to Int16", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 134
+    await testRunner.ThenAsync("the short result should be 513", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="ToInt32 method should convert to Int32")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "ToInt32 method should convert to Int32")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ToInt32MethodShouldConvertToInt32()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "25";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToInt32 method should convert to Int32", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 137
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 138
+    await testRunner.GivenAsync("a ByteArray with values 1, 2, 3, 4 and little endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 139
+    await testRunner.WhenAsync("I convert to Int32", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 140
+    await testRunner.ThenAsync("the int result should be 67305985", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="ToInt64 method should convert to Int64")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "ToInt64 method should convert to Int64")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ToInt64MethodShouldConvertToInt64()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "26";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToInt64 method should convert to Int64", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 143
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 144
+    await testRunner.GivenAsync("a ByteArray with values 1, 2, 3, 4, 5, 6, 7, 8 and little endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 145
+    await testRunner.WhenAsync("I convert to Int64", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 146
+    await testRunner.ThenAsync("the long result should be 578437695752307201", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="ToString method should convert to string")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "ToString method should convert to string")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ToStringMethodShouldConvertToString()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "27";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ToString method should convert to string", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 149
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 150
+    await testRunner.GivenAsync("a ByteArray with values 65, 66, 67 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 151
+    await testRunner.WhenAsync("I convert to string", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 152
+    await testRunner.ThenAsync("the string result should be \"ABC\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality returns true for different arrays")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "Check inequality returns true for different arrays")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CheckInequalityReturnsTrueForDifferentArrays()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "28";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Check inequality returns true for different arrays", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 155
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 156
+    await testRunner.GivenAsync("a ByteArray with values 1, 2, 3, 4 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 157
+    await testRunner.AndAsync("another ByteArray with values 1, 2, 3, 5 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 158
+    await testRunner.WhenAsync("I check for inequality", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 159
+    await testRunner.ThenAsync("the boolean result should be true", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality returns false for same arrays")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "Check inequality returns false for same arrays")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CheckInequalityReturnsFalseForSameArrays()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "29";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Check inequality returns false for same arrays", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 162
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 163
+    await testRunner.GivenAsync("a ByteArray with values 1, 2, 3, 4 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 164
+    await testRunner.AndAsync("another ByteArray with values 1, 2, 3, 4 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 165
+    await testRunner.WhenAsync("I check for inequality", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 166
+    await testRunner.ThenAsync("the boolean result should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Indexer get returns correct byte")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "Indexer get returns correct byte")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task IndexerGetReturnsCorrectByte()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "30";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Indexer get returns correct byte", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 169
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 170
+    await testRunner.GivenAsync("a ByteArray with values 10, 20, 30 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 171
+    await testRunner.WhenAsync("I access index 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 172
+    await testRunner.ThenAsync("the byte result should be 20", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="GetHashCode returns a value")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "GetHashCode returns a value")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task GetHashCodeReturnsAValue()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "31";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("GetHashCode returns a value", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 175
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 176
+    await testRunner.GivenAsync("a ByteArray with values 1, 2, 3, 4 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 177
+    await testRunner.WhenAsync("I get the hash code", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 178
+    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Implicit conversion from byte array")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "Implicit conversion from byte array")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ImplicitConversionFromByteArray()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "32";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Implicit conversion from byte array", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 181
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 182
+    await testRunner.GivenAsync("a raw byte array with values 1, 2, 3", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 183
+    await testRunner.WhenAsync("I implicitly convert to ByteArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 184
+    await testRunner.ThenAsync("the ByteArray should have 3 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Implicit conversion to byte array")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
+        [global::Xunit.TraitAttribute("Description", "Implicit conversion to byte array")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ImplicitConversionToByteArray()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "33";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Implicit conversion to byte array", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 187
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 188
+    await testRunner.GivenAsync("a ByteArray with values 1, 2, 3 and big endian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 189
+    await testRunner.WhenAsync("I implicitly convert to byte array", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 190
+    await testRunner.ThenAsync("the byte array should have 3 bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

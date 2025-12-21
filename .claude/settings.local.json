@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(done)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(dotnet test:*)",
+      "Bash(Get-ChildItem -Path \"K:\\\\Dev\\\\Libraries\\\\Asm\\\\testresults\" -Filter \"coverage.cobertura.xml\" -Recurse)",
+      "Bash(Sort-Object LastWriteTime -Descending)",
+      "Bash(Select-Object -First 1)",
+      "Bash(ForEach-Object { $_FullName })"
+    ]
+  }
+}
