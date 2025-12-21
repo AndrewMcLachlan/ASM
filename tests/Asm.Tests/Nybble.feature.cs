@@ -105,7 +105,7 @@ namespace Asm.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Nybble.feature.ndjson", 12);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Nybble.feature.ndjson", 19);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -431,6 +431,270 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 55
     await testRunner.ThenAsync("the Nybble array should be 2, 1, 0, 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Add uint and Nybble")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Add uint and Nybble")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task AddUintAndNybble()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "10";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add uint and Nybble", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 58
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 59
+    await testRunner.GivenAsync("I have a uint value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 60
+    await testRunner.AndAsync("I have a Nybble with value 3", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 61
+    await testRunner.WhenAsync("I add the uint and Nybble", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 62
+    await testRunner.ThenAsync("the ulong result should be 83", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Add byte and Nybble")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Add byte and Nybble")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task AddByteAndNybble()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "11";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add byte and Nybble", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 65
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 66
+    await testRunner.GivenAsync("I have a byte value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 67
+    await testRunner.AndAsync("I have a Nybble with value 3", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 68
+    await testRunner.WhenAsync("I add the byte and Nybble", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 69
+    await testRunner.ThenAsync("the integer result should be 83", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality of two Nybbles")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Check inequality of two Nybbles")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CheckInequalityOfTwoNybbles()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "12";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Check inequality of two Nybbles", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 72
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 73
+    await testRunner.GivenAsync("I have a Nybble with value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 74
+    await testRunner.AndAsync("I have another Nybble with value 3", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 75
+    await testRunner.WhenAsync("I check inequality", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 76
+    await testRunner.ThenAsync("the boolean result should be true", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality returns false for equal Nybbles")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Check inequality returns false for equal Nybbles")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CheckInequalityReturnsFalseForEqualNybbles()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "13";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Check inequality returns false for equal Nybbles", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 79
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 80
+    await testRunner.GivenAsync("I have a Nybble with value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 81
+    await testRunner.AndAsync("I have another Nybble with value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 82
+    await testRunner.WhenAsync("I check inequality", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 83
+    await testRunner.ThenAsync("the boolean result should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get Nybble hash code")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Get Nybble hash code")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task GetNybbleHashCode()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "14";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get Nybble hash code", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 86
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 87
+    await testRunner.GivenAsync("I have a Nybble with value 10", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 88
+    await testRunner.WhenAsync("I get the Nybble hash code", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 89
+    await testRunner.ThenAsync("the hash code should match the byte value hash code", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Check Nybble equality with null object")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Check Nybble equality with null object")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CheckNybbleEqualityWithNullObject()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "15";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Check Nybble equality with null object", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 92
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 93
+    await testRunner.GivenAsync("I have a Nybble with value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 94
+    await testRunner.WhenAsync("I check equality with null object", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 95
+    await testRunner.ThenAsync("the boolean result should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.SkippableFactAttribute(DisplayName="Check Nybble equality with non-Nybble object")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Nybble")]
+        [global::Xunit.TraitAttribute("Description", "Check Nybble equality with non-Nybble object")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CheckNybbleEqualityWithNon_NybbleObject()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "16";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Check Nybble equality with non-Nybble object", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 98
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 99
+    await testRunner.GivenAsync("I have a Nybble with value 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 100
+    await testRunner.WhenAsync("I check equality with a string object", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 101
+    await testRunner.ThenAsync("the boolean result should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

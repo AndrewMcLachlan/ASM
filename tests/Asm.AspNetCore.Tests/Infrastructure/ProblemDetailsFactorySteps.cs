@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +82,17 @@ public class ProblemDetailsFactorySteps
         _httpContext = CreateHttpContextWithException(new Exception(message));
     }
 
+    [Given(@"I have an HttpContext with a FluentValidation ValidationException for field '(.*)'")]
+    public void GivenIHaveAnHttpContextWithAFluentValidationValidationExceptionForField(string field)
+    {
+        var failures = new List<ValidationFailure>
+        {
+            new(field, $"{field} is invalid")
+        };
+        var exception = new ValidationException(failures);
+        _httpContext = CreateHttpContextWithException(exception);
+    }
+
     [Given(@"I have a ModelStateDictionary with error '(.*)' '(.*)'")]
     public void GivenIHaveAModelStateDictionaryWithError(string key, string error)
     {
@@ -103,6 +116,12 @@ public class ProblemDetailsFactorySteps
     public void WhenICreateValidationProblemDetails()
     {
         _validationProblemDetails = _factory.CreateValidationProblemDetails(_httpContext, _modelStateDictionary);
+    }
+
+    [When(@"I create validation problem details with title '(.*)'")]
+    public void WhenICreateValidationProblemDetailsWithTitle(string title)
+    {
+        _validationProblemDetails = _factory.CreateValidationProblemDetails(_httpContext, _modelStateDictionary, title: title);
     }
 
     [Then(@"the problem details should have status (.*)")]
@@ -153,6 +172,12 @@ public class ProblemDetailsFactorySteps
     public void ThenTheValidationProblemDetailsShouldContainErrorFor(string key)
     {
         Assert.True(_validationProblemDetails.Errors.ContainsKey(key));
+    }
+
+    [Then(@"the validation problem details should have title '(.*)'")]
+    public void ThenTheValidationProblemDetailsShouldHaveTitle(string expectedTitle)
+    {
+        Assert.Equal(expectedTitle, _validationProblemDetails.Title);
     }
 
     private static DefaultHttpContext CreateHttpContextWithException(Exception exception)

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Asm.AspNetCore.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" />
     <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" />

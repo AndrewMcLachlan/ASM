@@ -65,4 +65,47 @@ public class DateTimeExtensionsSteps(ScenarioContext context)
         context.AddResult(_input.Date.DifferenceInMonths(_input.OtherDate));
     }
 
+    [Given(@"I have a datetime '([^']*)'")]
+    public void GivenIHaveADatetime(DateTime datetime)
+    {
+        _input.Date = datetime;
+    }
+
+    [When(@"I call ToDateOnly")]
+    public void WhenICallToDateOnly()
+    {
+        context.AddResult(_input.Date.ToDateOnly());
+    }
+
+    [When(@"I call ToTimeOnly")]
+    public void WhenICallToTimeOnly()
+    {
+        context.AddResult(_input.Date.ToTimeOnly());
+    }
+
+    [When(@"I access the DateOnly extension property")]
+    public void WhenIAccessTheDateOnlyExtensionProperty()
+    {
+        context.AddResult(_input.Date.DateOnly);
+    }
+
+    [When(@"I access the TimeOnly extension property")]
+    public void WhenIAccessTheTimeOnlyExtensionProperty()
+    {
+        context.AddResult(_input.Date.TimeOnly);
+    }
+
+    [Then(@"the DateOnly result should be '([^']*)'")]
+    public void ThenTheDateOnlyResultShouldBe(DateOnly expected)
+    {
+        var result = context.Get<DateOnly>("Result");
+        Assert.Equal(expected, result);
+    }
+
+    [Then(@"the TimeOnly result should be '([^']*)'")]
+    public void ThenTheTimeOnlyResultShouldBe(TimeOnly expected)
+    {
+        var result = context.Get<TimeOnly>("Result");
+        Assert.Equal(expected, result);
+    }
 }

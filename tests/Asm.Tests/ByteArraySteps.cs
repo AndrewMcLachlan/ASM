@@ -7,6 +7,8 @@ public class ByteArraySteps(ScenarioContext context)
     private ByteArray _byteArray2;
     private ByteArray _resultByteArray;
     private char[] _resultCharArray;
+    private byte[] _rawByteArray;
+    private byte[] _resultRawByteArray;
 
     [Given(@"a ByteArray with values (.*) and (.*) endian")]
     public void GivenAByteArrayWithValues(string values, string endian)
@@ -74,6 +76,78 @@ public class ByteArraySteps(ScenarioContext context)
     public void WhenICheckEqualityWithIncompatibleObject()
     {
         context.AddResult(_byteArray.Equals("not a byte array"));
+    }
+
+    [When(@"I convert to Int16")]
+    public void WhenIConvertToInt16()
+    {
+        context.CatchException(() => context.AddResult(_byteArray.ToInt16()));
+    }
+
+    [When(@"I convert to Int32")]
+    public void WhenIConvertToInt32()
+    {
+        context.CatchException(() => context.AddResult(_byteArray.ToInt32()));
+    }
+
+    [When(@"I convert to Int64")]
+    public void WhenIConvertToInt64()
+    {
+        context.CatchException(() => context.AddResult(_byteArray.ToInt64()));
+    }
+
+    [When(@"I convert to string")]
+    public void WhenIConvertToString()
+    {
+        context.AddResult(_byteArray.ToString());
+    }
+
+    [When(@"I check for inequality")]
+    public void WhenICheckForInequality()
+    {
+        context.AddResult(_byteArray != _byteArray2);
+    }
+
+    [When(@"I access index (.*)")]
+    public void WhenIAccessIndex(int index)
+    {
+        context.AddResult(_byteArray[index]);
+    }
+
+    [When(@"I get the hash code")]
+    public void WhenIGetTheHashCode()
+    {
+        context.AddResult(_byteArray.GetHashCode());
+    }
+
+    [Given(@"a raw byte array with values (.*)")]
+    public void GivenARawByteArrayWithValues(string values)
+    {
+        _rawByteArray = Array.ConvertAll(values.Split(','), Byte.Parse);
+    }
+
+    [When(@"I implicitly convert to ByteArray")]
+    public void WhenIImplicitlyConvertToByteArray()
+    {
+        _byteArray = _rawByteArray;
+    }
+
+    [When(@"I implicitly convert to byte array")]
+    public void WhenIImplicitlyConvertToRawByteArray()
+    {
+        _resultRawByteArray = _byteArray;
+    }
+
+    [Then(@"the ByteArray should have (.*) bytes")]
+    public void ThenTheByteArrayShouldHaveBytes(int count)
+    {
+        Assert.Equal(count, _byteArray.GetBytes().Length);
+    }
+
+    [Then(@"the byte array should have (.*) bytes")]
+    public void ThenTheRawByteArrayShouldHaveBytes(int count)
+    {
+        Assert.Equal(count, _resultRawByteArray.Length);
     }
 
     [Then(@"the result should be a ByteArray with values (.*)")]

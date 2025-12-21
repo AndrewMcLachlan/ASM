@@ -160,7 +160,7 @@ public readonly struct ByteArray
     /// Converts the array into a signed long.
     /// </summary>
     /// <returns>A long.</returns>
-    public readonly long ToInt64() => Convert.ToInt32(ToUInt64());
+    public readonly long ToInt64() => Convert.ToInt64(ToUInt64());
 
     /// <summary>
     /// Converts the array into a GUID.

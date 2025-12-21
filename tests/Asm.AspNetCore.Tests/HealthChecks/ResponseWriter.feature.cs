@@ -11,27 +11,28 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace Asm.Tests
+namespace Asm.AspNetCore.Tests.HealthChecks
 {
     
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class AssemblyExtensionsFeature : object, global::Xunit.IClassFixture<AssemblyExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ResponseWriterFeature : object, global::Xunit.IClassFixture<ResponseWriterFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Assembly Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "HealthChecks", "ResponseWriter", "    Health check response writer that outputs JSON with status, version, and chec" +
+                "k details", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "AssemblyExtensions.feature"
+#line 1 "ResponseWriter.feature"
 #line hidden
         
-        public AssemblyExtensionsFeature(AssemblyExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ResponseWriterFeature(ResponseWriterFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +106,7 @@ namespace Asm.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("AssemblyExtensions.feature.ndjson", 8);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("HealthChecks/ResponseWriter.feature.ndjson", 8);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,20 +134,20 @@ namespace Asm.Tests
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get assembly version")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get assembly version")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write healthy response")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
+        [global::Xunit.TraitAttribute("Description", "Write healthy response")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetAssemblyVersion()
+        public async global::System.Threading.Tasks.Task WriteHealthyResponse()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get assembly version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write healthy response", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 4
+#line 5
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -156,36 +157,39 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 5
-    await testRunner.GivenAsync("I have the Asm library assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
 #line 6
-    await testRunner.WhenAsync("I get the assembly version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I have a health report with status \'Healthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 7
-    await testRunner.ThenAsync("the version should exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("the report has no entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 8
-    await testRunner.AndAsync("the version should contain a version number", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("I write the health response", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 9
+    await testRunner.ThenAsync("the response content type should contain \'application/json\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 10
+    await testRunner.AndAsync("the response status should be \'Healthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get assembly file version")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get assembly file version")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write unhealthy response")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
+        [global::Xunit.TraitAttribute("Description", "Write unhealthy response")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetAssemblyFileVersion()
+        public async global::System.Threading.Tasks.Task WriteUnhealthyResponse()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get assembly file version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write unhealthy response", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 11
+#line 13
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -195,36 +199,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 12
-    await testRunner.GivenAsync("I have the Asm library assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 13
-    await testRunner.WhenAsync("I get the assembly file version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 14
-    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have a health report with status \'Unhealthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 15
-    await testRunner.AndAsync("the version should contain a version number", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("the report has no entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 16
+    await testRunner.WhenAsync("I write the health response", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 17
+    await testRunner.ThenAsync("the response status should be \'Unhealthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get assembly informational version")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get assembly informational version")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write degraded response")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
+        [global::Xunit.TraitAttribute("Description", "Write degraded response")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetAssemblyInformationalVersion()
+        public async global::System.Threading.Tasks.Task WriteDegradedResponse()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get assembly informational version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write degraded response", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 18
+#line 20
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -234,33 +238,36 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 19
-    await testRunner.GivenAsync("I have the Asm library assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 20
-    await testRunner.WhenAsync("I get the assembly informational version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 21
-    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I have a health report with status \'Degraded\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 22
+    await testRunner.AndAsync("the report has no entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 23
+    await testRunner.WhenAsync("I write the health response", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 24
+    await testRunner.ThenAsync("the response status should be \'Degraded\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get test assembly version")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get test assembly version")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write response with health check entries")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
+        [global::Xunit.TraitAttribute("Description", "Write response with health check entries")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetTestAssemblyVersion()
+        public async global::System.Threading.Tasks.Task WriteResponseWithHealthCheckEntries()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get test assembly version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write response with health check entries", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 24
+#line 27
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -270,33 +277,47 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 25
-    await testRunner.GivenAsync("I have the current assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 28
+    await testRunner.GivenAsync("I have a health report with status \'Healthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 26
-    await testRunner.WhenAsync("I get the assembly version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 29
+    await testRunner.AndAsync("the report has an entry \'Database\' with status \'Healthy\' and description \'Connect" +
+                        "ed\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 27
-    await testRunner.ThenAsync("the version should exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 30
+    await testRunner.AndAsync("the report has an entry \'Cache\' with status \'Degraded\' and description \'Slow resp" +
+                        "onse\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 31
+    await testRunner.WhenAsync("I write the health response", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 32
+    await testRunner.ThenAsync("the response should contain 2 checks", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 33
+    await testRunner.AndAsync("the response should contain a check named \'Database\' with status \'Healthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 34
+    await testRunner.AndAsync("the response should contain a check named \'Cache\' with status \'Degraded\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get test assembly file version")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get test assembly file version")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Write response with entry data")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
+        [global::Xunit.TraitAttribute("Description", "Write response with entry data")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetTestAssemblyFileVersion()
+        public async global::System.Threading.Tasks.Task WriteResponseWithEntryData()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get test assembly file version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Write response with entry data", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 30
+#line 37
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -306,33 +327,37 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 31
-    await testRunner.GivenAsync("I have the current assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 38
+    await testRunner.GivenAsync("I have a health report with status \'Healthy\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 32
-    await testRunner.WhenAsync("I get the assembly file version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 39
+    await testRunner.AndAsync("the report has an entry \'API\' with status \'Healthy\' and data key \'endpoint\' value" +
+                        " \'https://api.example.com\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 33
-    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 40
+    await testRunner.WhenAsync("I write the health response", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 41
+    await testRunner.ThenAsync("the response should contain a check with data", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get test assembly informational version")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Assembly Extensions")]
-        [global::Xunit.TraitAttribute("Description", "Get test assembly informational version")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Response includes total duration")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
+        [global::Xunit.TraitAttribute("Description", "Response includes total duration")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetTestAssemblyInformationalVersion()
+        public async global::System.Threading.Tasks.Task ResponseIncludesTotalDuration()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get test assembly informational version", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Response includes total duration", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 36
+#line 44
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -342,14 +367,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 37
-    await testRunner.GivenAsync("I have the current assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 45
+    await testRunner.GivenAsync("I have a health report with status \'Healthy\' and duration 150 milliseconds", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 38
-    await testRunner.WhenAsync("I get the assembly informational version", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 46
+    await testRunner.AndAsync("the report has no entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 39
-    await testRunner.ThenAsync("the version string should not be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 47
+    await testRunner.WhenAsync("I write the health response", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 48
+    await testRunner.ThenAsync("the response should include total duration", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -362,12 +390,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await AssemblyExtensionsFeature.FeatureSetupAsync();
+                await ResponseWriterFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await AssemblyExtensionsFeature.FeatureTearDownAsync();
+                await ResponseWriterFeature.FeatureTearDownAsync();
             }
         }
     }

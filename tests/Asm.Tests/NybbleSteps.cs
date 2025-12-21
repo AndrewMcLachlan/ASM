@@ -5,23 +5,25 @@ namespace Asm.Tests;
 [Binding]
 public class NybbleSteps(ScenarioContext context)
 {
-    private byte _value;
+    private byte _byteValue;
+    private uint _uintValue;
     private int _intValue;
     private byte[] _bytes;
     private Nybble _nybble1;
     private Nybble _nybble2;
     private Nybble[] _nybbleArray;
+    private int _hashCode;
 
     [Given(@"I have a value (.*)")]
     public void GivenIHaveAValue(int value)
     {
-        _value = (byte)value;
+        _byteValue = (byte)value;
     }
 
     [When(@"I create a Nybble")]
     public void WhenICreateANybble()
     {
-        context.CatchException(() => _nybble1 = new Nybble(_value));
+        context.CatchException(() => _nybble1 = new Nybble(_byteValue));
     }
 
     [Then(@"the Nybble value should be (.*)")]
@@ -77,7 +79,7 @@ public class NybbleSteps(ScenarioContext context)
     [Given(@"I have a byte with value (.*)")]
     public void GivenIHaveAByteWithValue(byte value)
     {
-        _value = value;
+        _byteValue = value;
     }
 
     [Given(@"I have an int with value (.*)")]
@@ -86,10 +88,22 @@ public class NybbleSteps(ScenarioContext context)
         _intValue = value;
     }
 
+    [Given(@"I have a uint value (.*)")]
+    public void GivenIHaveAUintValue(uint value)
+    {
+        _uintValue = value;
+    }
+
+    [Given(@"I have a byte value (.*)")]
+    public void GivenIHaveAByteValue(byte value)
+    {
+        _byteValue = value;
+    }
+
     [When(@"I convert the byte to Nybbles")]
     public void WhenIConvertTheByteToNybbles()
     {
-        _nybbleArray = Nybble.ToNybbles(_value);
+        _nybbleArray = Nybble.ToNybbles(_byteValue);
     }
 
     [When(@"I convert the int to Nybbles")]
@@ -124,5 +138,47 @@ public class NybbleSteps(ScenarioContext context)
         Assert.Equal(byte2, _nybbleArray[1].ByteValue);
         Assert.Equal(byte3, _nybbleArray[2].ByteValue);
         Assert.Equal(byte4, _nybbleArray[3].ByteValue);
+    }
+
+    [When(@"I add the uint and Nybble")]
+    public void WhenIAddTheUintAndNybble()
+    {
+        context.AddResult(_uintValue + _nybble1);
+    }
+
+    [When(@"I add the byte and Nybble")]
+    public void WhenIAddTheByteAndNybble()
+    {
+        context.AddResult(_byteValue + _nybble1);
+    }
+
+    [When(@"I check inequality")]
+    public void WhenICheckInequality()
+    {
+        context.AddResult(_nybble1 != _nybble2);
+    }
+
+    [When(@"I get the Nybble hash code")]
+    public void WhenIGetTheNybbleHashCode()
+    {
+        _hashCode = _nybble1.GetHashCode();
+    }
+
+    [Then(@"the hash code should match the byte value hash code")]
+    public void ThenTheHashCodeShouldMatchTheByteValueHashCode()
+    {
+        Assert.Equal(_nybble1.ByteValue.GetHashCode(), _hashCode);
+    }
+
+    [When(@"I check equality with null object")]
+    public void WhenICheckEqualityWithNullObject()
+    {
+        context.AddResult(_nybble1.Equals(null));
+    }
+
+    [When(@"I check equality with a string object")]
+    public void WhenICheckEqualityWithAStringObject()
+    {
+        context.AddResult(_nybble1.Equals("not a nybble"));
     }
 }
