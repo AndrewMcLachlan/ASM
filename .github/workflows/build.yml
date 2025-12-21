@@ -122,7 +122,7 @@ jobs:
       with:
         reports: './all-coverage/**/coverage.cobertura.xml'
         targetdir: './coverage-report'
-        reporttypes: 'MarkdownAssembliesSummary;Cobertura;Badges'
+        reporttypes: 'MarkdownAssembliesSummary;Cobertura;'
 
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2

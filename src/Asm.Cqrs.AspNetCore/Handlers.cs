@@ -70,8 +70,8 @@ internal static class Handlers
         return ParameterBinding<TRequest, TResponse>(
             async (request, dispatcher, cancellationToken) =>
             {
-                await dispatcher.Dispatch(request, cancellationToken);
-                return Results.StatusCode(returnStatusCode);
+                var result = await dispatcher.Dispatch(request, cancellationToken);
+                return Results.Json(result, statusCode: returnStatusCode);
             },
             binding
         );
