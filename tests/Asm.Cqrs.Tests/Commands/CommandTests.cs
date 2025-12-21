@@ -17,7 +17,7 @@ public class CommandTests
 
         var commandDispatcher = serviceProvider.GetRequiredService<ICommandDispatcher>();
 
-        var result = await commandDispatcher.Dispatch(new TestCommand { Input = "Abc" });
+        var result = await commandDispatcher.Dispatch(new TestCommand { Input = "Abc" }, TestContext.Current.CancellationToken);
 
         Assert.False(result);
     }
@@ -34,7 +34,7 @@ public class CommandTests
 
         var commandDispatcher = serviceProvider.GetRequiredService<ICommandDispatcher>();
 
-        var result = await commandDispatcher.Dispatch(new TestCommand { Input = "ABC" });
+        var result = await commandDispatcher.Dispatch(new TestCommand { Input = "ABC" }, TestContext.Current.CancellationToken);
 
         Assert.True(result);
     }

@@ -17,21 +17,21 @@ namespace Asm.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class HexColourFeature : object, global::Xunit.IClassFixture<HexColourFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class HexColourFeature : object, Xunit.IClassFixture<HexColourFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "HexColour", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "HexColour.feature"
 #line hidden
         
-        public HexColourFeature(HexColourFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public HexColourFeature(HexColourFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("HexColour.feature.ndjson", 111);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Create a HexColor from a string")]
+        [global::Xunit.TheoryAttribute(DisplayName="Create a HexColor from a string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Create a HexColor from a string")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -194,7 +194,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Create a HexColor from invalid strings should throw FormatException")]
+        [global::Xunit.TheoryAttribute(DisplayName="Create a HexColor from invalid strings should throw FormatException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Create a HexColor from invalid strings should throw FormatException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -244,7 +244,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Create a HexColour from a null or empty string should throw ArgumentException")]
+        [global::Xunit.TheoryAttribute(DisplayName="Create a HexColour from a null or empty string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Create a HexColour from a null or empty string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -288,7 +288,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create a HexColour from a whitespace string should throw ArgumentException")]
+        [global::Xunit.FactAttribute(DisplayName="Create a HexColour from a whitespace string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Create a HexColour from a whitespace string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -324,7 +324,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Parse a HexColor from a string")]
+        [global::Xunit.TheoryAttribute(DisplayName="Parse a HexColor from a string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Parse a HexColor from a string")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -385,7 +385,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Parse a HexColor from invalid strings should throw FormatException")]
+        [global::Xunit.TheoryAttribute(DisplayName="Parse a HexColor from invalid strings should throw FormatException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Parse a HexColor from invalid strings should throw FormatException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -435,7 +435,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Parse a HexColour from a null or empty string should throw ArgumentException")]
+        [global::Xunit.TheoryAttribute(DisplayName="Parse a HexColour from a null or empty string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Parse a HexColour from a null or empty string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -479,7 +479,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse a HexColour from a whitespace string should throw ArgumentException")]
+        [global::Xunit.FactAttribute(DisplayName="Parse a HexColour from a whitespace string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Parse a HexColour from a whitespace string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -515,7 +515,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Try Parse a HexColor from a string")]
+        [global::Xunit.TheoryAttribute(DisplayName="Try Parse a HexColor from a string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Try Parse a HexColor from a string")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -579,7 +579,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Try Parse a HexColor from invalid strings should throw FormatException")]
+        [global::Xunit.TheoryAttribute(DisplayName="Try Parse a HexColor from invalid strings should throw FormatException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Try Parse a HexColor from invalid strings should throw FormatException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -629,7 +629,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Try Parse a HexColour from a null or empty string should throw ArgumentException")]
+        [global::Xunit.TheoryAttribute(DisplayName="Try Parse a HexColour from a null or empty string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Try Parse a HexColour from a null or empty string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -673,7 +673,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Try Parse a HexColour from a whitespace string should throw ArgumentException")]
+        [global::Xunit.FactAttribute(DisplayName="Try Parse a HexColour from a whitespace string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Try Parse a HexColour from a whitespace string should throw ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -709,7 +709,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Create a HexColor from an unsigned integer")]
+        [global::Xunit.TheoryAttribute(DisplayName="Create a HexColor from an unsigned integer")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Create a HexColor from an unsigned integer")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -758,7 +758,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Create a HexColor from an invalid unsigned integer")]
+        [global::Xunit.TheoryAttribute(DisplayName="Create a HexColor from an invalid unsigned integer")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Create a HexColor from an invalid unsigned integer")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -801,7 +801,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Serialize HexColour to JSON")]
+        [global::Xunit.FactAttribute(DisplayName="Serialize HexColour to JSON")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Serialize HexColour to JSON")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -837,7 +837,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Deserialize HexColour from JSON")]
+        [global::Xunit.FactAttribute(DisplayName="Deserialize HexColour from JSON")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Deserialize HexColour from JSON")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -873,7 +873,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Deserialize empty string returns default HexColour")]
+        [global::Xunit.FactAttribute(DisplayName="Deserialize empty string returns default HexColour")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Deserialize empty string returns default HexColour")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -909,7 +909,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get HexString property")]
+        [global::Xunit.FactAttribute(DisplayName="Get HexString property")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Get HexString property")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -945,7 +945,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert HexColour to string")]
+        [global::Xunit.FactAttribute(DisplayName="Convert HexColour to string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Convert HexColour to string")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -981,7 +981,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert HexColour to UInt32 implicitly")]
+        [global::Xunit.FactAttribute(DisplayName="Convert HexColour to UInt32 implicitly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Convert HexColour to UInt32 implicitly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1017,7 +1017,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert UInt32 to HexColour explicitly")]
+        [global::Xunit.FactAttribute(DisplayName="Convert UInt32 to HexColour explicitly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Convert UInt32 to HexColour explicitly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1053,7 +1053,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check equality with another HexColour")]
+        [global::Xunit.FactAttribute(DisplayName="Check equality with another HexColour")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Check equality with another HexColour")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1092,7 +1092,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality with different HexColour")]
+        [global::Xunit.FactAttribute(DisplayName="Check inequality with different HexColour")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Check inequality with different HexColour")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1131,7 +1131,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check equality with object")]
+        [global::Xunit.FactAttribute(DisplayName="Check equality with object")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Check equality with object")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1170,7 +1170,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check equality with null object")]
+        [global::Xunit.FactAttribute(DisplayName="Check equality with null object")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Check equality with null object")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1206,7 +1206,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check equality with HexColour value")]
+        [global::Xunit.FactAttribute(DisplayName="Check equality with HexColour value")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Check equality with HexColour value")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1245,7 +1245,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get hash code")]
+        [global::Xunit.FactAttribute(DisplayName="Get hash code")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Get hash code")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1281,7 +1281,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Convert HexColour to string implicitly")]
+        [global::Xunit.FactAttribute(DisplayName="Convert HexColour to string implicitly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Convert HexColour to string implicitly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1317,7 +1317,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get Value property")]
+        [global::Xunit.FactAttribute(DisplayName="Get Value property")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HexColour")]
         [global::Xunit.TraitAttribute("Description", "Get Value property")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1355,15 +1355,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await HexColourFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await HexColourFeature.FeatureTearDownAsync();
             }

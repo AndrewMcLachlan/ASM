@@ -17,22 +17,22 @@ namespace Asm.Tests.Extensions
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ClaimsPrincipalExtensionsFeature : object, global::Xunit.IClassFixture<ClaimsPrincipalExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ClaimsPrincipalExtensionsFeature : object, Xunit.IClassFixture<ClaimsPrincipalExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "ClaimsPrincipalExtensions", "  In order to retrieve claim values from a ClaimsPrincipal\r\n  As a developer\r\n  I" +
                 " want to have unit tests for the ClaimsPrincipal extension methods", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "ClaimsPrincipalExtensions.feature"
 #line hidden
         
-        public ClaimsPrincipalExtensionsFeature(ClaimsPrincipalExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ClaimsPrincipalExtensionsFeature(ClaimsPrincipalExtensionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -91,7 +91,7 @@ namespace Asm.Tests.Extensions
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -109,7 +109,7 @@ namespace Asm.Tests.Extensions
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/ClaimsPrincipalExtensions.feature.ndjson", 6);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Asm.Tests.Extensions
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -129,12 +129,12 @@ namespace Asm.Tests.Extensions
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get claim value as Guid")]
+        [global::Xunit.FactAttribute(DisplayName="Get claim value as Guid")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [global::Xunit.TraitAttribute("Description", "Get claim value as Guid")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -171,7 +171,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get claim value as int")]
+        [global::Xunit.FactAttribute(DisplayName="Get claim value as int")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [global::Xunit.TraitAttribute("Description", "Get claim value as int")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -207,7 +207,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get claim value as string")]
+        [global::Xunit.FactAttribute(DisplayName="Get claim value as string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [global::Xunit.TraitAttribute("Description", "Get claim value as string")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -243,7 +243,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get claim value when claim does not exist")]
+        [global::Xunit.FactAttribute(DisplayName="Get claim value when claim does not exist")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ClaimsPrincipalExtensions")]
         [global::Xunit.TraitAttribute("Description", "Get claim value when claim does not exist")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -281,15 +281,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ClaimsPrincipalExtensionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ClaimsPrincipalExtensionsFeature.FeatureTearDownAsync();
             }

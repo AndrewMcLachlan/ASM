@@ -17,21 +17,21 @@ namespace Asm.AspNetCore.Tests.Extensions
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class HttpContextExtensionsFeature : object, global::Xunit.IClassFixture<HttpContextExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class HttpContextExtensionsFeature : object, Xunit.IClassFixture<HttpContextExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Extensions", "HttpContext Extensions", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "HttpContextExtensions.feature"
 #line hidden
         
-        public HttpContextExtensionsFeature(HttpContextExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public HttpContextExtensionsFeature(HttpContextExtensionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.AspNetCore.Tests.Extensions
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.AspNetCore.Tests.Extensions
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/HttpContextExtensions.feature.ndjson", 7);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.AspNetCore.Tests.Extensions
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.AspNetCore.Tests.Extensions
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="GetUserName returns user name and preferred username when available")]
+        [global::Xunit.FactAttribute(DisplayName="GetUserName returns user name and preferred username when available")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContext Extensions")]
         [global::Xunit.TraitAttribute("Description", "GetUserName returns user name and preferred username when available")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -178,7 +178,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="GetUserName returns dash when context is null")]
+        [global::Xunit.FactAttribute(DisplayName="GetUserName returns dash when context is null")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContext Extensions")]
         [global::Xunit.TraitAttribute("Description", "GetUserName returns dash when context is null")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -214,7 +214,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="GetUserName returns dash when user is null")]
+        [global::Xunit.FactAttribute(DisplayName="GetUserName returns dash when user is null")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContext Extensions")]
         [global::Xunit.TraitAttribute("Description", "GetUserName returns dash when user is null")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -250,7 +250,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="GetUserName returns dash when identity has no name claim")]
+        [global::Xunit.FactAttribute(DisplayName="GetUserName returns dash when identity has no name claim")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContext Extensions")]
         [global::Xunit.TraitAttribute("Description", "GetUserName returns dash when identity has no name claim")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -292,7 +292,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="GetUserName returns dash when name claim is null")]
+        [global::Xunit.FactAttribute(DisplayName="GetUserName returns dash when name claim is null")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContext Extensions")]
         [global::Xunit.TraitAttribute("Description", "GetUserName returns dash when name claim is null")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -330,15 +330,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await HttpContextExtensionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await HttpContextExtensionsFeature.FeatureTearDownAsync();
             }

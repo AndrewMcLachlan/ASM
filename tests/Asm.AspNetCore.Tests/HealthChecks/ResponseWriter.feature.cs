@@ -17,22 +17,22 @@ namespace Asm.AspNetCore.Tests.HealthChecks
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ResponseWriterFeature : object, global::Xunit.IClassFixture<ResponseWriterFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ResponseWriterFeature : object, Xunit.IClassFixture<ResponseWriterFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "HealthChecks", "ResponseWriter", "    Health check response writer that outputs JSON with status, version, and chec" +
                 "k details", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "ResponseWriter.feature"
 #line hidden
         
-        public ResponseWriterFeature(ResponseWriterFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ResponseWriterFeature(ResponseWriterFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -91,7 +91,7 @@ namespace Asm.AspNetCore.Tests.HealthChecks
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -109,7 +109,7 @@ namespace Asm.AspNetCore.Tests.HealthChecks
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("HealthChecks/ResponseWriter.feature.ndjson", 8);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Asm.AspNetCore.Tests.HealthChecks
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -129,12 +129,12 @@ namespace Asm.AspNetCore.Tests.HealthChecks
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Write healthy response")]
+        [global::Xunit.FactAttribute(DisplayName="Write healthy response")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
         [global::Xunit.TraitAttribute("Description", "Write healthy response")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -176,7 +176,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Write unhealthy response")]
+        [global::Xunit.FactAttribute(DisplayName="Write unhealthy response")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
         [global::Xunit.TraitAttribute("Description", "Write unhealthy response")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -215,7 +215,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Write degraded response")]
+        [global::Xunit.FactAttribute(DisplayName="Write degraded response")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
         [global::Xunit.TraitAttribute("Description", "Write degraded response")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -254,7 +254,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Write response with health check entries")]
+        [global::Xunit.FactAttribute(DisplayName="Write response with health check entries")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
         [global::Xunit.TraitAttribute("Description", "Write response with health check entries")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -304,7 +304,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Write response with entry data")]
+        [global::Xunit.FactAttribute(DisplayName="Write response with entry data")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
         [global::Xunit.TraitAttribute("Description", "Write response with entry data")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -344,7 +344,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Response includes total duration")]
+        [global::Xunit.FactAttribute(DisplayName="Response includes total duration")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ResponseWriter")]
         [global::Xunit.TraitAttribute("Description", "Response includes total duration")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -385,15 +385,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ResponseWriterFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ResponseWriterFeature.FeatureTearDownAsync();
             }

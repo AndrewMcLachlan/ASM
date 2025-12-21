@@ -17,21 +17,21 @@ namespace Asm.Domain.Infrastructure.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class DomainEventRegistrationFeature : object, global::Xunit.IClassFixture<DomainEventRegistrationFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class DomainEventRegistrationFeature : object, Xunit.IClassFixture<DomainEventRegistrationFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Domain Event Registration", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "DomainEventRegistration.feature"
 #line hidden
         
-        public DomainEventRegistrationFeature(DomainEventRegistrationFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public DomainEventRegistrationFeature(DomainEventRegistrationFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Domain.Infrastructure.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Domain.Infrastructure.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("DomainEventRegistration.feature.ndjson", 20);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Domain.Infrastructure.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Domain.Infrastructure.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents registers valid handler as transient")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents registers valid handler as transient")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents registers valid handler as transient")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents skips abstract classes")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents skips abstract classes")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents skips abstract classes")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -211,7 +211,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents skips non-handler classes")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents skips non-handler classes")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents skips non-handler classes")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -250,7 +250,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents registers all interfaces for multi-handler")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents registers all interfaces for multi-handler")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents registers all interfaces for multi-handler")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -289,7 +289,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents always registers IPublisher")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents always registers IPublisher")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents always registers IPublisher")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -328,7 +328,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents returns service collection for chaining")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents returns service collection for chaining")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents returns service collection for chaining")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -367,7 +367,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents with null assembly throws exception")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents with null assembly throws exception")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents with null assembly throws exception")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -406,7 +406,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents does not replace existing IPublisher")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents does not replace existing IPublisher")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents does not replace existing IPublisher")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -448,7 +448,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents with mixed types only registers valid handlers")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents with mixed types only registers valid handlers")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents with mixed types only registers valid handlers")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -487,7 +487,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvents called multiple times registers all handlers")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvents called multiple times registers all handlers")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvents called multiple times registers all handlers")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -526,7 +526,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent registers handler as transient")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent registers handler as transient")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent registers handler as transient")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -562,7 +562,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent registers IPublisher")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent registers IPublisher")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent registers IPublisher")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -598,7 +598,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent returns same service collection")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent returns same service collection")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent returns same service collection")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -634,7 +634,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent with null services throws exception")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent with null services throws exception")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent with null services throws exception")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -670,7 +670,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent called multiple times registers single handler")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent called multiple times registers single handler")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent called multiple times registers single handler")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -706,7 +706,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent registers IPublisher only once")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent registers IPublisher only once")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent registers IPublisher only once")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -742,7 +742,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="AddDomainEvent registers LazyCache")]
+        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent registers LazyCache")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "AddDomainEvent registers LazyCache")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -778,7 +778,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Registered handler can be resolved")]
+        [global::Xunit.FactAttribute(DisplayName="Registered handler can be resolved")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
         [global::Xunit.TraitAttribute("Description", "Registered handler can be resolved")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -819,15 +819,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await DomainEventRegistrationFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await DomainEventRegistrationFeature.FeatureTearDownAsync();
             }

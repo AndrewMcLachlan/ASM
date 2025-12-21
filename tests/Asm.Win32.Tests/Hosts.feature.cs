@@ -17,21 +17,21 @@ namespace Asm.Win32.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class HostsFileParsingFeature : object, global::Xunit.IClassFixture<HostsFileParsingFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class HostsFileParsingFeature : object, Xunit.IClassFixture<HostsFileParsingFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "Hosts File Parsing", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "Hosts.feature"
 #line hidden
         
-        public HostsFileParsingFeature(HostsFileParsingFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public HostsFileParsingFeature(HostsFileParsingFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Win32.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Win32.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Hosts.feature.ndjson", 14);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Win32.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Win32.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse hosts file from stream with various entry types")]
+        [global::Xunit.FactAttribute(DisplayName="Parse hosts file from stream with various entry types")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Parse hosts file from stream with various entry types")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -193,7 +193,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse comment entry correctly")]
+        [global::Xunit.FactAttribute(DisplayName="Parse comment entry correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Parse comment entry correctly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -232,7 +232,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse localhost entry correctly")]
+        [global::Xunit.FactAttribute(DisplayName="Parse localhost entry correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Parse localhost entry correctly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -271,7 +271,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse entry with comment correctly")]
+        [global::Xunit.FactAttribute(DisplayName="Parse entry with comment correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Parse entry with comment correctly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -313,7 +313,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse entry with hash in comment correctly")]
+        [global::Xunit.FactAttribute(DisplayName="Parse entry with hash in comment correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Parse entry with hash in comment correctly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -355,7 +355,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Parse commented entry correctly")]
+        [global::Xunit.FactAttribute(DisplayName="Parse commented entry correctly")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Parse commented entry correctly")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -400,7 +400,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Invalid entry throws FormatException")]
+        [global::Xunit.FactAttribute(DisplayName="Invalid entry throws FormatException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Invalid entry throws FormatException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -436,7 +436,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Load hosts file from file path")]
+        [global::Xunit.FactAttribute(DisplayName="Load hosts file from file path")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Load hosts file from file path")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -481,7 +481,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Static Current property loads system hosts file")]
+        [global::Xunit.FactAttribute(DisplayName="Static Current property loads system hosts file")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Static Current property loads system hosts file")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -520,7 +520,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Refresh reloads hosts file from disk")]
+        [global::Xunit.FactAttribute(DisplayName="Refresh reloads hosts file from disk")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Refresh reloads hosts file from disk")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -562,7 +562,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="WriteHosts writes entries to stream")]
+        [global::Xunit.FactAttribute(DisplayName="WriteHosts writes entries to stream")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "WriteHosts writes entries to stream")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -601,7 +601,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Non-existent file throws ArgumentException")]
+        [global::Xunit.FactAttribute(DisplayName="Non-existent file throws ArgumentException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
         [global::Xunit.TraitAttribute("Description", "Non-existent file throws ArgumentException")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -639,15 +639,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await HostsFileParsingFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await HostsFileParsingFeature.FeatureTearDownAsync();
             }

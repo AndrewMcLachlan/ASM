@@ -17,21 +17,21 @@ namespace Asm.AspNetCore.Tests.Security
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class HttpContextPrincipalProviderFeature : object, global::Xunit.IClassFixture<HttpContextPrincipalProviderFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class HttpContextPrincipalProviderFeature : object, Xunit.IClassFixture<HttpContextPrincipalProviderFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Security", "HttpContextPrincipalProvider", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "HttpContextPrincipalProvider.feature"
 #line hidden
         
-        public HttpContextPrincipalProviderFeature(HttpContextPrincipalProviderFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public HttpContextPrincipalProviderFeature(HttpContextPrincipalProviderFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.AspNetCore.Tests.Security
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.AspNetCore.Tests.Security
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Security/HttpContextPrincipalProvider.feature.ndjson", 5);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.AspNetCore.Tests.Security
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.AspNetCore.Tests.Security
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Returns principal from HttpContext when available")]
+        [global::Xunit.FactAttribute(DisplayName="Returns principal from HttpContext when available")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContextPrincipalProvider")]
         [global::Xunit.TraitAttribute("Description", "Returns principal from HttpContext when available")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Returns null when HttpContext is null")]
+        [global::Xunit.FactAttribute(DisplayName="Returns null when HttpContext is null")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContextPrincipalProvider")]
         [global::Xunit.TraitAttribute("Description", "Returns null when HttpContext is null")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -208,7 +208,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Returns null when HttpContext User is null")]
+        [global::Xunit.FactAttribute(DisplayName="Returns null when HttpContext User is null")]
         [global::Xunit.TraitAttribute("FeatureTitle", "HttpContextPrincipalProvider")]
         [global::Xunit.TraitAttribute("Description", "Returns null when HttpContext User is null")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -246,15 +246,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await HttpContextPrincipalProviderFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await HttpContextPrincipalProviderFeature.FeatureTearDownAsync();
             }

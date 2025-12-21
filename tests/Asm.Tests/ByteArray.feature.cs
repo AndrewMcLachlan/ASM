@@ -17,21 +17,21 @@ namespace Asm.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ByteArrayFeature : object, global::Xunit.IClassFixture<ByteArrayFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ByteArrayFeature : object, Xunit.IClassFixture<ByteArrayFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "ByteArray", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "ByteArray.feature"
 #line hidden
         
-        public ByteArrayFeature(ByteArrayFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ByteArrayFeature(ByteArrayFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ByteArray.feature.ndjson", 36);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy method should return correct sub-array")]
+        [global::Xunit.FactAttribute(DisplayName="Copy method should return correct sub-array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Copy method should return correct sub-array")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy method throws when start index is out of range")]
+        [global::Xunit.FactAttribute(DisplayName="Copy method throws when start index is out of range")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Copy method throws when start index is out of range")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -205,7 +205,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Copy method throws when length exceeds array size")]
+        [global::Xunit.FactAttribute(DisplayName="Copy method throws when length exceeds array size")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Copy method throws when length exceeds array size")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -241,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="ToCharArray method should convert to char array")]
+        [global::Xunit.TheoryAttribute(DisplayName="ToCharArray method should convert to char array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToCharArray method should convert to char array")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -287,7 +287,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt16BE method should convert to UInt16")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt16BE method should convert to UInt16")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt16BE method should convert to UInt16")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -323,7 +323,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt16LE method should convert to UInt16")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt16LE method should convert to UInt16")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt16LE method should convert to UInt16")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -359,7 +359,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt16 throws OverflowException when array is too large")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt16 throws OverflowException when array is too large")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt16 throws OverflowException when array is too large")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -395,7 +395,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt32BE method should convert to UInt32")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt32BE method should convert to UInt32")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt32BE method should convert to UInt32")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -431,7 +431,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt32LE method should convert to UInt32")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt32LE method should convert to UInt32")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt32LE method should convert to UInt32")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -467,7 +467,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt32 throws OverflowException when array is too large")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt32 throws OverflowException when array is too large")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt32 throws OverflowException when array is too large")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -503,7 +503,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt64BE method should convert to UInt64")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt64BE method should convert to UInt64")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt64BE method should convert to UInt64")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -539,7 +539,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt64LE method should convert to UInt64")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt64LE method should convert to UInt64")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt64LE method should convert to UInt64")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -575,7 +575,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToUInt64 throws OverflowException when array is too large")]
+        [global::Xunit.FactAttribute(DisplayName="ToUInt64 throws OverflowException when array is too large")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToUInt64 throws OverflowException when array is too large")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -611,7 +611,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToGuid method should convert to Guid")]
+        [global::Xunit.FactAttribute(DisplayName="ToGuid method should convert to Guid")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToGuid method should convert to Guid")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -648,7 +648,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToGuid throws when array is too large")]
+        [global::Xunit.FactAttribute(DisplayName="ToGuid throws when array is too large")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToGuid throws when array is too large")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -685,7 +685,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToGuid throws when array is too small")]
+        [global::Xunit.FactAttribute(DisplayName="ToGuid throws when array is too small")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToGuid throws when array is too small")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -722,7 +722,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="Check equality")]
+        [global::Xunit.TheoryAttribute(DisplayName="Check equality")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Check equality")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -776,7 +776,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check equality with null object returns false")]
+        [global::Xunit.FactAttribute(DisplayName="Check equality with null object returns false")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Check equality with null object returns false")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -812,7 +812,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check equality with incompatible object returns false")]
+        [global::Xunit.FactAttribute(DisplayName="Check equality with incompatible object returns false")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Check equality with incompatible object returns false")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -848,7 +848,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToInt16 method should convert to Int16")]
+        [global::Xunit.FactAttribute(DisplayName="ToInt16 method should convert to Int16")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToInt16 method should convert to Int16")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -884,7 +884,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToInt32 method should convert to Int32")]
+        [global::Xunit.FactAttribute(DisplayName="ToInt32 method should convert to Int32")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToInt32 method should convert to Int32")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -920,7 +920,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToInt64 method should convert to Int64")]
+        [global::Xunit.FactAttribute(DisplayName="ToInt64 method should convert to Int64")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToInt64 method should convert to Int64")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -956,7 +956,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="ToString method should convert to string")]
+        [global::Xunit.FactAttribute(DisplayName="ToString method should convert to string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "ToString method should convert to string")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -992,7 +992,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality returns true for different arrays")]
+        [global::Xunit.FactAttribute(DisplayName="Check inequality returns true for different arrays")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Check inequality returns true for different arrays")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1031,7 +1031,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Check inequality returns false for same arrays")]
+        [global::Xunit.FactAttribute(DisplayName="Check inequality returns false for same arrays")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Check inequality returns false for same arrays")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1070,7 +1070,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Indexer get returns correct byte")]
+        [global::Xunit.FactAttribute(DisplayName="Indexer get returns correct byte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Indexer get returns correct byte")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1106,7 +1106,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="GetHashCode returns a value")]
+        [global::Xunit.FactAttribute(DisplayName="GetHashCode returns a value")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "GetHashCode returns a value")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1142,7 +1142,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Implicit conversion from byte array")]
+        [global::Xunit.FactAttribute(DisplayName="Implicit conversion from byte array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Implicit conversion from byte array")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1178,7 +1178,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Implicit conversion to byte array")]
+        [global::Xunit.FactAttribute(DisplayName="Implicit conversion to byte array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ByteArray")]
         [global::Xunit.TraitAttribute("Description", "Implicit conversion to byte array")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -1216,15 +1216,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ByteArrayFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ByteArrayFeature.FeatureTearDownAsync();
             }

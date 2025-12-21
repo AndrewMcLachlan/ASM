@@ -17,21 +17,21 @@ namespace Asm.AspNetCore.Tests.Infrastructure
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ProblemDetailsFactoryFeature : object, global::Xunit.IClassFixture<ProblemDetailsFactoryFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class ProblemDetailsFactoryFeature : object, Xunit.IClassFixture<ProblemDetailsFactoryFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Infrastructure", "ProblemDetailsFactory", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "ProblemDetailsFactory.feature"
 #line hidden
         
-        public ProblemDetailsFactoryFeature(ProblemDetailsFactoryFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ProblemDetailsFactoryFeature(ProblemDetailsFactoryFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.AspNetCore.Tests.Infrastructure
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.AspNetCore.Tests.Infrastructure
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Infrastructure/ProblemDetailsFactory.feature.ndjson", 13);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.AspNetCore.Tests.Infrastructure
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.AspNetCore.Tests.Infrastructure
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails returns basic problem details when no error context")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails returns basic problem details when no error context")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails returns basic problem details when no error context")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -175,7 +175,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles NotFoundException")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles NotFoundException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles NotFoundException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -220,7 +220,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles ExistsException")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles ExistsException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles ExistsException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -265,7 +265,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles NotAuthorisedException")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles NotAuthorisedException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles NotAuthorisedException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -310,7 +310,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles BadHttpRequestException")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles BadHttpRequestException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles BadHttpRequestException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -352,7 +352,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles InvalidOperationException")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles InvalidOperationException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles InvalidOperationException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -394,7 +394,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles AsmException with error code")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles AsmException with error code")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles AsmException with error code")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -439,7 +439,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles unknown exception in development")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles unknown exception in development")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles unknown exception in development")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -484,7 +484,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateProblemDetails handles unknown exception in production")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles unknown exception in production")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles unknown exception in production")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -529,7 +529,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateValidationProblemDetails returns validation problem details")]
+        [global::Xunit.FactAttribute(DisplayName="CreateValidationProblemDetails returns validation problem details")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateValidationProblemDetails returns validation problem details")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -574,7 +574,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="CreateValidationProblemDetails with custom title")]
+        [global::Xunit.FactAttribute(DisplayName="CreateValidationProblemDetails with custom title")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
         [global::Xunit.TraitAttribute("Description", "CreateValidationProblemDetails with custom title")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -618,15 +618,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await ProblemDetailsFactoryFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await ProblemDetailsFactoryFeature.FeatureTearDownAsync();
             }

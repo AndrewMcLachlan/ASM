@@ -17,21 +17,21 @@ namespace Asm.AspNetCore.Tests.Validators
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class DescribedValidatorFeature : object, global::Xunit.IClassFixture<DescribedValidatorFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class DescribedValidatorFeature : object, Xunit.IClassFixture<DescribedValidatorFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Validators", "DescribedValidator", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "DescribedValidator.feature"
 #line hidden
         
-        public DescribedValidatorFeature(DescribedValidatorFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public DescribedValidatorFeature(DescribedValidatorFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.AspNetCore.Tests.Validators
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.AspNetCore.Tests.Validators
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Validators/DescribedValidator.feature.ndjson", 9);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.AspNetCore.Tests.Validators
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.AspNetCore.Tests.Validators
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Valid described object passes validation")]
+        [global::Xunit.FactAttribute(DisplayName="Valid described object passes validation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Valid described object passes validation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -170,7 +170,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Empty name fails validation")]
+        [global::Xunit.FactAttribute(DisplayName="Empty name fails validation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Empty name fails validation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -209,7 +209,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Null name fails validation")]
+        [global::Xunit.FactAttribute(DisplayName="Null name fails validation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Null name fails validation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -248,7 +248,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Name exceeding default max length fails validation")]
+        [global::Xunit.FactAttribute(DisplayName="Name exceeding default max length fails validation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Name exceeding default max length fails validation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -288,7 +288,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Description exceeding default max length fails validation")]
+        [global::Xunit.FactAttribute(DisplayName="Description exceeding default max length fails validation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Description exceeding default max length fails validation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -328,7 +328,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Null description passes validation")]
+        [global::Xunit.FactAttribute(DisplayName="Null description passes validation")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Null description passes validation")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -364,7 +364,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Custom length validator allows longer name")]
+        [global::Xunit.FactAttribute(DisplayName="Custom length validator allows longer name")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DescribedValidator")]
         [global::Xunit.TraitAttribute("Description", "Custom length validator allows longer name")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -406,15 +406,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await DescribedValidatorFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await DescribedValidatorFeature.FeatureTearDownAsync();
             }

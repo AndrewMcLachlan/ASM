@@ -18,7 +18,7 @@ public class QueryTests
 
         var queryDispatcher = serviceProvider.GetRequiredService<IQueryDispatcher>();
 
-        var result = await queryDispatcher.Dispatch(new TestQuery { Input = "Abc" });
+        var result = await queryDispatcher.Dispatch(new TestQuery { Input = "Abc" }, TestContext.Current.CancellationToken);
 
         Assert.Equal("ABC", result);
     }

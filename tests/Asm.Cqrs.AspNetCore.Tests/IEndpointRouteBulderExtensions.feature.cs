@@ -17,22 +17,22 @@ namespace Asm.Cqrs.AspNetCore.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class IEndpointRouteBuilderExtensionsFeature : object, global::Xunit.IClassFixture<IEndpointRouteBuilderExtensionsFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class IEndpointRouteBuilderExtensionsFeature : object, Xunit.IClassFixture<IEndpointRouteBuilderExtensionsFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "IEndpointRouteBuilderExtensions", "  As a developer\r\n  I want to test the IEndpointRouteBuilderExtensions class\r\n  S" +
                 "o that I can ensure it behaves correctly", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "IEndpointRouteBulderExtensions.feature"
 #line hidden
         
-        public IEndpointRouteBuilderExtensionsFeature(IEndpointRouteBuilderExtensionsFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public IEndpointRouteBuilderExtensionsFeature(IEndpointRouteBuilderExtensionsFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -91,7 +91,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -109,7 +109,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("IEndpointRouteBulderExtensions.feature.ndjson", 5);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -129,12 +129,12 @@ namespace Asm.Cqrs.AspNetCore.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Map a request to a query")]
+        [global::Xunit.FactAttribute(DisplayName="Map a request to a query")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
         [global::Xunit.TraitAttribute("Description", "Map a request to a query")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -170,7 +170,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Map a POST request to a command that creates a resource")]
+        [global::Xunit.FactAttribute(DisplayName="Map a POST request to a command that creates a resource")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
         [global::Xunit.TraitAttribute("Description", "Map a POST request to a command that creates a resource")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -207,7 +207,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Map a DELETE request to a command")]
+        [global::Xunit.FactAttribute(DisplayName="Map a DELETE request to a command")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
         [global::Xunit.TraitAttribute("Description", "Map a DELETE request to a command")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
@@ -245,15 +245,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await IEndpointRouteBuilderExtensionsFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await IEndpointRouteBuilderExtensionsFeature.FeatureTearDownAsync();
             }

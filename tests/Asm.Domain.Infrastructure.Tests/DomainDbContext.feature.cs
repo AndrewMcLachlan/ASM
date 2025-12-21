@@ -17,21 +17,21 @@ namespace Asm.Domain.Infrastructure.Tests
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class DomainDbContextFeature : object, global::Xunit.IClassFixture<DomainDbContextFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class DomainDbContextFeature : object, Xunit.IClassFixture<DomainDbContextFeature.FixtureData>, Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
+        
+        private Xunit.ITestOutputHelper _testOutputHelper;
         
         private static string[] featureTags = ((string[])(null));
         
         private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "", "DomainDbContext", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
-        private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
-        
 #line 1 "DomainDbContext.feature"
 #line hidden
         
-        public DomainDbContextFeature(DomainDbContextFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public DomainDbContextFeature(DomainDbContextFeature.FixtureData fixtureData, Xunit.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -90,7 +90,7 @@ namespace Asm.Domain.Infrastructure.Tests
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo, global::Reqnroll.RuleInfo ruleInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo, ruleInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<global::Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
+            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.ITestOutputHelper>(_testOutputHelper);
         }
         
         public async global::System.Threading.Tasks.Task ScenarioStartAsync()
@@ -108,7 +108,7 @@ namespace Asm.Domain.Infrastructure.Tests
             return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("DomainDbContext.feature.ndjson", 6);
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+        async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Asm.Domain.Infrastructure.Tests
             {
                 try
                 {
-                    ((global::Xunit.IAsyncLifetime)(this)).DisposeAsync();
+                    ((Xunit.IAsyncLifetime)(this)).DisposeAsync();
                 }
                 catch (System.Exception e2)
                 {
@@ -128,12 +128,12 @@ namespace Asm.Domain.Infrastructure.Tests
             }
         }
         
-        async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+        async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
         {
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="SaveChangesAsync with no tracked entities does not publish")]
+        [global::Xunit.FactAttribute(DisplayName="SaveChangesAsync with no tracked entities does not publish")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChangesAsync with no tracked entities does not publish")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -172,7 +172,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="SaveChangesAsync with acceptAllChangesOnSuccess false does not publish when no en" +
+        [global::Xunit.FactAttribute(DisplayName="SaveChangesAsync with acceptAllChangesOnSuccess false does not publish when no en" +
             "tities")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChangesAsync with acceptAllChangesOnSuccess false does not publish when no en" +
@@ -214,7 +214,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="SaveChangesAsync with default cancellation token does not publish when no events")]
+        [global::Xunit.FactAttribute(DisplayName="SaveChangesAsync with default cancellation token does not publish when no events")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChangesAsync with default cancellation token does not publish when no events")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -253,7 +253,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="SaveChanges with no entities returns zero and does not publish")]
+        [global::Xunit.FactAttribute(DisplayName="SaveChanges with no entities returns zero and does not publish")]
         [global::Xunit.TraitAttribute("FeatureTitle", "DomainDbContext")]
         [global::Xunit.TraitAttribute("Description", "SaveChanges with no entities returns zero and does not publish")]
         [global::Xunit.TraitAttribute("Category", "Integration")]
@@ -294,15 +294,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : object, global::Xunit.IAsyncLifetime
+        public class FixtureData : object, Xunit.IAsyncLifetime
         {
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
+            async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
             {
                 await DomainDbContextFeature.FeatureSetupAsync();
             }
             
-            async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
+            async System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync()
             {
                 await DomainDbContextFeature.FeatureTearDownAsync();
             }
