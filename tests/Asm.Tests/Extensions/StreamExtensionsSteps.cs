@@ -1,4 +1,3 @@
-using System.IO;
 using System.Text;
 
 namespace Asm.Tests.Extensions;
@@ -6,7 +5,7 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class StreamExtensionsSteps(ScenarioContext context)
 {
-    private MemoryStream? _stream;
+    private MemoryStream _stream;
     private byte[] _writeBuffer = [];
     private byte[] _readBuffer = [];
 

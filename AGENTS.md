@@ -25,7 +25,7 @@ The libraries are deliberately opinionated, allowing for consuming apps to avoid
 - Use existing helpers (e.g., under `Asm/Extensions`, `Asm.Testing`, `Asm.Hosting`) before introducing new utilities.
 - Validate null arguments and guard application boundaries using the established exception types in `Asm` (e.g., `NotFoundException`, `NotAuthorisedException`).
 - Keep logging consistent with `Asm.Serilog` patterns; wire telemetry through the OpenTelemetry helpers when instrumenting new code paths.
-- Use framework types (e.g. `Int32`) when calling a static memth (e.g. `Int32.Parse` )
+- Use framework types (e.g. `Int32`) when calling a static method (e.g. `Int32.Parse` )
 - Use built-in types (e.g. `int`) when declaring variables (e.g. `int count = 0;`)
 - Fix compiler warnings unless explicitly instructed otherwise
 - Use the latest C# language features where possible (e.g., collection initialisers `[]`)
