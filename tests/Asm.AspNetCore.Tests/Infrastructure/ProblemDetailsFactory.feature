@@ -86,3 +86,11 @@ Scenario: CreateValidationProblemDetails returns validation problem details
     When I create validation problem details
     Then the validation problem details should have status 400
     And the validation problem details should contain error for 'Name'
+
+@Unit
+Scenario: CreateValidationProblemDetails with custom title
+    Given I have a ProblemDetailsFactory with development environment
+    And I have an HttpContext with no error
+    And I have a ModelStateDictionary with error 'Name' 'Name is required'
+    When I create validation problem details with title 'Custom Validation Error'
+    Then the validation problem details should have title 'Custom Validation Error'
