@@ -52,6 +52,9 @@
     <Project Path="tests/Asm.Net.Tests/Asm.Net.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
+    <Project Path="tests/Asm.OAuth.Tests/Asm.OAuth.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.Tests/Asm.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
