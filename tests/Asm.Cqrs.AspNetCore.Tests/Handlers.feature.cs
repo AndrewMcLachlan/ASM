@@ -105,7 +105,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Handlers.feature.ndjson", 11);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Handlers.feature.ndjson", 20);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -458,6 +458,151 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 57
     await testRunner.ThenAsync("the result should have status code 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.TheoryAttribute(DisplayName="CreateCommandHandler respects binding options")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
+        [global::Xunit.TraitAttribute("Description", "CreateCommandHandler respects binding options")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.InlineDataAttribute("None", "9", new string[0])]
+        [global::Xunit.InlineDataAttribute("Body", "10", new string[0])]
+        [global::Xunit.InlineDataAttribute("Parameters", "11", new string[0])]
+        public async global::System.Threading.Tasks.Task CreateCommandHandlerRespectsBindingOptions(string binding, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Binding", binding);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateCommandHandler respects binding options", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 60
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 61
+    await testRunner.GivenAsync("I have a command dispatcher", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 62
+    await testRunner.WhenAsync(string.Format("I invoke CreateCommandHandler with status code 204 and binding \'{0}\'", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 63
+    await testRunner.ThenAsync("the result should have status code 204", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 64
+    await testRunner.AndAsync(string.Format("the handler should use \'{0}\' binding", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.TheoryAttribute(DisplayName="CreateCommandHandler with response respects binding options")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
+        [global::Xunit.TraitAttribute("Description", "CreateCommandHandler with response respects binding options")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.InlineDataAttribute("None", "12", new string[0])]
+        [global::Xunit.InlineDataAttribute("Body", "13", new string[0])]
+        [global::Xunit.InlineDataAttribute("Parameters", "14", new string[0])]
+        public async global::System.Threading.Tasks.Task CreateCommandHandlerWithResponseRespectsBindingOptions(string binding, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Binding", binding);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateCommandHandler with response respects binding options", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 73
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 74
+    await testRunner.GivenAsync("I have a command dispatcher that returns \'processed\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 75
+    await testRunner.WhenAsync(string.Format("I invoke CreateCommandHandler with response, status code 200 and binding \'{0}\'", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 76
+    await testRunner.ThenAsync("the result should have status code 200", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 77
+    await testRunner.AndAsync(string.Format("the handler should use \'{0}\' binding", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.TheoryAttribute(DisplayName="CreateCreateHandler respects binding options")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
+        [global::Xunit.TraitAttribute("Description", "CreateCreateHandler respects binding options")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.InlineDataAttribute("None", "15", new string[0])]
+        [global::Xunit.InlineDataAttribute("Body", "16", new string[0])]
+        [global::Xunit.InlineDataAttribute("Parameters", "17", new string[0])]
+        public async global::System.Threading.Tasks.Task CreateCreateHandlerRespectsBindingOptions(string binding, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Binding", binding);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateCreateHandler respects binding options", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 86
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 87
+    await testRunner.GivenAsync("I have a command dispatcher that returns a created item with id 456", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 88
+    await testRunner.WhenAsync(string.Format("I invoke CreateCreateHandler with route name \'GetItem\', binding \'{0}\' and the com" +
+                            "mand", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 89
+    await testRunner.ThenAsync("the result should be CreatedAtRoute", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 90
+    await testRunner.AndAsync(string.Format("the handler should use \'{0}\' binding", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
