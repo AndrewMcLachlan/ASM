@@ -7,6 +7,7 @@
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
     <Nullable>disable</Nullable>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
   </PropertyGroup>
   
   <ItemGroup>
