@@ -1,10 +1,12 @@
-﻿using System.Security;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security;
 
 namespace Asm;
 
 /// <summary>
 /// Thrown when a user is not authorised to perform an action.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class NotAuthorisedException : SecurityException
 {
     /// <summary>

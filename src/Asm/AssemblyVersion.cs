@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace System;
@@ -6,6 +7,7 @@ namespace System;
 /// <summary>
 /// Gets the entry assembly's version information.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class AssemblyVersion
 {
     private static readonly Assembly? Assembly = Assembly.GetEntryAssembly();

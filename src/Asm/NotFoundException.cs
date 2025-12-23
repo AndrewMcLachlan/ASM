@@ -1,8 +1,11 @@
-﻿namespace Asm;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Asm;
 
 /// <summary>
 /// Thrown when something is not found.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public sealed class NotFoundException : Exception
 {
     /// <summary>

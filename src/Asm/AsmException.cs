@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Asm;
 
 /// <summary>
 /// Enhanced Exception class.
 /// </summary>
 [Serializable]
+[ExcludeFromCodeCoverage]
 public class AsmException : Exception
 {
     #region Properties
