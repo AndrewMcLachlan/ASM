@@ -16,6 +16,10 @@
           <Threshold>60,80,80</Threshold>
           <ThresholdType>line,branch,method</ThresholdType>
           <ThresholdStat>total</ThresholdStat>
+          <!-- Use source link for mapping to original source files -->
+          <UseSourceLink>true</UseSourceLink>
+          <!-- Ensure deterministic coverage collection -->
+          <DeterministicReport>true</DeterministicReport>
         </Configuration>
       </DataCollector>
     </DataCollectors>
