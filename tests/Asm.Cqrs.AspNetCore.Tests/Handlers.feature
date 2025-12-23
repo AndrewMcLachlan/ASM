@@ -55,3 +55,42 @@ Scenario: CreateCommandHandler with response returns specified status code
     Given I have a command dispatcher that returns 'processed'
     When I invoke CreateCommandHandler with response and status code 200
     Then the result should have status code 200
+
+@Unit
+Scenario Outline: CreateCommandHandler respects binding options
+    Given I have a command dispatcher
+    When I invoke CreateCommandHandler with status code 204 and binding '<Binding>'
+    Then the result should have status code 204
+    And the handler should use '<Binding>' binding
+
+Examples:
+    | Binding    |
+    | None       |
+    | Body       |
+    | Parameters |
+
+@Unit
+Scenario Outline: CreateCommandHandler with response respects binding options
+    Given I have a command dispatcher that returns 'processed'
+    When I invoke CreateCommandHandler with response, status code 200 and binding '<Binding>'
+    Then the result should have status code 200
+    And the handler should use '<Binding>' binding
+
+Examples:
+    | Binding    |
+    | None       |
+    | Body       |
+    | Parameters |
+
+@Unit
+Scenario Outline: CreateCreateHandler respects binding options
+    Given I have a command dispatcher that returns a created item with id 456
+    When I invoke CreateCreateHandler with route name 'GetItem', binding '<Binding>' and the command
+    Then the result should be CreatedAtRoute
+    And the handler should use '<Binding>' binding
+
+Examples:
+    | Binding    |
+    | None       |
+    | Body       |
+    | Parameters |
