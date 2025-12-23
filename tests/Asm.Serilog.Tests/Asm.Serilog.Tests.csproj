@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <CoverletInclude>[Asm.AspNetCore]*,[Asm.AspNetCore.Modules]*</CoverletInclude>
+    <CoverletInclude>[Asm.Serilog]*</CoverletInclude>
     <CoverletExcludeByFile>**/*</CoverletExcludeByFile>
   </PropertyGroup>
 
@@ -10,9 +10,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Reqnroll.xUnit.v3" />
     <PackageReference Include="xunit.v3" />
@@ -24,9 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Asm.AspNetCore\Asm.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\src\Asm.AspNetCore.Modules\Asm.AspNetCore.Modules.csproj" />
+    <ProjectReference Include="..\..\src\Asm.Serilog\Asm.Serilog.csproj" />
     <ProjectReference Include="..\..\src\Asm.Testing\Asm.Testing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="reqnroll.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -34,12 +38,6 @@
     <Using Include="Moq" />
     <Using Include="Reqnroll" />
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="reqnroll.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
