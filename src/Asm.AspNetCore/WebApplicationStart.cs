@@ -1,4 +1,5 @@
-﻿using Asm.AspNetCore.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+using Asm.AspNetCore.Extensions;
 using Asm.AspNetCore.HealthChecks;
 using Asm.Serilog;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +15,7 @@ namespace Asm.AspNetCore;
 /// <summary>
 /// Bootstraps and runs a web application.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class WebApplicationStart
 {
     /// <summary>

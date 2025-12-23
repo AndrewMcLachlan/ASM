@@ -1,4 +1,5 @@
-﻿using Asm.Serilog;
+﻿using System.Diagnostics.CodeAnalysis;
+using Asm.Serilog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -9,6 +10,7 @@ namespace Asm.AspNetCore;
 /// Bootstraps and runs a web application.
 /// </summary>
 /// <typeparam name="T">The type of the startup class.</typeparam>
+[ExcludeFromCodeCoverage]
 public static class WebStart<T> where T : class
 {
     /// <summary>
