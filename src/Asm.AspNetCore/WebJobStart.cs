@@ -1,4 +1,5 @@
-﻿using Asm.Serilog;
+﻿using System.Diagnostics.CodeAnalysis;
+using Asm.Serilog;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,7 @@ namespace Asm.AspNetCore;
 /// <summary>
 /// Start a Web Job process.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class WebJobStart
 {
     /// <summary>

@@ -56,7 +56,7 @@
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
     <Project Path="tests/Asm.Serilog.Tests/Asm.Serilog.Tests.csproj">
-      <BuildType Solution="Release 64|*" Project="Debug" />
+      <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
     <Project Path="tests/Asm.Tests/Asm.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />

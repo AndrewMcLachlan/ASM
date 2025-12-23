@@ -1,8 +1,11 @@
-﻿namespace Asm;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Asm;
 
 /// <summary>
 /// An item already exists exception.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public sealed class ExistsException : Exception
 {
     /// <summary>

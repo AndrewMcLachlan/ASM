@@ -137,15 +137,17 @@ namespace Asm.Tests
         [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with BitArray")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with BitArray")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithBitArray()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with BitArray", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 7
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -155,19 +157,19 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
+#line 8
     await testRunner.GivenAsync("I have a BitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 9
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 9
+#line 10
     await testRunner.WhenAsync("I create an ExtendedBitArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 10
+#line 11
     await testRunner.ThenAsync("the ExtendedBitArray should have 4 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 11
+#line 12
     await testRunner.AndAsync("the bits should be [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -177,15 +179,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to byte array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to byte array")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToByteArray()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to byte array", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 13
+#line 15
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -195,16 +199,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 14
+#line 16
     await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 17
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 16
+#line 18
     await testRunner.WhenAsync("I convert the ExtendedBitArray to a byte array", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 17
+#line 19
     await testRunner.ThenAsync("the byte array should be [5]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -214,15 +218,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Copy part of ExtendedBitArray")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Copy part of ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task CopyPartOfExtendedBitArray()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy part of ExtendedBitArray", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 19
+#line 22
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -232,20 +238,20 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 20
+#line 23
     await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false, true, false, tr" +
                         "ue, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 21
+#line 24
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 25
     await testRunner.WhenAsync("I copy from index 2 to length 4", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 23
+#line 26
     await testRunner.ThenAsync("the new ExtendedBitArray should have 4 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 24
+#line 27
     await testRunner.AndAsync("the bits should be [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -255,15 +261,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Copy throws when start index is out of range")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Copy throws when start index is out of range")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task CopyThrowsWhenStartIndexIsOutOfRange()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy throws when start index is out of range", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 26
+#line 30
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -273,16 +281,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 27
+#line 31
     await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 32
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 33
     await testRunner.WhenAsync("I copy from index 10 to length 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 34
     await testRunner.ThenAsync("an exception of type \'System.ArgumentOutOfRangeException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -292,15 +300,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Copy throws when length exceeds array size")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Copy throws when length exceeds array size")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task CopyThrowsWhenLengthExceedsArraySize()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Copy throws when length exceeds array size", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 32
+#line 37
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -310,16 +320,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 33
+#line 38
     await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 34
+#line 39
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 35
+#line 40
     await testRunner.WhenAsync("I copy from index 0 to length 10", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 41
     await testRunner.ThenAsync("an exception of type \'System.ArgumentOutOfRangeException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -329,15 +339,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="CopyTo throws when index is negative")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "CopyTo throws when index is negative")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task CopyToThrowsWhenIndexIsNegative()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "5";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when index is negative", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 38
+#line 44
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -347,19 +359,19 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 39
+#line 45
     await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 40
+#line 46
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 47
     await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 42
+#line 48
     await testRunner.WhenAsync("I copy to the other array with index -1", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 49
     await testRunner.ThenAsync("an exception of type \'System.ArgumentException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -369,52 +381,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="CopyTo throws when index exceeds array length")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "CopyTo throws when index exceeds array length")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task CopyToThrowsWhenIndexExceedsArrayLength()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "6";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when index exceeds array length", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 45
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 46
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 47
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 48
-    await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 49
-    await testRunner.WhenAsync("I copy to the other array with index 10", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 50
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="CopyTo throws when array is null")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "CopyTo throws when array is null")]
-        public async global::System.Threading.Tasks.Task CopyToThrowsWhenArrayIsNull()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "7";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when array is null", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 52
@@ -434,9 +408,51 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 55
-    await testRunner.WhenAsync("I copy to null array with index 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 56
+    await testRunner.WhenAsync("I copy to the other array with index 10", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 57
+    await testRunner.ThenAsync("an exception of type \'System.ArgumentException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="CopyTo throws when array is null")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Description", "CopyTo throws when array is null")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CopyToThrowsWhenArrayIsNull()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "7";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo throws when array is null", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 60
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 61
+    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 62
+    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 63
+    await testRunner.WhenAsync("I copy to null array with index 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 64
     await testRunner.ThenAsync("an exception of type \'System.ArgumentNullException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -446,15 +462,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with byte array")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with byte array")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithByteArray()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "8";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with byte array", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 59
+#line 67
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -464,16 +482,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 60
+#line 68
     await testRunner.GivenAsync("a byte array with values [5]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 61
+#line 69
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 70
     await testRunner.WhenAsync("I create an ExtendedBitArray from bytes", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 63
+#line 71
     await testRunner.ThenAsync("the ExtendedBitArray should have 8 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -483,15 +501,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with single byte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with single byte")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithSingleByte()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "9";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with single byte", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 65
+#line 74
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -501,16 +521,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 66
+#line 75
     await testRunner.GivenAsync("a single byte with value 170", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 67
+#line 76
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 77
     await testRunner.WhenAsync("I create an ExtendedBitArray from single byte", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 78
     await testRunner.ThenAsync("the ExtendedBitArray should have 8 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -520,15 +540,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with sbyte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with sbyte")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithSbyte()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "10";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with sbyte", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 71
+#line 81
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -538,16 +560,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 72
+#line 82
     await testRunner.GivenAsync("a signed byte with value 127", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 73
+#line 83
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 84
     await testRunner.WhenAsync("I create an ExtendedBitArray from sbyte", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 85
     await testRunner.ThenAsync("the ExtendedBitArray should have 8 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -557,15 +579,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with short")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with short")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithShort()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "11";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with short", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 77
+#line 88
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -575,16 +599,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 78
+#line 89
     await testRunner.GivenAsync("a short with value 256", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 79
+#line 90
     await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 80
+#line 91
     await testRunner.WhenAsync("I create an ExtendedBitArray from short", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 92
     await testRunner.ThenAsync("the ExtendedBitArray should have 16 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -594,86 +618,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with int")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with int")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithInt()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "12";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with int", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 83
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 84
-    await testRunner.GivenAsync("an int with value 65536", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 85
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 86
-    await testRunner.WhenAsync("I create an ExtendedBitArray from int", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 87
-    await testRunner.ThenAsync("the ExtendedBitArray should have 32 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with long")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with long")]
-        public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithLong()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "13";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with long", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 89
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 90
-    await testRunner.GivenAsync("a long with value 4294967296", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 91
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 92
-    await testRunner.WhenAsync("I create an ExtendedBitArray from long", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 93
-    await testRunner.ThenAsync("the ExtendedBitArray should have 64 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
-        public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithReadOnlySpanOfBytes()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "14";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with ReadOnlySpan of bytes", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 95
@@ -687,30 +639,32 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 96
-    await testRunner.GivenAsync("a byte span with values [1, 2]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("an int with value 65536", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 97
-    await testRunner.AndAsync("the endianness is BigEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 98
-    await testRunner.WhenAsync("I create an ExtendedBitArray from byte span", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I create an ExtendedBitArray from int", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 99
-    await testRunner.ThenAsync("the ExtendedBitArray should have 16 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the ExtendedBitArray should have 32 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to SByte")]
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with long")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to SByte")]
-        public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToSByte()
+        [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with long")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithLong()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "15";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to SByte", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "13";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with long", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 102
@@ -724,16 +678,94 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 103
-    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("a long with value 4294967296", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 104
+    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 105
+    await testRunner.WhenAsync("I create an ExtendedBitArray from long", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 106
+    await testRunner.ThenAsync("the ExtendedBitArray should have 64 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Description", "Initialize ExtendedBitArray with ReadOnlySpan of bytes")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task InitializeExtendedBitArrayWithReadOnlySpanOfBytes()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "14";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Initialize ExtendedBitArray with ReadOnlySpan of bytes", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 109
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 110
+    await testRunner.GivenAsync("a byte span with values [1, 2]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 111
+    await testRunner.AndAsync("the endianness is BigEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 112
+    await testRunner.WhenAsync("I create an ExtendedBitArray from byte span", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 113
+    await testRunner.ThenAsync("the ExtendedBitArray should have 16 bits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to SByte")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to SByte")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToSByte()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "15";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to SByte", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 116
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 117
+    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 118
     await testRunner.AndAsync("I have an ExtendedBitArray with values [true, true, true, true, true, true, true," +
                         " true]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 105
+#line 119
     await testRunner.WhenAsync("I convert the ExtendedBitArray to SByte", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 106
+#line 120
     await testRunner.ThenAsync("the sbyte result should be -1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -743,15 +775,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Int16 little endian")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Int16 little endian")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToInt16LittleEndian()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "16";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to Int16 little endian", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 108
+#line 123
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -761,17 +795,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 109
+#line 124
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 110
+#line 125
     await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, false, false, false, false, " +
                         "false, false, false, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 111
+#line 126
     await testRunner.WhenAsync("I convert the ExtendedBitArray to Int16", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 112
+#line 127
     await testRunner.ThenAsync("the short result should be 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -781,15 +815,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Int32 little endian")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Int32 little endian")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToInt32LittleEndian()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "17";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to Int32 little endian", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 114
+#line 130
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -799,16 +835,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 115
+#line 131
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 116
+#line 132
     await testRunner.AndAsync(@"I have an ExtendedBitArray with values [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 117
+#line 133
     await testRunner.WhenAsync("I convert the ExtendedBitArray to Int32", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 118
+#line 134
     await testRunner.ThenAsync("the int result should be 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -818,15 +854,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Int64 little endian")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Int64 little endian")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToInt64LittleEndian()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "18";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to Int64 little endian", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 120
+#line 137
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -836,16 +874,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 121
+#line 138
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 122
+#line 139
     await testRunner.AndAsync(@"I have an ExtendedBitArray with values [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 123
+#line 140
     await testRunner.WhenAsync("I convert the ExtendedBitArray to Int64", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 124
+#line 141
     await testRunner.ThenAsync("the long result should be 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -855,15 +893,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to Byte")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to Byte")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToByte()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "19";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to Byte", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 127
+#line 144
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -873,17 +913,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 128
+#line 145
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 129
+#line 146
     await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false, false, false, f" +
                         "alse, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 130
+#line 147
     await testRunner.WhenAsync("I convert the ExtendedBitArray to Byte", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 131
+#line 148
     await testRunner.ThenAsync("the byte result should be 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -893,15 +933,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to UInt16")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to UInt16")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToUInt16()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "20";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to UInt16", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 133
+#line 151
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -911,17 +953,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 134
+#line 152
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 135
+#line 153
     await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, false, false, false, false, " +
                         "false, false, true, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 136
+#line 154
     await testRunner.WhenAsync("I convert the ExtendedBitArray to UInt16", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 137
+#line 155
     await testRunner.ThenAsync("the ushort result should be 257", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -931,15 +973,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to UInt32")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to UInt32")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToUInt32()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "21";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to UInt32", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 139
+#line 158
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -949,16 +993,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 140
+#line 159
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 141
+#line 160
     await testRunner.AndAsync(@"I have an ExtendedBitArray with values [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 142
+#line 161
     await testRunner.WhenAsync("I convert the ExtendedBitArray to UInt32", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 143
+#line 162
     await testRunner.ThenAsync("the uint result should be 65537", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -968,123 +1012,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to UInt64")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
         [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to UInt64")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
         public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToUInt64()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "22";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to UInt64", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 145
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 146
-    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 147
-    await testRunner.AndAsync(@"I have an ExtendedBitArray with values [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 148
-    await testRunner.WhenAsync("I convert the ExtendedBitArray to UInt64", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 149
-    await testRunner.ThenAsync("the ulong result should be 4294967297", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to string")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to string")]
-        public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToString()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "23";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to string", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 152
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 153
-    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 154
-    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 155
-    await testRunner.WhenAsync("I convert the ExtendedBitArray to string", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 156
-    await testRunner.ThenAsync("the string representation should contain binary digits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Access IsSynchronized property")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Access IsSynchronized property")]
-        public async global::System.Threading.Tasks.Task AccessIsSynchronizedProperty()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "24";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Access IsSynchronized property", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 159
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 160
-    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 161
-    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 162
-    await testRunner.WhenAsync("I access the IsSynchronized property", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 163
-    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Access SyncRoot property")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Access SyncRoot property")]
-        public async global::System.Threading.Tasks.Task AccessSyncRootProperty()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "25";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Access SyncRoot property", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 165
@@ -1101,27 +1036,29 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 167
-    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync(@"I have an ExtendedBitArray with values [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 168
-    await testRunner.WhenAsync("I access the SyncRoot property", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I convert the ExtendedBitArray to UInt64", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 169
-    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the ulong result should be 4294967297", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Clone ExtendedBitArray")]
+        [global::Xunit.FactAttribute(DisplayName="Convert ExtendedBitArray to string")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Clone ExtendedBitArray")]
-        public async global::System.Threading.Tasks.Task CloneExtendedBitArray()
+        [global::Xunit.TraitAttribute("Description", "Convert ExtendedBitArray to string")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ConvertExtendedBitArrayToString()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "26";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Clone ExtendedBitArray", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "23";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Convert ExtendedBitArray to string", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 172
@@ -1141,24 +1078,26 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 175
-    await testRunner.WhenAsync("I clone the ExtendedBitArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I convert the ExtendedBitArray to string", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 176
-    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the string representation should contain binary digits", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Get IEnumerable enumerator")]
+        [global::Xunit.FactAttribute(DisplayName="Access IsSynchronized property")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Get IEnumerable enumerator")]
-        public async global::System.Threading.Tasks.Task GetIEnumerableEnumerator()
+        [global::Xunit.TraitAttribute("Description", "Access IsSynchronized property")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task AccessIsSynchronizedProperty()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "27";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get IEnumerable enumerator", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "24";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Access IsSynchronized property", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 179
@@ -1178,7 +1117,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 182
-    await testRunner.WhenAsync("I get the enumerator for the ExtendedBitArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I access the IsSynchronized property", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 183
     await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -1187,15 +1126,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Access bits using range indexer")]
+        [global::Xunit.FactAttribute(DisplayName="Access SyncRoot property")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "Access bits using range indexer")]
-        public async global::System.Threading.Tasks.Task AccessBitsUsingRangeIndexer()
+        [global::Xunit.TraitAttribute("Description", "Access SyncRoot property")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task AccessSyncRootProperty()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "28";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Access bits using range indexer", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "25";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Access SyncRoot property", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 186
@@ -1212,28 +1153,29 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 188
-    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false, true, true, fal" +
-                        "se, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 189
-    await testRunner.WhenAsync("I access bits from index 2 to 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I access the SyncRoot property", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 190
-    await testRunner.ThenAsync("the range result should be [true, false, true]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="CopyTo ExtendedBitArray successfully")]
+        [global::Xunit.FactAttribute(DisplayName="Clone ExtendedBitArray")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
-        [global::Xunit.TraitAttribute("Description", "CopyTo ExtendedBitArray successfully")]
-        public async global::System.Threading.Tasks.Task CopyToExtendedBitArraySuccessfully()
+        [global::Xunit.TraitAttribute("Description", "Clone ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CloneExtendedBitArray()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "29";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo ExtendedBitArray successfully", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string pickleIndex = "26";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Clone ExtendedBitArray", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 193
@@ -1250,15 +1192,133 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 195
-    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, true]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 196
-    await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("I clone the ExtendedBitArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 197
+    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Get IEnumerable enumerator")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Description", "Get IEnumerable enumerator")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task GetIEnumerableEnumerator()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "27";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get IEnumerable enumerator", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 200
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 201
+    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 202
+    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 203
+    await testRunner.WhenAsync("I get the enumerator for the ExtendedBitArray", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 204
+    await testRunner.ThenAsync("the result should not be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Access bits using range indexer")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Description", "Access bits using range indexer")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task AccessBitsUsingRangeIndexer()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "28";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Access bits using range indexer", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 207
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 208
+    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 209
+    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false, true, true, fal" +
+                        "se, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 210
+    await testRunner.WhenAsync("I access bits from index 2 to 5", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 211
+    await testRunner.ThenAsync("the range result should be [true, false, true]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="CopyTo ExtendedBitArray successfully")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ExtendedBitArray")]
+        [global::Xunit.TraitAttribute("Description", "CopyTo ExtendedBitArray successfully")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CopyToExtendedBitArraySuccessfully()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "29";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CopyTo ExtendedBitArray successfully", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 214
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 215
+    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 216
+    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, true]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 217
+    await testRunner.AndAsync("I have another ExtendedBitArray with values [false, false, false, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 218
     await testRunner.WhenAsync("I copy to the other array with index 1", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 198
+#line 219
     await testRunner.ThenAsync("the operation should complete without exception", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
