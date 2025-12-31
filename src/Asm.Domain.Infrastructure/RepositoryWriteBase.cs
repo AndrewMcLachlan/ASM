@@ -27,7 +27,7 @@ public abstract class RepositoryWriteBase<TContext, TEntity, TKey>(TContext cont
     }
 
     /// <inheritdoc/>
-    public TEntity Update(TEntity entity)
+    public virtual TEntity Update(TEntity entity)
     {
         return Entities.Update(entity).Entity;
     }
