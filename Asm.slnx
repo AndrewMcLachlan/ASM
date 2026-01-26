@@ -104,13 +104,13 @@
   <Project Path="src/Asm.OAuth/Asm.OAuth.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
+  <Project Path="src/Asm.Reqnroll/Asm.Reqnroll.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
   <Project Path="src/Asm.Serilog/Asm.Serilog.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Testing.Domain/Asm.Testing.Domain.csproj">
-    <BuildType Solution="Release 64|*" Project="Release" />
-  </Project>
-  <Project Path="src/Asm.Testing/Asm.Testing.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Win32/Asm.Win32.csproj">

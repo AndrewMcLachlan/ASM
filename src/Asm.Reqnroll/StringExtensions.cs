@@ -1,4 +1,4 @@
-﻿namespace Asm.Testing;
+﻿namespace Asm.Reqnroll;
 
 /// <summary>
 /// Extensions for the <see cref="String" /> class.

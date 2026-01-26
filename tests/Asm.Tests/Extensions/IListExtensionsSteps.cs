@@ -1,5 +1,3 @@
-using Asm.Testing;
-
 namespace Asm.Tests.Extensions;
 
 [Binding]

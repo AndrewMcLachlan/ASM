@@ -23,11 +23,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Asm.OAuth\Asm.OAuth.csproj" />
-    <ProjectReference Include="..\..\src\Asm.Testing\Asm.Testing.csproj" />
+    <ProjectReference Include="..\..\src\Asm.Reqnroll\Asm.Reqnroll.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Asm.Testing" />
+    <Using Include="Asm.Reqnroll" />
     <Using Include="Reqnroll" />
     <Using Include="Xunit" />
   </ItemGroup>

@@ -1,5 +1,4 @@
 #nullable enable
-using Asm.Serilog;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;

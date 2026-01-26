@@ -1,6 +1,6 @@
-# Asm.Testing
+# Asm.Reqnroll
 
-The `Asm.Testing` library provides utilities and abstractions to simplify Behaviour-Driven-Development (BDD) testing with `Reqnroll` and `xUnit` in .NET applications. It includes features for mocking, assertions, and test setup to enhance the testing experience.
+The `Asm.Reqnroll` library provides utilities and abstractions to simplify Behaviour-Driven-Development (BDD) testing with `Reqnroll` and `xUnit` in .NET applications. It includes features for mocking, assertions, and test setup to enhance the testing experience.
 
 
 ## Features
@@ -16,13 +16,13 @@ The `Asm.Testing` library provides utilities and abstractions to simplify Behavi
 
 ## Installation
 
-To install the `Asm.Testing` library, use the .NET CLI:
+To install the `Asm.Reqnroll` library, use the .NET CLI:
 
-`dotnet add package Asm.Testing`
+`dotnet add package Asm.Reqnroll`
 
 Or via the NuGet Package Manager:
 
-`Install-Package Asm.Testing`
+`Install-Package Asm.Reqnroll`
 
 ## Usage
 
@@ -33,7 +33,7 @@ Create a test project and add the required packages:
 ```bash
 dotnet new xunit -n MyApp.Tests
 cd MyApp.Tests
-dotnet add package Asm.Testing
+dotnet add package Asm.Reqnroll
 dotnet add package Reqnroll
 dotnet add package Reqnroll.xUnit
 ```
@@ -59,7 +59,7 @@ These exception steps are automatically available through `ExceptionSteps` class
 The library provides helpful extensions for working with `ScenarioContext`:
 
 ```csharp
-using Asm.Testing;
+using Asm.Reqnroll;
 
 // Store and retrieve exceptions
 context.SetException(new InvalidOperationException("Error"));
@@ -129,7 +129,7 @@ Scenario: Test valid operation
 
 ## Dependencies
 
-The `Asm.Testing` library depends on the following packages:
+The `Asm.Reqnroll` library depends on the following packages:
 
 - `Reqnroll`
 - `xUnit`
