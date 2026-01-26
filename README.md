@@ -53,5 +53,5 @@ Standard configuration for apps that support OAuth.
 ## Asm.Serilog
 Extensions that set up Serilog and connect to Seq.
 
-## Asm.Testing
-Helpers for building tests using SpecFlow.
+## Asm.Reqnroll
+Helpers for building BDD tests using Reqnroll.

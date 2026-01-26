@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CA1822 // Mark members as static
 using System.Net;
 
-namespace Asm.Testing;
+namespace Asm.Reqnroll;
 
 /// <summary>
 /// Step argument transformations for Reqneoll.

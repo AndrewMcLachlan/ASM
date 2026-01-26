@@ -1,4 +1,4 @@
-﻿namespace Asm.Testing;
+﻿namespace Asm.Reqnroll;
 
 /// <summary>
 /// Reusable assertion steps for simple types.

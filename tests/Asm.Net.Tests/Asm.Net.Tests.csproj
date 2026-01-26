@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Net]*</CoverletInclude>
@@ -22,12 +22,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Asm.Net\Asm.Net.csproj" />
-    <ProjectReference Include="..\..\src\Asm.Testing\Asm.Testing.csproj" />
+    <ProjectReference Include="..\..\src\Asm.Reqnroll\Asm.Reqnroll.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Reqnroll" />
-    <Using Include="Asm.Testing" />
+    <Using Include="Asm.Reqnroll" />
   </ItemGroup>
 
   <ItemGroup>

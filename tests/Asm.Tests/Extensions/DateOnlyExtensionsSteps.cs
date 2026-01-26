@@ -75,7 +75,7 @@ public class DateOnlyExtensionsSteps(ScenarioContext context)
     [Then(@"the result should be today")]
     public void ThenTheResultShouldBeToday()
     {
-        var result = context.Get<DateOnly>(Asm.Testing.SimpleAssertionSteps.ResultKey);
+        var result = context.Get<DateOnly>(SimpleAssertionSteps.ResultKey);
         Assert.Equal(DateOnly.FromDateTime(DateTime.Today), result);
     }
 }
