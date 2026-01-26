@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6.0.1
+    - uses: actions/checkout@v6.0.2
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -80,7 +80,7 @@ jobs:
           - { name: "Asm.Serilog.Tests", path: "tests/Asm.Serilog.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
     steps:
-    - uses: actions/checkout@v6.0.1
+    - uses: actions/checkout@v6.0.2
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -102,7 +102,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-    - uses: actions/checkout@v6.0.1
+    - uses: actions/checkout@v6.0.2
     
     - name: Download all coverage reports
       uses: actions/download-artifact@v7
