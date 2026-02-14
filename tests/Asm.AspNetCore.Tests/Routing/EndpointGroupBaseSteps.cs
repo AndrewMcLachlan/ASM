@@ -21,7 +21,7 @@ public class EndpointGroupBaseSteps
     [Given(@"the endpoint group has no authorization policy")]
     public void GivenTheEndpointGroupHasNoAuthorizationPolicy()
     {
-        _endpointGroup = new TestEndpointGroupWithPolicy(string.Empty);
+        _endpointGroup = new TestEndpointGroupWithPolicy(String.Empty);
     }
 
     [Given(@"the endpoint group has authorization policy '(.*)'")]
@@ -62,7 +62,7 @@ public class TestEndpointGroupWithPolicy : EndpointGroupBase
 {
     private readonly string _authorisationPolicy;
 
-    public TestEndpointGroupWithPolicy() : this(string.Empty)
+    public TestEndpointGroupWithPolicy() : this(String.Empty)
     {
     }
 
