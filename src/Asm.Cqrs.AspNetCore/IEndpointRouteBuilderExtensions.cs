@@ -31,7 +31,7 @@ public static class IEndpointRouteBuilderExtensions
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
     public static RouteHandlerBuilder MapPagedQuery<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern) where TRequest : IQuery<PagedResult<TResponse>> =>
         endpoints.MapGet(pattern, Handlers.HandlePagedQuery<TRequest, TResponse>)
-                 .Produces<TResponse>();
+                 .Produces<PagedResult<TResponse>>();
 
     /// <summary>
     /// Map a POST request to a command that creates a resource.
