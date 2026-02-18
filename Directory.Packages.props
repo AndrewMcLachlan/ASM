@@ -28,7 +28,7 @@
     <!-- Non-Microsoft packages (version-agnostic) -->
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.4.0" />
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.6.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="8.0.0" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="LazyCache" Version="2.4.0" />
     <PackageVersion Include="LazyCache.AspNetCore" Version="2.4.0" />
