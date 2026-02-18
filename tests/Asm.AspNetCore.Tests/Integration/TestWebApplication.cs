@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Asm.AspNetCore.HealthChecks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using System.Net.Http;
 
 namespace Asm.AspNetCore.Tests.Integration;
 

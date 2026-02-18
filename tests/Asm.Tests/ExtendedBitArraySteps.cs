@@ -166,7 +166,7 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     [When(@"I copy to null array with index (.*)")]
     public void WhenICopyToNullArrayWithIndex(int index)
     {
-        context.CatchException(() => 
+        context.CatchException(() =>
         {
             ExtendedBitArray nullArray = null;
             _extendedBitArray.CopyTo(nullArray, index);
@@ -258,7 +258,7 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     [When(@"I convert the ExtendedBitArray to signed value of (.*)")]
     public void WhenIConvertTheExtendedBitArrayToSignedValueOf(int bitWidth)
     {
-        context.CatchException(() => 
+        context.CatchException(() =>
         {
             // ToSigned is internal, so we skip this test for now
             _conversionResult = null;

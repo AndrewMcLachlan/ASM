@@ -3,6 +3,7 @@ using Asm.Cqrs.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Asm.AspNetCore;
+
 internal static class Handlers
 {
     #region Integrated CQRS Handlers

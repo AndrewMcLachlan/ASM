@@ -16,7 +16,8 @@ internal class Publisher(IServiceProvider serviceProvider, IAppCache cache) : IP
         // Cache both type and method in a single operation
         var (handlerType, handleMethod) = cache.GetOrAdd(
             $"{HandlerInfoCacheKeyPrefix}{eventType.FullName}",
-            () => {
+            () =>
+            {
                 var type = DomainEventHandlerGenericType.MakeGenericType(eventType);
                 var method = type.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.Handle))!;
                 return (type, method);

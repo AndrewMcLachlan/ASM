@@ -1,5 +1,5 @@
-using Asm.Drawing;
 using System.Text.Json;
+using Asm.Drawing;
 
 namespace Asm.Tests;
 
@@ -22,7 +22,7 @@ public class HexColourSteps(ScenarioContext context)
     {
         _hexColour = hexColour;
     }
-    
+
     [Given("I have a uint {int}")]
     public void GivenIHaveAUint(int uintColour)
     {

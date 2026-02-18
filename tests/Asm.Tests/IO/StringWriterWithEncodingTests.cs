@@ -9,7 +9,7 @@ namespace Asm.Tests.IO;
 
 public class StringWriterWithEncodingTests
 {
-    public static readonly List<object[]> encodings = [new Encoding[] { Encoding.UTF8 }, new Encoding[] { Encoding.ASCII }, new Encoding[] { Encoding.Latin1 } ];
+    public static readonly List<object[]> encodings = [new Encoding[] { Encoding.UTF8 }, new Encoding[] { Encoding.ASCII }, new Encoding[] { Encoding.Latin1 }];
 
     [Theory]
     [MemberData(nameof(encodings))]

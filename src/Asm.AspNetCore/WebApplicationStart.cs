@@ -36,7 +36,7 @@ public class WebApplicationStart
         {
             Log.Information($"{appName} Starting...");
 
-            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ApplicationName = appName, Args = args,  });
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ApplicationName = appName, Args = args, });
 
             if (builder.Environment.IsDevelopment())
             {

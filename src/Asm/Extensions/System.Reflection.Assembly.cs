@@ -10,7 +10,7 @@ public static class AssemblyExtensions
     /// <summary>
     /// Gets the entry assembly's version.
     /// </summary>
-    public static Version? Version (this Assembly assembly) => assembly.GetName().Version;
+    public static Version? Version(this Assembly assembly) => assembly.GetName().Version;
 
     /// <summary>
     /// Gets the entry assembly's file version information.

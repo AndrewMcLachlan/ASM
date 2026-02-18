@@ -11,7 +11,7 @@ public class DescribedValidator<T> : AbstractValidator<T> where T : IDescribed, 
     /// <summary>
     /// Initializes a new instance of the <see cref="DescribedValidator{T}"/> class.
     /// </summary>
-    public DescribedValidator() : this(50,255) { }
+    public DescribedValidator() : this(50, 255) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DescribedValidator{T}"/> class.

@@ -21,7 +21,8 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
 
         var (handlerType, handleMethod) = cache.GetOrAdd(
             $"{HandlerInfoCacheKeyPrefix}Query_{queryType.FullName}_{responseType.FullName}",
-            () => {
+            () =>
+            {
                 var type = QueryHandlerGenericType.MakeGenericType(queryType, responseType);
                 var method = type.GetMethod(nameof(IQueryHandler<IQuery<TResponse>, TResponse>.Handle))!;
                 return (type, method);
@@ -41,7 +42,8 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
         // Cache both type and method in a single operation
         var (handlerType, handleMethod) = cache.GetOrAdd(
             $"{HandlerInfoCacheKeyPrefix}Command_{commandType.FullName}_{responseType.FullName}",
-            () => {
+            () =>
+            {
                 var type = CommandHandlerGenericType.MakeGenericType(commandType, responseType);
                 var method = type.GetMethod(nameof(ICommandHandler<ICommand<TResponse>, TResponse>.Handle))!;
                 return (type, method);
@@ -60,7 +62,8 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
         // Cache both type and method in a single operation
         var (handlerType, handleMethod) = cache.GetOrAdd(
             $"{HandlerInfoCacheKeyPrefix}CommandVoid_{commandType.FullName}",
-            () => {
+            () =>
+            {
                 var type = CommandHandlerVoidGenericType.MakeGenericType(commandType);
                 var method = type.GetMethod(nameof(ICommandHandler<ICommand>.Handle))!;
                 return (type, method);

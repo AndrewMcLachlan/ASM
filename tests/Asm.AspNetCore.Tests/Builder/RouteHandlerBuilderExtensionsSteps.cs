@@ -78,8 +78,8 @@ public class RouteHandlerBuilderExtensionsSteps : IDisposable
 
 public class TestRequest
 {
-    public string Name { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
+    public string Name { get; set; } = String.Empty;
+    public string Email { get; set; } = String.Empty;
 }
 
 public class TestRequestValidator : AbstractValidator<TestRequest>

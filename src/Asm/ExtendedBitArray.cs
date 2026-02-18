@@ -172,7 +172,7 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneabl
     {
         byte[] temp = new byte[(int)Math.Ceiling(_bitArray.Length / 8d)];
 
-        for (int i = 0; i < temp.Length; i+=8)
+        for (int i = 0; i < temp.Length; i += 8)
         {
             temp[i] = (byte)ToUnsigned(1, i);
         }
