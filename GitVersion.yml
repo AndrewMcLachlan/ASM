@@ -6,3 +6,5 @@ branches:
     mode: ContinuousDeployment
   feature:
     label: beta
+  pull-request:
+    label: beta
