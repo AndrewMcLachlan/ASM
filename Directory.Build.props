@@ -12,7 +12,6 @@
     <Company />
     <Copyright>© 2011-$([System.DateTime]::Now.Year) Andrew McLachlan</Copyright>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <Version>3.6.0</Version>
   </PropertyGroup>
 
 
