@@ -21,17 +21,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6.0.2
+      with:
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.x
 
-    - name: Set version number
-      id: set-version-number
-      uses: andrewmclachlan/actions/set-version-number@v4
+    - name: Setup GitVersion
+      uses: gittools/actions/gitversion/setup@v4.2.0
       with:
-        project: 'src/Asm'
-        version-property-name: 'Version'
+        versionSpec: '6.x'
+    - name: Execute GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v4.2.0
+    - name: Set version
+      id: set-version-number
+      run: |
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          echo "version=${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.commitsSinceVersionSource }}" >> "$GITHUB_OUTPUT"
+        else
+          echo "version=${{ steps.gitversion.outputs.semVer }}" >> "$GITHUB_OUTPUT"
+        fi
+    - run: echo "::notice::Version ${{ steps.set-version-number.outputs.version }}"
 
     - name: Restore
       run: dotnet restore Asm.slnx
