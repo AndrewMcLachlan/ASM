@@ -28,7 +28,7 @@ public class BodyTagHelper : TagHelper
 
         if (output.Attributes.Any(a => a.Name == "class"))
         {
-            className = className.Append(output.Attributes["class"].Value as string ?? String.Empty, " ");
+            className = className.Append(output.Attributes["class"].Value.ToString() ?? String.Empty, " ");
             output.Attributes.Remove(output.Attributes["class"]);
         }
 
