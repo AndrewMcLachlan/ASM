@@ -51,6 +51,12 @@ public abstract class IntegrityTagHelper : TagHelper
     protected abstract string UrlOutputAttributeName { get; }
 
     /// <summary>
+    /// Gets or sets the SHA algorithm used to compute the integrity hash.
+    /// </summary>
+    [HtmlAttributeName("sha-algorithm")]
+    public ShaAlgorithm ShaAlgorithm { get; set; } = ShaAlgorithm.Sha512;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="IntegrityTagHelper"/> class.
     /// </summary>
     /// <param name="urlHelperFactory">A URL helper factory.</param>
@@ -73,7 +79,9 @@ public abstract class IntegrityTagHelper : TagHelper
 
         if (String.IsNullOrEmpty(url)) return;
 
-        if (!HostingEnvironment.IsDevelopment() && MemoryCache.TryGetValue(url, out (string Url, string Hash) data))
+        string cacheKey = $"{url}|{ShaAlgorithm}";
+
+        if (!HostingEnvironment.IsDevelopment() && MemoryCache.TryGetValue(cacheKey, out (string Url, string Hash) data))
         {
             output.Attributes.RemoveAll(UrlSourceAttributeName);
             output.Attributes.RemoveAll(UrlOutputAttributeName);
@@ -94,15 +102,29 @@ public abstract class IntegrityTagHelper : TagHelper
             return;
         }
 
-        var hashAlgo = System.Security.Cryptography.SHA512.Create() ?? throw new InvalidOperationException("Unable to create SHA-512 hash algorithm");
+        using var hashAlgo = ShaAlgorithm switch
+        {
+            ShaAlgorithm.Sha256 => (System.Security.Cryptography.HashAlgorithm)System.Security.Cryptography.SHA256.Create(),
+            ShaAlgorithm.Sha384 => System.Security.Cryptography.SHA384.Create(),
+            ShaAlgorithm.Sha512 => System.Security.Cryptography.SHA512.Create(),
+            _ => throw new InvalidOperationException($"Unsupported SHA algorithm: {ShaAlgorithm}"),
+        };
 
         using FileStream file = File.OpenRead(path);
         byte[] hash = hashAlgo.ComputeHash(file);
 
-        string hashBase64 = "sha512-" + Convert.ToBase64String(hash);
+        string prefix = ShaAlgorithm switch
+        {
+            ShaAlgorithm.Sha256 => "sha256",
+            ShaAlgorithm.Sha384 => "sha384",
+            ShaAlgorithm.Sha512 => "sha512",
+            _ => throw new InvalidOperationException($"Unsupported SHA algorithm: {ShaAlgorithm}"),
+        };
+
+        string hashBase64 = $"{prefix}-" + Convert.ToBase64String(hash);
         string calculatedUrl = UrlHelper.Content(url.Replace("$v", Math.Abs(hashBase64.GetHashCode()).ToString()));
 
-        MemoryCache.Set(url, (calculatedUrl, hashBase64));
+        MemoryCache.Set(cacheKey, (calculatedUrl, hashBase64));
 
         output.Attributes.RemoveAll(UrlSourceAttributeName);
         output.Attributes.RemoveAll(UrlOutputAttributeName);
