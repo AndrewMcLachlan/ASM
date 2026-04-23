@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Asm.Umbraco.Authentication.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Asm.Umbraco\Asm.Umbraco.csproj" />
   </ItemGroup>
 
