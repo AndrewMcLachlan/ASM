@@ -8,6 +8,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="SixLabors.ImageSharp" />
     <PackageReference Include="Umbraco.Cms.Core" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" />
   </ItemGroup>
 
   <ItemGroup>
