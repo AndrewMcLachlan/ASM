@@ -116,6 +116,9 @@
   <Project Path="src/Asm.Umbraco/Asm.Umbraco.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
+  <Project Path="src/Asm.Umbraco.Authentication/Asm.Umbraco.Authentication.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
   <Project Path="src/Asm.Win32/Asm.Win32.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
