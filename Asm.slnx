@@ -61,6 +61,9 @@
     <Project Path="tests/Asm.Tests/Asm.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
+    <Project Path="tests/Asm.Umbraco.Tests/Asm.Umbraco.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.Win32.Tests/Asm.Win32.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
