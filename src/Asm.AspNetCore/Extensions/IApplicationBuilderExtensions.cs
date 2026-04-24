@@ -32,7 +32,7 @@ public static class IApplicationBuilderExtensions
     /// </summary>
     /// <remarks>
     /// Adds:
-    /// - Referrer-Policy: no-referrer
+    /// - Referrer-Policy: strict-origin-when-cross-origin
     /// - Cross-Origin-Opener-Policy: same-origin-allow-popups
     /// - Cross-Origin-Embedder-Policy: require-corp
     /// - Cross-Origin-Resource-Policy: same-origin
@@ -42,22 +42,8 @@ public static class IApplicationBuilderExtensions
     /// </remarks>
     /// <param name="builder">The <see cref="IApplicationBuilder"/> instance that this method extends.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> so that calls can be chained.</returns>
-    [Obsolete("Use UseSecurityHeaders(Action<SecurityHeadersOptions>) instead, which provides "
-            + "configurable defaults and integrates with AddSecurityReporting(). "
-            + "Pass _ => {} to get the new defaults without overrides.")]
     public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder builder) =>
-        builder.Use(async (context, next) =>
-        {
-            context.Response.Headers.Append("Referrer-Policy", "no-referrer");
-            context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-            context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
-            context.Response.Headers.Append("Cross-Origin-Resource-Policy", "same-origin");
-            context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
-            context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
-            context.Response.Headers.Append("X-Permitted-Cross-Domain-Policies", "none");
-
-            await next();
-        });
+        builder.UseSecurityHeaders(options => { });
 
     /// <summary>
     /// Adds <see cref="SecurityHeadersMiddleware"/> to the pipeline with the supplied options.

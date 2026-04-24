@@ -90,6 +90,8 @@ jobs:
           - { name: "Asm.OAuth.Tests", path: "tests/Asm.OAuth.Tests" }
           - { name: "Asm.Net.Tests", path: "tests/Asm.Net.Tests" }
           - { name: "Asm.Serilog.Tests", path: "tests/Asm.Serilog.Tests" }
+          - { name: "Asm.Umbraco.Tests", path: "tests/Asm.Umbraco.Authentication.Tests" }
+          - { name: "Asm.Umbraco.Tests", path: "tests/Asm.Umbraco.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
     steps:
     - uses: actions/checkout@v6.0.2
