@@ -19,10 +19,10 @@ public class SecurityHeadersMiddlewareTests
 
     private static Task<IHost> BuildHostAsync(
         Action<SecurityHeadersOptions> configure,
-        Action<IApplicationBuilder>? extraMiddleware = null,
-        Action<IServiceCollection>? configureServices = null,
+        Action<IApplicationBuilder> extraMiddleware = null,
+        Action<IServiceCollection> configureServices = null,
         string responseContentType = "text/html",
-        string? path = null)
+        string path = null)
     {
         return new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -42,10 +42,10 @@ public class SecurityHeadersMiddlewareTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
     }
 
-    private static HttpClient GetClient(IHost host, string? path = null) =>
+    private static HttpClient GetClient(IHost host, string path = null) =>
         host.GetTestClient();
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -62,7 +62,7 @@ public class SecurityHeadersMiddlewareTests
         });
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.True(response.Headers.Contains("X-Test-Header"), "X-Test-Header missing");
@@ -82,7 +82,7 @@ public class SecurityHeadersMiddlewareTests
             responseContentType: "application/json");
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.False(response.Headers.Contains("X-Test-Header"),
@@ -117,10 +117,10 @@ public class SecurityHeadersMiddlewareTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         // Fingerprint headers should have been removed by the middleware's OnStarting callback
         Assert.False(response.Headers.Contains("Server"), "Server header should be removed");
@@ -168,10 +168,10 @@ public class SecurityHeadersMiddlewareTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/api/foo");
+        var response = await client.GetAsync("/api/foo", TestContext.Current.CancellationToken);
 
         // Exempt path — no header removal, no static header added
         Assert.True(response.Headers.Contains("Server"),
@@ -196,7 +196,7 @@ public class SecurityHeadersMiddlewareTests
         });
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.True(response.Headers.Contains("X-Request-Scheme"),
             "Dynamic header X-Request-Scheme missing");
@@ -214,7 +214,7 @@ public class SecurityHeadersMiddlewareTests
             configureServices: svc => svc.AddSecurityReporting());
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.True(response.Headers.Contains("Reporting-Endpoints"),
             "Reporting-Endpoints header missing");
@@ -233,7 +233,7 @@ public class SecurityHeadersMiddlewareTests
         using var host = await BuildHostAsync(opts => { });
 
         var client = GetClient(host);
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.False(response.Headers.Contains("Reporting-Endpoints"),
             "Reporting-Endpoints should be absent when reporting not registered");

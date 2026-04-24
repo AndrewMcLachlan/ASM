@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using Asm.AspNetCore.Reporting;
 using Microsoft.AspNetCore.Builder;
@@ -31,15 +30,15 @@ public class IEndpointRouteBuilderExtensionsTests
             string category,
             List<(string, LogLevel, string)> entries) : ILogger
         {
-            public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
+            public IDisposable BeginScope<TState>(TState state) where TState : notnull => null;
             public bool IsEnabled(LogLevel logLevel) => true;
 
             public void Log<TState>(
                 LogLevel logLevel,
                 EventId eventId,
                 TState state,
-                Exception? exception,
-                Func<TState, Exception?, string> formatter)
+                Exception exception,
+                Func<TState, Exception, string> formatter)
             {
                 entries.Add((category, logLevel, formatter(state, exception)));
             }
@@ -51,7 +50,7 @@ public class IEndpointRouteBuilderExtensionsTests
     // ──────────────────────────────────────────────────────────────────────────
 
     private static async Task<(IHost host, HttpClient client, CapturingLoggerProvider logProvider)>
-        BuildHostAsync(Action<SecurityReportingOptions>? configureReporting = null)
+        BuildHostAsync(Action<SecurityReportingOptions> configureReporting = null)
     {
         var logProvider = new CapturingLoggerProvider();
 
@@ -80,7 +79,7 @@ public class IEndpointRouteBuilderExtensionsTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         return (host, host.GetTestClient(), logProvider);
     }
@@ -96,7 +95,7 @@ public class IEndpointRouteBuilderExtensionsTests
         using (host)
         {
             var content = new StringContent("{\"blocked-uri\":\"https://evil.com\"}", Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("/reporting/integrity", content);
+            var response = await client.PostAsync("/reporting/integrity", content, TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
@@ -113,7 +112,7 @@ public class IEndpointRouteBuilderExtensionsTests
         using (host)
         {
             var content = new StringContent("{\"csp-report\":{\"violated-directive\":\"script-src\"}}", Encoding.UTF8, "application/csp-report");
-            var response = await client.PostAsync("/reporting/csp", content);
+            var response = await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         }
@@ -131,7 +130,7 @@ public class IEndpointRouteBuilderExtensionsTests
         {
             var reportBody = "{\"integrity-report\":\"test\"}";
             var content = new StringContent(reportBody, Encoding.UTF8, "application/json");
-            await client.PostAsync("/reporting/integrity", content);
+            await client.PostAsync("/reporting/integrity", content, TestContext.Current.CancellationToken);
 
             var matchingEntries = logProvider.Entries
                 .Where(e => e.Category == IEndpointRouteBuilderExtensions.IntegrityLoggerCategory &&
@@ -152,7 +151,7 @@ public class IEndpointRouteBuilderExtensionsTests
         {
             var reportBody = "{\"csp-report\":{\"violated-directive\":\"script-src\"}}";
             var content = new StringContent(reportBody, Encoding.UTF8, "application/csp-report");
-            await client.PostAsync("/reporting/csp", content);
+            await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             var matchingEntries = logProvider.Entries
                 .Where(e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory &&
@@ -177,13 +176,11 @@ public class IEndpointRouteBuilderExtensionsTests
         using (host)
         {
             // Default endpoint should not be present
-            var defaultResponse = await client.PostAsync("/reporting/integrity",
-                new StringContent("test", Encoding.UTF8, "application/json"));
+            var defaultResponse = await client.PostAsync("/reporting/integrity", new StringContent("test", Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.NotFound, defaultResponse.StatusCode);
 
             // Custom prefix endpoint should respond
-            var customResponse = await client.PostAsync("/api/reporting/integrity",
-                new StringContent("test", Encoding.UTF8, "application/json"));
+            var customResponse = await client.PostAsync("/api/reporting/integrity", new StringContent("test", Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.NoContent, customResponse.StatusCode);
         }
     }
@@ -217,12 +214,12 @@ public class IEndpointRouteBuilderExtensionsTests
                         });
                     });
                 })
-                .StartAsync();
+                .StartAsync(TestContext.Current.CancellationToken);
 
             // We may need to make a request to trigger the endpoint resolution
             var client = host.GetTestClient();
             await client.PostAsync("/reporting/integrity",
-                new StringContent("test", Encoding.UTF8, "application/json"));
+                new StringContent("test", Encoding.UTF8, "application/json"), TestContext.Current.CancellationToken);
 
             host.Dispose();
         });
@@ -242,7 +239,7 @@ public class IEndpointRouteBuilderExtensionsTests
         {
             var reportBody = "{\"csp-report\":{\"violated-directive\":\"default-src\"}}";
             var content = new StringContent(reportBody, Encoding.UTF8, "application/csp-report");
-            var response = await client.PostAsync("/reporting/csp", content);
+            var response = await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -268,7 +265,7 @@ public class IEndpointRouteBuilderExtensionsTests
         {
             // Body itself is 20 bytes; Content-Length is set accurately by StringContent.
             var content = new StringContent("12345678901234567890", Encoding.UTF8, "application/csp-report");
-            var response = await client.PostAsync("/reporting/csp", content);
+            var response = await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.RequestEntityTooLarge, response.StatusCode);
 
@@ -295,7 +292,7 @@ public class IEndpointRouteBuilderExtensionsTests
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/csp-report");
             // Deliberately omit Content-Length so only the bounded read enforces the cap.
 
-            var response = await client.PostAsync("/reporting/csp", content);
+            var response = await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.RequestEntityTooLarge, response.StatusCode);
 
@@ -318,7 +315,7 @@ public class IEndpointRouteBuilderExtensionsTests
             // Embed \r\n and a form-feed into the body to simulate log-injection attempt.
             var maliciousBody = "{\"injected\": \"value\r\nFAKE LOG ENTRY\fmore-fake\"}";
             var content = new StringContent(maliciousBody, Encoding.UTF8, "application/csp-report");
-            await client.PostAsync("/reporting/csp", content);
+            await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             var matchingEntries = logProvider.Entries
                 .Where(e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory &&
@@ -352,7 +349,7 @@ public class IEndpointRouteBuilderExtensionsTests
             // (it would throw in the HTTP client), so we test the sanitiser at the unit level by
             // verifying a clean ContentType passes through correctly and that the log entry
             // contains the content type string without control characters.
-            var response = await client.PostAsync("/reporting/csp", content);
+            var response = await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
@@ -385,13 +382,13 @@ public class IEndpointRouteBuilderExtensionsTests
             // Exactly at the cap (1024 bytes): should succeed.
             var atCapBody = new string('x', cap);
             var atCapContent = new StringContent(atCapBody, Encoding.UTF8, "application/csp-report");
-            var atCapResponse = await client.PostAsync("/reporting/csp", atCapContent);
+            var atCapResponse = await client.PostAsync("/reporting/csp", atCapContent, TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.NoContent, atCapResponse.StatusCode);
 
             // One byte over the cap: should be rejected.
             var overCapBody = new string('x', cap + 1);
             var overCapContent = new StringContent(overCapBody, Encoding.UTF8, "application/csp-report");
-            var overCapResponse = await client.PostAsync("/reporting/csp", overCapContent);
+            var overCapResponse = await client.PostAsync("/reporting/csp", overCapContent, TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.RequestEntityTooLarge, overCapResponse.StatusCode);
         }
     }

@@ -21,7 +21,7 @@ public class CanonicalUrlMiddlewareTests
     /// assert on the 301 location header directly.
     /// </summary>
     private static async Task<(IHost host, HttpClient client)> BuildAsync(
-        Action<CanonicalUrlOptions>? configure = null)
+        Action<CanonicalUrlOptions> configure = null)
     {
         var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -38,7 +38,7 @@ public class CanonicalUrlMiddlewareTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         // Don't follow redirects — we need to inspect the 301 Location header
         var client = host.GetTestServer().CreateClient();
@@ -47,7 +47,7 @@ public class CanonicalUrlMiddlewareTests
         return (host, client);
     }
 
-    private static string? Location(HttpResponseMessage r) =>
+    private static string Location(HttpResponseMessage r) =>
         r.Headers.Location?.ToString();
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -60,7 +60,7 @@ public class CanonicalUrlMiddlewareTests
         var (host, client) = await BuildAsync();
         using (host)
         {
-            var response = await client.GetAsync("/About");
+            var response = await client.GetAsync("/About", TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
             Assert.Equal("/about", Location(response));
@@ -77,7 +77,7 @@ public class CanonicalUrlMiddlewareTests
         var (host, client) = await BuildAsync();
         using (host)
         {
-            var response = await client.GetAsync("/about/");
+            var response = await client.GetAsync("/about/", TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
             Assert.Equal("/about", Location(response));
@@ -94,7 +94,7 @@ public class CanonicalUrlMiddlewareTests
         var (host, client) = await BuildAsync();
         using (host)
         {
-            var response = await client.GetAsync("/about");
+            var response = await client.GetAsync("/about", TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
@@ -110,7 +110,7 @@ public class CanonicalUrlMiddlewareTests
         using (host)
         {
             // The default excluded extension is .pdf (case-insensitive)
-            var response = await client.GetAsync("/something.PDF");
+            var response = await client.GetAsync("/something.PDF", TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
@@ -126,7 +126,7 @@ public class CanonicalUrlMiddlewareTests
             opts.ExemptPathPrefixes = ["/umbraco"]);
         using (host)
         {
-            var response = await client.GetAsync("/Umbraco/Foo");
+            var response = await client.GetAsync("/Umbraco/Foo", TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
@@ -141,7 +141,7 @@ public class CanonicalUrlMiddlewareTests
         var (host, client) = await BuildAsync(opts => opts.ForceLowercase = false);
         using (host)
         {
-            var response = await client.GetAsync("/About");
+            var response = await client.GetAsync("/About", TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
@@ -156,7 +156,7 @@ public class CanonicalUrlMiddlewareTests
         var (host, client) = await BuildAsync(opts => opts.RemoveTrailingSlash = false);
         using (host)
         {
-            var response = await client.GetAsync("/about/");
+            var response = await client.GetAsync("/about/", TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
@@ -171,7 +171,7 @@ public class CanonicalUrlMiddlewareTests
         var (host, client) = await BuildAsync();
         using (host)
         {
-            var response = await client.GetAsync("/About?x=1");
+            var response = await client.GetAsync("/About?x=1", TestContext.Current.CancellationToken);
 
             Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
             Assert.Equal("/about?x=1", Location(response));
