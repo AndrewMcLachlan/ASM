@@ -41,10 +41,10 @@ public class IApplicationBuilderExtensionsSecurityTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         var client = host.GetTestClient();
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.True(response.Headers.Contains("X-Smoke-Test"),
@@ -72,10 +72,10 @@ public class IApplicationBuilderExtensionsSecurityTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         var client = host.GetTestClient();
-        var response = await client.GetAsync("/Hello");
+        var response = await client.GetAsync("/Hello", TestContext.Current.CancellationToken);
 
         // Default ForceLowercase=true should 301 to /hello
         Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
@@ -103,11 +103,11 @@ public class IApplicationBuilderExtensionsSecurityTests
                     });
                 });
             })
-            .StartAsync();
+            .StartAsync(TestContext.Current.CancellationToken);
 
         var client = host.GetTestClient();
         // With ForceLowercase=false, /Hello should pass through (200)
-        var response = await client.GetAsync("/Hello");
+        var response = await client.GetAsync("/Hello", TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
@@ -146,7 +146,7 @@ public class IApplicationBuilderExtensionsSecurityTests
     {
         public IServiceProvider ApplicationServices { get; set; } = null!;
         public Microsoft.AspNetCore.Http.Features.IFeatureCollection ServerFeatures { get; } = new Microsoft.AspNetCore.Http.Features.FeatureCollection();
-        public IDictionary<string, object?> Properties { get; } = new Dictionary<string, object?>();
+        public IDictionary<string, object> Properties { get; } = new Dictionary<string, object>();
         public RequestDelegate Build() => _ => Task.CompletedTask;
         public IApplicationBuilder New() => new FakeApplicationBuilder();
         public IApplicationBuilder Use(Func<RequestDelegate, RequestDelegate> middleware) => this;

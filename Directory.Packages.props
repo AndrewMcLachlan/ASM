@@ -33,6 +33,7 @@
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
     <PackageVersion Include="LazyCache" Version="2.4.0" />
     <PackageVersion Include="LazyCache.AspNetCore" Version="2.4.0" />
+    <PackageVersion Include="MailKit" Version="4.16.0" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions" Version="5.2.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
     <PackageVersion Include="ModelContextProtocol" Version="1.2.0" />
@@ -52,7 +53,8 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="Serilog.Sinks.Seq" Version="9.0.0" />
     <PackageVersion Include="Serilog.Sinks.Trace" Version="4.0.0" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.5" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="2.1.13" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.7" />
     <PackageVersion Include="Umbraco.Cms.Api.Management" Version="17.3.4" />
     <PackageVersion Include="Umbraco.Cms.Core" Version="17.3.4" />
     <PackageVersion Include="Umbraco.Cms.Infrastructure" Version="17.3.4" />
