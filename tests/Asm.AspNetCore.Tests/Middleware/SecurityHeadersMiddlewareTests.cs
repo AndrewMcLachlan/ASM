@@ -49,16 +49,126 @@ public class SecurityHeadersMiddlewareTests
         host.GetTestClient();
 
     // ──────────────────────────────────────────────────────────────────────────
-    // Static headers on HTML responses
+    // Default headers emitted on HTML responses
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Theory]
+    [InlineData("Content-Security-Policy", "default-src 'self'")]
+    [InlineData("Cross-Origin-Opener-Policy", "same-origin-allow-popups")]
+    [InlineData("Cross-Origin-Embedder-Policy", "require-corp")]
+    [InlineData("Cross-Origin-Resource-Policy", "same-origin")]
+    [InlineData("X-Frame-Options", "SAMEORIGIN")]
+    [InlineData("X-Content-Type-Options", "nosniff")]
+    [InlineData("Referrer-Policy", "strict-origin-when-cross-origin")]
+    [InlineData("X-Permitted-Cross-Domain-Policies", "none")]
+    public async Task HtmlResponse_DefaultHeaders_ArePresent(string headerName, string expectedValue)
+    {
+        using var host = await BuildHostAsync(opts => { /* use all defaults */ });
+
+        var client = GetClient(host);
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.True(response.Headers.Contains(headerName), $"{headerName} missing");
+        Assert.Equal(expectedValue, response.Headers.GetValues(headerName).First());
+    }
+
+    [Fact]
+    public async Task HtmlResponse_PermissionsPolicy_NotPresentByDefault()
+    {
+        using var host = await BuildHostAsync(opts => { /* use all defaults */ });
+
+        var client = GetClient(host);
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        Assert.False(response.Headers.Contains("Permissions-Policy"),
+            "Permissions-Policy should not be emitted by default (null)");
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Individual header property overrides
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task HtmlResponse_StaticHeaders_ArePresent()
+    public async Task ContentSecurityPolicy_Override_IsUsed()
+    {
+        using var host = await BuildHostAsync(opts =>
+            opts.ContentSecurityPolicy = "default-src 'self'; img-src *");
+
+        var client = GetClient(host);
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        Assert.Equal("default-src 'self'; img-src *",
+            response.Headers.GetValues("Content-Security-Policy").First());
+    }
+
+    [Fact]
+    public async Task ReferrerPolicy_Override_IsUsed()
+    {
+        using var host = await BuildHostAsync(opts =>
+            opts.ReferrerPolicy = "no-referrer");
+
+        var client = GetClient(host);
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        Assert.Equal("no-referrer",
+            response.Headers.GetValues("Referrer-Policy").First());
+    }
+
+    [Fact]
+    public async Task PermissionsPolicy_Set_IsEmitted()
+    {
+        using var host = await BuildHostAsync(opts =>
+            opts.PermissionsPolicy = "geolocation=(), camera=()");
+
+        var client = GetClient(host);
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        Assert.True(response.Headers.Contains("Permissions-Policy"),
+            "Permissions-Policy should be present when set");
+        Assert.Equal("geolocation=(), camera=()",
+            response.Headers.GetValues("Permissions-Policy").First());
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Setting a property to null suppresses that header
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Theory]
+    [InlineData("Content-Security-Policy", nameof(SecurityHeadersOptions.ContentSecurityPolicy))]
+    [InlineData("Cross-Origin-Opener-Policy", nameof(SecurityHeadersOptions.CrossOriginOpenerPolicy))]
+    [InlineData("Cross-Origin-Embedder-Policy", nameof(SecurityHeadersOptions.CrossOriginEmbedderPolicy))]
+    [InlineData("Cross-Origin-Resource-Policy", nameof(SecurityHeadersOptions.CrossOriginResourcePolicy))]
+    [InlineData("X-Frame-Options", nameof(SecurityHeadersOptions.XFrameOptions))]
+    [InlineData("X-Content-Type-Options", nameof(SecurityHeadersOptions.XContentTypeOptions))]
+    [InlineData("Referrer-Policy", nameof(SecurityHeadersOptions.ReferrerPolicy))]
+    [InlineData("X-Permitted-Cross-Domain-Policies", nameof(SecurityHeadersOptions.XPermittedCrossDomainPolicies))]
+    public async Task NullProperty_SuppressesHeader(string headerName, string propertyName)
     {
         using var host = await BuildHostAsync(opts =>
         {
-            opts.Headers["X-Test-Header"] = "test-value";
-            opts.Headers["X-Another"] = "another-value";
+            var prop = typeof(SecurityHeadersOptions).GetProperty(propertyName)!;
+            prop.SetValue(opts, null);
+        });
+
+        var client = GetClient(host);
+        var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+        Assert.False(response.Headers.Contains(headerName),
+            $"{headerName} should be suppressed when property is null");
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // CustomHeaders dict entries appear in response
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task HtmlResponse_CustomHeaders_ArePresent()
+    {
+        using var host = await BuildHostAsync(opts =>
+        {
+            opts.CustomHeaders["X-Test-Header"] = "test-value";
+            opts.CustomHeaders["X-Another"] = "another-value";
         });
 
         var client = GetClient(host);
@@ -71,14 +181,14 @@ public class SecurityHeadersMiddlewareTests
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // Non-HTML responses do NOT get static headers
+    // Non-HTML responses do NOT get policy headers
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task NonHtmlResponse_StaticHeaders_AreNotAdded()
+    public async Task NonHtmlResponse_PolicyHeaders_AreNotAdded()
     {
         using var host = await BuildHostAsync(
-            opts => opts.Headers["X-Test-Header"] = "test-value",
+            opts => opts.CustomHeaders["X-Test-Header"] = "test-value",
             responseContentType: "application/json");
 
         var client = GetClient(host);
@@ -86,7 +196,11 @@ public class SecurityHeadersMiddlewareTests
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.False(response.Headers.Contains("X-Test-Header"),
-            "Static security headers should not be added to non-HTML responses");
+            "Custom headers should not be added to non-HTML responses");
+        Assert.False(response.Headers.Contains("Content-Security-Policy"),
+            "CSP should not be added to non-HTML responses");
+        Assert.False(response.Headers.Contains("Referrer-Policy"),
+            "Referrer-Policy should not be added to non-HTML responses");
     }
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -158,7 +272,7 @@ public class SecurityHeadersMiddlewareTests
                     {
                         opts.RemoveServerHeaders = true;
                         opts.ExemptPathPrefixes = ["/api"];
-                        opts.Headers["X-Static"] = "value";
+                        opts.CustomHeaders["X-Static"] = "value";
                     });
 
                     app.Run(async ctx =>
@@ -177,7 +291,7 @@ public class SecurityHeadersMiddlewareTests
         Assert.True(response.Headers.Contains("Server"),
             "Server header should survive on exempt path");
         Assert.False(response.Headers.Contains("X-Static"),
-            "Static headers should not be added on exempt path");
+            "Custom headers should not be added on exempt path");
     }
 
     // ──────────────────────────────────────────────────────────────────────────

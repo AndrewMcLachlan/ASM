@@ -28,7 +28,7 @@ public static class IApplicationBuilderExtensions
         });
 
     /// <summary>
-    /// Adds security headers to the middleware pipeline.
+    /// Adds a hardcoded default security-header set to the pipeline.
     /// </summary>
     /// <remarks>
     /// Adds:
@@ -42,6 +42,9 @@ public static class IApplicationBuilderExtensions
     /// </remarks>
     /// <param name="builder">The <see cref="IApplicationBuilder"/> instance that this method extends.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> so that calls can be chained.</returns>
+    [Obsolete("Use UseSecurityHeaders(Action<SecurityHeadersOptions>) instead, which provides "
+            + "configurable defaults and integrates with AddSecurityReporting(). "
+            + "Pass _ => {} to get the new defaults without overrides.")]
     public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder builder) =>
         builder.Use(async (context, next) =>
         {
@@ -62,9 +65,7 @@ public static class IApplicationBuilderExtensions
     /// <param name="app">The application builder.</param>
     /// <param name="configure">Callback to configure the security headers.</param>
     /// <returns>The application builder.</returns>
-    public static IApplicationBuilder UseSecurityHeaders(
-        this IApplicationBuilder app,
-        Action<SecurityHeadersOptions> configure)
+    public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app, Action<SecurityHeadersOptions> configure)
     {
         ArgumentNullException.ThrowIfNull(app);
         ArgumentNullException.ThrowIfNull(configure);
@@ -81,9 +82,7 @@ public static class IApplicationBuilderExtensions
     /// <param name="app">The application builder.</param>
     /// <param name="configure">Optional callback to configure canonicalisation options.</param>
     /// <returns>The application builder.</returns>
-    public static IApplicationBuilder UseCanonicalUrls(
-        this IApplicationBuilder app,
-        Action<CanonicalUrlOptions>? configure = null)
+    public static IApplicationBuilder UseCanonicalUrls(this IApplicationBuilder app, Action<CanonicalUrlOptions>? configure = null)
     {
         ArgumentNullException.ThrowIfNull(app);
 
