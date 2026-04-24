@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
@@ -11,26 +10,20 @@ namespace Asm.AspNetCore.Mvc.TagHelpers;
 /// <summary>
 /// A tag helper that adds the integrity attribute to a script tag.
 /// </summary>
-public class ScriptTagHelper : IntegrityTagHelper
+/// <remarks>
+/// Initializes a new instance of the <see cref="ScriptTagHelper"/> class.
+/// </remarks>
+/// <param name="urlHelperFactory">A URL helper factory.</param>
+/// <param name="hostingEnvironment">The hosting environment.</param>
+/// <param name="memoryCache">A memory cache.</param>
+/// <param name="configuration">App configuration.</param>
+/// <param name="logger">Logger for this tag helper.</param>
+/// <exception cref="InvalidOperationException">If there is no action context.</exception>
+/// <exception cref="InvalidOperationException">If the configuration value EmitMinifiedUrls is defined but is not a <see langword="bool"/>.</exception>
+public class ScriptTagHelper(IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration, ILogger<ScriptTagHelper> logger) : IntegrityTagHelper(urlHelperFactory, hostingEnvironment, memoryCache, logger)
 {
     private string _urlAttributeName = "src";
-    private readonly bool _emitMinifiedUrls = false;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ScriptTagHelper"/> class.
-    /// </summary>
-    /// <param name="urlHelperFactory">A URL helper factory.</param>
-    /// <param name="hostingEnvironment">The hosting environment.</param>
-    /// <param name="memoryCache">A memory cache.</param>
-    /// <param name="configuration">App configuration.</param>
-    /// <param name="logger">Logger for this tag helper.</param>
-    /// <exception cref="InvalidOperationException">If there is no action context.</exception>
-    /// <exception cref="InvalidOperationException">If the configuration value EmitMinifiedUrls is defined but is not a <see langword="bool"/>.</exception>
-    public ScriptTagHelper(IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, IMemoryCache memoryCache, IConfiguration configuration, ILogger<ScriptTagHelper> logger)
-        : base(urlHelperFactory, hostingEnvironment, memoryCache, logger)
-    {
-        _emitMinifiedUrls = configuration.GetValue("EmitMinifiedUrls", false);
-    }
+    private readonly bool _emitMinifiedUrls = configuration.GetValue("EmitMinifiedUrls", false);
 
     /// <inheritdoc/>
     protected override string UrlSourceAttributeName => _urlAttributeName;
