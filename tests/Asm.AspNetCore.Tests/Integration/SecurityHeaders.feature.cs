@@ -163,7 +163,8 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.WhenAsync("I make a GET request to \'/\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 8
-    await testRunner.ThenAsync("the response should have header \'Referrer-Policy\' with value \'no-referrer\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the response should have header \'Referrer-Policy\' with value \'strict-origin-when-" +
+                        "cross-origin\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 9
     await testRunner.AndAsync("the response should have header \'Cross-Origin-Opener-Policy\' with value \'same-ori" +

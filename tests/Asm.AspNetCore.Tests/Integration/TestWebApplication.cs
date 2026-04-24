@@ -3,6 +3,7 @@ using Asm.AspNetCore.HealthChecks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -36,7 +37,7 @@ public class TestWebApplication : IDisposable
                     app.UseRouting();
                     app.UseEndpoints(endpoints =>
                     {
-                        endpoints.MapGet("/", () => "Hello World");
+                        endpoints.MapGet("/", () => Results.Content("<html><body>Hello World</body></html>", System.Net.Mime.MediaTypeNames.Text.Html));
                         endpoints.MapGet("/error", () =>
                         {
                             throw new ApplicationException("Test exception");

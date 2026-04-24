@@ -5,7 +5,7 @@ Feature: Security Headers
 Scenario: Security headers are added to responses
     Given I have a test web application
     When I make a GET request to '/'
-    Then the response should have header 'Referrer-Policy' with value 'no-referrer'
+    Then the response should have header 'Referrer-Policy' with value 'strict-origin-when-cross-origin'
     And the response should have header 'Cross-Origin-Opener-Policy' with value 'same-origin-allow-popups'
     And the response should have header 'Cross-Origin-Embedder-Policy' with value 'require-corp'
     And the response should have header 'Cross-Origin-Resource-Policy' with value 'same-origin'
