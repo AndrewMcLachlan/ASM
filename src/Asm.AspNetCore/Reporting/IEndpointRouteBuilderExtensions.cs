@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,14 +12,10 @@ namespace Microsoft.AspNetCore.Routing;
 /// </summary>
 public static class IEndpointRouteBuilderExtensions
 {
-    /// <summary>
-    /// Logger category used for integrity-report messages.
-    /// </summary>
+    /// <summary>Logger category used for integrity-report messages.</summary>
     public const string IntegrityLoggerCategory = "Asm.AspNetCore.Reporting.Integrity";
 
-    /// <summary>
-    /// Logger category used for CSP report messages.
-    /// </summary>
+    /// <summary>Logger category used for CSP report messages.</summary>
     public const string CspLoggerCategory = "Asm.AspNetCore.Reporting.Csp";
 
     /// <summary>
@@ -39,22 +36,73 @@ public static class IEndpointRouteBuilderExtensions
 
         var group = endpoints.MapGroup(options.RoutePrefix.TrimStart('/').TrimEnd('/'));
 
-        group.MapPost(options.IntegrityRoute.TrimStart('/'), async (HttpContext ctx) =>
-        {
-            using var reader = new StreamReader(ctx.Request.Body);
-            var body = await reader.ReadToEndAsync();
-            integrityLogger.LogWarning("Integrity Report ({ContentType}): {Report}", ctx.Request.ContentType, body);
-            return Results.NoContent();
-        });
+        group.MapPost(options.IntegrityRoute.TrimStart('/'),
+            (Func<HttpContext, Task<IResult>>)(async ctx => await HandleReportAsync(ctx, integrityLogger, "Integrity Report", options.MaxBodyBytes)));
 
-        group.MapPost(options.CspRoute.TrimStart('/'), async (HttpContext ctx) =>
-        {
-            using var reader = new StreamReader(ctx.Request.Body);
-            var body = await reader.ReadToEndAsync();
-            cspLogger.LogWarning("CSP Report ({ContentType}): {Report}", ctx.Request.ContentType, body);
-            return Results.NoContent();
-        });
+        group.MapPost(options.CspRoute.TrimStart('/'),
+            (Func<HttpContext, Task<IResult>>)(async ctx => await HandleReportAsync(ctx, cspLogger, "CSP Report", options.MaxBodyBytes)));
 
         return group;
+    }
+
+    private static async Task<IResult> HandleReportAsync(
+        HttpContext ctx,
+        ILogger logger,
+        string reportLabel,
+        int maxBodyBytes)
+    {
+        if (ctx.Request.ContentLength is long declaredLength && declaredLength > maxBodyBytes)
+        {
+            return Results.StatusCode(StatusCodes.Status413PayloadTooLarge);
+        }
+
+        var (body, truncated) = await ReadBoundedAsync(ctx.Request.Body, maxBodyBytes);
+
+        if (truncated)
+        {
+            return Results.StatusCode(StatusCodes.Status413PayloadTooLarge);
+        }
+
+        var contentType = SanitiseForLog(ctx.Request.ContentType);
+        var safeBody = SanitiseForLog(body);
+        logger.LogWarning("{Label} ({ContentType}): {Report}", reportLabel, contentType, safeBody);
+        return Results.NoContent();
+    }
+
+    private static async Task<(string Body, bool Truncated)> ReadBoundedAsync(Stream stream, int maxBytes)
+    {
+        using var ms = new MemoryStream();
+        var buffer = new byte[8192];
+        var total = 0;
+        int read;
+        while ((read = await stream.ReadAsync(buffer)) > 0)
+        {
+            total += read;
+            if (total > maxBytes)
+            {
+                return (string.Empty, true);
+            }
+            await ms.WriteAsync(buffer.AsMemory(0, read));
+        }
+        return (Encoding.UTF8.GetString(ms.ToArray()), false);
+    }
+
+    private static string SanitiseForLog(string? input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return string.Empty;
+        }
+
+        var sb = new StringBuilder(input.Length);
+        foreach (var c in input)
+        {
+            // Keep printable and tab (tab is common in JSON whitespace); drop other control chars.
+            if (c == '\t' || !char.IsControl(c))
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
     }
 }

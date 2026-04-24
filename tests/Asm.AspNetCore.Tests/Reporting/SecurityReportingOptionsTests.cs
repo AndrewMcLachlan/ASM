@@ -15,6 +15,7 @@ public class SecurityReportingOptionsTests
         Assert.Equal("integrity-endpoint", options.IntegrityGroupName);
         Assert.Equal("csp-endpoint", options.CspGroupName);
         Assert.Equal(86400, options.MaxAgeSeconds);
+        Assert.Equal(65536, options.MaxBodyBytes);
     }
 
     [Fact]
@@ -53,5 +54,19 @@ public class SecurityReportingOptionsTests
         };
         Assert.Equal("sri", options.IntegrityRoute);
         Assert.Equal("content-security-policy", options.CspRoute);
+    }
+
+    [Fact]
+    public void MaxBodyBytes_DefaultsTo65536()
+    {
+        var options = new SecurityReportingOptions();
+        Assert.Equal(65536, options.MaxBodyBytes);
+    }
+
+    [Fact]
+    public void MaxBodyBytes_CanBeChanged()
+    {
+        var options = new SecurityReportingOptions { MaxBodyBytes = 1024 };
+        Assert.Equal(1024, options.MaxBodyBytes);
     }
 }

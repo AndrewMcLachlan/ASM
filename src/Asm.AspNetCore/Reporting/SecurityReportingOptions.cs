@@ -37,4 +37,11 @@ public record SecurityReportingOptions
     /// <c>max_age</c> value (in seconds) emitted in the <c>Report-To</c> groups. Defaults to 24 hours.
     /// </summary>
     public int MaxAgeSeconds { get; set; } = 86400;
+
+    /// <summary>
+    /// Maximum accepted request body size for a single report, in bytes.
+    /// Requests exceeding this are rejected with HTTP 413 and no body is logged.
+    /// Defaults to 65536 (64 KiB), which is generous for standards-compliant CSP reports.
+    /// </summary>
+    public int MaxBodyBytes { get; set; } = 65536;
 }
