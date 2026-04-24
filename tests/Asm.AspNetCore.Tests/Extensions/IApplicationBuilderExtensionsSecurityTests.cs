@@ -32,7 +32,7 @@ public class IApplicationBuilderExtensionsSecurityTests
                 {
                     app.UseSecurityHeaders(opts =>
                     {
-                        opts.Headers["X-Smoke-Test"] = "ok";
+                        opts.CustomHeaders["X-Smoke-Test"] = "ok";
                     });
                     app.Run(async ctx =>
                     {

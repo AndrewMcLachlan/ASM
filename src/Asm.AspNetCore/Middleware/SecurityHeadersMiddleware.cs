@@ -27,10 +27,7 @@ public class SecurityHeadersMiddleware
     /// <param name="reportingOptions">Optional reporting options. When present (i.e.
     /// <c>AddSecurityReporting()</c> was called), the middleware emits
     /// <c>Reporting-Endpoints</c> and <c>Report-To</c> headers.</param>
-    public SecurityHeadersMiddleware(
-        RequestDelegate next,
-        IOptions<SecurityHeadersOptions> options,
-        SecurityReportingOptions? reportingOptions = null)
+    public SecurityHeadersMiddleware(RequestDelegate next, IOptions<SecurityHeadersOptions> options, SecurityReportingOptions? reportingOptions = null)
     {
         _next = next;
         _options = options.Value;
@@ -64,7 +61,17 @@ public class SecurityHeadersMiddleware
                 return Task.CompletedTask;
             }
 
-            foreach (var (name, value) in _options.Headers)
+            context.Response.Headers.AppendIfNotNull("Content-Security-Policy", _options.ContentSecurityPolicy);
+            context.Response.Headers.AppendIfNotNull("Cross-Origin-Opener-Policy", _options.CrossOriginOpenerPolicy);
+            context.Response.Headers.AppendIfNotNull("Cross-Origin-Embedder-Policy", _options.CrossOriginEmbedderPolicy);
+            context.Response.Headers.AppendIfNotNull("Cross-Origin-Resource-Policy", _options.CrossOriginResourcePolicy);
+            context.Response.Headers.AppendIfNotNull("X-Frame-Options", _options.XFrameOptions);
+            context.Response.Headers.AppendIfNotNull("X-Content-Type-Options", _options.XContentTypeOptions);
+            context.Response.Headers.AppendIfNotNull("Referrer-Policy", _options.ReferrerPolicy);
+            context.Response.Headers.AppendIfNotNull("Permissions-Policy", _options.PermissionsPolicy);
+            context.Response.Headers.AppendIfNotNull("X-Permitted-Cross-Domain-Policies", _options.XPermittedCrossDomainPolicies);
+
+            foreach (var (name, value) in _options.CustomHeaders)
             {
                 context.Response.Headers.Append(name, value);
             }
@@ -79,12 +86,8 @@ public class SecurityHeadersMiddleware
 
             if (_reportingOptions is { } reporting)
             {
-                context.Response.Headers.Append(
-                    "Reporting-Endpoints",
-                    SecurityReportingHeaderBuilder.BuildReportingEndpoints(context, reporting));
-                context.Response.Headers.Append(
-                    "Report-To",
-                    SecurityReportingHeaderBuilder.BuildReportTo(context, reporting));
+                context.Response.Headers.Append("Reporting-Endpoints", SecurityReportingHeaderBuilder.BuildReportingEndpoints(context, reporting));
+                context.Response.Headers.Append("Report-To", SecurityReportingHeaderBuilder.BuildReportTo(context, reporting));
             }
 
             return Task.CompletedTask;
@@ -95,7 +98,7 @@ public class SecurityHeadersMiddleware
 
     private bool IsExempt(string? path)
     {
-        if (string.IsNullOrEmpty(path) || _options.ExemptPathPrefixes.Count == 0)
+        if (String.IsNullOrEmpty(path) || _options.ExemptPathPrefixes.Count == 0)
         {
             return false;
         }
@@ -109,4 +112,5 @@ public class SecurityHeadersMiddleware
         }
         return false;
     }
+
 }
