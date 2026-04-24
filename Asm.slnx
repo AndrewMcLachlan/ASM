@@ -61,6 +61,12 @@
     <Project Path="tests/Asm.Tests/Asm.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
+    <Project Path="tests/Asm.Umbraco.Tests/Asm.Umbraco.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Umbraco.Authentication.Tests/Asm.Umbraco.Authentication.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.Win32.Tests/Asm.Win32.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
@@ -111,6 +117,12 @@
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Testing.Domain/Asm.Testing.Domain.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Umbraco/Asm.Umbraco.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Umbraco.Authentication/Asm.Umbraco.Authentication.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Win32/Asm.Win32.csproj">

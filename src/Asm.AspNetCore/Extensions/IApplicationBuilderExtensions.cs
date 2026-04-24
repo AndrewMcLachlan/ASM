@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Asm.AspNetCore.Middleware;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.AspNetCore.Builder;
 
@@ -53,4 +55,41 @@ public static class IApplicationBuilderExtensions
 
             await next();
         });
+
+    /// <summary>
+    /// Adds <see cref="SecurityHeadersMiddleware"/> to the pipeline with the supplied options.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="configure">Callback to configure the security headers.</param>
+    /// <returns>The application builder.</returns>
+    public static IApplicationBuilder UseSecurityHeaders(
+        this IApplicationBuilder app,
+        Action<SecurityHeadersOptions> configure)
+    {
+        ArgumentNullException.ThrowIfNull(app);
+        ArgumentNullException.ThrowIfNull(configure);
+
+        var options = new SecurityHeadersOptions();
+        configure(options);
+
+        return app.UseMiddleware<SecurityHeadersMiddleware>(Options.Create(options));
+    }
+
+    /// <summary>
+    /// Adds <see cref="CanonicalUrlMiddleware"/> to the pipeline.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="configure">Optional callback to configure canonicalisation options.</param>
+    /// <returns>The application builder.</returns>
+    public static IApplicationBuilder UseCanonicalUrls(
+        this IApplicationBuilder app,
+        Action<CanonicalUrlOptions>? configure = null)
+    {
+        ArgumentNullException.ThrowIfNull(app);
+
+        var options = new CanonicalUrlOptions();
+        configure?.Invoke(options);
+
+        return app.UseMiddleware<CanonicalUrlMiddleware>(Options.Create(options));
+    }
 }
