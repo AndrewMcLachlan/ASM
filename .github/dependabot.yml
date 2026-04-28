@@ -13,7 +13,8 @@ updates:
       day: monday
       time: "08:00"
     ignore:
-      - dependency-name: "MediatR"
+      - dependency-name: "SixLabors.ImageSharp"
+        versions: [">=3.0.0"]
 
   - package-ecosystem: github-actions
     directory: /
