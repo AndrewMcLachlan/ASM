@@ -32,7 +32,7 @@ public class TestWebApplication : IDisposable
                 });
                 webBuilder.Configure(app =>
                 {
-                    app.UseSecurityHeaders();
+                    Microsoft.AspNetCore.Builder.IApplicationBuilderExtensions.UseSecurityHeaders(app);
                     app.UseStandardExceptionHandler();
                     app.UseRouting();
                     app.UseEndpoints(endpoints =>

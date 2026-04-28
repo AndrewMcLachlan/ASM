@@ -119,7 +119,7 @@ public class IApplicationBuilderExtensionsSecurityTests
     public void UseSecurityHeaders_NullApp_ThrowsArgumentNullException()
     {
         IApplicationBuilder app = null!;
-        Assert.Throws<ArgumentNullException>(() => app.UseSecurityHeaders(_ => { }));
+        Assert.Throws<ArgumentNullException>(() => app.UseSecurityHeaders((Action<SecurityHeadersOptions>)(_ => { })));
     }
 
     [Fact]
@@ -127,8 +127,7 @@ public class IApplicationBuilderExtensionsSecurityTests
     {
         // We need a real (or minimal) IApplicationBuilder — use a basic test double
         var app = new FakeApplicationBuilder();
-        Assert.Throws<ArgumentNullException>(() =>
-            app.UseSecurityHeaders(configure: null!));
+        Assert.Throws<ArgumentNullException>(() => app.UseSecurityHeaders((Action<SecurityHeadersOptions>)null!));
     }
 
     [Fact]
