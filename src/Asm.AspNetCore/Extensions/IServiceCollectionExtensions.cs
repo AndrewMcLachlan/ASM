@@ -29,23 +29,20 @@ public static class IServiceCollectionExtensions
     ///   <item><description><c>X-Permitted-Cross-Domain-Policies</c>: <c>none</c></description></item>
     ///   <item><description>Server-fingerprint header removal</description></item>
     /// </list>
-    /// <para>HSTS is intentionally not included — use ASP.NET Core's <c>UseHsts()</c> instead.
-    /// Use <paramref name="extend"/> to override any default or add additional headers.</para>
+    /// <para>HSTS is intentionally not included — use ASP.NET Core's <c>AddHsts()</c> and <c>UseHsts()</c> instead.</para>
     /// <para><b>Auto-coupling:</b> if <see cref="AddSecurityReporting"/> was called before this
     /// method, <c>Reporting-Endpoints</c> and <c>Report-To</c> header policies are automatically
     /// included in the collection. <see cref="AddSecurityReporting"/> <b>must</b> be called first
     /// for auto-emit to work; calling it after this method has no effect on the header policies.</para>
     /// </remarks>
     /// <param name="services">The service collection.</param>
-    /// <param name="extend">Optional callback to override defaults or add additional policies.</param>
-    /// <returns>The service collection.</returns>
-    public static IServiceCollection AddStandardSecurityHeaders(this IServiceCollection services, Action<HeaderPolicyCollection>? extend = null)
+    /// <returns>The registered <see cref="HeaderPolicyCollection"/>, returned so the caller can chain additional policy configuration. Mutations to the returned instance are visible at request time because it is the same singleton registered in <paramref name="services"/>.</returns>
+    public static HeaderPolicyCollection AddStandardSecurityHeaders(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 
         var policies = new HeaderPolicyCollection();
 
-        policies.AddContentSecurityPolicy(csp => csp.AddDefaultSrc().Self());
         policies.AddCrossOriginOpenerPolicy(b => b.SameOriginAllowPopups());
         policies.AddCrossOriginEmbedderPolicy(b => b.RequireCorp());
         policies.AddCrossOriginResourcePolicy(b => b.SameOrigin());
@@ -63,10 +60,8 @@ public static class IServiceCollectionExtensions
             policies.AddSecurityReportingHeaders(reportingOptions);
         }
 
-        extend?.Invoke(policies);
-
         services.AddSingleton(policies);
-        return services;
+        return policies;
     }
 
     /// <summary>

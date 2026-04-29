@@ -40,7 +40,8 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
                 webHost.ConfigureServices(services =>
                 {
                     configureServices?.Invoke(services);
-                    services.AddStandardSecurityHeaders(extend);
+                    var policies = services.AddStandardSecurityHeaders();
+                    extend?.Invoke(policies);
                 });
                 webHost.Configure(app =>
                 {
@@ -74,7 +75,6 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // ──────────────────────────────────────────────────────────────────────────
 
     [Theory]
-    [InlineData("Content-Security-Policy", "default-src 'self'")]
     [InlineData("Cross-Origin-Opener-Policy", "same-origin-allow-popups")]
     [InlineData("Cross-Origin-Embedder-Policy", "require-corp")]
     [InlineData("Cross-Origin-Resource-Policy", "same-origin")]

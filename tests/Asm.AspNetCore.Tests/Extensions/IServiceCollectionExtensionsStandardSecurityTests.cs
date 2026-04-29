@@ -46,8 +46,9 @@ public class IServiceCollectionExtensionsStandardSecurityTests
         var provider = services.BuildServiceProvider();
         var policies = provider.GetRequiredService<HeaderPolicyCollection>();
 
-        // The collection is keyed by header name; verify the expected headers are present
-        Assert.True(policies.ContainsKey("Content-Security-Policy"), "CSP policy should be registered");
+        // The collection is keyed by header name; verify the expected headers are present.
+        // CSP is intentionally NOT a default — consumers must opt in via the returned collection.
+        Assert.False(policies.ContainsKey("Content-Security-Policy"), "CSP policy should NOT be registered by default");
         Assert.True(policies.ContainsKey("Cross-Origin-Opener-Policy"), "COOP policy should be registered");
         Assert.True(policies.ContainsKey("Cross-Origin-Embedder-Policy"), "COEP policy should be registered");
         Assert.True(policies.ContainsKey("Cross-Origin-Resource-Policy"), "CORP policy should be registered");
@@ -62,15 +63,17 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
-    public void AddStandardSecurityHeaders_WithExtend_CustomHeaderInCollection()
+    public void AddStandardSecurityHeaders_PostRegistrationMutation_VisibleViaResolvedSingleton()
     {
         var services = new ServiceCollection();
-        services.AddStandardSecurityHeaders(policies => policies.AddCustomHeader("X-Custom-Test", "custom-value"));
+        var policies = services.AddStandardSecurityHeaders();
+        policies.AddCustomHeader("X-Custom-Test", "custom-value");
 
         var provider = services.BuildServiceProvider();
-        var collection = provider.GetRequiredService<HeaderPolicyCollection>();
+        var resolved = provider.GetRequiredService<HeaderPolicyCollection>();
 
-        Assert.True(collection.ContainsKey("X-Custom-Test"), "Custom header should be present after extend callback");
+        Assert.True(resolved.ContainsKey("X-Custom-Test"), "Post-registration mutation of returned HeaderPolicyCollection should be visible on the resolved singleton.");
+        Assert.Same(policies, resolved);
     }
 
     // ──────────────────────────────────────────────────────────────────────────

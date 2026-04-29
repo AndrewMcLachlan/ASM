@@ -64,12 +64,12 @@ public static class IApplicationBuilderExtensions
 
         if (exemptPathPrefixes.Length == 0)
         {
-            return SecurityHeadersMiddlewareExtensions.UseSecurityHeaders(app, policies);
+            return app.UseSecurityHeaders(policies);
         }
 
         return app.UseWhen(
             ctx => !IsExempt(ctx.Request.Path.Value, exemptPathPrefixes),
-            branch => SecurityHeadersMiddlewareExtensions.UseSecurityHeaders(branch, policies));
+            branch => branch.UseSecurityHeaders(policies));
     }
 
     private static bool IsExempt(string? path, string[] prefixes)
