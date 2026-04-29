@@ -25,6 +25,7 @@ public class TestWebApplication : IDisposable
                 webBuilder.UseEnvironment("Development");
                 webBuilder.ConfigureServices(services =>
                 {
+                    services.AddStandardSecurityHeaders();
                     services.AddRouting();
                     services.AddProblemDetailsFactory();
                     services.AddHealthChecks()
@@ -32,7 +33,7 @@ public class TestWebApplication : IDisposable
                 });
                 webBuilder.Configure(app =>
                 {
-                    app.UseSecurityHeaders();
+                    app.UseStandardSecurityHeaders();
                     app.UseStandardExceptionHandler();
                     app.UseRouting();
                     app.UseEndpoints(endpoints =>
