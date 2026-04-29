@@ -118,16 +118,20 @@ public class IApplicationBuilderExtensionsSecurityTests
     [Fact]
     public void UseSecurityHeaders_NullApp_ThrowsArgumentNullException()
     {
+#pragma warning disable CS0618 // legacy obsolete overload
         IApplicationBuilder app = null!;
         Assert.Throws<ArgumentNullException>(() => app.UseSecurityHeaders((Action<SecurityHeadersOptions>)(_ => { })));
+#pragma warning restore CS0618
     }
 
     [Fact]
     public void UseSecurityHeaders_NullConfigure_ThrowsArgumentNullException()
     {
+#pragma warning disable CS0618 // legacy obsolete overload
         // We need a real (or minimal) IApplicationBuilder — use a basic test double
         var app = new FakeApplicationBuilder();
         Assert.Throws<ArgumentNullException>(() => app.UseSecurityHeaders((Action<SecurityHeadersOptions>)null!));
+#pragma warning restore CS0618
     }
 
     [Fact]

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+// CS0618: this file specifically exercises the obsolete legacy UseSecurityHeaders overloads.
+#pragma warning disable CS0618
+
 namespace Asm.AspNetCore.Tests.Middleware;
 
 public class SecurityHeadersMiddlewareTests

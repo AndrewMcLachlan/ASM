@@ -42,6 +42,7 @@ public static class IApplicationBuilderExtensions
     /// </remarks>
     /// <param name="builder">The <see cref="IApplicationBuilder"/> instance that this method extends.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> so that calls can be chained.</returns>
+    [Obsolete("Use AddStandardSecurityHeaders + UseStandardSecurityHeaders instead. Those wrap NetEscapades.AspNetCore.SecurityHeaders and supersede this overload, which conflicts with NetEscapades's UseSecurityHeaders extension by name. The legacy overload will be removed in a future major version.")]
     public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder builder) =>
         builder.UseSecurityHeaders((Action<SecurityHeadersOptions>)(_ => { }));
 
@@ -51,6 +52,7 @@ public static class IApplicationBuilderExtensions
     /// <param name="app">The application builder.</param>
     /// <param name="configure">Callback to configure the security headers.</param>
     /// <returns>The application builder.</returns>
+    [Obsolete("Use AddStandardSecurityHeaders + UseStandardSecurityHeaders instead. Those wrap NetEscapades.AspNetCore.SecurityHeaders and supersede this overload, which conflicts with NetEscapades's UseSecurityHeaders extension by name. The legacy overload will be removed in a future major version.")]
     public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app, Action<SecurityHeadersOptions> configure)
     {
         ArgumentNullException.ThrowIfNull(app);
