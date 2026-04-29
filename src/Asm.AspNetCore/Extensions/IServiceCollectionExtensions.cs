@@ -1,4 +1,4 @@
-﻿using Asm.AspNetCore.Reporting;
+using Asm.AspNetCore.Reporting;
 using Asm.AspNetCore.Security;
 using Asm.Security;
 using Microsoft.AspNetCore.Builder;
@@ -17,7 +17,7 @@ public static class IServiceCollectionExtensions
     /// <see cref="IApplicationBuilderExtensions.UseStandardSecurityHeaders"/>.
     /// </summary>
     /// <remarks>
-    /// Defaults applied:
+    /// <para>Defaults applied:</para>
     /// <list type="bullet">
     ///   <item><description><c>Content-Security-Policy</c>: <c>default-src 'self'</c></description></item>
     ///   <item><description><c>Cross-Origin-Opener-Policy</c>: <c>same-origin-allow-popups</c></description></item>
@@ -29,8 +29,12 @@ public static class IServiceCollectionExtensions
     ///   <item><description><c>X-Permitted-Cross-Domain-Policies</c>: <c>none</c></description></item>
     ///   <item><description>Server-fingerprint header removal</description></item>
     /// </list>
-    /// HSTS is intentionally not included — use ASP.NET Core's <c>UseHsts()</c> instead.
-    /// Use <paramref name="extend"/> to override any default or add additional headers.
+    /// <para>HSTS is intentionally not included — use ASP.NET Core's <c>UseHsts()</c> instead.
+    /// Use <paramref name="extend"/> to override any default or add additional headers.</para>
+    /// <para><b>Auto-coupling:</b> if <see cref="AddSecurityReporting"/> was called before this
+    /// method, <c>Reporting-Endpoints</c> and <c>Report-To</c> header policies are automatically
+    /// included in the collection. <see cref="AddSecurityReporting"/> <b>must</b> be called first
+    /// for auto-emit to work; calling it after this method has no effect on the header policies.</para>
     /// </remarks>
     /// <param name="services">The service collection.</param>
     /// <param name="extend">Optional callback to override defaults or add additional policies.</param>
@@ -50,6 +54,14 @@ public static class IServiceCollectionExtensions
         policies.AddReferrerPolicyStrictOriginWhenCrossOrigin();
         policies.AddCustomHeader("X-Permitted-Cross-Domain-Policies", "none");
         policies.RemoveServerHeader();
+
+        // Auto-coupling: if AddSecurityReporting was called first, the SecurityReportingOptions
+        // singleton is already registered. Lift it and apply the reporting header policies.
+        var reportingDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(SecurityReportingOptions));
+        if (reportingDescriptor?.ImplementationInstance is SecurityReportingOptions reportingOptions)
+        {
+            policies.AddSecurityReportingHeaders(reportingOptions);
+        }
 
         extend?.Invoke(policies);
 
@@ -78,9 +90,15 @@ public static class IServiceCollectionExtensions
 
     /// <summary>
     /// Registers <see cref="SecurityReportingOptions"/> in the service collection.
-    /// When registered, <see cref="Asm.AspNetCore.Middleware.SecurityHeadersMiddleware"/> automatically
-    /// emits <c>Reporting-Endpoints</c> and <c>Report-To</c> headers.
+    /// When registered before <see cref="AddStandardSecurityHeaders"/>, the resulting
+    /// <see cref="HeaderPolicyCollection"/> automatically includes <c>Reporting-Endpoints</c>
+    /// and <c>Report-To</c> header policies via
+    /// <see cref="HeaderPolicyCollectionReportingExtensions.AddSecurityReportingHeaders"/>.
     /// </summary>
+    /// <remarks>
+    /// Call this method <b>before</b> <see cref="AddStandardSecurityHeaders"/> for the
+    /// auto-coupling to take effect. Registering after has no effect on the header policies.
+    /// </remarks>
     /// <param name="services">The service collection.</param>
     /// <param name="configure">Optional callback to customise options.</param>
     /// <returns>The service collection.</returns>
@@ -94,8 +112,8 @@ public static class IServiceCollectionExtensions
         configure?.Invoke(options);
 
         // Registered as a singleton (not via services.Configure<T>) so that
-        // SecurityHeadersMiddleware can detect its absence — IOptions<T> is always
-        // resolvable and wouldn't signal "reporting not configured".
+        // AddStandardSecurityHeaders can detect its presence via FirstOrDefault —
+        // IOptions<T> is always resolvable and wouldn't signal "reporting not configured".
         services.AddSingleton(options);
         return services;
     }

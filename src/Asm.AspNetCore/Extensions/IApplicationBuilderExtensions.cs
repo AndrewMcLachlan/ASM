@@ -28,43 +28,6 @@ public static class IApplicationBuilderExtensions
         });
 
     /// <summary>
-    /// Adds a hardcoded default security-header set to the pipeline.
-    /// </summary>
-    /// <remarks>
-    /// Adds:
-    /// - Referrer-Policy: strict-origin-when-cross-origin
-    /// - Cross-Origin-Opener-Policy: same-origin-allow-popups
-    /// - Cross-Origin-Embedder-Policy: require-corp
-    /// - Cross-Origin-Resource-Policy: same-origin
-    /// - X-Content-Type-Options: nosniff
-    /// - X-Frame-Options: SAMEORIGIN
-    /// - X-Permitted-Cross-Domain-Policies: none
-    /// </remarks>
-    /// <param name="builder">The <see cref="IApplicationBuilder"/> instance that this method extends.</param>
-    /// <returns>The <see cref="IApplicationBuilder"/> so that calls can be chained.</returns>
-    [Obsolete("Use AddStandardSecurityHeaders + UseStandardSecurityHeaders instead. Those wrap NetEscapades.AspNetCore.SecurityHeaders and supersede this overload, which conflicts with NetEscapades's UseSecurityHeaders extension by name. The legacy overload will be removed in a future major version.")]
-    public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder builder) =>
-        builder.UseSecurityHeaders((Action<SecurityHeadersOptions>)(_ => { }));
-
-    /// <summary>
-    /// Adds <see cref="SecurityHeadersMiddleware"/> to the pipeline with the supplied options.
-    /// </summary>
-    /// <param name="app">The application builder.</param>
-    /// <param name="configure">Callback to configure the security headers.</param>
-    /// <returns>The application builder.</returns>
-    [Obsolete("Use AddStandardSecurityHeaders + UseStandardSecurityHeaders instead. Those wrap NetEscapades.AspNetCore.SecurityHeaders and supersede this overload, which conflicts with NetEscapades's UseSecurityHeaders extension by name. The legacy overload will be removed in a future major version.")]
-    public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app, Action<SecurityHeadersOptions> configure)
-    {
-        ArgumentNullException.ThrowIfNull(app);
-        ArgumentNullException.ThrowIfNull(configure);
-
-        var options = new SecurityHeadersOptions();
-        configure(options);
-
-        return app.UseMiddleware<SecurityHeadersMiddleware>(Options.Create(options));
-    }
-
-    /// <summary>
     /// Adds <see cref="CanonicalUrlMiddleware"/> to the pipeline.
     /// </summary>
     /// <param name="app">The application builder.</param>

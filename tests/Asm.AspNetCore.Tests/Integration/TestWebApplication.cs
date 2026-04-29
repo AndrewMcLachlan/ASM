@@ -25,6 +25,7 @@ public class TestWebApplication : IDisposable
                 webBuilder.UseEnvironment("Development");
                 webBuilder.ConfigureServices(services =>
                 {
+                    services.AddStandardSecurityHeaders();
                     services.AddRouting();
                     services.AddProblemDetailsFactory();
                     services.AddHealthChecks()
@@ -32,9 +33,7 @@ public class TestWebApplication : IDisposable
                 });
                 webBuilder.Configure(app =>
                 {
-#pragma warning disable CS0618 // legacy obsolete overload — kept until tests migrate to UseStandardSecurityHeaders
-                    Microsoft.AspNetCore.Builder.IApplicationBuilderExtensions.UseSecurityHeaders(app);
-#pragma warning restore CS0618
+                    app.UseStandardSecurityHeaders();
                     app.UseStandardExceptionHandler();
                     app.UseRouting();
                     app.UseEndpoints(endpoints =>
