@@ -62,6 +62,8 @@ public static class Authentication
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
                 ValidateAudience = _jwtOptions.OAuthOptions.ValidateAudience,
+                ValidIssuers = _jwtOptions.OAuthOptions.AdditionalIssuers,
+                ValidAudiences = _jwtOptions.OAuthOptions.AdditionalAudiences,
             };
         }
 
