@@ -16,6 +16,16 @@ public record OAuthOptions
     public required string Audience { get; init; }
 
     /// <summary>
+    /// Gets any additional audiences.
+    /// </summary>
+    public IEnumerable<string> AdditionalAudiences { get; init; } = [];
+
+    /// <summary>
+    /// Gets any additional issuers.
+    /// </summary>
+    public IEnumerable<string> AdditionalIssuers { get; init; } = [];
+
+    /// <summary>
     /// Gets or sets the client ID.
     /// </summary>
     public required string ClientId { get; init; }
