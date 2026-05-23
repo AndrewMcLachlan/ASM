@@ -15,6 +15,31 @@ updates:
     ignore:
       - dependency-name: "SixLabors.ImageSharp"
         versions: [">=3.0.0"]
+    groups:
+      microsoft:
+        patterns:
+          - "Microsoft.*"
+          - "System.*"
+      azure:
+        patterns:
+          - "Azure.*"
+      opentelemetry:
+        patterns:
+          - "OpenTelemetry.*"
+      serilog:
+        patterns:
+          - "Serilog.*"
+          - "Seq.*"
+      xunit:
+        patterns:
+          - "xunit.*"
+          - "coverlet.*"
+      umbraco:
+        patterns:
+          - "Umbraco.*"
+      reqnroll:
+        patterns:
+          - "Reqnroll.*"
 
   - package-ecosystem: github-actions
     directory: /
