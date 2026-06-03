@@ -56,7 +56,7 @@
     <PackageVersion Include="Serilog.Sinks.Trace" Version="4.0.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="2.1.13" />
     <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.8" />
-    <PackageVersion Include="Umbraco.Cms.Api.Management" Version="17.3.4" />
+    <PackageVersion Include="Umbraco.Cms.Api.Management" Version="17.4.2" />
     <PackageVersion Include="Umbraco.Cms.Core" Version="17.4.2" />
     <PackageVersion Include="Umbraco.Cms.Infrastructure" Version="17.4.2" />
     <PackageVersion Include="Umbraco.Cms.Web.Common" Version="17.4.2" />
