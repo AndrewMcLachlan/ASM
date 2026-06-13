@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6.0.2
+    - uses: actions/checkout@v6.0.3
       with:
         fetch-depth: 0
     - name: Setup .NET
@@ -94,7 +94,7 @@ jobs:
           - { name: "Asm.Umbraco.Tests", path: "tests/Asm.Umbraco.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
     steps:
-    - uses: actions/checkout@v6.0.2
+    - uses: actions/checkout@v6.0.3
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
@@ -116,7 +116,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-    - uses: actions/checkout@v6.0.2
+    - uses: actions/checkout@v6.0.3
     
     - name: Download all coverage reports
       uses: actions/download-artifact@v8
