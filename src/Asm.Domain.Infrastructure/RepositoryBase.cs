@@ -44,7 +44,7 @@ public abstract class RepositoryBase<TContext, TEntity, TKey>(TContext context) 
     }
 
     /// <inheritdoc/>
-    public async Task<TEntity> Get(TKey id, ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity> Get(TKey id, ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
     {
         var query = specification.Apply(Entities);
 
