@@ -41,14 +41,17 @@ internal static class Handlers
     #endregion
 
     #region Advanced CQRS Handlers
-    internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult>
+    internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult> =>
+        CreateCreateHandler<TRequest, TResult>(routeName, (_, result) => getRouteParams(result), binding);
+
+    internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TRequest, TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult>
     {
         return ParameterBinding<TRequest, TResult>(
             async (request, dispatcher, cancellationToken) =>
             {
                 var result = await dispatcher.Dispatch(request!, cancellationToken);
 
-                return Results.CreatedAtRoute(routeName, getRouteParams(result), result);
+                return Results.CreatedAtRoute(routeName, getRouteParams(request, result), result);
             },
             binding
         );
