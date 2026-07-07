@@ -39,16 +39,25 @@ public abstract class RepositoryBase<TContext, TEntity, TKey>(TContext context) 
     /// <inheritdoc/>
     public virtual async Task<TEntity> Get(TKey id, CancellationToken cancellationToken = default)
     {
-        var entity = await Entities.SingleOrDefaultAsync(t => t.Id.Equals(id), cancellationToken);
+        var entity = await GetById(id).SingleOrDefaultAsync(cancellationToken);
         return entity ?? throw new NotFoundException();
     }
 
     /// <inheritdoc/>
     public virtual async Task<TEntity> Get(TKey id, ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
     {
-        var query = specification.Apply(Entities);
-
-        var entity = await query.SingleOrDefaultAsync(t => t.Id.Equals(id), cancellationToken);
+        var entity = await specification.Apply(GetById(id)).SingleOrDefaultAsync(cancellationToken);
         return entity ?? throw new NotFoundException();
     }
+
+    /// <summary>
+    /// Gets a query for a single entity by ID.
+    /// </summary>
+    /// <remarks>
+    /// Override to apply filtering (e.g. tenancy or ownership checks) that all
+    /// <see cref="Get(TKey, CancellationToken)"/> overloads should honour.
+    /// </remarks>
+    /// <param name="id">The ID of the entity.</param>
+    /// <returns>A query filtered to the matching entity.</returns>
+    protected virtual IQueryable<TEntity> GetById(TKey id) => Entities.Where(t => t.Id.Equals(id));
 }
