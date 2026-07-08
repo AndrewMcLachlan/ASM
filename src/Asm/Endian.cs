@@ -6,11 +6,11 @@ namespace Asm;
 public enum Endian
 {
     /// <summary>
-    /// The first bit is the least significant.
+    /// The most significant byte comes first.
     /// </summary>
     BigEndian,
     /// <summary>
-    /// The last bit is the least significant.
+    /// The least significant byte comes first.
     /// </summary>
     LittleEndian
 }

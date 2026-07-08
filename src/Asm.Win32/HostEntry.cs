@@ -38,9 +38,6 @@ public class HostEntry
     {
         get
         {
-            //if (Address == null && !String.IsNullOrEmpty(Alias)) throw new ArgumentException();
-            //else if (Address != null && String.IsNullOrEmpty(Alias)) throw new ArgumentException();
-            //else if (Address == null && String.IsNullOrEmpty(Alias) && String.IsNullOrEmpty(comment)) EntryType = HostEntryType.Blank;
             if (Address == null && String.IsNullOrEmpty(Alias) && IsCommented) return HostEntryType.Comment;
             else if (Address != null && !String.IsNullOrEmpty(Alias) && !IsCommented)
             {
@@ -63,14 +60,7 @@ public class HostEntry
     public bool IsCommented
     {
         get { return _isCommented; }
-        set
-        {
-            /*if (!value && (Address == null || String.IsNullOrEmpty(Alias)))
-            {
-                throw new InvalidOperationException();
-            }*/
-            _isCommented = value;
-        }
+        set { _isCommented = value; }
     }
     #endregion
 
@@ -140,9 +130,6 @@ public class HostEntry
                 format += "{3}";
                 break;
             case HostEntryType.Blank:
-                break;
-            default:
-                format = String.Empty;
                 break;
         }
 

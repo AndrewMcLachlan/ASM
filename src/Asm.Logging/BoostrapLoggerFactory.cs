@@ -37,12 +37,6 @@ public static class BootstrapLoggerFactory
             {
                 Console.WriteLine("Seq:Host not defined, seq logging disabled.");
             }
-
-            builder.AddFilter((category, level) =>
-            {
-                // You can add custom filtering logic here if needed
-                return level >= LogLevel.Information;
-            });
         });
 
         var bootstrapLogger = loggerFactory.CreateLogger($"Bootstrap.{appName}");

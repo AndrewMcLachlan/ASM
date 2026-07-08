@@ -246,26 +246,6 @@ public readonly struct ByteArray
     #endregion
 
     #region Private Methods
-    private readonly ushort ToUInt16BE()
-    {
-        if (_bytes.Length > 2)
-        {
-            throw new OverflowException("The array is too big to be converted.");
-        }
-        Span<byte> span = _bytes;
-        return (ushort)(span[0] << 8 | span[1]);
-    }
-
-    private readonly ushort ToUInt16LE()
-    {
-        if (_bytes.Length > 2)
-        {
-            throw new OverflowException("The array is too big to be converted.");
-        }
-        Span<byte> span = _bytes;
-        return (ushort)(span[1] << 8 | span[0]);
-    }
-
     private readonly T ConvertArray<T>(int maxByteLength, Converter<T> converter) where T : struct
     {
         if (_bytes.Length > maxByteLength)
