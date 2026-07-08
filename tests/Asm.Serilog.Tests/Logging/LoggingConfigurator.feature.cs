@@ -105,7 +105,7 @@ namespace Asm.Serilog.Tests.Logging
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Logging/LoggingConfigurator.feature.ndjson", 7);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Logging/LoggingConfigurator.feature.ndjson", 18);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -331,6 +331,149 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 39
     await testRunner.ThenAsync("an exception of type \'System.ArgumentNullException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.TheoryAttribute(DisplayName="ConfigureLogging maps Microsoft log level names to Serilog levels")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "LoggingConfigurator")]
+        [global::Xunit.TraitAttribute("Description", "ConfigureLogging maps Microsoft log level names to Serilog levels")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.InlineDataAttribute("Trace", "Verbose", "5", new string[0])]
+        [global::Xunit.InlineDataAttribute("Debug", "Debug", "6", new string[0])]
+        [global::Xunit.InlineDataAttribute("Information", "Information", "7", new string[0])]
+        [global::Xunit.InlineDataAttribute("Warning", "Warning", "8", new string[0])]
+        [global::Xunit.InlineDataAttribute("Error", "Error", "9", new string[0])]
+        [global::Xunit.InlineDataAttribute("Critical", "Fatal", "10", new string[0])]
+        [global::Xunit.InlineDataAttribute("None", "Off", "11", new string[0])]
+        [global::Xunit.InlineDataAttribute("Verbose", "Verbose", "12", new string[0])]
+        [global::Xunit.InlineDataAttribute("Fatal", "Fatal", "13", new string[0])]
+        public async global::System.Threading.Tasks.Task ConfigureLoggingMapsMicrosoftLogLevelNamesToSerilogLevels(string level, string expected, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("level", level);
+            argumentsOfScenario.Add("expected", expected);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ConfigureLogging maps Microsoft log level names to Serilog levels", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 42
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 43
+    await testRunner.GivenAsync("I have a LoggerConfiguration", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 44
+    await testRunner.AndAsync(string.Format("I have a configuration with default log level \'{0}\'", level), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 45
+    await testRunner.AndAsync("I have a host environment for \'TestApp\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 46
+    await testRunner.WhenAsync("I call ConfigureLogging with configuration and environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 47
+    await testRunner.ThenAsync(string.Format("a logger created from the result has minimum level \'{0}\'", expected), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="ConfigureLogging with a log level override of None does not throw")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "LoggingConfigurator")]
+        [global::Xunit.TraitAttribute("Description", "ConfigureLogging with a log level override of None does not throw")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ConfigureLoggingWithALogLevelOverrideOfNoneDoesNotThrow()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "14";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ConfigureLogging with a log level override of None does not throw", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 62
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 63
+    await testRunner.GivenAsync("I have a LoggerConfiguration", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 64
+    await testRunner.AndAsync("I have a configuration with default log level \'Information\' and override for \'Mic" +
+                        "rosoft.Hosting.Lifetime\' set to \'None\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 65
+    await testRunner.AndAsync("I have a host environment for \'TestApp\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 66
+    await testRunner.WhenAsync("I call ConfigureLogging with configuration and environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 67
+    await testRunner.ThenAsync("the logger configuration should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="ConfigureLogging ignores unrecognised log level names")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "LoggingConfigurator")]
+        [global::Xunit.TraitAttribute("Description", "ConfigureLogging ignores unrecognised log level names")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task ConfigureLoggingIgnoresUnrecognisedLogLevelNames()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "15";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("ConfigureLogging ignores unrecognised log level names", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 70
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 71
+    await testRunner.GivenAsync("I have a LoggerConfiguration", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 72
+    await testRunner.AndAsync("I have a configuration with default log level \'NotALevel\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 73
+    await testRunner.AndAsync("I have a host environment for \'TestApp\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 74
+    await testRunner.WhenAsync("I call ConfigureLogging with configuration and environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 75
+    await testRunner.ThenAsync("the logger configuration should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

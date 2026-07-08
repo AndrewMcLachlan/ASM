@@ -9,8 +9,11 @@ public class HostsSteps(ScenarioContext context) : IDisposable
     private MemoryStream _inputStream = null!;
     private MemoryStream _outputStream = null!;
     private string _tempFilePath = null!;
+    private string _secondTempFilePath = null!;
     private string _originalSystemHostsFile = null!;
     private bool _disposed;
+
+    private const string MockHostsContent = "127.0.0.1 localhost\n127.0.0.1 testhost\n";
 
     private static readonly string StandardHostsContent = CreateStandardHostsContent();
     private static readonly string InvalidHostsContent = CreateInvalidHostsContent();
@@ -53,7 +56,7 @@ public class HostsSteps(ScenarioContext context) : IDisposable
     public void GivenIHaveAMockHostsFileOnDisk()
     {
         _tempFilePath = Path.Combine(Path.GetTempPath(), $"hosts_test_{Guid.NewGuid()}.txt");
-        File.WriteAllText(_tempFilePath, "127.0.0.1 localhost\n127.0.0.1 testhost\n");
+        File.WriteAllText(_tempFilePath, MockHostsContent);
     }
 
     [Given(@"I have a mock hosts file configured as the system hosts file")]
@@ -61,9 +64,28 @@ public class HostsSteps(ScenarioContext context) : IDisposable
     {
         _originalSystemHostsFile = Hosts.SystemHostsFile;
         _tempFilePath = Path.Combine(Path.GetTempPath(), $"hosts_test_{Guid.NewGuid()}.txt");
-        File.WriteAllText(_tempFilePath, "127.0.0.1 localhost\n127.0.0.1 testhost\n");
+        File.WriteAllText(_tempFilePath, MockHostsContent);
         Hosts.SystemHostsFile = _tempFilePath;
         Hosts.ResetInstance();
+    }
+
+    [Given(@"I have a second mock hosts file on disk")]
+    public void GivenIHaveASecondMockHostsFileOnDisk()
+    {
+        _secondTempFilePath = Path.Combine(Path.GetTempPath(), $"hosts_test_{Guid.NewGuid()}.txt");
+        File.WriteAllText(_secondTempFilePath, MockHostsContent);
+    }
+
+    [Given(@"I create a Hosts instance from the second file path")]
+    public void GivenICreateAHostsInstanceFromTheSecondFilePath()
+    {
+        _hosts = new Hosts(_secondTempFilePath);
+    }
+
+    [Given(@"I have a hosts file stream with an address-only entry")]
+    public void GivenIHaveAHostsFileStreamWithAnAddressOnlyEntry()
+    {
+        _inputStream = new MemoryStream(Encoding.UTF8.GetBytes("127.0.0.1\n127.0.0.2 host2\n"));
     }
 
     [Given(@"I create a Hosts instance from the stream")]
@@ -108,10 +130,31 @@ public class HostsSteps(ScenarioContext context) : IDisposable
         context.CatchException(() => _hosts = new Hosts(_tempFilePath));
     }
 
+    [Given(@"I access the Current hosts instance")]
     [When(@"I access the Current hosts instance")]
     public void WhenIAccessTheCurrentHostsInstance()
     {
         _hosts = Hosts.Current;
+    }
+
+    [When(@"I remove the last entry")]
+    public void WhenIRemoveTheLastEntry()
+    {
+        _hosts.Entries.RemoveAt(_hosts.Entries.Count - 1);
+    }
+
+    [When(@"I write the hosts file")]
+    public void WhenIWriteTheHostsFile()
+    {
+        _hosts.WriteHostsToFile();
+    }
+
+    [When(@"I configure a second mock hosts file as the system hosts file")]
+    public void WhenIConfigureASecondMockHostsFileAsTheSystemHostsFile()
+    {
+        _secondTempFilePath = Path.Combine(Path.GetTempPath(), $"hosts_test_{Guid.NewGuid()}.txt");
+        File.WriteAllText(_secondTempFilePath, "127.0.0.1 localhost\n127.0.0.1 testhost\n127.0.0.1 newhost\n");
+        Hosts.SystemHostsFile = _secondTempFilePath;
     }
 
     [When(@"I update the mock hosts file with new content")]
@@ -190,6 +233,19 @@ public class HostsSteps(ScenarioContext context) : IDisposable
         Assert.True(_hosts.Entries[index].IsCommented);
     }
 
+    [Then(@"the second mock hosts file should have (.*) entries on disk")]
+    public void ThenTheSecondMockHostsFileShouldHaveEntriesOnDisk(int count)
+    {
+        using Hosts reread = new(_secondTempFilePath);
+        Assert.Equal(count, reread.Entries.Count);
+    }
+
+    [Then(@"the system hosts file should be unchanged")]
+    public void ThenTheSystemHostsFileShouldBeUnchanged()
+    {
+        Assert.Equal(MockHostsContent, File.ReadAllText(_tempFilePath));
+    }
+
     [Then(@"the output stream should contain the hosts content")]
     public void ThenTheOutputStreamShouldContainTheHostsContent()
     {
@@ -227,15 +283,18 @@ public class HostsSteps(ScenarioContext context) : IDisposable
                     Hosts.SystemHostsFile = _originalSystemHostsFile;
                 }
 
-                if (_tempFilePath != null && File.Exists(_tempFilePath))
+                foreach (string? path in new[] { _tempFilePath, _secondTempFilePath })
                 {
-                    try
+                    if (path != null && File.Exists(path))
                     {
-                        File.Delete(_tempFilePath);
-                    }
-                    catch
-                    {
-                        // Ignore cleanup errors
+                        try
+                        {
+                            File.Delete(path);
+                        }
+                        catch
+                        {
+                            // Ignore cleanup errors
+                        }
                     }
                 }
             }

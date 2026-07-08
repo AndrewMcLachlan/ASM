@@ -90,6 +90,7 @@ jobs:
           - { name: "Asm.OAuth.Tests", path: "tests/Asm.OAuth.Tests" }
           - { name: "Asm.Net.Tests", path: "tests/Asm.Net.Tests" }
           - { name: "Asm.Serilog.Tests", path: "tests/Asm.Serilog.Tests" }
+          - { name: "Asm.Testing.Domain.Tests", path: "tests/Asm.Testing.Domain.Tests" }
           - { name: "Asm.Umbraco.Authentication.Tests", path: "tests/Asm.Umbraco.Authentication.Tests" }
           - { name: "Asm.Umbraco.Tests", path: "tests/Asm.Umbraco.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
@@ -109,7 +110,7 @@ jobs:
         fi
 
     - name: Test ${{ matrix.test-project.name }}
-      run: dotnet test ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj --filter '(Category=Unit|Category=Integration)&FullyQualifiedName!~Testing' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults/${{ matrix.test-project.name }} --configuration Release --settings coverlet.runsettings
+      run: dotnet test ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj --filter '(Category=Unit|Category=Integration)' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults/${{ matrix.test-project.name }} --configuration Release --settings coverlet.runsettings
 
     - name: Upload coverage for ${{ matrix.test-project.name }}
       uses: actions/upload-artifact@v7.0.1

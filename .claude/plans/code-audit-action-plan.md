@@ -31,27 +31,27 @@ Derived from [docs/code-audit-2026-07-08.md](../../docs/code-audit-2026-07-08.md
 
 Highest-value fixes; all non-breaking. Test-first for each.
 
-### 1a. Asm.Win32 `Hosts`
-- [ ] `WriteHostsToFile(string)`: replace `File.OpenWrite` with `File.Create` (truncate). Test: load N entries, remove some, save, reload — no trailing garbage.
-- [ ] Parameterless `WriteHostsToFile()`: write to `_hostsFile`, not `SystemHostsFile`. Test: custom-path instance saves to its own file.
-- [ ] Fix single-token line parsing (`entryMatch` regex backtracking → `FormatException`). Test: file containing a bare `127.0.0.1` line loads without throwing.
-- [ ] Make `SystemHostsFile` setter call `ResetInstance()` (matches its docs); clear `_instance` on dispose.
+### 1a. Asm.Win32 `Hosts` — DONE
+- [x] `WriteHostsToFile(string)`: `File.OpenWrite` → `File.Create` (truncate). Tested: remove entry, save, reload — no trailing garbage.
+- [x] Parameterless `WriteHostsToFile()`: writes to `_hostsFile ?? SystemHostsFile`. Tested: custom-path instance saves to its own file, fake system file untouched.
+- [x] Single-token line parsing: entry regexes rewritten (`^([^\s#]+)(?:\s+([^#]+))?$` etc.); a bare valid IP loads as an alias-less entry, non-IP tokens still throw `FormatException`.
+- [x] `SystemHostsFile` setter now calls `ResetInstance()` (matches docs); `Dispose` clears `_instance`; `ResetInstance` disposes outside the lock.
 
-### 1b. Asm.Testing.Domain
-- [ ] `MockDbSet.cs:38` + `MockDbSetFactory.cs:36`: make the async-enumerator setup lazy (`.Returns(() => new TestAsyncEnumerator<T>(data.GetEnumerator()))`). Fix in **both** files.
-- [ ] Create a test project for Asm.Testing.Domain; first test: `ToListAsync()` twice on one mock returns equal lists.
+### 1b. Asm.Testing.Domain — DONE
+- [x] Async-enumerator setup made lazy in both `MockDbSet` and `MockDbSetFactory`.
+- [x] New `tests/Asm.Testing.Domain.Tests` project (added to slnx + CI matrix): double `ToListAsync`, double `await foreach`, double sync enumeration, projection. Verified failing before fix (3/5), passing after (5/5). Note: CI's `FullyQualifiedName!~Testing` filter clause was removed — it would have excluded this project entirely and no longer filtered anything else.
 
-### 1c. Asm.Logging / Asm.Serilog
-- [ ] `BootstrapLoggerFactory.Create`: stop disposing the factory before return (return the factory per its own README, or an IDisposable wrapper — decide; README and code must agree). Fix the dead `BeginScope`.
-- [ ] `LoggingConfigurator.cs:83`: map Microsoft level names (`Trace`→`Verbose`, `Critical`→`Fatal`, `None`→ skip/`Fatal+1`) instead of binding raw to `LogEventLevel`. Test with a **real** `ConfigurationBuilder.AddInMemoryCollection` containing `"Default": "Trace"` and `"X": "None"` (current Moq-based tests can't see this).
-- [ ] Support `Seq__Host` (read config/env-provider style) alongside `Seq:Host`; fix the README's invalid `export Seq:Host=` example.
-- [ ] Use `Path.Combine("logs", "Log.log")` instead of `logs\Log.log`.
+### 1c. Asm.Logging / Asm.Serilog — DONE
+- [x] `BootstrapLoggerFactory.Create` now returns a `BootstrapLogger` (ILogger + IDisposable) that owns the factory and the App/Env scope; disposing flushes providers. README updated to match (was documenting a factory return that never compiled). File renamed `BoostrapLoggerFactory.cs` → `BootstrapLoggerFactory.cs`.
+- [x] `MapLogLevel` maps Microsoft names (`Trace`→`Verbose`, `Critical`→`Fatal`, `None`→ above-Fatal silence, unknown → ignored; Serilog names still accepted). Tested with real in-memory configuration across all 9 names (old code crashed on 5 of them).
+- [x] `Seq__Host`/`Seq__APIKey` supported alongside `Seq:Host`/`Seq:APIKey` in both libraries; README examples fixed.
+- [x] `Path.Combine("logs", "Log.log")` in both overloads.
 
-### 1d. Asm.AspNetCore error pipeline
-- [ ] `ProblemDetailsFactory.cs:58`: build the validation errors dictionary the right way around (`property → messages[]`, grouping duplicates). Test: two rules sharing a message text.
-- [ ] `ProblemDetailsFactory.cs:106` + custom-handler path: set `httpContext.Response.StatusCode` from the computed problem-details status, never the reverse. Test: FluentValidation throw under `UseExceptionHandler` → wire status 400.
-- [ ] `IApplicationBuilderExtensions.cs:23`: serialize as `object` (preserve `HttpValidationProblemDetails.errors`) and use `application/problem+json`.
-- [ ] Wire up the orphaned ValidationException test step into a real scenario.
+### 1d. Asm.AspNetCore error pipeline — DONE
+- [x] Validation errors dictionary now `property → messages[]` with duplicate-message grouping. Unit + integration tests cover two failures sharing a message (old code crashed in `ToDictionary`).
+- [x] Response status set from the computed status in the validation and custom-handler branches. Integration test: `/validation-error` under `UseExceptionHandler` returns wire status 400 (was 500).
+- [x] Handler serializes as `object` (preserves `HttpValidationProblemDetails.errors`) with `application/problem+json`.
+- [x] Orphaned ValidationException step wired into real scenarios (unit + integration).
 
 ### 1e. Asm.AspNetCore misc high/medium
 - [ ] `RouteGroupBuilderExtensions.cs:17`: `GetExecutingAssembly()` → `GetCallingAssembly()` + `[MethodImpl(NoInlining)]`. Test the parameterless overload.

@@ -95,3 +95,39 @@ Scenario: Non-existent file throws ArgumentException
     Given I have a path to a non-existent hosts file
     When I create a Hosts instance from the non-existent file
     Then an exception of type 'System.ArgumentException' is thrown
+
+@Unit
+Scenario: Address-only line loads without error
+    Given I have a hosts file stream with an address-only entry
+    When I create a Hosts instance from the stream
+    Then the hosts file should have 2 entries
+    And entry 0 should have address "127.0.0.1"
+    And entry 1 should have address "127.0.0.2"
+    And entry 1 should have alias "host2"
+
+@Integration
+Scenario: Writing fewer entries truncates the hosts file
+    Given I have a mock hosts file configured as the system hosts file
+    And I create a Hosts instance from the file path
+    When I remove the last entry
+    And I write the hosts file
+    And I call Refresh
+    Then the hosts file should have 1 entries
+
+@Integration
+Scenario: Parameterless write targets the instance's own file
+    Given I have a mock hosts file configured as the system hosts file
+    And I have a second mock hosts file on disk
+    And I create a Hosts instance from the second file path
+    When I remove the last entry
+    And I write the hosts file
+    Then the second mock hosts file should have 1 entries on disk
+    And the system hosts file should be unchanged
+
+@Integration
+Scenario: Setting SystemHostsFile resets the Current instance
+    Given I have a mock hosts file configured as the system hosts file
+    And I access the Current hosts instance
+    When I configure a second mock hosts file as the system hosts file
+    And I access the Current hosts instance
+    Then the hosts file should have 3 entries

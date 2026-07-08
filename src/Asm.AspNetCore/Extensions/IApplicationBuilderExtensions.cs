@@ -21,9 +21,12 @@ public static class IApplicationBuilderExtensions
             errorApp.Run(async context =>
             {
                 var factory = context.RequestServices.GetRequiredService<Mvc.Infrastructure.ProblemDetailsFactory>();
-                context.Response.ContentType = "application/json";
 
-                await context.Response.WriteAsJsonAsync(factory.CreateProblemDetails(context));
+                var problemDetails = factory.CreateProblemDetails(context);
+
+                // Serialize as object so derived types (e.g. HttpValidationProblemDetails and its
+                // errors dictionary) are written in full, not sliced down to the base ProblemDetails.
+                await context.Response.WriteAsJsonAsync<object>(problemDetails, options: null, contentType: "application/problem+json");
             });
         });
 

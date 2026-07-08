@@ -36,4 +36,15 @@ public class ExceptionHandlerSteps(IntegrationTestContext context)
         Assert.NotNull(detail);
         Assert.Contains(expectedDetail, detail);
     }
+
+    [Then(@"the response should contain validation error for '(.*)' with message '(.*)'")]
+    public void ThenTheResponseShouldContainValidationErrorForWithMessage(string field, string message)
+    {
+        var json = JsonDocument.Parse(context.ResponseContent!);
+        var root = json.RootElement;
+
+        Assert.True(root.TryGetProperty("errors", out var errors), "ProblemDetails should have 'errors' property");
+        Assert.True(errors.TryGetProperty(field, out var fieldErrors), $"'errors' should contain field '{field}'");
+        Assert.Contains(message, fieldErrors.EnumerateArray().Select(e => e.GetString()));
+    }
 }

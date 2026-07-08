@@ -79,6 +79,25 @@ Scenario: CreateProblemDetails handles unknown exception in production
     And the problem details should not contain exception details
 
 @Unit
+Scenario: CreateProblemDetails handles FluentValidation ValidationException
+    Given I have a ProblemDetailsFactory with development environment
+    And I have an HttpContext with a FluentValidation ValidationException for field 'Name'
+    When I create problem details
+    Then the problem details should have status 400
+    And the problem details should have title 'Validation error'
+    And the problem details should have validation error for 'Name' with message 'Name is invalid'
+    And the HTTP response status code should be 400
+
+@Unit
+Scenario: CreateProblemDetails groups validation failures sharing a message
+    Given I have a ProblemDetailsFactory with development environment
+    And I have an HttpContext with a FluentValidation ValidationException with the same message on two fields
+    When I create problem details
+    Then the problem details should have status 400
+    And the problem details should have validation error for 'First' with message 'is required'
+    And the problem details should have validation error for 'Second' with message 'is required'
+
+@Unit
 Scenario: CreateValidationProblemDetails returns validation problem details
     Given I have a ProblemDetailsFactory with development environment
     And I have an HttpContext with no error

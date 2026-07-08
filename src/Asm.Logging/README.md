@@ -30,9 +30,9 @@ Use the bootstrap logger factory to create simple loggers during application sta
 using Asm.Logging;
 using Microsoft.Extensions.Logging;
 
-// Create a bootstrap logger before DI is configured
-using var loggerFactory = BootstrapLoggerFactory.Create("MyApp");
-var logger = loggerFactory.CreateLogger("Startup");
+// Create a bootstrap logger before DI is configured.
+// Disposing it flushes buffered log events (e.g. Seq) and releases the providers.
+using var logger = BootstrapLoggerFactory.Create("MyApp");
 
 logger.LogInformation("Application starting...");
 
@@ -57,7 +57,7 @@ The bootstrap logger automatically detects the environment:
 using Asm.Logging;
 
 // Automatically detects DOTNET_ENVIRONMENT or ASPNETCORE_ENVIRONMENT
-var loggerFactory = BootstrapLoggerFactory.Create("MyApp");
+using var logger = BootstrapLoggerFactory.Create("MyApp");
 
 // In Development:
 // - Includes debug logging
@@ -74,19 +74,20 @@ var loggerFactory = BootstrapLoggerFactory.Create("MyApp");
 Configure Seq logging using environment variables:
 
 ```bash
-# Set environment variables
-export Seq:Host=http://localhost:5341
-export Seq:APIKey=your-api-key-here
+# Set environment variables (double-underscore form; works in every shell)
+export Seq__Host=http://localhost:5341
+export Seq__APIKey=your-api-key-here
 ```
+
+On Windows, the colon-separated names `Seq:Host` and `Seq:APIKey` are also recognised.
 
 The bootstrap logger will automatically connect to Seq if configured:
 
 ```csharp
 using Asm.Logging;
 
-// Automatically connects to Seq if Seq:Host is set
-var loggerFactory = BootstrapLoggerFactory.Create("MyApp");
-var logger = loggerFactory.CreateLogger("Startup");
+// Automatically connects to Seq if Seq__Host (or Seq:Host) is set
+using var logger = BootstrapLoggerFactory.Create("MyApp");
 
 // Logs are sent to Seq with structured data
 logger.LogInformation("User {UserId} logged in from {IPAddress}", userId, ipAddress);
@@ -100,8 +101,7 @@ Add contextual information using log scopes:
 using Asm.Logging;
 using Microsoft.Extensions.Logging;
 
-var loggerFactory = BootstrapLoggerFactory.Create("MyApp");
-var logger = loggerFactory.CreateLogger("Orders");
+using var logger = BootstrapLoggerFactory.Create("MyApp");
 
 using (logger.BeginScope(new Dictionary<string, object>
 {
@@ -199,8 +199,8 @@ var loggerFactory = LoggerFactory.Create(builder =>
 ### Environment Variables
 
 - `DOTNET_ENVIRONMENT` or `ASPNETCORE_ENVIRONMENT`: The application environment (Development, Production, etc.)
-- `Seq:Host`: The Seq server URL (e.g., `http://localhost:5341`)
-- `Seq:APIKey`: Optional API key for Seq authentication
+- `Seq__Host` (or `Seq:Host` where the shell allows it): The Seq server URL (e.g., `http://localhost:5341`)
+- `Seq__APIKey` (or `Seq:APIKey`): Optional API key for Seq authentication
 
 ### appsettings.json
 
