@@ -7,7 +7,7 @@ internal static class ResponseWriter
 {
     public static async Task WriteResponse(HttpContext context, HealthReport report)
     {
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = System.Net.Mime.MediaTypeNames.Application.Json; 
 
         var response = new
         {

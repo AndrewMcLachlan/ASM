@@ -26,7 +26,7 @@ public static class IApplicationBuilderExtensions
 
                 // Serialize as object so derived types (e.g. HttpValidationProblemDetails and its
                 // errors dictionary) are written in full, not sliced down to the base ProblemDetails.
-                await context.Response.WriteAsJsonAsync<object>(problemDetails, options: null, contentType: "application/problem+json");
+                await context.Response.WriteAsJsonAsync<object>(problemDetails, options: null, contentType: System.Net.Mime.MediaTypeNames.Application.ProblemJson);
             });
         });
 
