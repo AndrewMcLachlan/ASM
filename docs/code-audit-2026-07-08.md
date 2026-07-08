@@ -250,7 +250,7 @@ Ordered by impact:
 ### Build / packaging
 
 - `src/Directory.Build.props:31` — READMEs are packed but `<PackageReadmeFile>` is never set, so galleries never display them.
-- `Directory.Build.props:13` — `© 2011-$([System.DateTime]::Now.Year)` breaks deterministic builds at year boundaries.
+- `Directory.Build.props:13` — `© 2011-$([System.DateTime]::Now.Year)` breaks deterministic builds at year boundaries. *Maintainer decision: kept — the impact is limited to rebuilding an old commit in a later year, whereas a static year silently goes stale.*
 - `src/Directory.Build.props:9` — deprecated `PackageIconUrl` alongside `PackageIcon` (NU5048). *Maintainer decision: kept — some repositories still consume `PackageIconUrl`.*
 - `Directory.Packages.props:8-28` — all Microsoft.* versions conditioned on `'$(TargetFramework)' == 'net10.0'`; a second TFM later yields NU1010 across the board.
 - `Directory.Packages.props:57` — SixLabors.ImageSharp pinned to 2.1.13 (3.x current; 2.x has needed repeated security patches) and used for request-path image decoding.
