@@ -188,7 +188,7 @@
 - `tests/Asm.Cqrs.Tests/Queries/QueryTests.cs:26-44` — commented-out test for a removed API.
 - Orphaned test steps masking untested buggy paths: `tests/Asm.Serilog.Tests/Logging/LoggingConfiguratorSteps.cs:68`, `tests/Asm.AspNetCore.Tests/Infrastructure/ProblemDetailsFactorySteps.cs:85`.
 - `src/Asm.Hosting/Asm.Hosting.csproj` — unused `Microsoft.Extensions.Configuration.Binder` reference.
-- Test csprojs — `CoverletInclude`/`CoverletExcludeByFile` properties consumed by nothing (CI uses the static runsettings).
+- Test csprojs — `CoverletInclude`/`CoverletExcludeByFile` properties consumed by nothing (CI uses the static runsettings). *Resolution: the intent was per-project coverage scoping; rather than removing them, CI's "Scope coverage" step now injects `CoverletInclude` into the runsettings, making the property functional for the first time.*
 
 ---
 

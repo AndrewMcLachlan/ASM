@@ -15,7 +15,7 @@ Derived from [docs/code-audit-2026-07-08.md](../../docs/code-audit-2026-07-08.md
 ## Phase 0 — Repo hygiene (no code behavior change, zero risk)
 
 - [ ] Delete ghost directories: `src/Asm.Extensions/`, `src/Asm.OpenTelemetry/`, `src/Asm.Testing/` (verified untracked — bin/obj leftovers only; delete manually, e.g. `rm -rf src/Asm.Extensions src/Asm.OpenTelemetry src/Asm.Testing`).
-- [x] Remove `[Asm.Testing]*` exclusion from `coverlet.runsettings`; remove unused `CoverletInclude`/`CoverletExcludeByFile` properties from test csprojs.
+- [x] Remove `[Asm.Testing]*` exclusion from `coverlet.runsettings`. **Revised:** the `CoverletInclude`/`CoverletExcludeByFile` properties were initially removed as unconsumed, but the maintainer's intent is per-project coverage scoping (a test project's report should not include referenced ASM assemblies at 0%). They are restored, and CI now wires them up: the "Scope coverage" step in `build.yml` reads `CoverletInclude` via `dotnet msbuild -getProperty` and injects it as `<Include>` into the runsettings per matrix project. Verified locally: Asm.Domain.Infrastructure.Tests coverage shrinks from {Asm, Asm.Domain, Asm.Domain.Infrastructure} to {Asm.Domain.Infrastructure}. `CoverletExcludeByFile` remains unwired (its `**/*` value would blank the report).
 - [x] Fix `Asm.Reqnroll.csproj` package description (still says "ASM core library unit testing support").
 - [x] `src/Asm.Domain.Infrastructure/DbContextQueryHandler.cs`: deleted along with its `<Compile Remove>` line (was excluded from compilation and referenced a removed API shape).
 - [x] Delete the `#if NET9_0` block in `OidcSecuritySchemeTransformer.cs` — also removed the then-pointless `#if NET10_0` wrapper.

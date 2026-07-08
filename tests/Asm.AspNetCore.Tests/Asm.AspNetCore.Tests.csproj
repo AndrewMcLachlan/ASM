@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <CoverletInclude>[Asm.AspNetCore]*,[Asm.AspNetCore.Modules]*</CoverletInclude>
+    <CoverletExcludeByFile>**/*</CoverletExcludeByFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

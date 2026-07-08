@@ -100,6 +100,14 @@ jobs:
       with:
         dotnet-version: 10.x
 
+    - name: Scope coverage to ${{ matrix.test-project.name }}
+      run: |
+        include=$(dotnet msbuild ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj -getProperty:CoverletInclude)
+        echo "CoverletInclude: '$include'"
+        if [ -n "$include" ]; then
+          sed -i "s|<Exclude>|<Include>$include</Include>\n          <Exclude>|" coverlet.runsettings
+        fi
+
     - name: Test ${{ matrix.test-project.name }}
       run: dotnet test ${{ matrix.test-project.path }}/${{ matrix.test-project.name }}.csproj --filter '(Category=Unit|Category=Integration)&FullyQualifiedName!~Testing' --verbosity normal --collect:"XPlat Code Coverage" --results-directory:./testresults/${{ matrix.test-project.name }} --configuration Release --settings coverlet.runsettings
 
