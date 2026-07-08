@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://www.andrewmclachlan.com</PackageProjectUrl>
     <PackageIcon>Icon-128.png</PackageIcon>
+    <PackageIconUrl>https://cdn.andrewmclachlan.com/images/icon-128.png</PackageIconUrl>
     <PackageReadmeFile Condition="Exists('README.md')">README.md</PackageReadmeFile>
     <Product>ASM Framework</Product>
     <RepositoryType>git</RepositoryType>

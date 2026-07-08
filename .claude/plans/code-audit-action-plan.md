@@ -23,7 +23,7 @@ Derived from [docs/code-audit-2026-07-08.md](../../docs/code-audit-2026-07-08.md
 - [x] Clean up dead branches, expressions, and commented-out code: `Nybble.cs` dead guard, `HostEntry` commented-out logic + unreachable default arm, `Claims.cs` never-null branch, `LoggingConfigurator` duplicate `MinimumLevel` + always-true guard, `BoostrapLoggerFactory` redundant filter, redundant IPv6 regex in `StepArgumentTransformations` (**note:** the multi-capture-group regex was the dead one — the non-capturing-group variant is required by Reqnroll argument binding; the audit had it backwards, and Asm.Net.Tests caught it), commented-out block in `tests/Asm.Cqrs.Tests/Queries/QueryTests.cs`.
 - [x] Remove unused `Microsoft.Extensions.Configuration.Binder` reference from Asm.Hosting.
 - [x] Docs drift: root README (Asm.Cqrs "built on Mediatr"), `Endian` enum docs (inverted), `Shuffle` docs, `OAuthOptions` doc/mutability mismatches. (`Hosts.SystemHostsFile` docs deferred — Phase 1a fixes the behavior to match the docs instead.)
-- [x] Packaging: added `<PackageReadmeFile>` (conditional on README existing); removed deprecated `PackageIconUrl`; replaced `$([System.DateTime]::Now.Year)` copyright with static `2026`.
+- [x] Packaging: added `<PackageReadmeFile>` (conditional on README existing); replaced `$([System.DateTime]::Now.Year)` copyright with static `2026`. `PackageIconUrl` is kept alongside `PackageIcon` by maintainer decision — some repos still consume it (accept the NU5048 deprecation warning on pack).
 
 **Acceptance:** solution builds clean, full test suite green, `dotnet pack` on one project shows README + icon metadata correct.
 
