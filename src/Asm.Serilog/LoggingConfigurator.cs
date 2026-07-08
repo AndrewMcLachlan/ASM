@@ -28,7 +28,6 @@ public static class LoggingConfigurator
             .Enrich.WithProperty("App", appName)
             .Enrich.WithProperty("Env", Env)
             .MinimumLevel.Information()
-            .MinimumLevel.Is(LogEventLevel.Information)
             .WriteTo.Trace()
             .WriteTo.Console();
 
@@ -72,20 +71,17 @@ public static class LoggingConfigurator
             .WriteTo.Trace()
             .WriteTo.Console();
 
-        IConfigurationSection? logLevelConfig = configuration.GetSection("Logging").GetSection("LogLevel");
+        IConfigurationSection logLevelConfig = configuration.GetSection("Logging").GetSection("LogLevel");
 
-        if (logLevelConfig != null)
+        foreach (IConfigurationSection child in logLevelConfig.GetChildren())
         {
-            foreach (IConfigurationSection child in logLevelConfig.GetChildren())
+            if (child.Key == "Default")
             {
-                if (child.Key == "Default")
-                {
-                    loggerConfiguration.MinimumLevel.Is(logLevelConfig.GetValue<LogEventLevel>(child.Key));
-                    continue;
-                }
-
-                loggerConfiguration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
+                loggerConfiguration.MinimumLevel.Is(logLevelConfig.GetValue<LogEventLevel>(child.Key));
+                continue;
             }
+
+            loggerConfiguration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
         }
 
         var seqHost = configuration.GetValue<string>("Seq:Host");

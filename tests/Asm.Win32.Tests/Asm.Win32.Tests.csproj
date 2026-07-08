@@ -1,10 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <CoverletInclude>[Asm.Win32]*</CoverletInclude>
-    <CoverletExcludeByFile>**/*</CoverletExcludeByFile> 
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="coverlet.collector">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

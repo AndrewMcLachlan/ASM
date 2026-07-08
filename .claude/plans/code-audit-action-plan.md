@@ -14,16 +14,16 @@ Derived from [docs/code-audit-2026-07-08.md](../../docs/code-audit-2026-07-08.md
 
 ## Phase 0 — Repo hygiene (no code behavior change, zero risk)
 
-- [ ] Delete ghost directories: `src/Asm.Extensions/`, `src/Asm.OpenTelemetry/`, `src/Asm.Testing/` (bin/obj leftovers only; verify `git ls-files` is empty for each first).
-- [ ] Remove `[Asm.Testing]*` exclusion from `coverlet.runsettings`; remove unused `CoverletInclude`/`CoverletExcludeByFile` properties from test csprojs.
-- [ ] Fix `Asm.Reqnroll.csproj` package description (still says "ASM core library unit testing support").
-- [ ] `src/Asm.Domain.Infrastructure/DbContextQueryHandler.cs`: genuinely dead (excluded from compilation, references a removed API shape). Delete it along with its `<Compile Remove>` line — or, if the handler is still wanted, finish the migration instead (correct `Handle` to `ValueTask<TResponse>`, add the Asm.Cqrs reference). Maintainer call; default is delete.
-- [ ] Delete the `#if NET9_0` block in `OidcSecuritySchemeTransformer.cs` — .NET 9 is no longer supported by the libraries.
-- [ ] Delete the dead private `ByteArray.ToUInt16BE`/`ToUInt16LE` methods (unused duplicates of `ConvertArray` logic), or wire them into the conversion path if that simplifies the Phase 3 work.
-- [ ] Clean up dead branches, expressions, and commented-out code (no method removals): `Nybble.cs:49` dead guard, `HostEntry` commented-out logic + unreachable default arm, `Claims.cs:23` never-null branch, `LoggingConfigurator` duplicate `MinimumLevel` + always-true guard, `BoostrapLoggerFactory` redundant filter, redundant IPv6 regex in `StepArgumentTransformations`, commented-out block in `tests/Asm.Cqrs.Tests/Queries/QueryTests.cs`.
-- [ ] Remove unused `Microsoft.Extensions.Configuration.Binder` reference from Asm.Hosting.
-- [ ] Docs drift: root README (Asm.Cqrs "built on Mediatr"), `Endian` enum docs (inverted), `Shuffle` docs, `Hosts.SystemHostsFile` docs (or fix behavior in Phase 1), `OAuthOptions` doc/mutability mismatches.
-- [ ] Packaging: add `<PackageReadmeFile>README.md</PackageReadmeFile>`; remove deprecated `PackageIconUrl`; replace `$([System.DateTime]::Now.Year)` copyright with a static year (deterministic builds).
+- [ ] Delete ghost directories: `src/Asm.Extensions/`, `src/Asm.OpenTelemetry/`, `src/Asm.Testing/` (verified untracked — bin/obj leftovers only; delete manually, e.g. `rm -rf src/Asm.Extensions src/Asm.OpenTelemetry src/Asm.Testing`).
+- [x] Remove `[Asm.Testing]*` exclusion from `coverlet.runsettings`; remove unused `CoverletInclude`/`CoverletExcludeByFile` properties from test csprojs.
+- [x] Fix `Asm.Reqnroll.csproj` package description (still says "ASM core library unit testing support").
+- [x] `src/Asm.Domain.Infrastructure/DbContextQueryHandler.cs`: deleted along with its `<Compile Remove>` line (was excluded from compilation and referenced a removed API shape).
+- [x] Delete the `#if NET9_0` block in `OidcSecuritySchemeTransformer.cs` — also removed the then-pointless `#if NET10_0` wrapper.
+- [x] Delete the dead private `ByteArray.ToUInt16BE`/`ToUInt16LE` methods (unused duplicates of `ConvertArray` logic).
+- [x] Clean up dead branches, expressions, and commented-out code: `Nybble.cs` dead guard, `HostEntry` commented-out logic + unreachable default arm, `Claims.cs` never-null branch, `LoggingConfigurator` duplicate `MinimumLevel` + always-true guard, `BoostrapLoggerFactory` redundant filter, redundant IPv6 regex in `StepArgumentTransformations` (**note:** the multi-capture-group regex was the dead one — the non-capturing-group variant is required by Reqnroll argument binding; the audit had it backwards, and Asm.Net.Tests caught it), commented-out block in `tests/Asm.Cqrs.Tests/Queries/QueryTests.cs`.
+- [x] Remove unused `Microsoft.Extensions.Configuration.Binder` reference from Asm.Hosting.
+- [x] Docs drift: root README (Asm.Cqrs "built on Mediatr"), `Endian` enum docs (inverted), `Shuffle` docs, `OAuthOptions` doc/mutability mismatches. (`Hosts.SystemHostsFile` docs deferred — Phase 1a fixes the behavior to match the docs instead.)
+- [x] Packaging: added `<PackageReadmeFile>` (conditional on README existing); removed deprecated `PackageIconUrl`; replaced `$([System.DateTime]::Now.Year)` copyright with static `2026`.
 
 **Acceptance:** solution builds clean, full test suite green, `dotnet pack` on one project shows README + icon metadata correct.
 

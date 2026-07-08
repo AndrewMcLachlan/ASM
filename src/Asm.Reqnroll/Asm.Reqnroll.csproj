@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>ASM core library unit testing support.</Description>
+    <Description>Helpers for building BDD tests using Reqnroll: common step definitions, argument transformations and scenario context extensions.</Description>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>

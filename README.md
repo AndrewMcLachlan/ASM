@@ -21,7 +21,7 @@ A way to breakdown your app into modules, that define their own endpoints and se
 Helpers for MVC application using Razor.
 
 ## Asm.Cqrs
-A basic CQRS implementation, built on Mediatr.
+A basic CQRS implementation with dispatchers and handlers for commands and queries.
 
 ## Asm.Cqrs.AspNetCore
 Binds API endpoints directly to CQRS commands and queries.

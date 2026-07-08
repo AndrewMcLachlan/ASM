@@ -26,7 +26,7 @@ public record OAuthOptions
     public IEnumerable<string> AdditionalIssuers { get; init; } = [];
 
     /// <summary>
-    /// Gets or sets the client ID.
+    /// Gets the client ID.
     /// </summary>
     public required string ClientId { get; init; }
 

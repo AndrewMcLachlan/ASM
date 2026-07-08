@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DbContextQueryHandler.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="LazyCache" />
     <PackageReference Include="LazyCache.AspNetCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />

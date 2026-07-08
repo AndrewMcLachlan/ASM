@@ -46,14 +46,12 @@ public readonly struct Nybble
     /// <param name="value">The nybble's value.</param>
     public Nybble(byte value)
     {
-        if (value > 15 || value < 0)
+        if (value > 15)
         {
             throw new OverflowException();
         }
-        else
-        {
-            _byteValue = value;
-        }
+
+        _byteValue = value;
     }
     #endregion
 

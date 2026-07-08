@@ -10,7 +10,7 @@
   <PropertyGroup>
     <Authors>Andrew McLachlan</Authors>
     <Company />
-    <Copyright>© 2011-$([System.DateTime]::Now.Year) Andrew McLachlan</Copyright>
+    <Copyright>© 2011-2026 Andrew McLachlan</Copyright>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
   </PropertyGroup>
 

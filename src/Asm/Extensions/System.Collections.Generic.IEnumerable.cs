@@ -23,9 +23,8 @@ public static class IEnumerableExtensions
     /// </summary>
     /// <typeparam name="T">The type of elements in the enumerable.</typeparam>
     /// <param name="enumerable">The enumerable to shuffle.</param>
-    /// <returns>The same enumerable with the elements reordered.</returns>
+    /// <returns>A new sequence containing the elements in a random order. The source enumerable is not modified.</returns>
     /// <exception cref="ArgumentNullException">Throw if <paramref name="enumerable"/> is <c>null</c>.</exception>
-    /// <exception cref="InvalidOperationException">Thrown if the enumerable is read-only.</exception>
     public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable) => enumerable.ToList().Shuffle();
 
     /// <summary>
