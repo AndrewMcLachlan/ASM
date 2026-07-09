@@ -22,7 +22,7 @@ public class WebApplicationStart
     /// Builds and runs the web application.
     /// </summary>
     /// <param name="args">Command line arguments.</param>
-    /// <param name="appName">The name of the application.</param>
+    /// <param name="appName">The friendly name of the application, used for logging and telemetry.</param>
     /// <param name="addServices">A method to add service mappings.</param>
     /// <param name="addApp">Set up custom middleware.</param>
     /// <param name="addHealthChecks">A method to add health checks.</param>
@@ -36,7 +36,7 @@ public class WebApplicationStart
         {
             Log.Information($"{appName} Starting...");
 
-            var builder = WebApplication.CreateBuilder(new WebApplicationOptions { ApplicationName = appName, Args = args, });
+            var builder = WebApplication.CreateBuilder(args);
 
             if (builder.Environment.IsDevelopment())
             {
@@ -45,8 +45,8 @@ public class WebApplicationStart
                 builder.Logging.AddConsole();
             }
 
-            builder.Host.UseCustomSerilog();
-            builder.AddStandardOpenTelemetry();
+            builder.Host.UseCustomSerilog(appName);
+            builder.AddStandardOpenTelemetry(appName);
 
             addServices(builder);
 

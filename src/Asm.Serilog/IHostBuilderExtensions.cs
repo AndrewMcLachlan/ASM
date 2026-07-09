@@ -15,4 +15,13 @@ public static class IHostBuilderExtensions
     /// <returns>The <see cref="IHostBuilder"/> instance so that calls can be chained.</returns>
     public static IHostBuilder UseCustomSerilog(this IHostBuilder builder) =>
         builder.UseSerilog((context, configuration) => LoggingConfigurator.ConfigureLogging(configuration, context.Configuration, context.HostingEnvironment));
+
+    /// <summary>
+    /// Use the ASM default Serilog configuration.
+    /// </summary>
+    /// <param name="builder">The <see cref="IHostBuilder"/> instance that this method extends.</param>
+    /// <param name="appName">The friendly application name used for log enrichment.</param>
+    /// <returns>The <see cref="IHostBuilder"/> instance so that calls can be chained.</returns>
+    public static IHostBuilder UseCustomSerilog(this IHostBuilder builder, string appName) =>
+        builder.UseSerilog((context, configuration) => LoggingConfigurator.ConfigureLogging(configuration, context.Configuration, context.HostingEnvironment, appName));
 }

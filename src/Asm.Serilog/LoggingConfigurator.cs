@@ -58,7 +58,19 @@ public static class LoggingConfigurator
     /// <param name="hostEnvironment">The host environment.</param>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="loggerConfiguration"/>, <paramref name="configuration"/>, or <paramref name="hostEnvironment"/> is <c>null</c>.</exception>
     /// <returns>The configured Serilog logger configuration.</returns>
-    public static LoggerConfiguration ConfigureLogging(LoggerConfiguration loggerConfiguration, IConfiguration configuration, IHostEnvironment hostEnvironment)
+    public static LoggerConfiguration ConfigureLogging(LoggerConfiguration loggerConfiguration, IConfiguration configuration, IHostEnvironment hostEnvironment) =>
+        ConfigureLogging(loggerConfiguration, configuration, hostEnvironment, hostEnvironment?.ApplicationName!);
+
+    /// <summary>
+    /// Configures Serilog logging with the specified configuration.
+    /// </summary>
+    /// <param name="loggerConfiguration">The Serilog configuration.</param>
+    /// <param name="configuration">The application configuration.</param>
+    /// <param name="hostEnvironment">The host environment.</param>
+    /// <param name="appName">The friendly application name used for log enrichment.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="loggerConfiguration"/>, <paramref name="configuration"/>, or <paramref name="hostEnvironment"/> is <c>null</c>.</exception>
+    /// <returns>The configured Serilog logger configuration.</returns>
+    public static LoggerConfiguration ConfigureLogging(LoggerConfiguration loggerConfiguration, IConfiguration configuration, IHostEnvironment hostEnvironment, string appName)
     {
         ArgumentNullException.ThrowIfNull(loggerConfiguration);
         ArgumentNullException.ThrowIfNull(configuration);
@@ -66,7 +78,7 @@ public static class LoggingConfigurator
 
         loggerConfiguration
             .Enrich.FromLogContext()
-            .Enrich.WithProperty("App", hostEnvironment.ApplicationName)
+            .Enrich.WithProperty("App", appName)
             .Enrich.WithProperty("Env", hostEnvironment.EnvironmentName)
             .WriteTo.Trace()
             .WriteTo.Console();

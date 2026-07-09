@@ -48,9 +48,8 @@ public static class WebStart<T> where T : class
     /// <returns>The <see cref="IHostBuilder"/> instance.</returns>
     public static IHostBuilder CreateHostBuilder(string[] args, string appName) =>
         Host.CreateDefaultBuilder(args)
-            .UseCustomSerilog()
+            .UseCustomSerilog(appName)
             .ConfigureWebHostDefaults(webBuilder => webBuilder
-                .UseSetting(WebHostDefaults.ApplicationKey, appName)
                 .UseStartup<T>());
 
 }
