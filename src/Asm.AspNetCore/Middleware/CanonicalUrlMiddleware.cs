@@ -30,7 +30,7 @@ public class CanonicalUrlMiddleware
 
         // Only canonicalise safe, idempotent requests. Redirecting a POST/PUT/etc.
         // causes browsers to drop the body (or re-issue as GET), so those pass through.
-        if (IsExempt(path) || string.IsNullOrEmpty(path) || !IsRedirectableMethod(context.Request.Method))
+        if (IsExempt(path) || String.IsNullOrEmpty(path) || !IsRedirectableMethod(context.Request.Method))
         {
             await _next(context);
             return;
@@ -38,7 +38,7 @@ public class CanonicalUrlMiddleware
 
         // Preserve the application's path base so redirects stay inside the app when
         // it is hosted under a sub-path (e.g. behind a reverse proxy).
-        var pathBase = context.Request.PathBase.Value ?? string.Empty;
+        var pathBase = context.Request.PathBase.Value ?? String.Empty;
 
         if (_options.ForceLowercase && HasUpper(path) && !HasExcludedExtension(path))
         {

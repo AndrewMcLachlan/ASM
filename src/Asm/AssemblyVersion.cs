@@ -18,7 +18,7 @@ public static class AssemblyVersion
     // FileVersionInfo.GetVersionInfo("") throws — which as an eager value would surface as a
     // TypeInitializationException on the first access to any member of this class.
     private static readonly Lazy<FileVersionInfo?> FileVersionLazy = new(() =>
-        Assembly is null || string.IsNullOrEmpty(Assembly.Location) ? null : FileVersionInfo.GetVersionInfo(Assembly.Location));
+        Assembly is null || String.IsNullOrEmpty(Assembly.Location) ? null : FileVersionInfo.GetVersionInfo(Assembly.Location));
     private static readonly Lazy<string?> AssemblyInformationalVersionLazy = new(() => Assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion);
 
     /// <summary>
