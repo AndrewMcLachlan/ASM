@@ -1,4 +1,6 @@
-﻿namespace System.Security.Claims;
+﻿using System.Globalization;
+
+namespace System.Security.Claims;
 
 /// <summary>
 /// Extensions for the <see cref="ClaimsPrincipal"/> class.
@@ -19,10 +21,10 @@ public static class ClaimsPrincipalExtensions
 
         return typeof(T) switch
         {
-            var type when type == typeof(Guid) => (T)Convert.ChangeType(Guid.Parse(claim.Value), typeof(T)),
-            var type when type == typeof(Guid?) => (T)Convert.ChangeType(Guid.Parse(claim.Value), typeof(Guid)),
-            var type when type == typeof(int) => (T)Convert.ChangeType(Int32.Parse(claim.Value), typeof(T)),
-            _ => (T)Convert.ChangeType(claim.Value, typeof(T)),
+            var type when type == typeof(Guid) => (T)Convert.ChangeType(Guid.Parse(claim.Value), typeof(T), CultureInfo.InvariantCulture),
+            var type when type == typeof(Guid?) => (T)Convert.ChangeType(Guid.Parse(claim.Value), typeof(Guid), CultureInfo.InvariantCulture),
+            var type when type == typeof(int) => (T)Convert.ChangeType(Int32.Parse(claim.Value, CultureInfo.InvariantCulture), typeof(T), CultureInfo.InvariantCulture),
+            _ => (T)Convert.ChangeType(claim.Value, typeof(T), CultureInfo.InvariantCulture),
         };
     }
 }

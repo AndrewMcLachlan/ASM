@@ -106,7 +106,7 @@ namespace Asm.Tests.Extensions
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/IQueryableExtensions.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/IQueryableExtensions.feature.ndjson", 5);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -255,6 +255,60 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                             "Item3"});
 #line 31
     await testRunner.ThenAsync("the result should contain the following items", ((string)(null)), table4, "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="WhereAny with no predicates returns the source unchanged")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IQueryableExtensions")]
+        [global::Xunit.TraitAttribute("Description", "WhereAny with no predicates returns the source unchanged")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task WhereAnyWithNoPredicatesReturnsTheSourceUnchanged()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("WhereAny with no predicates returns the source unchanged", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 37
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "Id",
+                            "Name"});
+                table5.AddRow(new string[] {
+                            "1",
+                            "Item1"});
+                table5.AddRow(new string[] {
+                            "2",
+                            "Item2"});
+#line 38
+    await testRunner.GivenAsync("I have a data source with the following items", ((string)(null)), table5, "Given ");
+#line hidden
+#line 42
+    await testRunner.WhenAsync("I filter the data with no predicates", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "Id",
+                            "Name"});
+                table6.AddRow(new string[] {
+                            "1",
+                            "Item1"});
+                table6.AddRow(new string[] {
+                            "2",
+                            "Item2"});
+#line 43
+    await testRunner.ThenAsync("the result should contain the following items", ((string)(null)), table6, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

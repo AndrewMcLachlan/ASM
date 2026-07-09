@@ -32,8 +32,8 @@ Scenario Outline: Convert pounds to kilograms
 Examples:
     | Pounds | Kilograms |
     | 0      | 0         |
-    | 1      | 0.4539    |
-    | 14     | 6.3546    |
+    | 1      | 0.4536    |
+    | 14     | 6.3503    |
 
 @Unit
 Scenario Outline: Convert stones and pounds to kilograms
@@ -43,5 +43,5 @@ Scenario Outline: Convert stones and pounds to kilograms
 Examples:
     | Stones | Pounds | Kilograms |
     | 0      | 0      | 0         |
-    | 1      | 0      | 6.3546    |
-    | 10     | 7      | 66.7233   |
+    | 1      | 0      | 6.3503    |
+    | 10     | 7      | 66.6781   |

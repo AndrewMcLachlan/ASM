@@ -60,7 +60,7 @@ public static class UnitConvert
     /// <summary>
     /// The number of kilograms in a pound.
     /// </summary>
-    public const double KilogramsPerPound = 0.4539;
+    public const double KilogramsPerPound = 0.45359237;
 
     /// <summary>
     /// The number of pounds in a kilogram.

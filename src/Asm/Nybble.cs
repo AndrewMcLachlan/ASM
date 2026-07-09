@@ -65,19 +65,17 @@ public readonly struct Nybble
     public static uint ToUInt32(Nybble[] value)
     {
         ArgumentNullException.ThrowIfNull(value);
+        if (value.Length == 0) throw new ArgumentException("At least one nybble is required.", nameof(value));
+        if (value.Length > 8) throw new ArgumentOutOfRangeException(nameof(value), "A 32-bit unsigned integer holds at most 8 nybbles.");
 
-        uint temp;
+        uint temp = value[0].ByteValue;
 
-        temp = value[0].ByteValue;
-
-        if (value.Length <= 8)
+        for (int i = 1; i < value.Length; i++)
         {
-            for (int i = 1; i < value.Length; i++)
-            {
-                temp <<= 4;
-                temp |= value[i].ByteValue;
-            }
+            temp <<= 4;
+            temp |= value[i].ByteValue;
         }
+
         return temp;
     }
 

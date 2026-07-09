@@ -80,14 +80,14 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] Void `Dispatch(ICommand)` detects an argument that also implements `ICommand<T>` and throws a clear `InvalidOperationException` naming `Dispatch<TResponse>`. Test covers the `ICommand`-typed-variable trap.
 - [x] Void `MapPutCommand<TRequest>` declares 200 (matches `HandleCommand<TRequest>`'s actual `ValueTask`→200; consistent with the sibling binding overload). Metadata change only.
 
-### 1g. Asm core (non-breaking subset)
-- [ ] `AssemblyVersion.cs:16`: pass lambdas to `Lazy<T>`; guard `Assembly.Location == ""` (single-file apps).
-- [ ] `UnitConvert.KilogramsPerPound`: 0.4539 → 0.45359237.
-- [ ] `WhereAny`: empty predicates → return `query` unchanged (or `Where(_ => false)` — decide and document).
-- [ ] `ByteArray.GetHashCode`: hash contents (+ `Endian`) consistent with `Equals`.
-- [ ] Claims parsing: `CultureInfo.InvariantCulture`.
-- [ ] `HexColourJsonConverter`: wrap parse failures in `JsonException`.
-- [ ] Small guards: `ByteArray.Copy` bounds, `ConvertArray` too-short check, `Squish` ParamName, `Nybble.ToUInt32` length validation.
+### 1g. Asm core (non-breaking subset) — DONE
+- [x] `AssemblyVersion`: `Lazy<T>` now takes factory lambdas (was eager); `FileVersion` guards an empty `Assembly.Location` so single-file apps don't throw `TypeInitializationException`. (No test — class is `[ExcludeFromCodeCoverage]` and entry-assembly dependent.)
+- [x] `UnitConvert.KilogramsPerPound`: 0.4539 → 0.45359237. UnitConvert feature examples corrected (old values fail at 3 dp).
+- [x] `WhereAny`: empty predicates return the source unchanged (documented); materialises once to avoid multiple enumeration. New scenario.
+- [x] `ByteArray.GetHashCode`: content + `Endian` hash consistent with `Equals` (was reference-based `base.GetHashCode()`). Tests: equal instances share a hash, different endian differ.
+- [x] Claims parsing uses `CultureInfo.InvariantCulture` (int/Guid/ChangeType). No dedicated test (mutating `CurrentCulture` is unsafe under parallel xunit); fix is a clear correctness change.
+- [x] `HexColourJsonConverter.Read` throws `JsonException` for a bad string or a non-string token (was `FormatException`/`InvalidOperationException`). Tests cover both.
+- [x] Guards: `ByteArray.Copy` bounds fixed (`start + length`, correct ParamName); `ConvertArray` rejects too-short arrays with a clear message; `Squish` reports `fromEnd` (was `fromStart`); `Nybble.ToUInt32` throws for empty and >8 nybbles. Tests cover Squish ParamName and Nybble validation.
 
 ### 1h. Reqnroll / Umbraco medium
 - [ ] `ScenarioContextExtensions`: `context.Add` → `context.Set` (or indexer) in `AddResult`/`AddException`.
