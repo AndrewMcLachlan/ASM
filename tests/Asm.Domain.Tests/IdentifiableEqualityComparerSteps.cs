@@ -37,12 +37,18 @@ public class IdentifiableEqualityComparerSteps(ScenarioContext context)
     [When(@"I get the hash code of null using IIdentifiableEqualityComparer")]
     public void WhenIGetTheHashCodeOfNullUsingIIdentifiableEqualityComparer()
     {
-        context.CatchException(() => _comparer.GetHashCode(null!));
+        _hashCode = _comparer.GetHashCode(null!);
     }
 
     [Then(@"the hash code should equal the ID hash code")]
     public void ThenTheHashCodeShouldEqualTheIdHashCode()
     {
         Assert.Equal(_first.Id.GetHashCode(), _hashCode);
+    }
+
+    [Then(@"the hash code should be zero")]
+    public void ThenTheHashCodeShouldBeZero()
+    {
+        Assert.Equal(0, _hashCode);
     }
 }

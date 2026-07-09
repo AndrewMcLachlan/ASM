@@ -106,3 +106,10 @@ Scenario: AddReadOnlyDbContext with service interface registers correctly
     When I call AddReadOnlyDbContext with TContextService and TContextImplementation
     And I build the DbContext service provider
     Then IReadOnlyDbContext can be resolved
+
+@Unit
+Scenario: AddReadOnlyDbContext with a custom service interface and lifetime resolves that interface
+    Given I have a service collection for DbContext
+    When I call AddReadOnlyDbContext with a custom context service and scoped lifetime
+    And I build the DbContext service provider
+    Then the custom context service can be resolved

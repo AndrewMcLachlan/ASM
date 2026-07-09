@@ -105,7 +105,7 @@ namespace Asm.Domain.Infrastructure.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ReadOnlyDbContext.feature.ndjson", 22);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("ReadOnlyDbContext.feature.ndjson", 23);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -681,6 +681,48 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 108
     await testRunner.ThenAsync("IReadOnlyDbContext can be resolved", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="AddReadOnlyDbContext with a custom service interface and lifetime resolves that i" +
+            "nterface")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ReadOnly DbContext Registration")]
+        [global::Xunit.TraitAttribute("Description", "AddReadOnlyDbContext with a custom service interface and lifetime resolves that i" +
+            "nterface")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task AddReadOnlyDbContextWithACustomServiceInterfaceAndLifetimeResolvesThatInterface()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "20";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddReadOnlyDbContext with a custom service interface and lifetime resolves that i" +
+                    "nterface", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 111
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 112
+    await testRunner.GivenAsync("I have a service collection for DbContext", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 113
+    await testRunner.WhenAsync("I call AddReadOnlyDbContext with a custom context service and scoped lifetime", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 114
+    await testRunner.AndAsync("I build the DbContext service provider", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 115
+    await testRunner.ThenAsync("the custom context service can be resolved", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

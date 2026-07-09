@@ -41,22 +41,37 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     ///  </exception>
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
-        var domainEventEntities = ChangeTracker.Entries<IEntity>()
-            .Select(entry => entry.Entity)
-            .Where(entry => entry.Events.Count != 0)
-            .ToArray();
-
-        foreach (var entity in domainEventEntities)
-        {
-            var events = entity.Events.ToArray();
-            entity.Events.Clear();
-            foreach (var domainEvent in events)
-            {
-                await publisher.Publish(domainEvent, cancellationToken);
-            }
-        }
+        await DispatchDomainEventsAsync(cancellationToken).ConfigureAwait(false);
 
         return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
+    {
+        // Drain until no new events remain: a handler may itself raise events (or add tracked
+        // entities that carry events), and those must be dispatched in this same save.
+        while (true)
+        {
+            var domainEventEntities = ChangeTracker.Entries<IEntity>()
+                .Select(entry => entry.Entity)
+                .Where(entry => entry.Events.Count != 0)
+                .ToArray();
+
+            if (domainEventEntities.Length == 0)
+            {
+                break;
+            }
+
+            foreach (var entity in domainEventEntities)
+            {
+                var events = entity.Events.ToArray();
+                entity.Events.Clear();
+                foreach (var domainEvent in events)
+                {
+                    await publisher.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -102,21 +117,30 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     /// </exception>
     public override int SaveChanges(bool acceptAllChangesOnSuccess = true)
     {
-        var domainEventEntities = ChangeTracker.Entries<IEntity>()
-            .Select(entry => entry.Entity)
-            .Where(entry => entry.Events.Count != 0)
-            .ToArray();
-
-        foreach (var entity in domainEventEntities)
+        // Drain until no new events remain (see DispatchDomainEventsAsync). SaveChanges has no
+        // cancellation token, so none is propagated here.
+        while (true)
         {
-            var events = entity.Events.ToArray();
-            entity.Events.Clear();
-            foreach (var domainEvent in events)
+            var domainEventEntities = ChangeTracker.Entries<IEntity>()
+                .Select(entry => entry.Entity)
+                .Where(entry => entry.Events.Count != 0)
+                .ToArray();
+
+            if (domainEventEntities.Length == 0)
             {
-                publisher.Publish(domainEvent).AsTask().GetAwaiter().GetResult();
+                break;
+            }
+
+            foreach (var entity in domainEventEntities)
+            {
+                var events = entity.Events.ToArray();
+                entity.Events.Clear();
+                foreach (var domainEvent in events)
+                {
+                    publisher.Publish(domainEvent).AsTask().GetAwaiter().GetResult();
+                }
             }
         }
-
 
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }

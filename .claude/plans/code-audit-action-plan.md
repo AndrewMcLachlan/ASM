@@ -69,16 +69,16 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] `ValidatorFilter`: null argument → 400 `ProblemHttpResult` (was `ArgumentNullException`→500); passes `RequestAborted`. Test: null request → 400, next not called.
 - [x] `DataTypeValidator` email regex anchored (`^…$`), classes include `A-Z`, `RegexOptions.IgnoreCase | CultureInvariant`, `IsMatch`. **New `Asm.AspNetCore.Mvc.Tests` project** (slnx + CI matrix); tests: uppercase accepted, embedded substring rejected (old regex failed 4/8).
 
-### 1f. CQRS / Domain high/medium
-- [ ] `IServiceCollectionExtensions.cs:281` (Asm.Domain.Infrastructure): forward `TContextService`, not `IReadOnlyDbContext`. Test with a custom context interface + lifetime overload.
-- [ ] `CommandQueryContoller.ControllerName<T>()`: `nameof(T)` → `typeof(T).Name`. Replace the `NotNull`-only test with a real assertion. (Also rename file to fix "Contoller" typo — file rename only, type name unchanged until Phase 5.)
-- [ ] `KeyedEntity`/`IIdentifiable` equality: add `ReferenceEquals` shortcut (fixes reflexivity for default IDs) and a runtime-type check (fixes cross-type equality). Tests: `e.Equals(e)` with Id 0; `Customer(1) != Order(1)`; HashSet round-trip.
-- [ ] `IdentifiableEqualityComparer`: `Equals(null, null)` → true; `GetHashCode(null)` → 0. Update the feature file that encodes the violation.
-- [ ] `Publisher`: publish sequentially (`foreach await`) instead of `Task.WhenAll` (fixes shared-DbContext concurrency + cheaper).
-- [ ] `DomainDbContext`: drain events until empty (loop, re-snapshot after each round); pass a cancellation token; document (or move) publish-before-save semantics — full ordering change is Phase 5.
-- [ ] `Dispatcher`/`Publisher`: add `BindingFlags.DoNotWrapExceptions` to all `Invoke` calls. Test: sync-throwing handler surfaces original exception type.
-- [ ] Void-`ICommand` dispatch trap: in the void `Dispatch`, detect the argument also implementing `ICommand<T>` and throw a clear `InvalidOperationException` naming the correct overload.
-- [ ] `MapPutCommand<TRequest>` (void): return 201 as declared (or declare 200 — pick one; changing metadata is safer than changing the wire response).
+### 1f. CQRS / Domain high/medium — DONE
+- [x] `AddReadOnlyDbContext<TContextService, TContextImplementation>(lifetime)` now forwards `TContextService` (was `IReadOnlyDbContext`). New scenario resolves a custom context interface via the lifetime overload.
+- [x] `ControllerName<T>()`: `nameof(T)` → `typeof(T).Name`; test now asserts `"Test"` (fails on old code). File renamed `CommandQueryContoller.cs` → `CommandQueryController.cs` (type name unchanged).
+- [x] `IIdentifiable`/`KeyedEntity` equality: `ReferenceEquals` shortcut (reflexive for default IDs), runtime-type check (no cross-type equality), transient entities equal only by reference. New xunit `KeyedEntityEqualityTests` covers default-Id self-equality, cross-type inequality, HashSet round-trip.
+- [x] `IIdentifiableEqualityComparer`: `Equals(null, null)` → true; `GetHashCode(null)` → 0. Feature file updated (was encoding the violation).
+- [x] `Publisher` publishes sequentially (`foreach await` + `DoNotWrapExceptions`) instead of `Task.WhenAll`.
+- [x] `DomainDbContext` drains events until empty (re-snapshot each round) in both sync and async paths; async threads the cancellation token. Publish-before-save ordering retained (full move is Phase 5).
+- [x] `Dispatcher` + `Publisher`: `BindingFlags.DoNotWrapExceptions` on every `Invoke`. Test: synchronous handler throw surfaces `InvalidOperationException`, not `TargetInvocationException`.
+- [x] Void `Dispatch(ICommand)` detects an argument that also implements `ICommand<T>` and throws a clear `InvalidOperationException` naming `Dispatch<TResponse>`. Test covers the `ICommand`-typed-variable trap.
+- [x] Void `MapPutCommand<TRequest>` declares 200 (matches `HandleCommand<TRequest>`'s actual `ValueTask`→200; consistent with the sibling binding overload). Metadata change only.
 
 ### 1g. Asm core (non-breaking subset)
 - [ ] `AssemblyVersion.cs:16`: pass lambdas to `Lazy<T>`; guard `Assembly.Location == ""` (single-file apps).

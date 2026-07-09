@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Asm.Domain;
+﻿namespace Asm.Domain;
 
 /// <summary>
 /// An equality comparer for <see cref="IIdentifiable{T}"/> objects.
@@ -20,16 +18,18 @@ public class IIdentifiableEqualityComparer<TType, TKey> : EqualityComparer<TType
     /// <returns></returns>
     public override bool Equals(TType? x, TType? y)
     {
-        if (x == null || x.Id == null || y == null || y.Id == null) return false;
+        // Matches the IEqualityComparer contract: two nulls (or the same reference) are equal.
+        if (ReferenceEquals(x, y)) return true;
+        if (x is null || y is null) return false;
 
-        return x.Id.Equals(y.Id);
+        return EqualityComparer<TKey>.Default.Equals(x.Id, y.Id);
     }
 
     /// <inheritdoc />
-    public override int GetHashCode([DisallowNull] TType obj)
+    public override int GetHashCode(TType obj)
     {
-        ArgumentNullException.ThrowIfNull(obj, nameof(obj));
-
-        return obj.Id!.GetHashCode();
+        // The contract allows GetHashCode(null); return 0 rather than throwing.
+        if (obj is null || obj.Id is null) return 0;
+        return obj.Id.GetHashCode();
     }
 }

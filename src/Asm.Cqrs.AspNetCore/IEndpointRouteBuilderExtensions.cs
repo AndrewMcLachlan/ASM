@@ -231,7 +231,7 @@ public static class IEndpointRouteBuilderExtensions
                  .Produces<TResponse>(StatusCodes.Status200OK);
 
     /// <summary>
-    /// Maps a PUT request to a command to create a resource.
+    /// Maps a PUT request to a command that returns no response.
     /// </summary>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
@@ -239,8 +239,9 @@ public static class IEndpointRouteBuilderExtensions
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
     public static RouteHandlerBuilder MapPutCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern)
         where TRequest : ICommand =>
+        // HandleCommand<TRequest> returns a plain ValueTask, which minimal APIs render as 200 OK.
         endpoints.MapPut(pattern, Handlers.HandleCommand<TRequest>)
-                 .Produces(StatusCodes.Status201Created);
+                 .Produces(StatusCodes.Status200OK);
 
     /// <summary>
     /// Maps a request to a command to put a resource.

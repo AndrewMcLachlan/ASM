@@ -142,7 +142,7 @@ namespace Asm.Domain.Tests
         [global::Xunit.InlineDataAttribute("2", "1", "false", "2", new string[0])]
         [global::Xunit.InlineDataAttribute("1", "<NULL>", "false", "3", new string[0])]
         [global::Xunit.InlineDataAttribute("<NULL>", "1", "false", "4", new string[0])]
-        [global::Xunit.InlineDataAttribute("<NULL>", "<NULL>", "false", "5", new string[0])]
+        [global::Xunit.InlineDataAttribute("<NULL>", "<NULL>", "true", "5", new string[0])]
         public async global::System.Threading.Tasks.Task TestEqualityWithIIdentifiableEqualityComparer(string firstID, string secondID, string result, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -222,17 +222,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="GetHashCode with null throws ArgumentNullException")]
+        [global::Xunit.FactAttribute(DisplayName="GetHashCode with null returns zero")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Identifiable Equality Comparer")]
-        [global::Xunit.TraitAttribute("Description", "GetHashCode with null throws ArgumentNullException")]
+        [global::Xunit.TraitAttribute("Description", "GetHashCode with null returns zero")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task GetHashCodeWithNullThrowsArgumentNullException()
+        public async global::System.Threading.Tasks.Task GetHashCodeWithNullReturnsZero()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "7";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("GetHashCode with null throws ArgumentNullException", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("GetHashCode with null returns zero", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 27
@@ -249,7 +249,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.WhenAsync("I get the hash code of null using IIdentifiableEqualityComparer", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 29
-    await testRunner.ThenAsync("an exception of type \'System.ArgumentNullException\' should be thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the hash code should be zero", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

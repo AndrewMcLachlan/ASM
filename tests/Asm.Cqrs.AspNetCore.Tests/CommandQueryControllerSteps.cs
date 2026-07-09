@@ -38,9 +38,7 @@ public class CommandQueryControllerSteps
     [Then(@"the result should be the controller name without ""Controller"" suffix")]
     public void ThenTheResultShouldBeTheControllerNameWithoutControllerSuffix()
     {
-        // The ControllerName<T> method uses nameof(T) which returns "T", not "TestController"
-        // This is expected behavior as nameof gets the type parameter name, not the actual type name
-        Assert.NotNull(_controllerNameResult);
+        Assert.Equal("Test", _controllerNameResult);
     }
 }
 
