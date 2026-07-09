@@ -43,6 +43,14 @@ public class TestWebApplication : IDisposable
                         {
                             throw new ApplicationException("Test exception");
                         });
+                        endpoints.MapGet("/validation-error", () =>
+                        {
+                            throw new FluentValidation.ValidationException(
+                            [
+                                new FluentValidation.Results.ValidationFailure("First", "is required"),
+                                new FluentValidation.Results.ValidationFailure("Second", "is required"),
+                            ]);
+                        });
                         endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
                         {
                             ResponseWriter = ResponseWriter.WriteResponse,

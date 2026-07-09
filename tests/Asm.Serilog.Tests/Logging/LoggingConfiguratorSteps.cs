@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Events;
 
 namespace Asm.Serilog.Tests.Logging;
 
@@ -65,27 +66,23 @@ public class LoggingConfiguratorSteps(ScenarioContext scenarioContext)
         _hostEnvironment = null;
     }
 
-    [Given(@"I have a configuration with log level override for '(.*)' set to '(.*)'")]
-    public void GivenIHaveAConfigurationWithLogLevelOverrideFor(string source, string level)
+    [Given(@"I have a configuration with default log level '([^']*)'")]
+    public void GivenIHaveAConfigurationWithDefaultLogLevel(string level)
     {
-        var mockSourceSection = new Mock<IConfigurationSection>();
-        mockSourceSection.Setup(s => s.Key).Returns(source);
-        mockSourceSection.Setup(s => s.Value).Returns(level);
+        _configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Logging:LogLevel:Default"] = level,
+        }).Build();
+    }
 
-        var mockLogLevelSection = new Mock<IConfigurationSection>();
-        mockLogLevelSection.Setup(s => s.GetChildren()).Returns([mockSourceSection.Object]);
-
-        var mockLoggingSection = new Mock<IConfigurationSection>();
-        mockLoggingSection.Setup(s => s.GetSection("LogLevel")).Returns(mockLogLevelSection.Object);
-
-        var mockSeqHostSection = new Mock<IConfigurationSection>();
-        mockSeqHostSection.Setup(s => s.Value).Returns((string?)null);
-
-        var mockConfig = new Mock<IConfiguration>();
-        mockConfig.Setup(c => c.GetSection("Logging")).Returns(mockLoggingSection.Object);
-        mockConfig.Setup(c => c.GetSection("Seq:Host")).Returns(mockSeqHostSection.Object);
-
-        _configuration = mockConfig.Object;
+    [Given(@"I have a configuration with default log level '([^']*)' and override for '([^']*)' set to '([^']*)'")]
+    public void GivenIHaveAConfigurationWithDefaultLogLevelAndOverrideFor(string level, string source, string overrideLevel)
+    {
+        _configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Logging:LogLevel:Default"] = level,
+            [$"Logging:LogLevel:{source}"] = overrideLevel,
+        }).Build();
     }
 
     [When(@"I call ConfigureLogging with app name '(.*)'")]
@@ -124,5 +121,26 @@ public class LoggingConfiguratorSteps(ScenarioContext scenarioContext)
         // We verify by ensuring the configuration was returned without errors
         // The actual sink configuration is internal to Serilog
         Assert.NotNull(_result);
+    }
+
+    [Then(@"a logger created from the result has minimum level '(.*)'")]
+    public void ThenALoggerCreatedFromTheResultHasMinimumLevel(string expected)
+    {
+        using var logger = _result!.CreateLogger();
+
+        if (expected == "Off")
+        {
+            Assert.False(logger.IsEnabled(LogEventLevel.Fatal));
+            return;
+        }
+
+        LogEventLevel level = Enum.Parse<LogEventLevel>(expected);
+
+        Assert.True(logger.IsEnabled(level));
+
+        if (level > LogEventLevel.Verbose)
+        {
+            Assert.False(logger.IsEnabled(level - 1));
+        }
     }
 }

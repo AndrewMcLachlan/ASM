@@ -105,7 +105,7 @@ namespace Asm.AspNetCore.Tests.Integration
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Integration/ExceptionHandler.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Integration/ExceptionHandler.feature.ndjson", 5);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -166,7 +166,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.ThenAsync("the response status code should be 500", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 9
-    await testRunner.AndAsync("the response content type should be \'application/json\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("the response content type should be \'application/problem+json\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 10
     await testRunner.AndAsync("the response should contain ProblemDetails", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
@@ -210,6 +210,53 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 17
     await testRunner.AndAsync("the response should contain ProblemDetails with detail containing \'Test exception" +
                         "\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Exception handler returns 400 with field errors for validation exceptions")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Exception Handler")]
+        [global::Xunit.TraitAttribute("Description", "Exception handler returns 400 with field errors for validation exceptions")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
+        public async global::System.Threading.Tasks.Task ExceptionHandlerReturns400WithFieldErrorsForValidationExceptions()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Integration"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Exception handler returns 400 with field errors for validation exceptions", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 20
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 21
+    await testRunner.GivenAsync("I have a test web application", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 22
+    await testRunner.WhenAsync("I make a GET request to \'/validation-error\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 23
+    await testRunner.ThenAsync("the response status code should be 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 24
+    await testRunner.AndAsync("the response content type should be \'application/problem+json\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 25
+    await testRunner.AndAsync("the response should contain validation error for \'First\' with message \'is require" +
+                        "d\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 26
+    await testRunner.AndAsync("the response should contain validation error for \'Second\' with message \'is requir" +
+                        "ed\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

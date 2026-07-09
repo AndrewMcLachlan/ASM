@@ -105,7 +105,7 @@ namespace Asm.AspNetCore.Tests.Infrastructure
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Infrastructure/ProblemDetailsFactory.feature.ndjson", 13);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Infrastructure/ProblemDetailsFactory.feature.ndjson", 15);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -529,17 +529,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="CreateValidationProblemDetails returns validation problem details")]
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails handles FluentValidation ValidationException")]
         [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
-        [global::Xunit.TraitAttribute("Description", "CreateValidationProblemDetails returns validation problem details")]
+        [global::Xunit.TraitAttribute("Description", "CreateProblemDetails handles FluentValidation ValidationException")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task CreateValidationProblemDetailsReturnsValidationProblemDetails()
+        public async global::System.Threading.Tasks.Task CreateProblemDetailsHandlesFluentValidationValidationException()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "9";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateValidationProblemDetails returns validation problem details", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateProblemDetails handles FluentValidation ValidationException", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 82
@@ -556,18 +556,116 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have a ProblemDetailsFactory with development environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 84
-    await testRunner.AndAsync("I have an HttpContext with no error", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I have an HttpContext with a FluentValidation ValidationException for field \'Name" +
+                        "\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 85
-    await testRunner.AndAsync("I have a ModelStateDictionary with error \'Name\' \'Name is required\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("I create problem details", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 86
-    await testRunner.WhenAsync("I create validation problem details", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.ThenAsync("the problem details should have status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 87
-    await testRunner.ThenAsync("the validation problem details should have status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("the problem details should have title \'Validation error\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 88
+    await testRunner.AndAsync("the problem details should have validation error for \'Name\' with message \'Name is" +
+                        " invalid\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 89
+    await testRunner.AndAsync("the HTTP response status code should be 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="CreateProblemDetails groups validation failures sharing a message")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
+        [global::Xunit.TraitAttribute("Description", "CreateProblemDetails groups validation failures sharing a message")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CreateProblemDetailsGroupsValidationFailuresSharingAMessage()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "10";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateProblemDetails groups validation failures sharing a message", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 92
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 93
+    await testRunner.GivenAsync("I have a ProblemDetailsFactory with development environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 94
+    await testRunner.AndAsync("I have an HttpContext with a FluentValidation ValidationException with the same m" +
+                        "essage on two fields", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 95
+    await testRunner.WhenAsync("I create problem details", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 96
+    await testRunner.ThenAsync("the problem details should have status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 97
+    await testRunner.AndAsync("the problem details should have validation error for \'First\' with message \'is req" +
+                        "uired\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 98
+    await testRunner.AndAsync("the problem details should have validation error for \'Second\' with message \'is re" +
+                        "quired\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="CreateValidationProblemDetails returns validation problem details")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "ProblemDetailsFactory")]
+        [global::Xunit.TraitAttribute("Description", "CreateValidationProblemDetails returns validation problem details")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CreateValidationProblemDetailsReturnsValidationProblemDetails()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "11";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateValidationProblemDetails returns validation problem details", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 101
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 102
+    await testRunner.GivenAsync("I have a ProblemDetailsFactory with development environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 103
+    await testRunner.AndAsync("I have an HttpContext with no error", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 104
+    await testRunner.AndAsync("I have a ModelStateDictionary with error \'Name\' \'Name is required\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 105
+    await testRunner.WhenAsync("I create validation problem details", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 106
+    await testRunner.ThenAsync("the validation problem details should have status 400", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 107
     await testRunner.AndAsync("the validation problem details should contain error for \'Name\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -583,11 +681,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "10";
+            string pickleIndex = "12";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateValidationProblemDetails with custom title", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 91
+#line 110
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -597,19 +695,19 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 92
+#line 111
     await testRunner.GivenAsync("I have a ProblemDetailsFactory with development environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 93
+#line 112
     await testRunner.AndAsync("I have an HttpContext with no error", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 94
+#line 113
     await testRunner.AndAsync("I have a ModelStateDictionary with error \'Name\' \'Name is required\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 95
+#line 114
     await testRunner.WhenAsync("I create validation problem details with title \'Custom Validation Error\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 96
+#line 115
     await testRunner.ThenAsync("the validation problem details should have title \'Custom Validation Error\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

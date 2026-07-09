@@ -105,7 +105,7 @@ namespace Asm.Win32.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Hosts.feature.ndjson", 14);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Hosts.feature.ndjson", 18);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -632,6 +632,186 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 97
     await testRunner.ThenAsync("an exception of type \'System.ArgumentException\' is thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Address-only line loads without error")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
+        [global::Xunit.TraitAttribute("Description", "Address-only line loads without error")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task Address_OnlyLineLoadsWithoutError()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "12";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Address-only line loads without error", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 100
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 101
+    await testRunner.GivenAsync("I have a hosts file stream with an address-only entry", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 102
+    await testRunner.WhenAsync("I create a Hosts instance from the stream", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 103
+    await testRunner.ThenAsync("the hosts file should have 2 entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 104
+    await testRunner.AndAsync("entry 0 should have address \"127.0.0.1\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 105
+    await testRunner.AndAsync("entry 1 should have address \"127.0.0.2\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 106
+    await testRunner.AndAsync("entry 1 should have alias \"host2\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Writing fewer entries truncates the hosts file")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
+        [global::Xunit.TraitAttribute("Description", "Writing fewer entries truncates the hosts file")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
+        public async global::System.Threading.Tasks.Task WritingFewerEntriesTruncatesTheHostsFile()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Integration"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "13";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Writing fewer entries truncates the hosts file", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 109
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 110
+    await testRunner.GivenAsync("I have a mock hosts file configured as the system hosts file", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 111
+    await testRunner.AndAsync("I create a Hosts instance from the file path", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 112
+    await testRunner.WhenAsync("I remove the last entry", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 113
+    await testRunner.AndAsync("I write the hosts file", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 114
+    await testRunner.AndAsync("I call Refresh", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 115
+    await testRunner.ThenAsync("the hosts file should have 1 entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Parameterless write targets the instance\'s own file")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
+        [global::Xunit.TraitAttribute("Description", "Parameterless write targets the instance\'s own file")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
+        public async global::System.Threading.Tasks.Task ParameterlessWriteTargetsTheInstancesOwnFile()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Integration"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "14";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Parameterless write targets the instance\'s own file", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 118
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 119
+    await testRunner.GivenAsync("I have a mock hosts file configured as the system hosts file", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 120
+    await testRunner.AndAsync("I have a second mock hosts file on disk", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 121
+    await testRunner.AndAsync("I create a Hosts instance from the second file path", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 122
+    await testRunner.WhenAsync("I remove the last entry", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 123
+    await testRunner.AndAsync("I write the hosts file", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 124
+    await testRunner.ThenAsync("the second mock hosts file should have 1 entries on disk", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 125
+    await testRunner.AndAsync("the system hosts file should be unchanged", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Setting SystemHostsFile resets the Current instance")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Hosts File Parsing")]
+        [global::Xunit.TraitAttribute("Description", "Setting SystemHostsFile resets the Current instance")]
+        [global::Xunit.TraitAttribute("Category", "Integration")]
+        public async global::System.Threading.Tasks.Task SettingSystemHostsFileResetsTheCurrentInstance()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Integration"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "15";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Setting SystemHostsFile resets the Current instance", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 128
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 129
+    await testRunner.GivenAsync("I have a mock hosts file configured as the system hosts file", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 130
+    await testRunner.AndAsync("I access the Current hosts instance", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 131
+    await testRunner.WhenAsync("I configure a second mock hosts file as the system hosts file", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 132
+    await testRunner.AndAsync("I access the Current hosts instance", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 133
+    await testRunner.ThenAsync("the hosts file should have 3 entries", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

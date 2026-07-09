@@ -31,11 +31,11 @@ public static class LoggingConfigurator
             .WriteTo.Trace()
             .WriteTo.Console();
 
-        var seqHost = Environment.GetEnvironmentVariable("Seq:Host");
+        var seqHost = Environment.GetEnvironmentVariable("Seq__Host") ?? Environment.GetEnvironmentVariable("Seq:Host");
 
         if (!String.IsNullOrEmpty(seqHost))
         {
-            configuration.WriteTo.Seq(seqHost, apiKey: Environment.GetEnvironmentVariable("Seq:APIKey"));
+            configuration.WriteTo.Seq(seqHost, apiKey: Environment.GetEnvironmentVariable("Seq__APIKey") ?? Environment.GetEnvironmentVariable("Seq:APIKey"));
         }
         else
         {
@@ -44,7 +44,7 @@ public static class LoggingConfigurator
 
         if (Env == "Development")
         {
-            configuration.WriteTo.File(@"logs\Log.log", rollingInterval: RollingInterval.Day);
+            configuration.WriteTo.File(Path.Combine("logs", "Log.log"), rollingInterval: RollingInterval.Day);
         }
 
         return configuration;
@@ -75,13 +75,17 @@ public static class LoggingConfigurator
 
         foreach (IConfigurationSection child in logLevelConfig.GetChildren())
         {
+            LogEventLevel? level = MapLogLevel(child.Value);
+
+            if (level == null) continue;
+
             if (child.Key == "Default")
             {
-                loggerConfiguration.MinimumLevel.Is(logLevelConfig.GetValue<LogEventLevel>(child.Key));
+                loggerConfiguration.MinimumLevel.Is(level.Value);
                 continue;
             }
 
-            loggerConfiguration.MinimumLevel.Override(child.Key, logLevelConfig.GetValue<LogEventLevel>(child.Key));
+            loggerConfiguration.MinimumLevel.Override(child.Key, level.Value);
         }
 
         var seqHost = configuration.GetValue<string>("Seq:Host");
@@ -97,9 +101,23 @@ public static class LoggingConfigurator
 
         if (hostEnvironment.IsDevelopment())
         {
-            loggerConfiguration.WriteTo.File(@"logs\Log.log", rollingInterval: RollingInterval.Day);
+            loggerConfiguration.WriteTo.File(Path.Combine("logs", "Log.log"), rollingInterval: RollingInterval.Day);
         }
 
         return loggerConfiguration;
     }
+
+    /// <summary>
+    /// Maps a level name from the Microsoft <c>Logging:LogLevel</c> convention to a Serilog level.
+    /// Serilog's own level names are also accepted. <c>None</c> maps to a level above
+    /// <see cref="LogEventLevel.Fatal"/>, silencing the source; unrecognised values are ignored.
+    /// </summary>
+    private static LogEventLevel? MapLogLevel(string? value) => value switch
+    {
+        null or "" => null,
+        "Trace" => LogEventLevel.Verbose,
+        "Critical" => LogEventLevel.Fatal,
+        "None" => (LogEventLevel)(1 + (int)LogEventLevel.Fatal),
+        _ => Enum.TryParse(value, ignoreCase: true, out LogEventLevel level) ? level : null,
+    };
 }

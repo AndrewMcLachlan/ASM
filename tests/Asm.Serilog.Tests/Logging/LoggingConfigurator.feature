@@ -38,3 +38,39 @@ Scenario: ConfigureLogging with null host environment throws ArgumentNullExcepti
     When I call ConfigureLogging with configuration and environment expecting an exception
     Then an exception of type 'System.ArgumentNullException' should be thrown
 
+@Unit
+Scenario Outline: ConfigureLogging maps Microsoft log level names to Serilog levels
+    Given I have a LoggerConfiguration
+    And I have a configuration with default log level '<level>'
+    And I have a host environment for 'TestApp'
+    When I call ConfigureLogging with configuration and environment
+    Then a logger created from the result has minimum level '<expected>'
+
+Examples:
+    | level       | expected    |
+    | Trace       | Verbose     |
+    | Debug       | Debug       |
+    | Information | Information |
+    | Warning     | Warning     |
+    | Error       | Error       |
+    | Critical    | Fatal       |
+    | None        | Off         |
+    | Verbose     | Verbose     |
+    | Fatal       | Fatal       |
+
+@Unit
+Scenario: ConfigureLogging with a log level override of None does not throw
+    Given I have a LoggerConfiguration
+    And I have a configuration with default log level 'Information' and override for 'Microsoft.Hosting.Lifetime' set to 'None'
+    And I have a host environment for 'TestApp'
+    When I call ConfigureLogging with configuration and environment
+    Then the logger configuration should be returned
+
+@Unit
+Scenario: ConfigureLogging ignores unrecognised log level names
+    Given I have a LoggerConfiguration
+    And I have a configuration with default log level 'NotALevel'
+    And I have a host environment for 'TestApp'
+    When I call ConfigureLogging with configuration and environment
+    Then the logger configuration should be returned
+

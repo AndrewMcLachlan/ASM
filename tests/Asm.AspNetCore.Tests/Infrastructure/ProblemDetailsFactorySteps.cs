@@ -93,6 +93,17 @@ public class ProblemDetailsFactorySteps
         _httpContext = CreateHttpContextWithException(exception);
     }
 
+    [Given(@"I have an HttpContext with a FluentValidation ValidationException with the same message on two fields")]
+    public void GivenIHaveAnHttpContextWithAFluentValidationValidationExceptionWithTheSameMessageOnTwoFields()
+    {
+        var failures = new List<ValidationFailure>
+        {
+            new("First", "is required"),
+            new("Second", "is required"),
+        };
+        _httpContext = CreateHttpContextWithException(new ValidationException(failures));
+    }
+
     [Given(@"I have a ModelStateDictionary with error '(.*)' '(.*)'")]
     public void GivenIHaveAModelStateDictionaryWithError(string key, string error)
     {
@@ -160,6 +171,20 @@ public class ProblemDetailsFactorySteps
     public void ThenTheProblemDetailsShouldNotContainExceptionDetails()
     {
         Assert.Null(_problemDetails.Detail);
+    }
+
+    [Then(@"the problem details should have validation error for '(.*)' with message '(.*)'")]
+    public void ThenTheProblemDetailsShouldHaveValidationErrorForWithMessage(string field, string message)
+    {
+        var validationProblemDetails = Assert.IsType<HttpValidationProblemDetails>(_problemDetails);
+        Assert.True(validationProblemDetails.Errors.TryGetValue(field, out var messages), $"Errors should contain field '{field}'");
+        Assert.Contains(message, messages);
+    }
+
+    [Then(@"the HTTP response status code should be (.*)")]
+    public void ThenTheHttpResponseStatusCodeShouldBe(int expectedStatus)
+    {
+        Assert.Equal(expectedStatus, _httpContext.Response.StatusCode);
     }
 
     [Then(@"the validation problem details should have status (.*)")]

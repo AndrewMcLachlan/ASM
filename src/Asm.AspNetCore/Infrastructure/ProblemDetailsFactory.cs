@@ -43,10 +43,11 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
             };
         }
 
-        if (Handlers.ContainsKey(errorContext.Error.GetType()))
+        if (Handlers.TryGetValue(errorContext.Error.GetType(), out var handler))
         {
-            var customProblemDetails = Handlers[errorContext.Error.GetType()](httpContext, errorContext);
-            customProblemDetails.Status ??= 500;
+            var customProblemDetails = handler(httpContext, errorContext);
+            customProblemDetails.Status ??= StatusCodes.Status500InternalServerError;
+            httpContext.Response.StatusCode = customProblemDetails.Status.Value;
             return customProblemDetails;
         }
 
@@ -55,9 +56,12 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
         switch (errorContext.Error)
         {
             case ValidationException validationException:
-                problemDetails = new HttpValidationProblemDetails(validationException.Errors.ToDictionary<ValidationFailure, string, string[]>(e => e.ErrorMessage, e => [e.PropertyName]))
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                problemDetails = new HttpValidationProblemDetails(
+                    validationException.Errors
+                        .GroupBy(e => e.PropertyName)
+                        .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray()))
                 {
-                    Status = StatusCodes.Status400BadRequest,
                     Title = "Validation error",
                     Detail = validationException.Message,
                     Type = "about:blank",

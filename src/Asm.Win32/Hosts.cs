@@ -25,6 +25,7 @@ public sealed class Hosts : IDisposable
     #region Fields
     private static Hosts? _instance;
     private static readonly Lock _lock = new();
+    private static string _systemHostsFile = DefaultHostsFile;
     private readonly string? _hostsFile;
     private readonly Timer? _pollTimer;
     private DateTime _hostsFileLastUpdated;
@@ -39,7 +40,15 @@ public sealed class Hosts : IDisposable
     /// This property can be set to a custom path for testing purposes.
     /// Setting this property resets the <see cref="Current"/> singleton instance.
     /// </remarks>
-    public static string SystemHostsFile { get; set; } = DefaultHostsFile;
+    public static string SystemHostsFile
+    {
+        get => _systemHostsFile;
+        set
+        {
+            _systemHostsFile = value;
+            ResetInstance();
+        }
+    }
 
     /// <summary>
     /// The current Windows hosts file.
@@ -125,11 +134,13 @@ public sealed class Hosts : IDisposable
     /// </remarks>
     public static void ResetInstance()
     {
+        Hosts? instance;
         lock (_lock)
         {
-            _instance?.Dispose();
+            instance = _instance;
             _instance = null;
         }
+        instance?.Dispose();
     }
 
     /// <summary>
@@ -143,21 +154,22 @@ public sealed class Hosts : IDisposable
     }
 
     /// <summary>
-    /// Writes the host entries to the Windows hosts file.
+    /// Writes the host entries back to the file this instance was loaded from,
+    /// or to the system hosts file if this instance was not loaded from a file.
     /// </summary>
     public void WriteHostsToFile()
     {
-        WriteHostsToFile(SystemHostsFile);
+        WriteHostsToFile(_hostsFile ?? SystemHostsFile);
         OnHostsFileChanged();
     }
 
     /// <summary>
     /// Writes the hosts entries to given file.
     /// </summary>
-    /// <param name="fileName">The name of the to write to.</param>
+    /// <param name="fileName">The name of the file to write to.</param>
     public void WriteHostsToFile(string fileName)
     {
-        using (FileStream stream = File.OpenWrite(fileName))
+        using (FileStream stream = File.Create(fileName))
         {
             WriteHosts(stream);
         }
@@ -170,7 +182,7 @@ public sealed class Hosts : IDisposable
     /// <exception cref="InvalidOperationException">Thrown if no hosts file was specified when the object was created.</exception>
     public void Refresh()
     {
-        if (String.IsNullOrEmpty(_hostsFile)) throw new InvalidOperationException("Cannot refresh is no filename was provided");
+        if (String.IsNullOrEmpty(_hostsFile)) throw new InvalidOperationException("Cannot refresh if no filename was provided");
 
         LoadHostsFile(_hostsFile);
     }
@@ -256,7 +268,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex entryCommentMatch = new(@"^?([^\s|#]+)\s?([^#]+)[#]{1}?(#*.*)$");
+            Regex entryCommentMatch = new(@"^([^\s#]+)\s+([^#]+)#(.*)$");
             match = entryCommentMatch.Match(line);
 
             if (match.Success)
@@ -273,7 +285,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex entryMatch = new(@"^?([^\s|#]+)\s?([^#]+)$");
+            Regex entryMatch = new(@"^([^\s#]+)(?:\s+([^#]+))?$");
             match = entryMatch.Match(line);
 
             if (match.Success)
@@ -281,7 +293,7 @@ public sealed class Hosts : IDisposable
 
                 if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                 {
-                    Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim() });
+                    Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Success ? match.Groups[2].Value.Trim() : null });
                 }
                 else
                 {
@@ -329,6 +341,13 @@ public sealed class Hosts : IDisposable
             if (disposing)
             {
                 _pollTimer?.Dispose();
+                lock (_lock)
+                {
+                    if (ReferenceEquals(_instance, this))
+                    {
+                        _instance = null;
+                    }
+                }
             }
             _disposed = true;
         }
