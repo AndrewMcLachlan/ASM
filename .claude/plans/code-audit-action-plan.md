@@ -89,13 +89,15 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] `HexColourJsonConverter.Read` throws `JsonException` for a bad string or a non-string token (was `FormatException`/`InvalidOperationException`). Tests cover both.
 - [x] Guards: `ByteArray.Copy` bounds fixed (`start + length`, correct ParamName); `ConvertArray` rejects too-short arrays with a clear message; `Squish` reports `fromEnd` (was `fromStart`); `Nybble.ToUInt32` throws for empty and >8 nybbles. Tests cover Squish ParamName and Nybble validation.
 
-### 1h. Reqnroll / Umbraco medium
-- [ ] `ScenarioContextExtensions`: `context.Add` → `context.Set` (or indexer) in `AddResult`/`AddException`.
-- [ ] `ExceptionSteps.cs:25`: resolve types by scanning loaded assemblies (or compare `FullName` strings) so `Asm.NotFoundException` works.
-- [ ] `SimpleAssertionSteps`: apply `DecodeWhitespace()` to the string step.
-- [ ] `ImgSetTagHelper`: trim both separator chars (Linux fix); `InvariantCulture` for scaling; skip attributes on decode failure instead of emitting `0`; `IndexOf('?') > 0` → `>= 0`. Extract path/format logic into internal static helpers and unit-test them (`InternalsVisibleTo` already the pattern).
+### 1h. Reqnroll / Umbraco medium — DONE
+- [x] `ScenarioContextExtensions`: `AddResult`/`AddException` use `context.Set` (overwrite) instead of `context.Add` (threw on the second `CatchException` in a scenario). New scenario calls `CatchException` twice.
+- [x] `ExceptionSteps`: type resolution falls back to scanning loaded assemblies, so `Asm.NotFoundException` (and other library types) resolve by full name instead of throwing `TypeLoadException`. New scenario.
+- [x] `SimpleAssertionSteps`: the string step applies `DecodeWhitespace()` to the expected value (consistent with the exception-message step).
+- [x] `ImgSetTagHelper`: path logic extracted to `internal static ToPhysicalPath` (trims both separators — Linux fix — and `IndexOf('?') >= 0`); scaling extracted to `internal static FormatSrcsetEntry` (invariant culture); a decode failure now returns instead of emitting `width="0" height="0"`. `InternalsVisibleTo` added; 4 helper unit tests.
 
-**Acceptance:** every fix has a test that fails before / passes after; full solution green; patch-version release notes list each behavioral fix.
+**Acceptance:** every fix has a test that fails before / passes after; full solution green (875 tests across 15 projects); patch-version release notes list each behavioral fix.
+
+**Phase 1 status:** 1a–1h all complete. 1a–1d on branch `audit/phase-1-critical-fixes` (PR #405); 1e–1h on branch `audit/phase-1-remaining` (branched from it).
 
 ## Phase 2 — Security hardening (needs a deliberate release; some are behavior changes)
 
