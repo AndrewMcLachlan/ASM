@@ -86,11 +86,7 @@ public static class WebJobStart
         Host.CreateDefaultBuilder(args)
         .ConfigureWebJobs(configureWebJobs)
         .ConfigureDefaults(args)
-        .ConfigureAppConfiguration((context, appBuilder) =>
-        {
-            context.HostingEnvironment.ApplicationName = appName;
-        })
         .UseEnvironment(Environment.GetEnvironmentVariable(EnvironmentVariables.AspNetCoreEnvironment) ?? Environment.GetEnvironmentVariable(EnvironmentVariables.DotNetEnvironment) ?? "Development")
-        .UseCustomSerilog()
+        .UseCustomSerilog(appName)
         .ConfigureServices(configureServices);
 }
