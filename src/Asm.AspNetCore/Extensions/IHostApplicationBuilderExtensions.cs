@@ -20,7 +20,16 @@ public static class IHostApplicationBuilderExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IHostApplicationBuilder"/> instance that this method extends.</param>
     /// <returns>The <see cref="IHostApplicationBuilder"/> instance so that calls can be chained.</returns>
-    public static IHostApplicationBuilder AddStandardOpenTelemetry(this IHostApplicationBuilder builder)
+    public static IHostApplicationBuilder AddStandardOpenTelemetry(this IHostApplicationBuilder builder) =>
+        builder.AddStandardOpenTelemetry(builder.Environment.ApplicationName);
+
+    /// <summary>
+    /// Adds the standard OpenTelemetry configuration.
+    /// </summary>
+    /// <param name="builder">The <see cref="IHostApplicationBuilder"/> instance that this method extends.</param>
+    /// <param name="serviceName">The friendly service name used for the OpenTelemetry resource.</param>
+    /// <returns>The <see cref="IHostApplicationBuilder"/> instance so that calls can be chained.</returns>
+    public static IHostApplicationBuilder AddStandardOpenTelemetry(this IHostApplicationBuilder builder, string serviceName)
     {
         bool hasAppInsights = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING") != null;
 
@@ -30,7 +39,7 @@ public static class IHostApplicationBuilderExtensions
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resourceBuilder =>
             {
-                resourceBuilder.AddService(builder.Environment.ApplicationName, serviceInstanceId: builder.Environment.EnvironmentName);
+                resourceBuilder.AddService(serviceName, serviceInstanceId: builder.Environment.EnvironmentName);
             })
             .WithMetrics(options =>
             {
