@@ -34,3 +34,13 @@ Scenario: GetUserName returns dash when name claim is null
     Given I have an HttpContext with empty name claim
     When I call GetUserName
     Then the string value '-' is returned
+
+@Unit
+Scenario: GetUserName tolerates duplicate name claims
+    Given I have an HttpContext with user claims
+        | Type               | Value             |
+        | name               | John Doe          |
+        | name               | Jane Doe          |
+        | preferred_username | john.doe@test.com |
+    When I call GetUserName
+    Then the string value 'John Doe (john.doe@test.com)' is returned

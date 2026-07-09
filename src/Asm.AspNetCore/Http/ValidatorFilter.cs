@@ -10,9 +10,18 @@ internal class ValidatorFilter<T>(int parameterIndex) : IEndpointFilter
     {
         T? arg = context.GetArgument<T>(parameterIndex);
 
-        IValidator<T>? validator = context.HttpContext.RequestServices.GetRequiredService<IValidator<T>>();
+        // A missing/unbindable body is a client error, not a 500 — ValidateAndThrowAsync(null)
+        // would otherwise throw ArgumentNullException.
+        if (arg is null)
+        {
+            return Results.Problem(
+                title: "A required request body was missing or could not be bound.",
+                statusCode: StatusCodes.Status400BadRequest);
+        }
 
-        await validator.ValidateAndThrowAsync(arg);
+        IValidator<T> validator = context.HttpContext.RequestServices.GetRequiredService<IValidator<T>>();
+
+        await validator.ValidateAndThrowAsync(arg, context.HttpContext.RequestAborted);
 
         return await next(context);
     }

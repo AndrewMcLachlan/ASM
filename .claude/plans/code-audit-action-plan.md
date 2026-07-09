@@ -59,15 +59,15 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] Handler serializes as `object` (preserves `HttpValidationProblemDetails.errors`) with `application/problem+json`.
 - [x] Orphaned ValidationException step wired into real scenarios (unit + integration).
 
-### 1e. Asm.AspNetCore misc high/medium
-- [ ] `RouteGroupBuilderExtensions.cs:17`: `GetExecutingAssembly()` → `GetCallingAssembly()` + `[MethodImpl(NoInlining)]`. Test the parameterless overload.
-- [ ] `CanonicalUrlMiddleware`: include `PathBase` in redirect Locations; remove the `Directory.Exists`/`File.Exists` URL-path probe (decide trailing-slash policy from options instead); only redirect GET/HEAD (308 otherwise or pass through). Tests: PathBase case, POST case.
-- [ ] `HttpContextExtensions.GetUserName`: `SingleOrDefault` → `FirstOrDefault` (×3 claim lookups). Test: principal with duplicate `name` claims.
-- [ ] `IHostApplicationBuilderExtensions.AddStandardOpenTelemetry`: call `AddHttpContextAccessor()`.
-- [ ] `Authentication.cs:47`: no-op unless `name == JwtBearerDefaults.AuthenticationScheme`.
-- [ ] `MapSecurityReporting`: add `.AllowAnonymous()`; pass `ctx.RequestAborted` in `ReadBoundedAsync`.
-- [ ] `ValidatorFilter`: handle null body → 400; pass cancellation token.
-- [ ] `DataTypeValidator` email regex: anchor with `^…$` and add `RegexOptions.IgnoreCase`. Tests: uppercase address accepted, embedded-substring rejected.
+### 1e. Asm.AspNetCore misc high/medium — DONE
+- [x] `RouteGroupBuilderExtensions`: `GetExecutingAssembly()` → `GetCallingAssembly()` + `[MethodImpl(NoInlining)]`. New scenario tests the parameterless overload maps groups from the calling assembly.
+- [x] `CanonicalUrlMiddleware`: redirects now include `PathBase`; the `Directory.Exists`/`File.Exists` URL-path probe is removed (trailing-slash decided from options only); only GET/HEAD are redirected (others pass through). Tests: PathBase case, POST pass-through.
+- [x] `GetUserName`: `SingleOrDefault` → `ClaimsIdentity.FindFirst` (single scan, tolerates duplicates). Test: duplicate `name` claims.
+- [x] `AddStandardOpenTelemetry` calls `AddHttpContextAccessor()`.
+- [x] `ConfigureAzureOptions.Configure` no-ops unless `name == JwtBearerDefaults.AuthenticationScheme`.
+- [x] `MapSecurityReporting`: `.AllowAnonymous()` on the group; `ctx.RequestAborted` threaded through `ReadBoundedAsync`.
+- [x] `ValidatorFilter`: null argument → 400 `ProblemHttpResult` (was `ArgumentNullException`→500); passes `RequestAborted`. Test: null request → 400, next not called.
+- [x] `DataTypeValidator` email regex anchored (`^…$`), classes include `A-Z`, `RegexOptions.IgnoreCase | CultureInvariant`, `IsMatch`. **New `Asm.AspNetCore.Mvc.Tests` project** (slnx + CI matrix); tests: uppercase accepted, embedded substring rejected (old regex failed 4/8).
 
 ### 1f. CQRS / Domain high/medium
 - [ ] `IServiceCollectionExtensions.cs:281` (Asm.Domain.Infrastructure): forward `TContextService`, not `IReadOnlyDbContext`. Test with a custom context interface + lifetime overload.

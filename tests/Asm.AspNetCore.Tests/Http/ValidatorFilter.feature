@@ -13,3 +13,10 @@ Scenario: ValidatorFilter throws when validation fails
     Given I have an invalid test request
     When the validator filter is invoked
     Then a validation exception should be thrown
+
+@Unit
+Scenario: ValidatorFilter returns 400 when the argument is missing
+    Given I have a null test request
+    When the validator filter is invoked
+    Then the next delegate should not be called
+    And a 400 result should be returned

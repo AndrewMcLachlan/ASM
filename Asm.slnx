@@ -38,6 +38,9 @@
     <Project Path="tests/Asm.AspNetCore.Tests/Asm.AspNetCore.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
+    <Project Path="tests/Asm.AspNetCore.Mvc.Tests/Asm.AspNetCore.Mvc.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.Cqrs.AspNetCore.Tests/Asm.Cqrs.AspNetCore.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>

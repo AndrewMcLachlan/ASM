@@ -45,6 +45,15 @@ public class RouteGroupBuilderExtensionsSteps
         _endpointGroupMapped = TestEndpointGroup.WasMapped;
     }
 
+    [When(@"I call MapGroups without an assembly")]
+    public void WhenICallMapGroupsWithoutAnAssembly()
+    {
+        TestEndpointGroup.WasMapped = false;
+        // The parameterless overload scans the calling assembly, which is this test assembly.
+        _result = _builder.MapGroups();
+        _endpointGroupMapped = TestEndpointGroup.WasMapped;
+    }
+
     [Then(@"the endpoint group should be mapped")]
     public void ThenTheEndpointGroupShouldBeMapped()
     {

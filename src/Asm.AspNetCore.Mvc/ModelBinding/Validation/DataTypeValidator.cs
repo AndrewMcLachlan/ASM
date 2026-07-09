@@ -10,8 +10,10 @@ namespace Asm.AspNetCore.Mvc.ModelBinding.Validation;
 public class DataTypeValidatorAttribute : DataTypeAttribute, IClientModelValidator
 {
     #region Constants
-    private const string EmailValidationRegExString = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
-    private static readonly Regex EmailRegEx = new Regex(EmailValidationRegExString);
+    // Anchored and case-insensitive. The character classes include A-Z so the pattern works
+    // client-side too (jQuery unobtrusive validation anchors but does not add the /i flag).
+    private const string EmailValidationRegExString = @"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$";
+    private static readonly Regex EmailRegEx = new(EmailValidationRegExString, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     #endregion
 
     #region Constructors
@@ -55,7 +57,7 @@ public class DataTypeValidatorAttribute : DataTypeAttribute, IClientModelValidat
     /// <returns>A validation result.</returns>
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (DataType == DataType.EmailAddress && value is string str && !String.IsNullOrEmpty(str) && !EmailRegEx.Match(str).Success)
+        if (DataType == DataType.EmailAddress && value is string str && !String.IsNullOrEmpty(str) && !EmailRegEx.IsMatch(str))
         {
             return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }

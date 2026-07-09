@@ -177,4 +177,55 @@ public class CanonicalUrlMiddlewareTests
             Assert.Equal("/about?x=1", Location(response));
         }
     }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // PathBase is preserved on redirect (app hosted under a sub-path)
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task UppercasePath_UnderPathBase_RedirectKeepsPathBase()
+    {
+        var host = await new HostBuilder()
+            .ConfigureWebHost(webHost =>
+            {
+                webHost.UseTestServer();
+                webHost.Configure(app =>
+                {
+                    app.UsePathBase("/app");
+                    app.UseCanonicalUrls();
+                    app.Run(async ctx =>
+                    {
+                        ctx.Response.StatusCode = 200;
+                        await ctx.Response.WriteAsync("ok");
+                    });
+                });
+            })
+            .StartAsync(TestContext.Current.CancellationToken);
+
+        using (host)
+        {
+            var client = host.GetTestServer().CreateClient();
+            client.DefaultRequestHeaders.Clear();
+
+            var response = await client.GetAsync("/app/About", TestContext.Current.CancellationToken);
+
+            Assert.Equal(HttpStatusCode.MovedPermanently, response.StatusCode);
+            Assert.Equal("/app/about", Location(response));
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Non-GET/HEAD methods are not redirected (would drop the request body)
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task Post_ToUppercasePath_PassesThrough()
+    {
+        var (host, client) = await BuildAsync();
+        using (host)
+        {
+            var response = await client.PostAsync("/About", new StringContent("body"), TestContext.Current.CancellationToken);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+    }
 }

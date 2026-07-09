@@ -105,7 +105,7 @@ namespace Asm.AspNetCore.Tests.Extensions
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/HttpContextExtensions.feature.ndjson", 7);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Extensions/HttpContextExtensions.feature.ndjson", 8);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -156,17 +156,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "Type",
                             "Value"});
-                table3.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "name",
                             "John Doe"});
-                table3.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "preferred_username",
                             "john.doe@test.com"});
 #line 5
-    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table3, "Given ");
+    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table1, "Given ");
 #line hidden
 #line 9
     await testRunner.WhenAsync("I call GetUserName", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -273,14 +273,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                             "Type",
                             "Value"});
-                table4.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "preferred_username",
                             "john.doe@test.com"});
 #line 26
-    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table4, "Given ");
+    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table2, "Given ");
 #line hidden
 #line 29
     await testRunner.WhenAsync("I call GetUserName", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -323,6 +323,54 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 36
     await testRunner.ThenAsync("the string value \'-\' is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="GetUserName tolerates duplicate name claims")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "HttpContext Extensions")]
+        [global::Xunit.TraitAttribute("Description", "GetUserName tolerates duplicate name claims")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task GetUserNameToleratesDuplicateNameClaims()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "5";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("GetUserName tolerates duplicate name claims", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 39
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "Type",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "name",
+                            "John Doe"});
+                table3.AddRow(new string[] {
+                            "name",
+                            "Jane Doe"});
+                table3.AddRow(new string[] {
+                            "preferred_username",
+                            "john.doe@test.com"});
+#line 40
+    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table3, "Given ");
+#line hidden
+#line 45
+    await testRunner.WhenAsync("I call GetUserName", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 46
+    await testRunner.ThenAsync("the string value \'John Doe (john.doe@test.com)\' is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

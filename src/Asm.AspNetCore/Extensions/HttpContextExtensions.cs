@@ -15,17 +15,19 @@ public static class HttpContextExtensions
     /// <returns>The current user's name, or "-" if the current user is not available.</returns>
     public static string GetUserName(this HttpContext? context)
     {
-        string name;
-
-        if (context?.User?.Identity is ClaimsIdentity identity && identity.Claims.SingleOrDefault(c => c.Type == "name")?.Value is not null)
+        if (context?.User?.Identity is not ClaimsIdentity identity)
         {
-            name = $"{identity.Claims.SingleOrDefault(c => c.Type == "name")?.Value} ({identity.Claims.SingleOrDefault(c => c.Type == "preferred_username")?.Value})";
-        }
-        else
-        {
-            name = "-";
+            return "-";
         }
 
-        return name;
+        // FindFirst tolerates duplicate claims (SingleOrDefault would throw) and scans once.
+        var name = identity.FindFirst("name")?.Value;
+        if (name is null)
+        {
+            return "-";
+        }
+
+        var preferredUsername = identity.FindFirst("preferred_username")?.Value;
+        return $"{name} ({preferredUsername})";
     }
 }
