@@ -49,8 +49,9 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
     {
         // Drain until no new events remain: a handler may itself raise events (or add tracked
-        // entities that carry events), and those must be dispatched in this same save.
-        while (true)
+        // entities that carry events), and those must be dispatched in this same save. Bounded
+        // so a handler that raises events indefinitely fails fast rather than hanging.
+        for (int iteration = 0; ; iteration++)
         {
             var domainEventEntities = ChangeTracker.Entries<IEntity>()
                 .Select(entry => entry.Entity)
@@ -61,6 +62,8 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
             {
                 break;
             }
+
+            ThrowIfDrainLimitExceeded(iteration);
 
             foreach (var entity in domainEventEntities)
             {
@@ -119,7 +122,7 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     {
         // Drain until no new events remain (see DispatchDomainEventsAsync). SaveChanges has no
         // cancellation token, so none is propagated here.
-        while (true)
+        for (int iteration = 0; ; iteration++)
         {
             var domainEventEntities = ChangeTracker.Entries<IEntity>()
                 .Select(entry => entry.Entity)
@@ -130,6 +133,8 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
             {
                 break;
             }
+
+            ThrowIfDrainLimitExceeded(iteration);
 
             foreach (var entity in domainEventEntities)
             {
@@ -143,5 +148,21 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
         }
 
         return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    /// <summary>
+    /// The maximum number of dispatch rounds allowed while draining domain events. Cascades are
+    /// normally one or two rounds deep; exceeding this indicates a handler raising events without
+    /// end.
+    /// </summary>
+    private const int MaxDomainEventDrainIterations = 100;
+
+    private static void ThrowIfDrainLimitExceeded(int iteration)
+    {
+        if (iteration >= MaxDomainEventDrainIterations)
+        {
+            throw new InvalidOperationException(
+                $"Domain event dispatch did not converge after {MaxDomainEventDrainIterations} rounds; a domain event handler is likely raising new events indefinitely.");
+        }
     }
 }
