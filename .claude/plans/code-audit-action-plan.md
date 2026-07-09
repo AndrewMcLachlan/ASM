@@ -47,6 +47,12 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] `Seq__Host`/`Seq__APIKey` supported alongside `Seq:Host`/`Seq:APIKey` in both libraries; README examples fixed.
 - [x] `Path.Combine("logs", "Log.log")` in both overloads.
 
+**Design decisions (settled 2026-07-09):** The disposable-`BootstrapLogger` shape is confirmed — returning a bare `ILoggerFactory` was rejected because the caller always immediately calls `CreateLogger`, so it would only add ceremony for the single realistic consumer. Making the factory the disposable (returning the framework `ILoggerFactory`, or an instantiable factory type) was considered and dropped for the same reason. Because the wrapper flushes on dispose, Seq stays in the bootstrap path (no console-only cut needed).
+
+**Out of scope — separate project:** `Asm.Logging` exists to eventually move the hosting story off Serilog and onto Microsoft.Extensions.Logging. Wiring `WebApplicationStart` to consume `BootstrapLoggerFactory`, and building a MEL equivalent of `LoggingConfigurator` (steady-state enrichment/levels/Seq), is a **separate project**, not part of this audit plan. `BootstrapLoggerFactory` is intentionally left unwired for now. Open question for that project: enrichment parity vs Serilog's `LogContext`. (Note: MEL reads `Logging:LogLevel` natively, so the `MapLogLevel` translation above becomes unnecessary once the steady-state path moves to MEL.)
+
+**Loose end:** `Asm.Logging` still has no test project, so the `BootstrapLogger` fix is currently unverified by a test. A minimal test (Create returns a usable disposable logger; an in-memory provider proves output is not dropped; Dispose flushes) could be added here, or deferred to the separate project above. **Maintainer to decide.**
+
 ### 1d. Asm.AspNetCore error pipeline — DONE
 - [x] Validation errors dictionary now `property → messages[]` with duplicate-message grouping. Unit + integration tests cover two failures sharing a message (old code crashed in `ToDictionary`).
 - [x] Response status set from the computed status in the validation and custom-handler branches. Integration test: `/validation-error` under `UseExceptionHandler` returns wire status 400 (was 500).
