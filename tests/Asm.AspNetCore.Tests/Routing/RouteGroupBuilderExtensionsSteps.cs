@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Asm.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -49,10 +50,16 @@ public class RouteGroupBuilderExtensionsSteps
     public void WhenICallMapGroupsWithoutAnAssembly()
     {
         TestEndpointGroup.WasMapped = false;
-        // The parameterless overload scans the calling assembly, which is this test assembly.
-        _result = _builder.MapGroups();
+        // Call through a non-inlined wrapper so the calling frame is stably in this test
+        // assembly. In Release, Reqnroll invokes step methods via compiled delegates that the
+        // JIT may inline, which would otherwise collapse the frame GetCallingAssembly relies on
+        // — this models a consumer calling MapGroups() directly from their own assembly.
+        _result = InvokeParameterlessMapGroups();
         _endpointGroupMapped = TestEndpointGroup.WasMapped;
     }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private RouteGroupBuilder InvokeParameterlessMapGroups() => _builder.MapGroups();
 
     [Then(@"the endpoint group should be mapped")]
     public void ThenTheEndpointGroupShouldBeMapped()
