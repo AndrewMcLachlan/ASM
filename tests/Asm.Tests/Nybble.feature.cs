@@ -424,13 +424,13 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 53
-    await testRunner.GivenAsync("I have an int with value 0x12", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have an int with value 0x12345678", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 54
     await testRunner.WhenAsync("I convert the int to Nybbles", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 55
-    await testRunner.ThenAsync("the Nybble array should be 2, 1, 0, 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the full Nybble array should be 1, 2, 3, 4, 5, 6, 7, 8", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

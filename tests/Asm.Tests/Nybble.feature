@@ -50,9 +50,9 @@ Scenario: Convert bytes to Nybbles
     Then the Nybble array should be 1, 2, 3, 4
 
 Scenario: Convert int to Nybbles
-    Given I have an int with value 0x12
+    Given I have an int with value 0x12345678
     When I convert the int to Nybbles
-    Then the Nybble array should be 2, 1, 0, 0
+    Then the full Nybble array should be 1, 2, 3, 4, 5, 6, 7, 8
 
 @Unit
 Scenario: Add uint and Nybble
