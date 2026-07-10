@@ -94,7 +94,6 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         }
 
         services.TryAddTransient<IPublisher, Publisher>();
-        services.AddLazyCache();
 
         return services;
     }
@@ -110,7 +109,6 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     {
         services.TryAddEnumerable(ServiceDescriptor.Transient<IDomainEventHandler<TDomainEvent>, THandler>());
         services.TryAddTransient<IPublisher, Publisher>();
-        services.AddLazyCache();
 
         return services;
     }

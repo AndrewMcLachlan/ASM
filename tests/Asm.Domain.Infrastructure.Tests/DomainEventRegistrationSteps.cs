@@ -1,6 +1,5 @@
 using System.Reflection;
 using Asm.Domain;
-using LazyCache;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
@@ -334,13 +333,6 @@ public class DomainEventRegistrationSteps(ScenarioContext context)
             d.ImplementationType == typeof(TestDomainEventHandler));
 
         Assert.Equal(1, handlerCount);
-    }
-
-    [Then(@"IAppCache should be registered")]
-    public void ThenIAppCacheShouldBeRegistered()
-    {
-        var lazyCacheDescriptor = _services.FirstOrDefault(d => d.ServiceType == typeof(IAppCache));
-        Assert.NotNull(lazyCacheDescriptor);
     }
 
     [Then(@"the handler can be resolved")]

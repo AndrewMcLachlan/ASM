@@ -108,12 +108,6 @@ Scenario: AddDomainEvent registers IPublisher only once
     Then only one IPublisher registration should exist
 
 @Unit
-Scenario: AddDomainEvent registers LazyCache
-    Given I have a service collection
-    When I call AddDomainEvent for a specific handler
-    Then IAppCache should be registered
-
-@Unit
 Scenario: Registered handler can be resolved
     Given I have a service collection
     And I call AddDomainEvent for a specific handler

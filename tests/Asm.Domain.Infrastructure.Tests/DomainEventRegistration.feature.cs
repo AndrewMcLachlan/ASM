@@ -105,7 +105,7 @@ namespace Asm.Domain.Infrastructure.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("DomainEventRegistration.feature.ndjson", 20);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("DomainEventRegistration.feature.ndjson", 19);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -742,17 +742,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="AddDomainEvent registers LazyCache")]
+        [global::Xunit.FactAttribute(DisplayName="Registered handler can be resolved")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
-        [global::Xunit.TraitAttribute("Description", "AddDomainEvent registers LazyCache")]
+        [global::Xunit.TraitAttribute("Description", "Registered handler can be resolved")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task AddDomainEventRegistersLazyCache()
+        public async global::System.Threading.Tasks.Task RegisteredHandlerCanBeResolved()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "16";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddDomainEvent registers LazyCache", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Registered handler can be resolved", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 111
@@ -769,48 +769,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have a service collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 113
-    await testRunner.WhenAsync("I call AddDomainEvent for a specific handler", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 114
-    await testRunner.ThenAsync("IAppCache should be registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Registered handler can be resolved")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Domain Event Registration")]
-        [global::Xunit.TraitAttribute("Description", "Registered handler can be resolved")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task RegisteredHandlerCanBeResolved()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "Unit"};
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "17";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Registered handler can be resolved", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 117
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 118
-    await testRunner.GivenAsync("I have a service collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 119
     await testRunner.AndAsync("I call AddDomainEvent for a specific handler", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 120
+#line 114
     await testRunner.WhenAsync("I build the service provider", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 121
+#line 115
     await testRunner.ThenAsync("the handler can be resolved", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
