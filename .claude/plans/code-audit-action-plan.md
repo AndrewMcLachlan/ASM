@@ -125,14 +125,17 @@ Highest-value fixes; all non-breaking. Test-first for each.
 
 ## Phase 4 — Performance (non-breaking)
 
-- [ ] `Hosts` parsing: hoist all six regexes to `[GeneratedRegex]` partials.
-- [ ] `Dispatcher`/`Publisher`: replace LazyCache+`MethodInfo.Invoke` with `static ConcurrentDictionary<(Type,Type), …>` of compiled delegates; drop the LazyCache package dependency (verify nothing else uses it).
-- [ ] `AddAggregateRoots`: hoist `MakeGenericMethod` out of the factory lambda; `Add` → `TryAdd`.
-- [ ] `GetUserName` hot path: cache per request in `HttpContext.Items`; single claims scan; avoid the attribute-list copy in `HttpContextLogProcessor` where possible.
-- [ ] `ImgSetTagHelper`: `Image.Identify` instead of `Image.Load`; `ProcessAsync`; cache `image.Url()`; read cache in all environments or don't write it in dev; `string.Join` for srcset.
-- [ ] `RepositoryBase.Get`: use `FindAsync` (tracked-entity short-circuit) — verify `NotFoundException` semantics preserved.
-- [ ] `Entity.Events`: lazy-init the list.
-- [ ] Smaller: `HexColour.TryParse` span-based; `IPAddressExtensions` string building; `WriteTo.Trace()` dev-only; cache `AzureOAuthOptions.Authority`; cache security-reporting headers; remove `Hosts` finalizer; `TryGetValue` in `ProblemDetailsFactory`; `IntegrityTagHelper` dev-mode cache churn + derive `$v` from the content hash (also fixes the restart-busting bug).
+- [x] `Hosts` parsing: six regexes hoisted to `[GeneratedRegex]` partials; needless finalizer removed.
+- [x] `Dispatcher`/`Publisher`: `MethodInfo.Invoke` + LazyCache replaced with a `static ConcurrentDictionary` of Expression-compiled `Handle` invokers; LazyCache packages dropped (nothing else used them). Direct calls also make `DoNotWrapExceptions` unnecessary.
+- [x] `AddAggregateRoots`: generic `Set`/`AsNoTracking` closed once per type at registration; `Add` → `TryAdd`.
+- [x] `GetUserName`: cached per request in `HttpContext.Items`.
+- [x] `ImgSetTagHelper`: `Image.Identify` (header-only) instead of `Image.Load`; base `Url()` cached; `String.Join` for srcset; cache not written in dev.
+- [x] `Entity.Events`: lazy-init the backing list.
+- [x] `WriteTo.Trace()` Development-only (both overloads).
+- [~] `RepositoryBase.Get`: **skipped** — `FindAsync` would bypass the `GetById` filtering override (tenancy/ownership), a correctness/security regression not worth the tracked-entity round-trip.
+- [~] `TryGetValue` in `ProblemDetailsFactory`: already done in Phase 1d.
+- [~] `AzureOAuthOptions.Authority` cache: **skipped** — caching a computed property in a record is fragile under `with`, for a ~2×/setup gain.
+- [ ] Remaining (smaller, next Phase 4 pass): `HexColour.TryParse` span-based; `IPAddressExtensions` string building; cache security-reporting headers; `IntegrityTagHelper` dev-mode cache churn + derive `$v` from the content hash (also fixes the restart cache-busting bug).
 
 **Acceptance:** full suite green; optional micro-benchmark for dispatcher before/after.
 
