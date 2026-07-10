@@ -24,7 +24,7 @@ public static class IServiceCollectionExtensions
                 .ValidateOnStart();
 
     /// <summary>
-    /// Adds Azure Active Directory OAuth options to the service collection, validated on startup.
+    /// Adds Azure Entra OAuth options to the service collection, validated on startup.
     /// </summary>
     /// <remarks>
     /// The bound <see cref="AzureOAuthOptions"/> is also resolvable as its base
