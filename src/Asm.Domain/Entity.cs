@@ -5,9 +5,15 @@
 /// </summary>
 public abstract class Entity : IEntity
 {
+    private List<IDomainEvent>? _events;
+
     /// <summary>
     /// Domain events that have been raised by the entity.
     /// </summary>
-    public ICollection<IDomainEvent> Events { get; } = [];
+    /// <remarks>
+    /// The backing list is allocated lazily on first access, so entities materialised from queries
+    /// (which never raise events) don't pay for it.
+    /// </remarks>
+    public ICollection<IDomainEvent> Events => _events ??= [];
 }
 

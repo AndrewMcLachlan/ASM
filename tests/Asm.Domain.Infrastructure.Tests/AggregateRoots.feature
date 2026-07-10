@@ -82,7 +82,7 @@ Scenario: AddAggregateRoots with null services and roots throws exception
     Given I have a null service collection for AggregateRoots
     And I have an assembly with one aggregate root type
     When I call AddAggregateRoots on the null collection
-    Then an exception of type 'System.NullReferenceException' is thrown
+    Then an exception of type 'System.ArgumentNullException' is thrown
 
 @Unit
 Scenario: AddAggregateRoots with null services and no roots returns null
