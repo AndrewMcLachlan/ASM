@@ -36,15 +36,15 @@ public class OAuthOptionsSteps
         _scenarioContext["Options"] = options;
     }
 
-    [Given(@"I have OAuthOptions with ValidateAudience set to true")]
-    public void GivenIHaveOAuthOptionsWithValidateAudienceSetToTrue()
+    [Given(@"I have OAuthOptions with ValidateAudience set to false")]
+    public void GivenIHaveOAuthOptionsWithValidateAudienceSetToFalse()
     {
         var options = new OAuthOptions
         {
             Domain = "https://auth.example.com",
             Audience = "test-audience",
             ClientId = "test-client-id",
-            ValidateAudience = true
+            ValidateAudience = false
         };
         _scenarioContext["Options"] = options;
     }
