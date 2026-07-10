@@ -149,19 +149,19 @@ public readonly struct ByteArray
     /// Converts the array into a signed short.
     /// </summary>
     /// <returns>A short.</returns>
-    public readonly short ToInt16() => Convert.ToInt16(ToUInt16());
+    public readonly short ToInt16() => unchecked((short)ToUInt16());
 
     /// <summary>
     /// Converts the array into a signed int.
     /// </summary>
     /// <returns>An int.</returns>
-    public readonly int ToInt32() => Convert.ToInt32(ToUInt32());
+    public readonly int ToInt32() => unchecked((int)ToUInt32());
 
     /// <summary>
     /// Converts the array into a signed long.
     /// </summary>
     /// <returns>A long.</returns>
-    public readonly long ToInt64() => Convert.ToInt64(ToUInt64());
+    public readonly long ToInt64() => unchecked((long)ToUInt64());
 
     /// <summary>
     /// Converts the array into a GUID.

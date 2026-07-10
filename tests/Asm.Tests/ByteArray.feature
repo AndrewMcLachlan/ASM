@@ -146,6 +146,36 @@ Scenario: ToInt64 method should convert to Int64
     Then the long result should be 578437695752307201
 
 @Unit
+Scenario Outline: ToInt16 reinterprets the sign bit for negative values
+    Given a ByteArray with values <Values> and <Endian> endian
+    When I convert to Int16
+    Then the short result should be <Expected>
+Examples:
+    | Values  | Endian | Expected |
+    | 255,255 | little | -1       |
+    | 255,255 | big    | -1       |
+    | 0,128   | little | -32768   |
+    | 128,0   | big    | -32768   |
+    | 1,2     | little | 513      |
+
+@Unit
+Scenario Outline: ToInt32 reinterprets the sign bit for negative values
+    Given a ByteArray with values <Values> and <Endian> endian
+    When I convert to Int32
+    Then the int result should be <Expected>
+Examples:
+    | Values          | Endian | Expected    |
+    | 255,255,255,255 | little | -1          |
+    | 0,0,0,128       | little | -2147483648 |
+    | 128,0,0,0       | big    | -2147483648 |
+
+@Unit
+Scenario: ToInt64 reinterprets the sign bit for negative values
+    Given a ByteArray with values 255, 255, 255, 255, 255, 255, 255, 255 and little endian
+    When I convert to Int64
+    Then the long result should be -1
+
+@Unit
 Scenario: ToString method should convert to string
     Given a ByteArray with values 65, 66, 67 and big endian
     When I convert to string
