@@ -78,7 +78,7 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] `DomainDbContext` drains events until empty (re-snapshot each round) in both sync and async paths; async threads the cancellation token. Publish-before-save ordering retained (full move is Phase 5).
 - [x] `Dispatcher` + `Publisher`: `BindingFlags.DoNotWrapExceptions` on every `Invoke`. Test: synchronous handler throw surfaces `InvalidOperationException`, not `TargetInvocationException`.
 - [x] Void `Dispatch(ICommand)` detects an argument that also implements `ICommand<T>` and throws a clear `InvalidOperationException` naming `Dispatch<TResponse>`. Test covers the `ICommand`-typed-variable trap.
-- [x] Void `MapPutCommand<TRequest>` declares 200 (matches `HandleCommand<TRequest>`'s actual `ValueTask`→200; consistent with the sibling binding overload). Metadata change only.
+- [x] Void `MapPutCommand<TRequest>` no longer declares a response status at all (was a mismatched 201). A PUT that isn't a create has an implementer-driven status (200/201/204), so the caller declares it on the returned `RouteHandlerBuilder` via `.Produces(...)`.
 
 ### 1g. Asm core (non-breaking subset) — DONE
 - [x] `AssemblyVersion`: `Lazy<T>` now takes factory lambdas (was eager); `FileVersion` guards an empty `Assembly.Location` so single-file apps don't throw `TypeInitializationException`. (No test — class is `[ExcludeFromCodeCoverage]` and entry-assembly dependent.)
