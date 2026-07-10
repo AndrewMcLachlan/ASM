@@ -36,6 +36,10 @@ public static class IEndpointRouteBuilderExtensions
 
         var group = endpoints.MapGroup(options.RoutePrefix.TrimStart('/').TrimEnd('/'));
 
+        // Browsers post CSP/integrity reports without credentials; a fallback authorization
+        // policy would otherwise 401 every report and silently lose it.
+        group.AllowAnonymous();
+
         group.MapPost(options.IntegrityRoute.TrimStart('/'),
             (Func<HttpContext, Task<IResult>>)(async ctx => await HandleReportAsync(ctx, integrityLogger, "Integrity Report", options.MaxBodyBytes)));
 
@@ -56,7 +60,7 @@ public static class IEndpointRouteBuilderExtensions
             return Results.StatusCode(StatusCodes.Status413PayloadTooLarge);
         }
 
-        var (body, truncated) = await ReadBoundedAsync(ctx.Request.Body, maxBodyBytes);
+        var (body, truncated) = await ReadBoundedAsync(ctx.Request.Body, maxBodyBytes, ctx.RequestAborted);
 
         if (truncated)
         {
@@ -69,20 +73,20 @@ public static class IEndpointRouteBuilderExtensions
         return Results.NoContent();
     }
 
-    private static async Task<(string Body, bool Truncated)> ReadBoundedAsync(Stream stream, int maxBytes)
+    private static async Task<(string Body, bool Truncated)> ReadBoundedAsync(Stream stream, int maxBytes, CancellationToken cancellationToken)
     {
         using var ms = new MemoryStream();
         var buffer = new byte[8192];
         var total = 0;
         int read;
-        while ((read = await stream.ReadAsync(buffer)) > 0)
+        while ((read = await stream.ReadAsync(buffer, cancellationToken)) > 0)
         {
             total += read;
             if (total > maxBytes)
             {
                 return (string.Empty, true);
             }
-            await ms.WriteAsync(buffer.AsMemory(0, read));
+            await ms.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
         }
         return (Encoding.UTF8.GetString(ms.ToArray()), false);
     }

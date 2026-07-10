@@ -60,4 +60,10 @@ public class IQueryableExtensionsSteps
 
         _result = _dataSource.WhereAny(predicates);
     }
+
+    [When(@"I filter the data with no predicates")]
+    public void WhenIFilterTheDataWithNoPredicates()
+    {
+        _result = _dataSource.WhereAny([]);
+    }
 }

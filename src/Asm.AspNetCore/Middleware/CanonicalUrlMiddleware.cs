@@ -28,35 +28,40 @@ public class CanonicalUrlMiddleware
         var path = context.Request.Path.Value;
         var queryString = context.Request.QueryString.Value;
 
-        if (IsExempt(path) || string.IsNullOrEmpty(path))
+        // Only canonicalise safe, idempotent requests. Redirecting a POST/PUT/etc.
+        // causes browsers to drop the body (or re-issue as GET), so those pass through.
+        if (IsExempt(path) || String.IsNullOrEmpty(path) || !IsRedirectableMethod(context.Request.Method))
         {
             await _next(context);
             return;
         }
 
+        // Preserve the application's path base so redirects stay inside the app when
+        // it is hosted under a sub-path (e.g. behind a reverse proxy).
+        var pathBase = context.Request.PathBase.Value ?? String.Empty;
+
         if (_options.ForceLowercase && HasUpper(path) && !HasExcludedExtension(path))
         {
-            context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
-            context.Response.Headers.Location = path.ToLowerInvariant() + queryString;
+            Redirect(context, pathBase + path.ToLowerInvariant() + queryString);
             return;
         }
 
         if (_options.RemoveTrailingSlash && path.Length > 1 && path.EndsWith('/'))
         {
-            var trimmed = path.TrimEnd('/');
-            var physicalPath = context.Request.PathBase.Add(context.Request.Path).Value;
-            var isDirectory = Directory.Exists(physicalPath);
-            var isFile = File.Exists(physicalPath);
-
-            if (!isDirectory && !isFile)
-            {
-                context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
-                context.Response.Headers.Location = trimmed + queryString;
-                return;
-            }
+            Redirect(context, pathBase + path.TrimEnd('/') + queryString);
+            return;
         }
 
         await _next(context);
+    }
+
+    private static bool IsRedirectableMethod(string method) =>
+        HttpMethods.IsGet(method) || HttpMethods.IsHead(method);
+
+    private static void Redirect(HttpContext context, string location)
+    {
+        context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
+        context.Response.Headers.Location = location;
     }
 
     private bool IsExempt(string? path)

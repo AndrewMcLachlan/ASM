@@ -189,8 +189,20 @@ internal class HexColourJsonConverter : JsonConverter<HexColour>
 {
     public override HexColour Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
+        if (reader.TokenType == JsonTokenType.Null) return default;
+        if (reader.TokenType != JsonTokenType.String) throw new JsonException($"Expected a string hex colour value but found token '{reader.TokenType}'.");
+
         var value = reader.GetString();
-        return String.IsNullOrEmpty(value) ? default : new HexColour(value);
+        if (String.IsNullOrEmpty(value)) return default;
+
+        try
+        {
+            return new HexColour(value);
+        }
+        catch (Exception ex) when (ex is FormatException or ArgumentException)
+        {
+            throw new JsonException($"Could not parse '{value}' as a hex colour.", ex);
+        }
     }
 
     public override void Write(Utf8JsonWriter writer, HexColour value, JsonSerializerOptions options)

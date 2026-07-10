@@ -20,7 +20,7 @@ public class SimpleAssertionSteps(ScenarioContext context)
     [Then(@"the string value '([^']*)' is returned")]
     [Then(@"the string result should be ""([^""]*)""")]
     [Then(@"the string result should be '([^']*)'")]
-    public void ThenTheStringValueIsReturned(string? expected) => AssertValue(expected);
+    public void ThenTheStringValueIsReturned(string? expected) => AssertValue(expected?.DecodeWhitespace());
 
     /// <summary>
     /// Asserts whether the result is equal to the expected value.

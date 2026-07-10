@@ -33,6 +33,9 @@ public static class IHostApplicationBuilderExtensions
     {
         bool hasAppInsights = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING") != null;
 
+        // The HttpContext processors below are resolved from DI and depend on IHttpContextAccessor.
+        builder.Services.AddHttpContextAccessor();
+
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resourceBuilder =>
             {

@@ -33,5 +33,5 @@ public abstract class CommandQueryController(IQueryDispatcher queryDispatcher, I
     /// <typeparam name="T">The controller instance.</typeparam>
     /// <returns>The name of the controller.</returns>
     protected string ControllerName<T>() where T : ControllerBase =>
-        nameof(T).Replace("Controller", String.Empty);
+        typeof(T).Name.Replace("Controller", String.Empty);
 }

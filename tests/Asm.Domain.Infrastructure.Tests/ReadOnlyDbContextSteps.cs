@@ -38,6 +38,14 @@ public class ReadOnlyDbContextSteps(ScenarioContext context)
         public TestDbContextWithInterface(DbContextOptions<TestDbContextWithInterface> options) : base(options)
         {
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseInMemoryDatabase("TestDbWithInterface");
+            }
+        }
     }
 
     #endregion
@@ -159,6 +167,12 @@ public class ReadOnlyDbContextSteps(ScenarioContext context)
             optionsAction: builder => builder.UseInMemoryDatabase("TestDb"));
     }
 
+    [When(@"I call AddReadOnlyDbContext with a custom context service and scoped lifetime")]
+    public void WhenICallAddReadOnlyDbContextWithACustomContextServiceAndScopedLifetime()
+    {
+        _result = _services.AddReadOnlyDbContext<ITestReadOnlyDbContext, TestDbContextWithInterface>(ServiceLifetime.Scoped);
+    }
+
     [When(@"I build the DbContext service provider")]
     public void WhenIBuildTheDbContextServiceProvider()
     {
@@ -183,6 +197,15 @@ public class ReadOnlyDbContextSteps(ScenarioContext context)
         var dbContext = _serviceProvider.GetService<IReadOnlyDbContext>();
         Assert.NotNull(dbContext);
         Assert.IsType<TestReadOnlyDbContext>(dbContext);
+    }
+
+    [Then(@"the custom context service can be resolved")]
+    public void ThenTheCustomContextServiceCanBeResolved()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetService<ITestReadOnlyDbContext>();
+        Assert.NotNull(dbContext);
+        Assert.IsType<TestDbContextWithInterface>(dbContext);
     }
 
     [Then(@"IReadOnlyDbContext can be resolved within a scope")]

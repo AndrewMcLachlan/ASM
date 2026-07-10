@@ -18,8 +18,8 @@ public record CanonicalUrlOptions
     public IReadOnlyList<string> LowercaseExcludedExtensions { get; set; } = [".pdf"];
 
     /// <summary>
-    /// When true, redirects paths ending in <c>/</c> to their trimmed form,
-    /// unless the path resolves to a physical file or directory.
+    /// When true, redirects paths ending in <c>/</c> (other than the site root) to their
+    /// trimmed form. Only GET and HEAD requests are redirected.
     /// </summary>
     public bool RemoveTrailingSlash { get; set; } = true;
 

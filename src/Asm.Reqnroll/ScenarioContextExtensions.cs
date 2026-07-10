@@ -12,7 +12,7 @@ public static class ScenarioContextExtensions
     /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
     /// <param name="result">The result to add.</param>
     public static void AddResult<T>(this ScenarioContext context, T? result)
-        => context.Add(SimpleAssertionSteps.ResultKey, result);
+        => context.Set(result, SimpleAssertionSteps.ResultKey);
 
     /// <summary>
     /// Gets the current result.
@@ -29,7 +29,7 @@ public static class ScenarioContextExtensions
     /// <param name="context">The <see cref="ScenarioContext"/> object that this method extends.</param>
     /// <param name="exception">The exception to add.</param>
     public static void AddException<T>(this ScenarioContext context, T? exception) where T : Exception
-        => context.Add(ExceptionSteps.ExceptionKey, exception);
+        => context.Set(exception, ExceptionSteps.ExceptionKey);
 
     /// <summary>
     /// Gets the current exception.

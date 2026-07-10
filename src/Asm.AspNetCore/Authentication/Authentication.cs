@@ -41,11 +41,19 @@ public static class Authentication
 
         public void Configure(JwtBearerOptions options)
         {
-            Configure(Options.DefaultName, options);
+            Configure(JwtBearerDefaults.AuthenticationScheme, options);
         }
 
         public void Configure(string? name, JwtBearerOptions options)
         {
+            // Only configure the default Bearer scheme. A consumer that adds a second
+            // JwtBearer scheme (e.g. AddJwtBearer("B2C", ...)) must not have its Authority,
+            // audience, events and token-validation parameters overwritten by this one.
+            if (name != JwtBearerDefaults.AuthenticationScheme)
+            {
+                return;
+            }
+
             options.Audience = _jwtOptions.OAuthOptions.Audience;
             options.Authority = _jwtOptions.OAuthOptions.Authority;
 

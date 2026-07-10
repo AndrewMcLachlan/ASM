@@ -29,7 +29,13 @@ public class ValidatorFilterSteps
         SetupFilter(new TestRequest { Name = "", Email = "invalid-email" });
     }
 
-    private void SetupFilter(TestRequest request)
+    [Given(@"I have a null test request")]
+    public void GivenIHaveANullTestRequest()
+    {
+        SetupFilter(null);
+    }
+
+    private void SetupFilter(TestRequest? request)
     {
         _filter = new ValidatorFilter<TestRequest>(0);
 
@@ -42,7 +48,7 @@ public class ValidatorFilterSteps
             RequestServices = serviceProvider
         };
 
-        _context = new DefaultEndpointFilterInvocationContext(httpContext, request);
+        _context = new DefaultEndpointFilterInvocationContext(httpContext, request!);
 
         _nextCalled = false;
         _next = (context) =>
@@ -82,6 +88,19 @@ public class ValidatorFilterSteps
     {
         Assert.NotNull(_exception);
         Assert.IsType<ValidationException>(_exception);
+    }
+
+    [Then(@"the next delegate should not be called")]
+    public void ThenTheNextDelegateShouldNotBeCalled()
+    {
+        Assert.False(_nextCalled, "Expected next delegate not to be called");
+    }
+
+    [Then(@"a 400 result should be returned")]
+    public void ThenA400ResultShouldBeReturned()
+    {
+        var problem = Assert.IsType<Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>(_result);
+        Assert.Equal(StatusCodes.Status400BadRequest, problem.StatusCode);
     }
 
     public class TestRequest

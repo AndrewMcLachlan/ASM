@@ -284,7 +284,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         ServiceLifetime optionsLifetime = ServiceLifetime.Scoped)
         where TContextImplementation : DbContext, TContextService
         where TContextService : class, IReadOnlyDbContext
-        => AddReadOnlyDbContext<IReadOnlyDbContext, TContextImplementation>(
+        => AddReadOnlyDbContext<TContextService, TContextImplementation>(
             serviceCollection,
             (Action<IServiceProvider, DbContextOptionsBuilder>?)null,
             contextLifetime,

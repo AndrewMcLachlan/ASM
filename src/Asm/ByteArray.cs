@@ -92,8 +92,9 @@ public readonly struct ByteArray
     /// <returns>A new ByteArray.</returns>
     public readonly ByteArray Copy(int start, int length)
     {
-        if ((length + start) - 1 > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(start));
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(length, _bytes.Length);
+        ArgumentOutOfRangeException.ThrowIfNegative(start);
+        ArgumentOutOfRangeException.ThrowIfNegative(length);
+        if (start + length > _bytes.Length) throw new ArgumentOutOfRangeException(nameof(length), $"{nameof(start)} + {nameof(length)} exceeds the array length.");
 
         ByteArray newArray = new(length, this.Endian);
         _bytes.AsSpan(start, length).CopyTo(newArray._bytes);
@@ -208,7 +209,14 @@ public readonly struct ByteArray
     /// Gets the hash code.
     /// </summary>
     /// <returns>A hash code.</returns>
-    public override readonly int GetHashCode() => base.GetHashCode();
+    public override readonly int GetHashCode()
+    {
+        // Consistent with Equals, which compares the byte contents and the endianness.
+        var hash = new HashCode();
+        hash.AddBytes(_bytes);
+        hash.Add(Endian);
+        return hash.ToHashCode();
+    }
 
     /// <summary>
     /// Checks equality of two byte arrays.
@@ -251,6 +259,11 @@ public readonly struct ByteArray
         if (_bytes.Length > maxByteLength)
         {
             throw new OverflowException("The array is too big to be converted.");
+        }
+
+        if (_bytes.Length < maxByteLength)
+        {
+            throw new ArgumentOutOfRangeException(null, $"The array must be {maxByteLength} bytes to convert to this type.");
         }
 
         ReadOnlySpan<byte> span = SystemEndian == Endian ? _bytes : [.. ((IEnumerable<byte>)_bytes).Reverse()];

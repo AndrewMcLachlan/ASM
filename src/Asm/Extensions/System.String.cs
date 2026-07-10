@@ -35,8 +35,8 @@ public static partial class StringExtensions
     {
         ArgumentNullException.ThrowIfNull(str);
 
-        if (fromStart < 0 || fromStart > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), $"{nameof(fromStart)} must be greater than zero and less than the length of the string");
-        if (fromEnd < 0 || fromEnd > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), $"{nameof(fromStart)} must be greater than zero and less than the length of the string");
+        if (fromStart < 0 || fromStart > str.Length) throw new ArgumentOutOfRangeException(nameof(fromStart), $"{nameof(fromStart)} must be between zero and the length of the string");
+        if (fromEnd < 0 || fromEnd > str.Length) throw new ArgumentOutOfRangeException(nameof(fromEnd), $"{nameof(fromEnd)} must be between zero and the length of the string");
         if (fromStart + fromEnd > str.Length) throw new InvalidOperationException("The total number of characters to be removed exceeds the length of the string");
 
         return str[(fromStart ?? 0)..^(fromEnd ?? 0)];

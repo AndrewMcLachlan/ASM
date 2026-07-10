@@ -22,9 +22,15 @@ public class ExceptionSteps(ScenarioContext context)
     [Then(@"an exception of type ""([^""]*)"" is thrown")]
     public void ThenAnExceptionOfTypeIsThrown(string exceptionType)
     {
-        Type? expected = Type.GetType(exceptionType, true);
+        // Type.GetType only probes corlib and this assembly unless the name is assembly-qualified.
+        // Fall back to scanning loaded assemblies so library types (e.g. Asm.NotFoundException)
+        // resolve from their simple full name.
+        Type? expected = Type.GetType(exceptionType, throwOnError: false)
+            ?? AppDomain.CurrentDomain.GetAssemblies()
+                .Select(a => a.GetType(exceptionType, throwOnError: false))
+                .FirstOrDefault(t => t is not null);
 
-        Assert.NotNull(expected);
+        Assert.True(expected is not null, $"Could not resolve exception type '{exceptionType}'.");
 
         var actual = context.GetException();
 

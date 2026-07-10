@@ -59,43 +59,45 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [x] Handler serializes as `object` (preserves `HttpValidationProblemDetails.errors`) with `application/problem+json`.
 - [x] Orphaned ValidationException step wired into real scenarios (unit + integration).
 
-### 1e. Asm.AspNetCore misc high/medium
-- [ ] `RouteGroupBuilderExtensions.cs:17`: `GetExecutingAssembly()` → `GetCallingAssembly()` + `[MethodImpl(NoInlining)]`. Test the parameterless overload.
-- [ ] `CanonicalUrlMiddleware`: include `PathBase` in redirect Locations; remove the `Directory.Exists`/`File.Exists` URL-path probe (decide trailing-slash policy from options instead); only redirect GET/HEAD (308 otherwise or pass through). Tests: PathBase case, POST case.
-- [ ] `HttpContextExtensions.GetUserName`: `SingleOrDefault` → `FirstOrDefault` (×3 claim lookups). Test: principal with duplicate `name` claims.
-- [ ] `IHostApplicationBuilderExtensions.AddStandardOpenTelemetry`: call `AddHttpContextAccessor()`.
-- [ ] `Authentication.cs:47`: no-op unless `name == JwtBearerDefaults.AuthenticationScheme`.
-- [ ] `MapSecurityReporting`: add `.AllowAnonymous()`; pass `ctx.RequestAborted` in `ReadBoundedAsync`.
-- [ ] `ValidatorFilter`: handle null body → 400; pass cancellation token.
-- [ ] `DataTypeValidator` email regex: anchor with `^…$` and add `RegexOptions.IgnoreCase`. Tests: uppercase address accepted, embedded-substring rejected.
+### 1e. Asm.AspNetCore misc high/medium — DONE
+- [x] `RouteGroupBuilderExtensions`: `GetExecutingAssembly()` → `GetCallingAssembly()` + `[MethodImpl(NoInlining)]`. New scenario tests the parameterless overload maps groups from the calling assembly.
+- [x] `CanonicalUrlMiddleware`: redirects now include `PathBase`; the `Directory.Exists`/`File.Exists` URL-path probe is removed (trailing-slash decided from options only); only GET/HEAD are redirected (others pass through). Tests: PathBase case, POST pass-through.
+- [x] `GetUserName`: `SingleOrDefault` → `ClaimsIdentity.FindFirst` (single scan, tolerates duplicates). Test: duplicate `name` claims.
+- [x] `AddStandardOpenTelemetry` calls `AddHttpContextAccessor()`.
+- [x] `ConfigureAzureOptions.Configure` no-ops unless `name == JwtBearerDefaults.AuthenticationScheme`.
+- [x] `MapSecurityReporting`: `.AllowAnonymous()` on the group; `ctx.RequestAborted` threaded through `ReadBoundedAsync`.
+- [x] `ValidatorFilter`: null argument → 400 `ProblemHttpResult` (was `ArgumentNullException`→500); passes `RequestAborted`. Test: null request → 400, next not called.
+- [x] `DataTypeValidator` email regex anchored (`^…$`), classes include `A-Z`, `RegexOptions.IgnoreCase | CultureInvariant`, `IsMatch`. **New `Asm.AspNetCore.Mvc.Tests` project** (slnx + CI matrix); tests: uppercase accepted, embedded substring rejected (old regex failed 4/8).
 
-### 1f. CQRS / Domain high/medium
-- [ ] `IServiceCollectionExtensions.cs:281` (Asm.Domain.Infrastructure): forward `TContextService`, not `IReadOnlyDbContext`. Test with a custom context interface + lifetime overload.
-- [ ] `CommandQueryContoller.ControllerName<T>()`: `nameof(T)` → `typeof(T).Name`. Replace the `NotNull`-only test with a real assertion. (Also rename file to fix "Contoller" typo — file rename only, type name unchanged until Phase 5.)
-- [ ] `KeyedEntity`/`IIdentifiable` equality: add `ReferenceEquals` shortcut (fixes reflexivity for default IDs) and a runtime-type check (fixes cross-type equality). Tests: `e.Equals(e)` with Id 0; `Customer(1) != Order(1)`; HashSet round-trip.
-- [ ] `IdentifiableEqualityComparer`: `Equals(null, null)` → true; `GetHashCode(null)` → 0. Update the feature file that encodes the violation.
-- [ ] `Publisher`: publish sequentially (`foreach await`) instead of `Task.WhenAll` (fixes shared-DbContext concurrency + cheaper).
-- [ ] `DomainDbContext`: drain events until empty (loop, re-snapshot after each round); pass a cancellation token; document (or move) publish-before-save semantics — full ordering change is Phase 5.
-- [ ] `Dispatcher`/`Publisher`: add `BindingFlags.DoNotWrapExceptions` to all `Invoke` calls. Test: sync-throwing handler surfaces original exception type.
-- [ ] Void-`ICommand` dispatch trap: in the void `Dispatch`, detect the argument also implementing `ICommand<T>` and throw a clear `InvalidOperationException` naming the correct overload.
-- [ ] `MapPutCommand<TRequest>` (void): return 201 as declared (or declare 200 — pick one; changing metadata is safer than changing the wire response).
+### 1f. CQRS / Domain high/medium — DONE
+- [x] `AddReadOnlyDbContext<TContextService, TContextImplementation>(lifetime)` now forwards `TContextService` (was `IReadOnlyDbContext`). New scenario resolves a custom context interface via the lifetime overload.
+- [x] `ControllerName<T>()`: `nameof(T)` → `typeof(T).Name`; test now asserts `"Test"` (fails on old code). File renamed `CommandQueryContoller.cs` → `CommandQueryController.cs` (type name unchanged).
+- [x] `IIdentifiable`/`KeyedEntity` equality: `ReferenceEquals` shortcut (reflexive for default IDs), runtime-type check (no cross-type equality), transient entities equal only by reference. New xunit `KeyedEntityEqualityTests` covers default-Id self-equality, cross-type inequality, HashSet round-trip.
+- [x] `IIdentifiableEqualityComparer`: `Equals(null, null)` → true; `GetHashCode(null)` → 0. Feature file updated (was encoding the violation).
+- [x] `Publisher` publishes sequentially (`foreach await` + `DoNotWrapExceptions`) instead of `Task.WhenAll`.
+- [x] `DomainDbContext` drains events until empty (re-snapshot each round) in both sync and async paths; async threads the cancellation token. Publish-before-save ordering retained (full move is Phase 5).
+- [x] `Dispatcher` + `Publisher`: `BindingFlags.DoNotWrapExceptions` on every `Invoke`. Test: synchronous handler throw surfaces `InvalidOperationException`, not `TargetInvocationException`.
+- [x] Void `Dispatch(ICommand)` detects an argument that also implements `ICommand<T>` and throws a clear `InvalidOperationException` naming `Dispatch<TResponse>`. Test covers the `ICommand`-typed-variable trap.
+- [x] Void `MapPutCommand<TRequest>` no longer declares a response status at all (was a mismatched 201). A PUT that isn't a create has an implementer-driven status (200/201/204), so the caller declares it on the returned `RouteHandlerBuilder` via `.Produces(...)`.
 
-### 1g. Asm core (non-breaking subset)
-- [ ] `AssemblyVersion.cs:16`: pass lambdas to `Lazy<T>`; guard `Assembly.Location == ""` (single-file apps).
-- [ ] `UnitConvert.KilogramsPerPound`: 0.4539 → 0.45359237.
-- [ ] `WhereAny`: empty predicates → return `query` unchanged (or `Where(_ => false)` — decide and document).
-- [ ] `ByteArray.GetHashCode`: hash contents (+ `Endian`) consistent with `Equals`.
-- [ ] Claims parsing: `CultureInfo.InvariantCulture`.
-- [ ] `HexColourJsonConverter`: wrap parse failures in `JsonException`.
-- [ ] Small guards: `ByteArray.Copy` bounds, `ConvertArray` too-short check, `Squish` ParamName, `Nybble.ToUInt32` length validation.
+### 1g. Asm core (non-breaking subset) — DONE
+- [x] `AssemblyVersion`: `Lazy<T>` now takes factory lambdas (was eager); `FileVersion` guards an empty `Assembly.Location` so single-file apps don't throw `TypeInitializationException`. (No test — class is `[ExcludeFromCodeCoverage]` and entry-assembly dependent.)
+- [x] `UnitConvert.KilogramsPerPound`: 0.4539 → 0.45359237. UnitConvert feature examples corrected (old values fail at 3 dp).
+- [x] `WhereAny`: empty predicates return the source unchanged (documented); materialises once to avoid multiple enumeration. New scenario.
+- [x] `ByteArray.GetHashCode`: content + `Endian` hash consistent with `Equals` (was reference-based `base.GetHashCode()`). Tests: equal instances share a hash, different endian differ.
+- [x] Claims parsing uses `CultureInfo.InvariantCulture` (int/Guid/ChangeType). No dedicated test (mutating `CurrentCulture` is unsafe under parallel xunit); fix is a clear correctness change.
+- [x] `HexColourJsonConverter.Read` throws `JsonException` for a bad string or a non-string token (was `FormatException`/`InvalidOperationException`). Tests cover both.
+- [x] Guards: `ByteArray.Copy` bounds fixed (`start + length`, correct ParamName); `ConvertArray` rejects too-short arrays with a clear message; `Squish` reports `fromEnd` (was `fromStart`); `Nybble.ToUInt32` throws for empty and >8 nybbles. Tests cover Squish ParamName and Nybble validation.
 
-### 1h. Reqnroll / Umbraco medium
-- [ ] `ScenarioContextExtensions`: `context.Add` → `context.Set` (or indexer) in `AddResult`/`AddException`.
-- [ ] `ExceptionSteps.cs:25`: resolve types by scanning loaded assemblies (or compare `FullName` strings) so `Asm.NotFoundException` works.
-- [ ] `SimpleAssertionSteps`: apply `DecodeWhitespace()` to the string step.
-- [ ] `ImgSetTagHelper`: trim both separator chars (Linux fix); `InvariantCulture` for scaling; skip attributes on decode failure instead of emitting `0`; `IndexOf('?') > 0` → `>= 0`. Extract path/format logic into internal static helpers and unit-test them (`InternalsVisibleTo` already the pattern).
+### 1h. Reqnroll / Umbraco medium — DONE
+- [x] `ScenarioContextExtensions`: `AddResult`/`AddException` use `context.Set` (overwrite) instead of `context.Add` (threw on the second `CatchException` in a scenario). New scenario calls `CatchException` twice.
+- [x] `ExceptionSteps`: type resolution falls back to scanning loaded assemblies, so `Asm.NotFoundException` (and other library types) resolve by full name instead of throwing `TypeLoadException`. New scenario.
+- [x] `SimpleAssertionSteps`: the string step applies `DecodeWhitespace()` to the expected value (consistent with the exception-message step).
+- [x] `ImgSetTagHelper`: path logic extracted to `internal static ToPhysicalPath` (trims both separators — Linux fix — and `IndexOf('?') >= 0`); scaling extracted to `internal static FormatSrcsetEntry` (invariant culture); a decode failure now returns instead of emitting `width="0" height="0"`. `InternalsVisibleTo` added; 4 helper unit tests.
 
-**Acceptance:** every fix has a test that fails before / passes after; full solution green; patch-version release notes list each behavioral fix.
+**Acceptance:** every fix has a test that fails before / passes after; full solution green (875 tests across 15 projects); patch-version release notes list each behavioral fix.
+
+**Phase 1 status:** 1a–1h all complete. 1a–1d on branch `audit/phase-1-critical-fixes` (PR #405); 1e–1h on branch `audit/phase-1-remaining` (branched from it).
 
 ## Phase 2 — Security hardening (needs a deliberate release; some are behavior changes)
 

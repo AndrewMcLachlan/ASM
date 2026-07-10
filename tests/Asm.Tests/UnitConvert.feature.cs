@@ -227,8 +227,8 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.TraitAttribute("Description", "Convert pounds to kilograms")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
         [global::Xunit.InlineDataAttribute("0", "0", "8", new string[0])]
-        [global::Xunit.InlineDataAttribute("1", "0.4539", "9", new string[0])]
-        [global::Xunit.InlineDataAttribute("14", "6.3546", "10", new string[0])]
+        [global::Xunit.InlineDataAttribute("1", "0.4536", "9", new string[0])]
+        [global::Xunit.InlineDataAttribute("14", "6.3503", "10", new string[0])]
         public async global::System.Threading.Tasks.Task ConvertPoundsToKilograms(string pounds, string kilograms, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -270,8 +270,8 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.TraitAttribute("Description", "Convert stones and pounds to kilograms")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
         [global::Xunit.InlineDataAttribute("0", "0", "0", "11", new string[0])]
-        [global::Xunit.InlineDataAttribute("1", "0", "6.3546", "12", new string[0])]
-        [global::Xunit.InlineDataAttribute("10", "7", "66.7233", "13", new string[0])]
+        [global::Xunit.InlineDataAttribute("1", "0", "6.3503", "12", new string[0])]
+        [global::Xunit.InlineDataAttribute("10", "7", "66.6781", "13", new string[0])]
         public async global::System.Threading.Tasks.Task ConvertStonesAndPoundsToKilograms(string stones, string pounds, string kilograms, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {

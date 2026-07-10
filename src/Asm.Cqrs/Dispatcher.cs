@@ -1,4 +1,5 @@
-﻿using Asm.Cqrs.Commands;
+﻿using System.Reflection;
+using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
 using LazyCache;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
             });
 
         var handler = serviceProvider.GetRequiredService(handlerType);
-        var result = handleMethod.Invoke(handler, [query, cancellationToken]);
+        var result = handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [query, cancellationToken], null);
 
         return (ValueTask<TResponse>)result!;
     }
@@ -50,7 +51,7 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
             });
 
         var handler = serviceProvider.GetRequiredService(handlerType);
-        var result = handleMethod.Invoke(handler, [command, cancellationToken]);
+        var result = handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [command, cancellationToken], null);
 
         return (ValueTask<TResponse>)result!;
     }
@@ -58,6 +59,16 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
     public ValueTask Dispatch(ICommand command, CancellationToken cancellationToken = default)
     {
         var commandType = command.GetType();
+
+        // A command that actually returns a response can reach this void overload when dispatched
+        // through a variable statically typed as ICommand. Only ICommandHandler<TCommand> is looked
+        // up here (never registered for such commands), so fail with an actionable message rather
+        // than an opaque "no service registered" error.
+        if (Array.Exists(commandType.GetInterfaces(), i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommand<>)))
+        {
+            throw new InvalidOperationException(
+                $"Command '{commandType.Name}' returns a response; dispatch it with Dispatch<TResponse>(ICommand<TResponse>) rather than the void Dispatch(ICommand) overload.");
+        }
 
         // Cache both type and method in a single operation
         var (handlerType, handleMethod) = cache.GetOrAdd(
@@ -70,7 +81,7 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
             });
 
         var handler = serviceProvider.GetRequiredService(handlerType);
-        var result = handleMethod.Invoke(handler, [command, cancellationToken]);
+        var result = handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [command, cancellationToken], null);
 
         return (ValueTask)result!;
     }

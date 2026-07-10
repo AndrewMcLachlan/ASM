@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Asm\Asm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Asm.Umbraco.Tests" />
+  </ItemGroup>
+
 </Project>

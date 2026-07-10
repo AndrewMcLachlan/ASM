@@ -43,3 +43,13 @@ Scenario: Create AsmException with message, error id and inner exception
     And the AsmException message is 'Outer error'
     And the AsmException ErrorId is 100
     And the AsmException has an inner exception with message 'Inner error'
+
+@Unit
+Scenario: An Asm library exception type resolves by its full name
+    When I catch an Asm NotFoundException
+    Then an exception of type 'Asm.NotFoundException' is thrown
+
+@Unit
+Scenario: CatchException can be called more than once in a scenario
+    When I catch an exception then catch another
+    Then an exception of type 'System.InvalidOperationException' is thrown

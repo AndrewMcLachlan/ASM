@@ -32,3 +32,15 @@ Scenario: Filter data using WhereAny method
         | Id | Name  |
         | 1  | Item1 |
         | 3  | Item3 |
+
+@Unit
+Scenario: WhereAny with no predicates returns the source unchanged
+    Given I have a data source with the following items
+        | Id | Name  |
+        | 1  | Item1 |
+        | 2  | Item2 |
+    When I filter the data with no predicates
+    Then the result should contain the following items
+        | Id | Name  |
+        | 1  | Item1 |
+        | 2  | Item2 |

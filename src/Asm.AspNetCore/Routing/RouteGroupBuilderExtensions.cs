@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Routing;
 
 namespace Asm.AspNetCore.Routing;
@@ -9,12 +10,13 @@ namespace Asm.AspNetCore.Routing;
 public static class RouteGroupBuilderExtensions
 {
     /// <summary>
-    /// Map <see cref="IEndpointGroup"/> groups in the executing assembly.
+    /// Map <see cref="IEndpointGroup"/> groups in the calling assembly.
     /// </summary>
     /// <param name="builder">The <see cref="RouteGroupBuilder"/> object that this method extends.</param>
     /// <returns>A <see cref="RouteGroupBuilder"/> instance for call chaining.</returns>
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static RouteGroupBuilder MapGroups(this RouteGroupBuilder builder) =>
-        builder.MapGroups(Assembly.GetExecutingAssembly());
+        builder.MapGroups(Assembly.GetCallingAssembly());
 
     /// <summary>
     /// Map <see cref="IEndpointGroup"/> groups  in the provided assembly.

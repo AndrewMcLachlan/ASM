@@ -17,8 +17,15 @@ public interface IIdentifiable<T> : IEquatable<IIdentifiable<T>>
     /// <inheritdoc/>
     bool IEquatable<IIdentifiable<T>>.Equals(IIdentifiable<T>? other)
     {
-        if (other == null || Id!.Equals(default(T))) return false;
+        // Reflexive even for a default (transient) key.
+        if (ReferenceEquals(this, other)) return true;
 
-        return other.Id!.Equals(Id);
+        // Different runtime types are never equal, even with the same key value.
+        if (other is null || other.GetType() != GetType()) return false;
+
+        // Two distinct transient entities (default key) are only equal by reference (handled above).
+        if (EqualityComparer<T>.Default.Equals(Id, default!) || EqualityComparer<T>.Default.Equals(other.Id, default!)) return false;
+
+        return EqualityComparer<T>.Default.Equals(other.Id, Id);
     }
 }

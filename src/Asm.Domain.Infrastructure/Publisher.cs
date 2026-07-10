@@ -1,4 +1,5 @@
-﻿using LazyCache;
+﻿using System.Reflection;
+using LazyCache;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Asm.Domain.Infrastructure;
@@ -25,9 +26,13 @@ internal class Publisher(IServiceProvider serviceProvider, IAppCache cache) : IP
 
         var handlers = serviceProvider.GetServices(handlerType);
 
-        var tasks = handlers.Select(handler =>
-            ((ValueTask)handleMethod.Invoke(handler, [domainEvent, cancellationToken])!).AsTask());
-
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        // Publish sequentially: handlers commonly share the scoped DomainDbContext that is
+        // mid-save, and EF Core forbids concurrent operations on one context instance.
+        // DoNotWrapExceptions surfaces a handler's synchronous throw as its own type rather
+        // than a TargetInvocationException.
+        foreach (var handler in handlers)
+        {
+            await ((ValueTask)handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [domainEvent, cancellationToken], null)!).ConfigureAwait(false);
+        }
     }
 }

@@ -15,7 +15,7 @@ Examples:
     | 2        | 1         | false  |
     | 1        | <NULL>    | false  |
     | <NULL>   | 1         | false  |
-    | <NULL>   | <NULL>    | false  |
+    | <NULL>   | <NULL>    | true   |
 
 @Unit
 Scenario: GetHashCode returns consistent value
@@ -24,6 +24,6 @@ Scenario: GetHashCode returns consistent value
     Then the hash code should equal the ID hash code
 
 @Unit
-Scenario: GetHashCode with null throws ArgumentNullException
+Scenario: GetHashCode with null returns zero
     When I get the hash code of null using IIdentifiableEqualityComparer
-    Then an exception of type 'System.ArgumentNullException' should be thrown
+    Then the hash code should be zero
