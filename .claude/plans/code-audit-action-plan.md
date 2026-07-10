@@ -135,7 +135,10 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [~] `RepositoryBase.Get`: **skipped** — `FindAsync` would bypass the `GetById` filtering override (tenancy/ownership), a correctness/security regression not worth the tracked-entity round-trip.
 - [~] `TryGetValue` in `ProblemDetailsFactory`: already done in Phase 1d.
 - [~] `AzureOAuthOptions.Authority` cache: **skipped** — caching a computed property in a record is fragile under `with`, for a ~2×/setup gain.
-- [ ] Remaining (smaller, next Phase 4 pass): `HexColour.TryParse` span-based; `IPAddressExtensions` string building; cache security-reporting headers; `IntegrityTagHelper` dev-mode cache churn + derive `$v` from the content hash (also fixes the restart cache-busting bug).
+- [x] `HexColour`: span-based no-throw parse core shared by ctor/`Parse`/`TryParse` (drops the try/catch failure path, the intermediate normalised strings, and the now-dead validation regex).
+- [x] `IPAddressExtensions.ToCidrString`: dotted address rebuilt via `FromUInt32` instead of per-octet `+=` concatenation + trim.
+- [x] Security-reporting headers: endpoint paths memoised per options instance (`ConditionalWeakTable`); only scheme/host interpolated per response.
+- [x] `IntegrityTagHelper`: `$v` derived from the content hash (was `String.GetHashCode`, randomised per process → busted client caches on every restart); dimension/hash cache no longer written in Development.
 
 **Acceptance:** full suite green; optional micro-benchmark for dispatcher before/after.
 

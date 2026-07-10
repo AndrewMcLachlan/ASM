@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 
 namespace Asm.AspNetCore.Reporting;
@@ -8,14 +9,22 @@ namespace Asm.AspNetCore.Reporting;
 /// </summary>
 public static class SecurityReportingHeaderBuilder
 {
+    // Only the scheme and host vary per request; the endpoint paths depend solely on the
+    // (startup-configured) options. Memoise the trimmed paths per options instance so the
+    // trimming doesn't run on every HTML response. ConditionalWeakTable keeps this bounded —
+    // weak keys, and in practice a single options instance for the app's lifetime.
+    private static readonly ConditionalWeakTable<SecurityReportingOptions, EndpointPaths> PathCache = new();
+
+    private sealed record EndpointPaths(string IntegrityPath, string CspPath);
+
     /// <summary>
     /// Builds the <c>Reporting-Endpoints</c> header value.
     /// </summary>
     public static string BuildReportingEndpoints(HttpContext ctx, SecurityReportingOptions options)
     {
-        var integrityUrl = BuildEndpointUrl(ctx, options.RoutePrefix, options.IntegrityRoute);
-        var cspUrl = BuildEndpointUrl(ctx, options.RoutePrefix, options.CspRoute);
-        return $"{options.IntegrityGroupName}=\"{integrityUrl}\", {options.CspGroupName}=\"{cspUrl}\"";
+        var paths = GetPaths(options);
+        var origin = GetOrigin(ctx);
+        return $"{options.IntegrityGroupName}=\"{origin}{paths.IntegrityPath}\", {options.CspGroupName}=\"{origin}{paths.CspPath}\"";
     }
 
     /// <summary>
@@ -23,12 +32,18 @@ public static class SecurityReportingHeaderBuilder
     /// </summary>
     public static string BuildReportTo(HttpContext ctx, SecurityReportingOptions options)
     {
-        var integrityUrl = BuildEndpointUrl(ctx, options.RoutePrefix, options.IntegrityRoute);
-        var cspUrl = BuildEndpointUrl(ctx, options.RoutePrefix, options.CspRoute);
-        return $"{{\"group\":\"{options.IntegrityGroupName}\",\"max_age\":{options.MaxAgeSeconds},\"endpoints\":[{{\"url\":\"{integrityUrl}\"}}]}}, "
-             + $"{{\"group\":\"{options.CspGroupName}\",\"max_age\":{options.MaxAgeSeconds},\"endpoints\":[{{\"url\":\"{cspUrl}\"}}]}}";
+        var paths = GetPaths(options);
+        var origin = GetOrigin(ctx);
+        return $"{{\"group\":\"{options.IntegrityGroupName}\",\"max_age\":{options.MaxAgeSeconds},\"endpoints\":[{{\"url\":\"{origin}{paths.IntegrityPath}\"}}]}}, "
+             + $"{{\"group\":\"{options.CspGroupName}\",\"max_age\":{options.MaxAgeSeconds},\"endpoints\":[{{\"url\":\"{origin}{paths.CspPath}\"}}]}}";
     }
 
-    private static string BuildEndpointUrl(HttpContext ctx, string routePrefix, string route) =>
-        $"{ctx.Request.Scheme}://{ctx.Request.Host}/{routePrefix.TrimStart('/').TrimEnd('/')}/{route.TrimStart('/')}";
+    private static EndpointPaths GetPaths(SecurityReportingOptions options) =>
+        PathCache.GetValue(options, static o =>
+        {
+            var prefix = o.RoutePrefix.TrimStart('/').TrimEnd('/');
+            return new EndpointPaths($"/{prefix}/{o.IntegrityRoute.TrimStart('/')}", $"/{prefix}/{o.CspRoute.TrimStart('/')}");
+        });
+
+    private static string GetOrigin(HttpContext ctx) => $"{ctx.Request.Scheme}://{ctx.Request.Host}";
 }
