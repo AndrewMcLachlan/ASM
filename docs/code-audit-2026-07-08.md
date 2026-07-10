@@ -253,7 +253,7 @@ Ordered by impact:
 - `Directory.Build.props:13` — `© 2011-$([System.DateTime]::Now.Year)` breaks deterministic builds at year boundaries. *Maintainer decision: kept — the impact is limited to rebuilding an old commit in a later year, whereas a static year silently goes stale.*
 - `src/Directory.Build.props:9` — deprecated `PackageIconUrl` alongside `PackageIcon` (NU5048). *Maintainer decision: kept — some repositories still consume `PackageIconUrl`.*
 - `Directory.Packages.props:8-28` — all Microsoft.* versions conditioned on `'$(TargetFramework)' == 'net10.0'`; a second TFM later yields NU1010 across the board.
-- `Directory.Packages.props:57` — SixLabors.ImageSharp pinned to 2.1.13 (3.x current; 2.x has needed repeated security patches) and used for request-path image decoding.
+- `Directory.Packages.props:57` — SixLabors.ImageSharp pinned to 2.x and used for request-path image decoding. *Correction: do NOT move to 3.x — it is licensed under the Six Labors Split License (paid for commercial use), unsuitable for this freely-distributed library. Stay on the Apache-2.0 2.x line and keep it patched.*
 
 ---
 

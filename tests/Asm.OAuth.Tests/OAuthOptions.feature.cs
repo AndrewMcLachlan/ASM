@@ -166,17 +166,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="OAuthOptions ValidateAudience defaults to false")]
+        [global::Xunit.FactAttribute(DisplayName="OAuthOptions ValidateAudience defaults to true")]
         [global::Xunit.TraitAttribute("FeatureTitle", "OAuthOptions")]
-        [global::Xunit.TraitAttribute("Description", "OAuthOptions ValidateAudience defaults to false")]
+        [global::Xunit.TraitAttribute("Description", "OAuthOptions ValidateAudience defaults to true")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task OAuthOptionsValidateAudienceDefaultsToFalse()
+        public async global::System.Threading.Tasks.Task OAuthOptionsValidateAudienceDefaultsToTrue()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("OAuthOptions ValidateAudience defaults to false", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("OAuthOptions ValidateAudience defaults to true", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 9
@@ -193,23 +193,23 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have OAuthOptions with default ValidateAudience", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 11
-    await testRunner.ThenAsync("ValidateAudience should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("ValidateAudience should be true", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="OAuthOptions ValidateAudience can be set to true")]
+        [global::Xunit.FactAttribute(DisplayName="OAuthOptions ValidateAudience can be set to false")]
         [global::Xunit.TraitAttribute("FeatureTitle", "OAuthOptions")]
-        [global::Xunit.TraitAttribute("Description", "OAuthOptions ValidateAudience can be set to true")]
+        [global::Xunit.TraitAttribute("Description", "OAuthOptions ValidateAudience can be set to false")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task OAuthOptionsValidateAudienceCanBeSetToTrue()
+        public async global::System.Threading.Tasks.Task OAuthOptionsValidateAudienceCanBeSetToFalse()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("OAuthOptions ValidateAudience can be set to true", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("OAuthOptions ValidateAudience can be set to false", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 14
@@ -223,10 +223,10 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 15
-    await testRunner.GivenAsync("I have OAuthOptions with ValidateAudience set to true", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have OAuthOptions with ValidateAudience set to false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 16
-    await testRunner.ThenAsync("ValidateAudience should be true", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("ValidateAudience should be false", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

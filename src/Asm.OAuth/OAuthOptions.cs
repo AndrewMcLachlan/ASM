@@ -36,7 +36,8 @@ public record OAuthOptions
     public virtual string Authority { get => Domain; }
 
     /// <summary>
-    /// Gets a value indicating whether to validate the audience.
+    /// Gets a value indicating whether to validate the audience. Defaults to <see langword="true"/>;
+    /// set to <see langword="false"/> only if you deliberately accept tokens for any audience.
     /// </summary>
-    public bool ValidateAudience { get; init; }
+    public bool ValidateAudience { get; init; } = true;
 }

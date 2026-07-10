@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Api.Management.Security;
 using Umbraco.Cms.Infrastructure.Manifest;
 using Umbraco.Extensions;
@@ -27,7 +28,7 @@ public static class IUmbracoBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(configure);
 
-        builder.Services.Configure(configure);
+        Validate(builder.Services.AddOptions<EntraIdOptions>().Configure(configure));
         return AddEntraIdCore(builder);
     }
 
@@ -45,9 +46,15 @@ public static class IUmbracoBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        builder.Services.Configure<EntraIdOptions>(configuration);
+        Validate(builder.Services.AddOptions<EntraIdOptions>().Bind(configuration));
         return AddEntraIdCore(builder);
     }
+
+    private static OptionsBuilder<EntraIdOptions> Validate(OptionsBuilder<EntraIdOptions> builder) =>
+        builder.Validate(o => !String.IsNullOrWhiteSpace(o.TenantId), "Entra ID authentication: TenantId is required.")
+               .Validate(o => !String.IsNullOrWhiteSpace(o.ClientId), "Entra ID authentication: ClientId is required.")
+               .Validate(o => !String.IsNullOrWhiteSpace(o.ClientSecret), "Entra ID authentication: ClientSecret is required.")
+               .ValidateOnStart();
 
     private static IUmbracoBuilder AddEntraIdCore(IUmbracoBuilder builder)
     {

@@ -1,5 +1,6 @@
 using Asm.Umbraco.Authentication.EntraId;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Api.Management.Security;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Configuration.Models;
@@ -12,6 +13,14 @@ public class EntraIdLoginOptionsTests
     private const string MatchingName =
         Constants.Security.BackOfficeExternalAuthenticationTypePrefix + EntraIdLoginOptions.SchemeName;
 
+    private static EntraIdLoginOptions CreateSut(EntraIdOptions? options = null) =>
+        new(Options.Create(options ?? new EntraIdOptions
+        {
+            TenantId = "tenant",
+            ClientId = "client",
+            ClientSecret = "secret",
+        }));
+
     // -----------------------------------------------------------------------
     // Configure(string?, BackOfficeExternalLoginProviderOptions)
     // -----------------------------------------------------------------------
@@ -20,7 +29,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithMatchingName_SetsAutoLinkOptionsNotNull()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         sut.Configure(MatchingName, options);
@@ -32,7 +41,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithMatchingName_AutoLinksExternalAccount()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         sut.Configure(MatchingName, options);
@@ -44,7 +53,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithMatchingName_SetsDenyLocalLoginFalse()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         sut.Configure(MatchingName, options);
@@ -56,7 +65,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithNonMatchingName_LeavesAutoLinkOptionsUnchanged()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         // Capture the default state before calling Configure with a non-matching name
@@ -78,7 +87,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithoutName_SetsAutoLinkOptionsNotNull()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         sut.Configure(options);
@@ -90,7 +99,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithoutName_AutoLinksExternalAccount()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         sut.Configure(options);
@@ -102,7 +111,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void Configure_WithoutName_SetsDenyLocalLoginFalse()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
 
         sut.Configure(options);
@@ -118,7 +127,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void OnAutoLinking_SetsIsApprovedTrue()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
         sut.Configure(options);
 
@@ -138,7 +147,7 @@ public class EntraIdLoginOptionsTests
     [Trait("Category", "Unit")]
     public void OnExternalLogin_ReturnsTrue()
     {
-        var sut = new EntraIdLoginOptions();
+        var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
         sut.Configure(options);
 
@@ -148,6 +157,58 @@ public class EntraIdLoginOptionsTests
         var result = options.AutoLinkOptions.OnExternalLogin?.Invoke(user, loginInfo);
 
         Assert.True(result);
+    }
+
+    // -----------------------------------------------------------------------
+    // Options flow through from EntraIdOptions
+    // -----------------------------------------------------------------------
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void Configure_HonoursAutoLinkFalse()
+    {
+        var sut = CreateSut(new EntraIdOptions { TenantId = "t", ClientId = "c", ClientSecret = "s", AutoLink = false });
+        var options = new BackOfficeExternalLoginProviderOptions();
+
+        sut.Configure(options);
+
+        Assert.False(options.AutoLinkOptions.AutoLinkExternalAccount);
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void Configure_HonoursDenyLocalLoginTrue()
+    {
+        var sut = CreateSut(new EntraIdOptions { TenantId = "t", ClientId = "c", ClientSecret = "s", DenyLocalLogin = true });
+        var options = new BackOfficeExternalLoginProviderOptions();
+
+        sut.Configure(options);
+
+        Assert.True(options.DenyLocalLogin);
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void Configure_HonoursCustomDefaultUserGroups()
+    {
+        var sut = CreateSut(new EntraIdOptions { TenantId = "t", ClientId = "c", ClientSecret = "s", DefaultUserGroups = ["writer", "translator"] });
+        var options = new BackOfficeExternalLoginProviderOptions();
+
+        sut.Configure(options);
+
+        Assert.Equal(["writer", "translator"], options.AutoLinkOptions.DefaultUserGroups);
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void Configure_DefaultUserGroups_IsEditor()
+    {
+        var sut = CreateSut();
+        var options = new BackOfficeExternalLoginProviderOptions();
+
+        sut.Configure(options);
+
+        Assert.Equal([Constants.Security.EditorGroupKey.ToString()], options.AutoLinkOptions.DefaultUserGroups);
     }
 
     // -----------------------------------------------------------------------

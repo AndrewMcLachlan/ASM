@@ -101,11 +101,13 @@ Highest-value fixes; all non-breaking. Test-first for each.
 
 ## Phase 2 — Security hardening (needs a deliberate release; some are behavior changes)
 
-- [ ] `OAuthOptions.ValidateAudience` default `false` → `true`. **Behavioral/breaking for misconfigured consumers — flag in release notes; requires approval.** Update the feature test that enshrines `false`.
-- [ ] Entra ID auto-link (`EntraIdLoginOptions`): add `AutoLink`, `DefaultUserGroups` (default Editor for compat), `DenyLocalLogin` options; document the current permissive behavior prominently in the README immediately, even before the options land.
-- [ ] `OriginHost` / `CanonicalTagHelper`: stop trusting raw `X-Forwarded-Host`; rely on `Request.Host` + Forwarded Headers middleware.
-- [ ] Options validation everywhere: `.AddOptions<T>().Bind(...).Validate(...).ValidateOnStart()` for `OAuthOptions`, `AzureOAuthOptions` (non-empty TenantId, no trailing-slash Domain), `StandardJwtBearerOptions`, `EntraIdOptions`, `FixedMachineInfoFactoryOptions`. Fix `AddAzureOAuthOptions` to register a real named binding (snapshot/monitor safe) instead of a closed `IOptions` singleton.
-- [ ] Upgrade SixLabors.ImageSharp 2.1.13 → 3.x (request-path decoder; 2.x needs manual security patch tracking). Check Umbraco compatibility first.
+**Decisions (2026-07-09):** ValidateAudience → flip to `true` (secure, breaking, release-noted); Entra auto-link → keep current behavior as the default (options added, non-breaking).
+
+- [x] `OAuthOptions.ValidateAudience` default `false` → `true`. Feature test updated. **Breaking for apps that didn't set an Audience — release-note it.**
+- [x] Entra ID auto-link: added `AutoLink` / `DefaultUserGroups` / `DenyLocalLogin` to `EntraIdOptions`, defaulting to today's behavior; `EntraIdLoginOptions` reads them from `IOptions<EntraIdOptions>`. README documents the permissive default + how to harden. Tests cover the options flowing through.
+- [x] `OriginHost` now returns `Request.Host` (was reflecting the raw `X-Forwarded-Host` → host/cache poisoning). Proxy scenarios use Forwarded Headers middleware. Tests added.
+- [x] Options validation with `.Validate(...).ValidateOnStart()`: `OAuthOptions`, `AzureOAuthOptions` (non-empty TenantId, no trailing-slash Domain), `StandardJwtBearerOptions` (OAuthOptions set + Domain/Audience), `EntraIdOptions` (TenantId/ClientId/ClientSecret), `FixedMachineInfoFactoryOptions` (MachineName). `AddAzureOAuthOptions` now bridges the base `OAuthOptions` across IOptions/IOptionsSnapshot/IOptionsMonitor via an `IOptionsMonitor`-backed adapter (was a closed `IOptions` singleton). OAuth validation + bridge tested with a real ServiceProvider; the other validators reuse the identical pattern.
+- [ ] **Do NOT upgrade SixLabors.ImageSharp to 3.x** — v3+ moved to the Six Labors Split License (commercial use requires a paid licence), which is unacceptable for a freely-distributed NuGet library. Stay on the Apache-2.0 2.x line. Instead: keep 2.1.x patched (track 2.x security releases) and, since ImageSharp is only used for header/dimension reads in `ImgSetTagHelper`, consider whether a lighter/again-permissive dependency could replace it long-term.
 
 **Acceptance:** new BDD scenarios: missing OAuth section fails at startup with a clear message; audience validation on by default; forged `X-Forwarded-Host` does not appear in canonical links.
 

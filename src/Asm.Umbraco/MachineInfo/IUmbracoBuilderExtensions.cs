@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Factories;
 using Umbraco.Extensions;
 using Asm.Umbraco.MachineInfo;
@@ -26,7 +27,7 @@ public static class IUmbracoBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(configure);
 
-        builder.Services.Configure(configure);
+        Validate(builder.Services.AddOptions<FixedMachineInfoFactoryOptions>().Configure(configure));
         builder.Services.AddUnique<IMachineInfoFactory, FixedMachineInfoFactory>();
         return builder;
     }
@@ -45,8 +46,12 @@ public static class IUmbracoBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        builder.Services.Configure<FixedMachineInfoFactoryOptions>(configuration);
+        Validate(builder.Services.AddOptions<FixedMachineInfoFactoryOptions>().Bind(configuration));
         builder.Services.AddUnique<IMachineInfoFactory, FixedMachineInfoFactory>();
         return builder;
     }
+
+    private static OptionsBuilder<FixedMachineInfoFactoryOptions> Validate(OptionsBuilder<FixedMachineInfoFactoryOptions> builder) =>
+        builder.Validate(o => !String.IsNullOrWhiteSpace(o.MachineName), "FixedMachineInfoFactory: MachineName is required.")
+               .ValidateOnStart();
 }

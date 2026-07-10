@@ -50,17 +50,23 @@ public class EntraIdOptionsTests
     [Trait("Category", "Unit")]
     public void Records_WithSameValues_AreEqual()
     {
+        // DefaultUserGroups is a reference-type collection, so record equality requires the same
+        // instance (C# records compare members by their own Equals). Share it to compare the rest.
+        string[] groups = ["editor"];
+
         var a = new EntraIdOptions
         {
             TenantId = "tenant",
             ClientId = "client",
-            ClientSecret = "secret"
+            ClientSecret = "secret",
+            DefaultUserGroups = groups
         };
         var b = new EntraIdOptions
         {
             TenantId = "tenant",
             ClientId = "client",
-            ClientSecret = "secret"
+            ClientSecret = "secret",
+            DefaultUserGroups = groups
         };
 
         Assert.Equal(a, b);

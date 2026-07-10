@@ -28,7 +28,12 @@ public static class Authentication
     /// <returns>The <see cref="AuthenticationBuilder"/> so that calls can be chained.</returns>
     public static AuthenticationBuilder AddStandardJwtBearer(this AuthenticationBuilder builder, Action<StandardJwtBearerOptions> configureOptions)
     {
-        builder.Services.Configure(configureOptions);
+        builder.Services.AddOptions<StandardJwtBearerOptions>()
+               .Configure(configureOptions)
+               .Validate(o => o.OAuthOptions is not null, "StandardJwtBearer: OAuthOptions must be configured.")
+               .Validate(o => o.OAuthOptions is null || !String.IsNullOrWhiteSpace(o.OAuthOptions.Domain), "StandardJwtBearer: OAuthOptions.Domain is required.")
+               .Validate(o => o.OAuthOptions is null || !String.IsNullOrWhiteSpace(o.OAuthOptions.Audience), "StandardJwtBearer: OAuthOptions.Audience is required.")
+               .ValidateOnStart();
         builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureAzureOptions>();
         builder.AddJwtBearer();
 

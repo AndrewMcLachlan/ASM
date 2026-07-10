@@ -7,12 +7,14 @@ namespace Asm.Umbraco.Authentication.EntraId;
 /// <summary>
 /// Configures the Umbraco back-office external-login provider for Microsoft Entra ID.
 /// </summary>
-internal sealed class EntraIdLoginOptions : IConfigureNamedOptions<BackOfficeExternalLoginProviderOptions>
+internal sealed class EntraIdLoginOptions(IOptions<EntraIdOptions> options) : IConfigureNamedOptions<BackOfficeExternalLoginProviderOptions>
 {
     /// <summary>
     /// The scheme name (without Umbraco's back-office prefix) used for the Entra ID login provider.
     /// </summary>
     public const string SchemeName = "OpenIdConnect";
+
+    private readonly EntraIdOptions _options = options.Value;
 
     public void Configure(string? name, BackOfficeExternalLoginProviderOptions options)
     {
@@ -25,8 +27,8 @@ internal sealed class EntraIdLoginOptions : IConfigureNamedOptions<BackOfficeExt
     public void Configure(BackOfficeExternalLoginProviderOptions options)
     {
         options.AutoLinkOptions = new ExternalSignInAutoLinkOptions(
-            autoLinkExternalAccount: true,
-            defaultUserGroups: [Constants.Security.EditorGroupKey.ToString()],
+            autoLinkExternalAccount: _options.AutoLink,
+            defaultUserGroups: [.. _options.DefaultUserGroups],
             defaultCulture: null)
         {
             OnAutoLinking = (autoLinkUser, loginInfo) =>
@@ -36,6 +38,6 @@ internal sealed class EntraIdLoginOptions : IConfigureNamedOptions<BackOfficeExt
             OnExternalLogin = (user, loginInfo) => true,
         };
 
-        options.DenyLocalLogin = false;
+        options.DenyLocalLogin = _options.DenyLocalLogin;
     }
 }
