@@ -29,8 +29,13 @@ public readonly struct ByteArray
     }
 
     /// <summary>
-    /// The ordinary array representation of the bytes
+    /// The ordinary array representation of the bytes.
     /// </summary>
+    /// <remarks>
+    /// This returns the live internal array (a view, not a copy): mutating the returned array, or the
+    /// array passed to the constructor, changes this <see cref="ByteArray"/>. The implicit conversions
+    /// to and from <see cref="byte"/>[] share the same array. Copy it yourself if you need isolation.
+    /// </remarks>
     public readonly byte[] GetBytes() => _bytes;
 
     /// <summary>
