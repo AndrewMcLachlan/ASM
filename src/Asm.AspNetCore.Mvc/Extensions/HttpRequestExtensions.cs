@@ -16,6 +16,7 @@ public static class HttpRequestExtensions
     /// </remarks>
     /// <param name="request">The <see cref="HttpRequest"/> instance that this method extends.</param>
     /// <returns>The origin host of the request.</returns>
+    [Obsolete("OriginHost now simply returns Request.Host.ToString(). Use HttpRequest.Host directly, and configure the Forwarded Headers middleware for reverse-proxy scenarios.")]
     public static string OriginHost(this HttpRequest request) => request.Host.ToString();
 
     /// <summary>

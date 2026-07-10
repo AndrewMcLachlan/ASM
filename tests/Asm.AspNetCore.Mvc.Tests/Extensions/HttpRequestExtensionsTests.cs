@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Asm.AspNetCore.Mvc.Tests.Extensions;
 
+// OriginHost is [Obsolete] but still shipped, so keep it covered.
+#pragma warning disable CS0618 // Type or member is obsolete
 public class HttpRequestExtensionsTests
 {
     [Fact]
@@ -27,3 +29,4 @@ public class HttpRequestExtensionsTests
         Assert.Equal("example.com", context.Request.OriginHost());
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete
