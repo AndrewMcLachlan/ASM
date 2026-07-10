@@ -122,9 +122,17 @@ public abstract class IntegrityTagHelper : TagHelper
         };
 
         string hashBase64 = $"{prefix}-" + Convert.ToBase64String(hash);
-        string calculatedUrl = UrlHelper.Content(url.Replace("$v", Math.Abs(hashBase64.GetHashCode()).ToString()));
 
-        MemoryCache.Set(cacheKey, (calculatedUrl, hashBase64));
+        // Derive the cache-busting token from the content hash itself. String.GetHashCode is
+        // randomised per process, so hashing the base64 string produced a different $v on every
+        // application restart, busting client caches even when the file had not changed.
+        string version = Convert.ToHexStringLower(hash.AsSpan(0, 8));
+        string calculatedUrl = UrlHelper.Content(url.Replace("$v", version));
+
+        if (!HostingEnvironment.IsDevelopment())
+        {
+            MemoryCache.Set(cacheKey, (calculatedUrl, hashBase64));
+        }
 
         output.Attributes.RemoveAll(UrlSourceAttributeName);
         output.Attributes.RemoveAll(UrlOutputAttributeName);

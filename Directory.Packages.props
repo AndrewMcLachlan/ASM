@@ -31,8 +31,6 @@
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.8.2" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
-    <PackageVersion Include="LazyCache" Version="2.4.0" />
-    <PackageVersion Include="LazyCache.AspNetCore" Version="2.4.0" />
     <PackageVersion Include="MailKit" Version="4.16.0" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions" Version="5.2.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />

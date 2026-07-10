@@ -8,6 +8,8 @@ namespace Asm.AspNetCore;
 /// </summary>
 public static class HttpContextExtensions
 {
+    private const string UserNameItemKey = "Asm.UserName";
+
     /// <summary>
     /// Gets the name of the current user.
     /// </summary>
@@ -15,7 +17,26 @@ public static class HttpContextExtensions
     /// <returns>The current user's name, or "-" if the current user is not available.</returns>
     public static string GetUserName(this HttpContext? context)
     {
-        if (context?.User?.Identity is not ClaimsIdentity identity)
+        if (context is null)
+        {
+            return "-";
+        }
+
+        // Cache per request: this runs once per log record / activity / request-enrichment, so
+        // re-scanning the claims each time would be wasteful.
+        if (context.Items.TryGetValue(UserNameItemKey, out var cached) && cached is string cachedName)
+        {
+            return cachedName;
+        }
+
+        var name = ResolveUserName(context);
+        context.Items[UserNameItemKey] = name;
+        return name;
+    }
+
+    private static string ResolveUserName(HttpContext context)
+    {
+        if (context.User?.Identity is not ClaimsIdentity identity)
         {
             return "-";
         }

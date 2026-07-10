@@ -1,59 +1,54 @@
-﻿using System.Reflection;
+using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using Asm.Cqrs.Commands;
 using Asm.Cqrs.Queries;
-using LazyCache;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Asm.Cqrs;
 
-internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : IQueryDispatcher, ICommandDispatcher
+internal class Dispatcher(IServiceProvider serviceProvider) : IQueryDispatcher, ICommandDispatcher
 {
     private static readonly Type QueryHandlerGenericType = typeof(IQueryHandler<,>);
     private static readonly Type CommandHandlerGenericType = typeof(ICommandHandler<,>);
     private static readonly Type CommandHandlerVoidGenericType = typeof(ICommandHandler<>);
 
-    // Cache key prefix for combined caching
-    private const string HandlerInfoCacheKeyPrefix = "HandlerInfo_";
+    // Compiled Handle invokers, cached for the process lifetime. Calling Handle through a compiled
+    // delegate avoids per-dispatch reflection (MethodInfo.Invoke + argument array) and surfaces a
+    // handler's exceptions as their own type rather than a TargetInvocationException.
+    private static readonly ConcurrentDictionary<(Type Request, Type Response), (Type HandlerType, Delegate Invoker)> QueryHandlers = new();
+    private static readonly ConcurrentDictionary<(Type Request, Type Response), (Type HandlerType, Delegate Invoker)> CommandHandlers = new();
+    private static readonly ConcurrentDictionary<Type, (Type HandlerType, Delegate Invoker)> VoidCommandHandlers = new();
 
     public ValueTask<TResponse> Dispatch<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = default)
     {
         var queryType = query.GetType();
-        var responseType = typeof(TResponse);
 
-        var (handlerType, handleMethod) = cache.GetOrAdd(
-            $"{HandlerInfoCacheKeyPrefix}Query_{queryType.FullName}_{responseType.FullName}",
-            () =>
+        var (handlerType, invoker) = QueryHandlers.GetOrAdd(
+            (queryType, typeof(TResponse)),
+            static key =>
             {
-                var type = QueryHandlerGenericType.MakeGenericType(queryType, responseType);
-                var method = type.GetMethod(nameof(IQueryHandler<IQuery<TResponse>, TResponse>.Handle))!;
-                return (type, method);
+                var handlerType = QueryHandlerGenericType.MakeGenericType(key.Request, key.Response);
+                return (handlerType, BuildInvoker<TResponse>(handlerType, key.Request));
             });
 
         var handler = serviceProvider.GetRequiredService(handlerType);
-        var result = handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [query, cancellationToken], null);
-
-        return (ValueTask<TResponse>)result!;
+        return ((Func<object, object, CancellationToken, ValueTask<TResponse>>)invoker)(handler, query, cancellationToken);
     }
 
     public ValueTask<TResponse> Dispatch<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default)
     {
         var commandType = command.GetType();
-        var responseType = typeof(TResponse);
 
-        // Cache both type and method in a single operation
-        var (handlerType, handleMethod) = cache.GetOrAdd(
-            $"{HandlerInfoCacheKeyPrefix}Command_{commandType.FullName}_{responseType.FullName}",
-            () =>
+        var (handlerType, invoker) = CommandHandlers.GetOrAdd(
+            (commandType, typeof(TResponse)),
+            static key =>
             {
-                var type = CommandHandlerGenericType.MakeGenericType(commandType, responseType);
-                var method = type.GetMethod(nameof(ICommandHandler<ICommand<TResponse>, TResponse>.Handle))!;
-                return (type, method);
+                var handlerType = CommandHandlerGenericType.MakeGenericType(key.Request, key.Response);
+                return (handlerType, BuildInvoker<TResponse>(handlerType, key.Request));
             });
 
         var handler = serviceProvider.GetRequiredService(handlerType);
-        var result = handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [command, cancellationToken], null);
-
-        return (ValueTask<TResponse>)result!;
+        return ((Func<object, object, CancellationToken, ValueTask<TResponse>>)invoker)(handler, command, cancellationToken);
     }
 
     public ValueTask Dispatch(ICommand command, CancellationToken cancellationToken = default)
@@ -70,19 +65,43 @@ internal class Dispatcher(IServiceProvider serviceProvider, IAppCache cache) : I
                 $"Command '{commandType.Name}' returns a response; dispatch it with Dispatch<TResponse>(ICommand<TResponse>) rather than the void Dispatch(ICommand) overload.");
         }
 
-        // Cache both type and method in a single operation
-        var (handlerType, handleMethod) = cache.GetOrAdd(
-            $"{HandlerInfoCacheKeyPrefix}CommandVoid_{commandType.FullName}",
-            () =>
+        var (handlerType, invoker) = VoidCommandHandlers.GetOrAdd(
+            commandType,
+            static request =>
             {
-                var type = CommandHandlerVoidGenericType.MakeGenericType(commandType);
-                var method = type.GetMethod(nameof(ICommandHandler<ICommand>.Handle))!;
-                return (type, method);
+                var handlerType = CommandHandlerVoidGenericType.MakeGenericType(request);
+                return (handlerType, BuildVoidInvoker(handlerType, request));
             });
 
         var handler = serviceProvider.GetRequiredService(handlerType);
-        var result = handleMethod.Invoke(handler, BindingFlags.DoNotWrapExceptions, null, [command, cancellationToken], null);
+        return ((Func<object, object, CancellationToken, ValueTask>)invoker)(handler, command, cancellationToken);
+    }
 
-        return (ValueTask)result!;
+    private static Func<object, object, CancellationToken, ValueTask<TResponse>> BuildInvoker<TResponse>(Type handlerType, Type requestType)
+    {
+        var (handlerParam, requestParam, cancellationTokenParam, call) = BuildHandleCall(handlerType, requestType);
+        return Expression.Lambda<Func<object, object, CancellationToken, ValueTask<TResponse>>>(call, handlerParam, requestParam, cancellationTokenParam).Compile();
+    }
+
+    private static Func<object, object, CancellationToken, ValueTask> BuildVoidInvoker(Type handlerType, Type requestType)
+    {
+        var (handlerParam, requestParam, cancellationTokenParam, call) = BuildHandleCall(handlerType, requestType);
+        return Expression.Lambda<Func<object, object, CancellationToken, ValueTask>>(call, handlerParam, requestParam, cancellationTokenParam).Compile();
+    }
+
+    private static (ParameterExpression Handler, ParameterExpression Request, ParameterExpression CancellationToken, MethodCallExpression Call) BuildHandleCall(Type handlerType, Type requestType)
+    {
+        var handleMethod = handlerType.GetMethod("Handle")!;
+        var handlerParam = Expression.Parameter(typeof(object), "handler");
+        var requestParam = Expression.Parameter(typeof(object), "request");
+        var cancellationTokenParam = Expression.Parameter(typeof(CancellationToken), "cancellationToken");
+
+        var call = Expression.Call(
+            Expression.Convert(handlerParam, handlerType),
+            handleMethod,
+            Expression.Convert(requestParam, requestType),
+            cancellationTokenParam);
+
+        return (handlerParam, requestParam, cancellationTokenParam, call);
     }
 }

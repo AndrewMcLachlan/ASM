@@ -9,7 +9,7 @@ namespace Asm.Win32;
 /// <summary>
 /// Class for controlling the Windows Hosts file.
 /// </summary>
-public sealed class Hosts : IDisposable
+public sealed partial class Hosts : IDisposable
 {
     #region Constants
     private static readonly string DefaultHostsFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "drivers", "etc", "hosts");
@@ -116,13 +116,6 @@ public sealed class Hosts : IDisposable
         ReadHosts(hosts);
     }
 
-    /// <summary>
-    /// Finializer.
-    /// </summary>
-    ~Hosts()
-    {
-        this.Dispose(false);
-    }
     #endregion
 
     #region Public Methods
@@ -192,8 +185,20 @@ public sealed class Hosts : IDisposable
     /// </summary>
     public void Dispose()
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        if (_disposed)
+        {
+            return;
+        }
+
+        _pollTimer?.Dispose();
+        lock (_lock)
+        {
+            if (ReferenceEquals(_instance, this))
+            {
+                _instance = null;
+            }
+        }
+        _disposed = true;
     }
     #endregion
 
@@ -218,8 +223,7 @@ public sealed class Hosts : IDisposable
 
             if (line == null) break;
 
-            Regex blankRegex = new(@"^$");
-            Match match = blankRegex.Match(line);
+            Match match = BlankRegex().Match(line);
 
             if (match.Success)
             {
@@ -227,8 +231,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex commentEntryCommentMatch = new(@"^[#]{1}?([^\s]*)\s?([^#]+)#{1}?(.*)$");
-            match = commentEntryCommentMatch.Match(line);
+            match = CommentedEntryWithCommentRegex().Match(line);
             if (match.Success)
             {
 
@@ -243,8 +246,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex commentEntryMatch = new(@"^[#]{1}?([^\s]*)\s?([^#]+)$");
-            match = commentEntryMatch.Match(line);
+            match = CommentedEntryRegex().Match(line);
             if (match.Success)
             {
 
@@ -259,8 +261,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex commentMatch = new(@"^[#]{1}?(.*)$");
-            match = commentMatch.Match(line);
+            match = CommentRegex().Match(line);
 
             if (match.Success)
             {
@@ -268,8 +269,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex entryCommentMatch = new(@"^([^\s#]+)\s+([^#]+)#(.*)$");
-            match = entryCommentMatch.Match(line);
+            match = EntryWithCommentRegex().Match(line);
 
             if (match.Success)
             {
@@ -285,8 +285,7 @@ public sealed class Hosts : IDisposable
                 continue;
             }
 
-            Regex entryMatch = new(@"^([^\s#]+)(?:\s+([^#]+))?$");
-            match = entryMatch.Match(line);
+            match = EntryRegex().Match(line);
 
             if (match.Success)
             {
@@ -334,23 +333,22 @@ public sealed class Hosts : IDisposable
         HostsFileChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                _pollTimer?.Dispose();
-                lock (_lock)
-                {
-                    if (ReferenceEquals(_instance, this))
-                    {
-                        _instance = null;
-                    }
-                }
-            }
-            _disposed = true;
-        }
-    }
+    [GeneratedRegex(@"^$")]
+    private static partial Regex BlankRegex();
+
+    [GeneratedRegex(@"^[#]{1}?([^\s]*)\s?([^#]+)#{1}?(.*)$")]
+    private static partial Regex CommentedEntryWithCommentRegex();
+
+    [GeneratedRegex(@"^[#]{1}?([^\s]*)\s?([^#]+)$")]
+    private static partial Regex CommentedEntryRegex();
+
+    [GeneratedRegex(@"^[#]{1}?(.*)$")]
+    private static partial Regex CommentRegex();
+
+    [GeneratedRegex(@"^([^\s#]+)\s+([^#]+)#(.*)$")]
+    private static partial Regex EntryWithCommentRegex();
+
+    [GeneratedRegex(@"^([^\s#]+)(?:\s+([^#]+))?$")]
+    private static partial Regex EntryRegex();
     #endregion
 }

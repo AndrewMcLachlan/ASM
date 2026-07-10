@@ -63,20 +63,16 @@ public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCach
         var altText = image.Value<string>("umbracoAltText");
         altText = String.IsNullOrWhiteSpace(altText) ? String.Empty : altText;
 
-        string srcset = String.Empty;
-        foreach (var img in Images.Skip(1))
-        {
-            var scaling = img.Value<float?>("scaling");
+        var url = image.Url();
 
-            if (scaling == null) continue;
-
-            srcset += $", {FormatSrcsetEntry(img.Url(), scaling.Value)}";
-        }
-        srcset = srcset.TrimStart(", ");
+        var srcset = String.Join(", ", Images.Skip(1)
+            .Select(img => (Url: img.Url(), Scaling: img.Value<float?>("scaling")))
+            .Where(x => x.Scaling is not null)
+            .Select(x => FormatSrcsetEntry(x.Url, x.Scaling!.Value)));
 
         output.TagName = "img";
 
-        output.Attributes.Add("src", image.Url());
+        output.Attributes.Add("src", url);
         output.Attributes.Add("srcset", srcset);
         output.Attributes.Add("alt", altText);
 
@@ -85,23 +81,32 @@ public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCach
 
         if (height == 0 || width == 0)
         {
-            if (!WebHostEnvironment.IsDevelopment() && MemoryCache.TryGetValue(image.Url(), out (int Width, int Height) data))
+            var development = WebHostEnvironment.IsDevelopment();
+
+            if (!development && MemoryCache.TryGetValue(url, out (int Width, int Height) data))
             {
                 width = data.Width;
                 height = data.Height;
             }
             else
             {
-                string path = ToPhysicalPath(WebHostEnvironment.WebRootPath, image.Url());
+                string path = ToPhysicalPath(WebHostEnvironment.WebRootPath, url);
 
                 if (!File.Exists(path)) return;
 
                 try
                 {
-                    using var imageFile = Image.Load(path);
-                    width = imageFile.Width;
-                    height = imageFile.Height;
-                    MemoryCache.Set(image.Url(), (width, height));
+                    // Identify reads only the image header rather than decoding the whole image.
+                    var info = Image.Identify(path);
+                    if (info is null) return;
+
+                    width = info.Width;
+                    height = info.Height;
+
+                    if (!development)
+                    {
+                        MemoryCache.Set(url, (width, height));
+                    }
                 }
                 catch
                 {

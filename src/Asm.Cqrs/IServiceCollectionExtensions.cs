@@ -44,7 +44,6 @@ public static class IServiceCollectionExtensions
         }
 
         services.TryAddTransient<ICommandDispatcher, Dispatcher>();
-        services.AddLazyCache();
 
         return services;
     }
@@ -62,7 +61,6 @@ public static class IServiceCollectionExtensions
         services.TryAddEnumerable(ServiceDescriptor.Transient<ICommandHandler<TRequest, TResponse>, THandler>());
 
         services.TryAddTransient<ICommandDispatcher, Dispatcher>();
-        services.AddLazyCache();
 
         return services;
     }
@@ -79,7 +77,6 @@ public static class IServiceCollectionExtensions
         services.TryAddEnumerable(ServiceDescriptor.Transient<ICommandHandler<TRequest>, THandler>());
 
         services.TryAddTransient<ICommandDispatcher, Dispatcher>();
-        services.AddLazyCache();
 
         return services;
     }
@@ -110,7 +107,6 @@ public static class IServiceCollectionExtensions
         }
 
         services.TryAddTransient<IQueryDispatcher, Dispatcher>();
-        services.AddLazyCache();
 
         return services;
     }
@@ -128,7 +124,6 @@ public static class IServiceCollectionExtensions
         services.TryAddEnumerable(ServiceDescriptor.Transient<IQueryHandler<TRequest, TResponse>, THandler>());
 
         services.TryAddTransient<IQueryDispatcher, Dispatcher>();
-        services.AddLazyCache();
 
         return services;
     }

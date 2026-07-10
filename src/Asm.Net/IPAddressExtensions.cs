@@ -52,22 +52,9 @@ public static class IPAddressExtensions
             }
         }
 
-        uint byteMask = 0b1111_1111_0000_0000_0000_0000_0000_0000;
+        uint maskedAddress = addressNumber & maskNumber;
 
-        var maskedAddress = (addressNumber & maskNumber);
-
-        string newIp = String.Empty;
-
-        for (int i = 0; i < 4; i++)
-        {
-            newIp += ((maskedAddress & byteMask) >> ((3 - i) * 8)).ToString() + ".";
-
-            byteMask >>= 8;
-        }
-
-        newIp = newIp[0..^1];
-
-        return newIp + "/" + cidrNumber.ToString();
+        return $"{FromUInt32(maskedAddress)}/{cidrNumber}";
     }
 
     /// <summary>

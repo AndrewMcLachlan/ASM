@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 
 namespace Asm.Drawing;
 
@@ -11,10 +10,8 @@ namespace Asm.Drawing;
 /// </summary>
 [JsonConverter(typeof(HexColourJsonConverter))]
 [CLSCompliant(false)]
-public readonly partial struct HexColour : IEquatable<HexColour>
+public readonly struct HexColour : IEquatable<HexColour>
 {
-    private static readonly Regex HexColourRegex = GeneratedHexColourRegex();
-
     private readonly uint _value; // Stack-allocated integer instead of heap-allocated string
 
     /// <summary>
@@ -27,12 +24,8 @@ public readonly partial struct HexColour : IEquatable<HexColour>
         if (String.IsNullOrWhiteSpace(hexValue))
             throw new ArgumentException("Hex colour value cannot be null or whitespace.", nameof(hexValue));
 
-        var normalizedValue = NormalizeHexColour(hexValue);
-
-        if (!IsValidHexColour(normalizedValue))
+        if (!TryParseValue(hexValue, out _value))
             throw new FormatException($"Invalid hex colour format: {hexValue}");
-
-        _value = ParseHexToUInt(normalizedValue);
     }
 
     /// <summary>
@@ -66,22 +59,14 @@ public readonly partial struct HexColour : IEquatable<HexColour>
     /// <returns><see langword="true"/> if the parsing was successful; otherwise, <see langword="false"/>.</returns>
     public static bool TryParse(string? hexValue, out HexColour result)
     {
-        if (String.IsNullOrWhiteSpace(hexValue))
+        if (String.IsNullOrWhiteSpace(hexValue) || !TryParseValue(hexValue, out var value))
         {
             result = default;
             return false;
         }
 
-        try
-        {
-            result = new HexColour(hexValue);
-            return true;
-        }
-        catch (Exception ex) when (ex is ArgumentException || ex is FormatException)
-        {
-            result = default;
-            return false;
-        }
+        result = new HexColour(value);
+        return true;
     }
 
     /// <summary>
@@ -92,29 +77,45 @@ public readonly partial struct HexColour : IEquatable<HexColour>
     /// <returns>The parsed <see cref="HexColour"/> instance.</returns>
     public static HexColour Parse(string hexValue) => new(hexValue);
 
-    private static string NormalizeHexColour(string hexValue)
+    /// <summary>
+    /// Parses a hex colour, tolerating an optional leading <c>#</c> and both the shorthand
+    /// (<c>RGB</c>) and full (<c>RRGGBB</c>) forms, without allocating or throwing on failure.
+    /// </summary>
+    private static bool TryParseValue(ReadOnlySpan<char> hexValue, out uint value)
     {
+        value = 0;
+
         var trimmed = hexValue.Trim();
 
-        if (!trimmed.StartsWith('#'))
-            trimmed = '#' + trimmed;
+        // Drop a single leading '#'.
+        if (trimmed.Length > 0 && trimmed[0] == '#')
+            trimmed = trimmed[1..];
 
-        if (trimmed.Length == 4)
+        Span<char> digits = stackalloc char[6];
+
+        if (trimmed.Length == 3)
         {
-            trimmed = $"#{trimmed[1]}{trimmed[1]}{trimmed[2]}{trimmed[2]}{trimmed[3]}{trimmed[3]}";
+            digits[0] = digits[1] = trimmed[0];
+            digits[2] = digits[3] = trimmed[1];
+            digits[4] = digits[5] = trimmed[2];
+        }
+        else if (trimmed.Length == 6)
+        {
+            trimmed.CopyTo(digits);
+        }
+        else
+        {
+            return false;
         }
 
-        return trimmed.ToUpperInvariant();
-    }
+        // Reject anything that isn't a hex digit; HexNumber otherwise tolerates surrounding
+        // whitespace, which the original format did not.
+        foreach (var c in digits)
+        {
+            if (!Uri.IsHexDigit(c)) return false;
+        }
 
-    private static uint ParseHexToUInt(string normalizedHex)
-    {
-        return UInt32.Parse(normalizedHex[1..], NumberStyles.HexNumber);
-    }
-
-    private static bool IsValidHexColour(string hexValue)
-    {
-        return HexColourRegex.IsMatch(hexValue);
+        return UInt32.TryParse(digits, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value);
     }
 
     /// <summary>
@@ -180,9 +181,6 @@ public readonly partial struct HexColour : IEquatable<HexColour>
     /// <param name="right">The right operand.</param>
     /// <returns><see langword="true"/> if both instances are unequal; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(HexColour left, HexColour right) => !left.Equals(right);
-
-    [GeneratedRegex(@"^#[0-9A-F]{6}$", RegexOptions.IgnoreCase)]
-    private static partial Regex GeneratedHexColourRegex();
 }
 
 internal class HexColourJsonConverter : JsonConverter<HexColour>

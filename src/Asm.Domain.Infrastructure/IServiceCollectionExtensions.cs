@@ -50,19 +50,15 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         {
             var queryableGeneric = IQueryableType.MakeGenericType(type);
 
-            services.Add(new ServiceDescriptor(queryableGeneric, sp =>
+            // Close the generic methods once per type at registration, not on every resolution.
+            var genericSet = DbContextSetMethod.MakeGenericMethod(type);
+            var genericAsNoTracking = AsNoTrackingMethod.MakeGenericMethod(type);
+
+            services.TryAdd(new ServiceDescriptor(queryableGeneric, sp =>
             {
                 IReadOnlyDbContext context = sp.GetRequiredService<TContext>();
-
-                var genericSet = DbContextSetMethod.MakeGenericMethod(type);
-
-                var res = genericSet.Invoke(context, null);
-
-                var genericAsNoTracking = AsNoTrackingMethod.MakeGenericMethod(type);
-
-                var res2 = genericAsNoTracking.Invoke(null, [res]);
-
-                return res2!;
+                var set = genericSet.Invoke(context, null);
+                return genericAsNoTracking.Invoke(null, [set])!;
             }, ServiceLifetime.Transient));
         }
         return services;
@@ -94,7 +90,6 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
         }
 
         services.TryAddTransient<IPublisher, Publisher>();
-        services.AddLazyCache();
 
         return services;
     }
@@ -110,7 +105,6 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     {
         services.TryAddEnumerable(ServiceDescriptor.Transient<IDomainEventHandler<TDomainEvent>, THandler>());
         services.TryAddTransient<IPublisher, Publisher>();
-        services.AddLazyCache();
 
         return services;
     }

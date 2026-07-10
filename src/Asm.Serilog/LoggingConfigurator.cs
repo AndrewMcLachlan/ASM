@@ -28,7 +28,6 @@ public static class LoggingConfigurator
             .Enrich.WithProperty("App", appName)
             .Enrich.WithProperty("Env", Env)
             .MinimumLevel.Information()
-            .WriteTo.Trace()
             .WriteTo.Console();
 
         var seqHost = Environment.GetEnvironmentVariable("Seq__Host") ?? Environment.GetEnvironmentVariable("Seq:Host");
@@ -44,6 +43,9 @@ public static class LoggingConfigurator
 
         if (Env == "Development")
         {
+            // Trace goes through OutputDebugString even with no listener attached, so it is
+            // Development-only rather than a per-event cost in production.
+            configuration.WriteTo.Trace();
             configuration.WriteTo.File(Path.Combine("logs", "Log.log"), rollingInterval: RollingInterval.Day);
         }
 
@@ -80,7 +82,6 @@ public static class LoggingConfigurator
             .Enrich.FromLogContext()
             .Enrich.WithProperty("App", appName)
             .Enrich.WithProperty("Env", hostEnvironment.EnvironmentName)
-            .WriteTo.Trace()
             .WriteTo.Console();
 
         IConfigurationSection logLevelConfig = configuration.GetSection("Logging").GetSection("LogLevel");
@@ -113,6 +114,9 @@ public static class LoggingConfigurator
 
         if (hostEnvironment.IsDevelopment())
         {
+            // Trace goes through OutputDebugString even with no listener attached, so it is
+            // Development-only rather than a per-event cost in production.
+            loggerConfiguration.WriteTo.Trace();
             loggerConfiguration.WriteTo.File(Path.Combine("logs", "Log.log"), rollingInterval: RollingInterval.Day);
         }
 

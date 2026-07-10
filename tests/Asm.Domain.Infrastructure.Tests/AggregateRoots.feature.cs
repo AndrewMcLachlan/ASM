@@ -595,7 +595,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.WhenAsync("I call AddAggregateRoots on the null collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 85
-    await testRunner.ThenAsync("an exception of type \'System.NullReferenceException\' is thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("an exception of type \'System.ArgumentNullException\' is thrown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
