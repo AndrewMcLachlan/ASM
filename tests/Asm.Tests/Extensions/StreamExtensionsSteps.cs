@@ -8,6 +8,7 @@ public class StreamExtensionsSteps(ScenarioContext context)
     private MemoryStream _stream;
     private byte[] _writeBuffer = [];
     private byte[] _readBuffer = [];
+    private long _bytesRead;
 
     [Given(@"I have a MemoryStream with data ""(.*)""")]
     public void GivenIHaveAMemoryStreamWithData(string data)
@@ -49,6 +50,30 @@ public class StreamExtensionsSteps(ScenarioContext context)
     public void WhenIWriteBytesFromBufferOffsetUsingLongParameters(long count, long offset)
     {
         _stream!.Write(_writeBuffer, offset, count);
+    }
+
+    [When(@"I read (\d+) bytes into buffer offset (\d+) capturing the result")]
+    public void WhenIReadBytesCapturingTheResult(long count, long offset)
+    {
+        _bytesRead = _stream!.Read(_readBuffer, offset, count);
+    }
+
+    [When(@"I try to read (-?\d+) bytes into buffer offset (-?\d+)")]
+    public void WhenITryToReadBytesIntoBufferOffset(long count, long offset)
+    {
+        context.CatchException(() => _stream!.Read(_readBuffer, offset, count));
+    }
+
+    [When(@"I try to write (-?\d+) bytes from buffer offset (-?\d+)")]
+    public void WhenITryToWriteBytesFromBufferOffset(long count, long offset)
+    {
+        context.CatchException(() => _stream!.Write(_writeBuffer, offset, count));
+    }
+
+    [Then(@"the bytes read should be (\d+)")]
+    public void ThenTheBytesReadShouldBe(long expected)
+    {
+        Assert.Equal(expected, _bytesRead);
     }
 
     [When(@"I try to read from the null stream")]

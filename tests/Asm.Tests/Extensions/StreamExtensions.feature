@@ -42,3 +42,32 @@ Scenario: Write throws when stream is null
     Given I have a null stream
     When I try to write to the null stream
     Then an exception of type 'System.ArgumentNullException' should be thrown
+
+@Unit
+Scenario: Read returns the number of bytes actually available
+    Given I have a MemoryStream with data "Hello"
+    And I have a read buffer of size 10
+    When I read 10 bytes into buffer offset 0 capturing the result
+    Then the bytes read should be 5
+    And the read buffer at offset 0 with length 5 should be "Hello"
+
+@Unit
+Scenario: Read throws when offset plus count exceeds the buffer
+    Given I have a MemoryStream with data "Hello"
+    And I have a read buffer of size 4
+    When I try to read 5 bytes into buffer offset 0
+    Then an exception of type 'System.ArgumentException' should be thrown
+
+@Unit
+Scenario: Read throws when count is negative
+    Given I have a MemoryStream with data "Hello"
+    And I have a read buffer of size 10
+    When I try to read -1 bytes into buffer offset 0
+    Then an exception of type 'System.ArgumentOutOfRangeException' should be thrown
+
+@Unit
+Scenario: Write throws when offset plus count exceeds the buffer
+    Given I have an empty MemoryStream
+    And I have a write buffer with data "Hi"
+    When I try to write 5 bytes from buffer offset 0
+    Then an exception of type 'System.ArgumentException' should be thrown

@@ -44,29 +44,17 @@ public static class StreamExtensions
     public static long Read(this Stream stream, byte[] buffer, long offset, long count)
     {
         ArgumentNullException.ThrowIfNull(stream);
-
-        if (count <= Int32.MaxValue && offset <= Int32.MaxValue)
+        ArgumentNullException.ThrowIfNull(buffer);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset);
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+        if (offset + count > buffer.Length)
         {
-            return stream.Read(buffer, (int)offset, (int)count);
+            throw new ArgumentException("The sum of offset and count is larger than the buffer length.");
         }
-        else
-        {
-            int segment = Int32.MaxValue;
-            long innerOffset = offset;
-            long bytesRead = 0;
-            while ((count - segment) > 0)
-            {
-                byte[] innerBuffer = new byte[segment];
 
-                bytesRead += stream.Read(innerBuffer, 0, segment);
-                innerBuffer.CopyTo(buffer, innerOffset);
-
-                innerOffset += segment;
-                segment = (count - segment) > Int32.MaxValue ? Int32.MaxValue : checked((int)(count - segment));
-            }
-
-            return bytesRead;
-        }
+        // A byte[] holds at most Int32.MaxValue elements, so any (offset, count) that fits the buffer
+        // also fits Int32; delegate to the framework, preserving its (possibly partial) read semantics.
+        return stream.Read(buffer, (int)offset, (int)count);
     }
 
     /// <summary>
@@ -97,25 +85,16 @@ public static class StreamExtensions
     public static void Write(this Stream stream, byte[] buffer, long offset, long count)
     {
         ArgumentNullException.ThrowIfNull(stream);
-
-        if (count <= Int32.MaxValue && offset <= Int32.MaxValue)
+        ArgumentNullException.ThrowIfNull(buffer);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset);
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+        if (offset + count > buffer.Length)
         {
-            stream.Write(buffer, (int)offset, (int)count);
+            throw new ArgumentException("The sum of offset and count is larger than the buffer length.");
         }
-        else
-        {
-            int segment = Int32.MaxValue;
-            long innerOffset = offset;
-            while ((count - segment) > 0)
-            {
-                byte[] innerBuffer = new byte[segment];
 
-                Array.Copy(buffer, innerOffset, innerBuffer, 0, segment);
-
-                stream.Write(innerBuffer, 0, segment);
-                innerOffset += segment;
-                segment = (count - segment) > Int32.MaxValue ? Int32.MaxValue : checked((int)(count - segment));
-            }
-        }
+        // A byte[] holds at most Int32.MaxValue elements, so any (offset, count) that fits the buffer
+        // also fits Int32.
+        stream.Write(buffer, (int)offset, (int)count);
     }
 }
