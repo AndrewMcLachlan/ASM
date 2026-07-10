@@ -55,7 +55,24 @@ The `PagedResult` class contains both a subet of items and the total count.
 
 `ByteArray` and `Nybble` classes provide utilities for working with byte arrays and nybbles (4-bit values).
 
+### Bounded Loops
 
+`Bounded.While` runs an otherwise-unbounded loop with a hard iteration limit, so a loop that fails to converge throws (`BoundExceededException`) or stops instead of hanging.
+
+```csharp
+// break-driven; the body may await
+foreach (var _ in Bounded.While(100))
+{
+    if (done) break;
+    await WorkAsync();
+}
+
+// condition-driven
+Bounded.While(() => queue.Count > 0, () => Process(queue.Dequeue()), maxIterations: 1000);
+
+// stop silently instead of throwing when the limit is reached
+foreach (var _ in Bounded.While(100, BoundExceeded.Stop)) { /* ... */ }
+```
 
 
 ## Contributing

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Asm;
 using Asm.Domain;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -46,7 +47,7 @@ public class DomainDbContextDrainTests
         context.Entities.Add(entity);
         entity.Events.Add(new DrainEvent());
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
+        await Assert.ThrowsAsync<BoundExceededException>(
             () => context.SaveChangesAsync(TestContext.Current.CancellationToken));
     }
 }
