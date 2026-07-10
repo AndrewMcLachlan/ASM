@@ -46,35 +46,6 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
         return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
-    private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
-    {
-        // Drain until no new events remain: a handler may itself raise events (or add tracked
-        // entities that carry events), and those must be dispatched in this same save. Bounded
-        // so a handler that raises events indefinitely fails fast rather than hanging.
-        foreach (var _ in Bounded.While(MaxDomainEventDrainIterations))
-        {
-            var domainEventEntities = ChangeTracker.Entries<IEntity>()
-                .Select(entry => entry.Entity)
-                .Where(entry => entry.Events.Count != 0)
-                .ToArray();
-
-            if (domainEventEntities.Length == 0)
-            {
-                break;
-            }
-
-            foreach (var entity in domainEventEntities)
-            {
-                var events = entity.Events.ToArray();
-                entity.Events.Clear();
-                foreach (var domainEvent in events)
-                {
-                    await publisher.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
-                }
-            }
-        }
-    }
-
     /// <summary>
     /// Saves changes to the database and raises domain events.
     /// </summary>
@@ -152,4 +123,33 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     /// end.
     /// </summary>
     private const int MaxDomainEventDrainIterations = 100;
+
+    private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
+    {
+        // Drain until no new events remain: a handler may itself raise events (or add tracked
+        // entities that carry events), and those must be dispatched in this same save. Bounded
+        // so a handler that raises events indefinitely fails fast rather than hanging.
+        foreach (var _ in Bounded.While(MaxDomainEventDrainIterations))
+        {
+            var domainEventEntities = ChangeTracker.Entries<IEntity>()
+                .Select(entry => entry.Entity)
+                .Where(entry => entry.Events.Count != 0)
+                .ToArray();
+
+            if (domainEventEntities.Length == 0)
+            {
+                break;
+            }
+
+            foreach (var entity in domainEventEntities)
+            {
+                var events = entity.Events.ToArray();
+                entity.Events.Clear();
+                foreach (var domainEvent in events)
+                {
+                    await publisher.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
+                }
+            }
+        }
+    }
 }
