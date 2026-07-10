@@ -105,7 +105,7 @@ Highest-value fixes; all non-breaking. Test-first for each.
 - [ ] Entra ID auto-link (`EntraIdLoginOptions`): add `AutoLink`, `DefaultUserGroups` (default Editor for compat), `DenyLocalLogin` options; document the current permissive behavior prominently in the README immediately, even before the options land.
 - [ ] `OriginHost` / `CanonicalTagHelper`: stop trusting raw `X-Forwarded-Host`; rely on `Request.Host` + Forwarded Headers middleware.
 - [ ] Options validation everywhere: `.AddOptions<T>().Bind(...).Validate(...).ValidateOnStart()` for `OAuthOptions`, `AzureOAuthOptions` (non-empty TenantId, no trailing-slash Domain), `StandardJwtBearerOptions`, `EntraIdOptions`, `FixedMachineInfoFactoryOptions`. Fix `AddAzureOAuthOptions` to register a real named binding (snapshot/monitor safe) instead of a closed `IOptions` singleton.
-- [ ] Upgrade SixLabors.ImageSharp 2.1.13 → 3.x (request-path decoder; 2.x needs manual security patch tracking). Check Umbraco compatibility first.
+- [ ] **Do NOT upgrade SixLabors.ImageSharp to 3.x** — v3+ moved to the Six Labors Split License (commercial use requires a paid licence), which is unacceptable for a freely-distributed NuGet library. Stay on the Apache-2.0 2.x line. Instead: keep 2.1.x patched (track 2.x security releases) and, since ImageSharp is only used for header/dimension reads in `ImgSetTagHelper`, consider whether a lighter/again-permissive dependency could replace it long-term.
 
 **Acceptance:** new BDD scenarios: missing OAuth section fails at startup with a clear message; audience validation on by default; forged `X-Forwarded-Host` does not appear in canonical links.
 
