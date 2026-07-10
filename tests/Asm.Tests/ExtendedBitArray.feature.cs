@@ -200,10 +200,10 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 16
-    await testRunner.GivenAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 17
-    await testRunner.AndAsync("the endianness is LittleEndian", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.AndAsync("I have an ExtendedBitArray with values [true, false, true, false]", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 18
     await testRunner.WhenAsync("I convert the ExtendedBitArray to a byte array", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");

@@ -13,8 +13,8 @@ Scenario: Initialize ExtendedBitArray with BitArray
 
 @Unit
 Scenario: Convert ExtendedBitArray to byte array
-    Given I have an ExtendedBitArray with values [true, false, true, false]
-    And the endianness is LittleEndian
+    Given the endianness is LittleEndian
+    And I have an ExtendedBitArray with values [true, false, true, false]
     When I convert the ExtendedBitArray to a byte array
     Then the byte array should be [5]
 
