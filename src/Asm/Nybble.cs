@@ -1,8 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Text;
 
 namespace Asm;
@@ -203,14 +200,20 @@ public readonly struct Nybble
     }
 
     /// <summary>
-    /// Converts the given value to an array of nybbles.
+    /// Converts the given value to an array of eight nybbles, most-significant nybble first
+    /// (consistent with <see cref="ToNybbles(byte[])"/>).
     /// </summary>
     /// <param name="value">The value to convert.</param>
-    /// <returns>An array of nybbles.</returns>
+    /// <returns>An array of eight nybbles.</returns>
     public static Nybble[] ToNybbles(int value)
     {
-        BitVector32 bitVector32 = new(value);
-        return ToNybbles(bitVector32);
+        byte[] bytes = BitConverter.GetBytes(value);
+        if (BitConverter.IsLittleEndian)
+        {
+            Array.Reverse(bytes);
+        }
+
+        return ToNybbles(bytes);
     }
 
     /// <summary>
@@ -275,24 +278,4 @@ public readonly struct Nybble
     }
     #endregion
 
-    #region Private Methods
-    private static Nybble[] ToNybbles(BitVector32 bits)
-    {
-        Nybble[] nybbles = new Nybble[8];
-        for (int i = 0; i < 8; i += 4)
-        {
-            byte b = Convert.ToByte(bits[1 << i + 3]);
-            b <<= 1;
-            b |= Convert.ToByte(bits[1 << i + 2]);
-            b <<= 1;
-            b |= Convert.ToByte(bits[1 << i + 1]);
-            b <<= 1;
-            b |= Convert.ToByte(bits[1 << i]);
-            Nybble n = new(b);
-            nybbles[i / 4] = n;
-        }
-
-        return nybbles;
-    }
-    #endregion
 }

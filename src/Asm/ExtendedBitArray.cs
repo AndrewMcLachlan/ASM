@@ -35,10 +35,11 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneabl
     {
         get
         {
-            bool[] temp = new bool[range.End.Value - range.Start.Value];
-            for (int i = range.Start.Value, j = 0; i < range.End.Value; i++, j++)
+            var (offset, length) = range.GetOffsetAndLength(Count);
+            bool[] temp = new bool[length];
+            for (int i = 0; i < length; i++)
             {
-                temp[j] = this[i];
+                temp[i] = this[offset + i];
             }
             return temp;
         }
@@ -170,11 +171,14 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneabl
     /// <returns>A byte array.</returns>
     public byte[] GetBytes()
     {
-        byte[] temp = new byte[(int)Math.Ceiling(_bitArray.Length / 8d)];
+        byte[] temp = new byte[(Count + 7) / 8];
 
-        for (int i = 0; i < temp.Length; i += 8)
+        for (int i = 0; i < Count; i++)
         {
-            temp[i] = (byte)ToUnsigned(1, i);
+            if (this[i])
+            {
+                temp[i / 8] |= (byte)(1 << (i % 8));
+            }
         }
 
         return temp;
@@ -295,11 +299,11 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneabl
     /// <returns>A string of binary digits.</returns>
     public override string ToString()
     {
-        StringBuilder temp = new();
+        StringBuilder temp = new(Count);
 
         foreach (bool b in this)
         {
-            temp.Append(Convert.ToInt16(b));
+            temp.Append(b ? '1' : '0');
         }
 
         return temp.ToString();
@@ -336,92 +340,35 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneabl
         return temp;
     }
 
-    private long ToSigned(int bytesToRead)
+    // The constructors normalise bits so that this[i] carries weight 2^i (the endianness is applied
+    // when the array is built), so the conversions read the bits uniformly and reinterpret for sign.
+    private ulong ToUnsigned(int bytesToRead)
     {
-        long temp = 0;
-        switch (_endian)
+        int bits = Math.Min(Count, bytesToRead * 8);
+        ulong temp = 0;
+        for (int i = 0; i < bits; i++)
         {
-            case Endian.BigEndian:
-                switch ((bool)this[0])
-                {
-                    //Negative
-                    case true:
-                        for (int i = 0, j = Count - 2; i < Count - 1 && i < (bytesToRead * 8) - 1; i++, j--)
-                        {
-                            if (!this[i])
-                            {
-                                temp += (long)Math.Pow(2, j);
-                            }
-                        }
-                        temp++;
-                        temp = -temp;
-                        break;
-                    //Positive
-                    case false:
-                        for (int i = 0, j = Count - 2; i < Count - 1 && i < (bytesToRead * 8) - 1; i++, j--)
-                        {
-                            if (this[i])
-                            {
-                                temp += (long)Math.Pow(2, j);
-                            }
-                        }
-                        break;
-                }
-                break;
-            case Endian.LittleEndian:
-                switch ((bool)this[Count - 1])
-                {
-                    case true:
-                        for (int i = 0; i < Count - 1; i++)
-                        {
-                            if (!this[i])
-                            {
-                                temp += (long)Math.Pow(2, i);
-                            }
-                        }
-                        temp++;
-                        temp = -temp;
-                        break;
-                    case false:
-                        for (int i = 0; i < Count - 1; i++)
-                        {
-                            if (this[i])
-                            {
-                                temp += (long)Math.Pow(2, i);
-                            }
-                        }
-                        break;
-                }
-                break;
+            if (this[i])
+            {
+                temp |= 1UL << i;
+            }
         }
         return temp;
     }
 
-    private ulong ToUnsigned(int bytesToRead, int start = 0)
+    private long ToSigned(int bytesToRead)
     {
-        ulong temp = 0;
-        switch (_endian)
+        int width = bytesToRead * 8;
+        ulong value = ToUnsigned(bytesToRead);
+
+        // Two's-complement reinterpretation within the target width. At width 64 the sign is already
+        // captured by the raw bit pattern, so a plain reinterpret cast suffices.
+        if (width < 64 && (value & (1UL << (width - 1))) != 0)
         {
-            case Endian.BigEndian:
-                for (int i = start, j = Count - 1; i < Count && i < bytesToRead * 8; i++, j--)
-                {
-                    if (this[i])
-                    {
-                        temp += (ulong)Math.Pow(2, j);
-                    }
-                }
-                break;
-            case Endian.LittleEndian:
-                for (int i = start; i < Count; i++)
-                {
-                    if (this[i])
-                    {
-                        temp += (ulong)Math.Pow(2, i);
-                    }
-                }
-                break;
+            return unchecked((long)(value - (1UL << width)));
         }
-        return temp;
+
+        return unchecked((long)value);
     }
     #endregion
 
@@ -452,7 +399,6 @@ public sealed class ExtendedBitArray : ICollection, IEnumerable<bool>, ICloneabl
     public void CopyTo(Array array, int index)
     {
         _bitArray.CopyTo(array, index);
-        throw new NotImplementedException();
     }
 
     /// <summary>

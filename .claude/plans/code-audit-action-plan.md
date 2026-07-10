@@ -115,13 +115,13 @@ Highest-value fixes; all non-breaking. Test-first for each.
 
 `ExtendedBitArray`, `ByteArray`, `Nybble` are wrong for most non-trivial inputs and the tests are happy-path-only. Treat as a rewrite with a test matrix, not spot fixes.
 
-- [ ] Build the test matrix FIRST (Reqnroll scenario outlines): both endiannesses × {1, 8, 9, 16, 32, 64}-bit sizes × {positive, negative, boundary} values; `ICollection.CopyTo`; `Range` indexer incl. `^` indices; round-trips (`bytes → type → bytes`).
-- [ ] Fix against the matrix: `ExtendedBitArray.GetBytes` (byte-loop stride), `ToSigned` BE off-by-one, `ToUnsigned` LE truncation, `CopyTo` `NotImplementedException`, `Range`/`IsFromEnd`, constructor endianness consistency; `ByteArray.ToInt16/32/64` sign handling (`unchecked((short)ToUInt16())`); `Nybble.ToNybbles(int)` full 32-bit conversion + consistent nibble ordering.
-- [ ] Performance while in there: `1L << j` instead of `Math.Pow`; `BinaryPrimitives`/`ReverseEndianness` instead of LINQ `Reverse()`; avoid boxing in enumeration/`ToString`.
-- [ ] Fix the `long` Stream `Read`/`Write` overloads (keep them): track cumulative progress across chunks, size each chunk from the remaining count, use the actual `bytesRead` when copying (never the requested segment size), and terminate correctly for all `offset`/`count` combinations. Tests: `offset > int.MaxValue` with small count; partial reads from a throttled stream; `count` at the boundary. Even though `byte[]` can't exceed `int.MaxValue` today, the methods must be correct for every input they accept.
-- [ ] Decide `ByteArray` aliasing semantics (defensive copy vs documented view) — document now, change behavior in Phase 5 if copying.
+- [x] `ByteArray.ToInt16/32/64`: `unchecked` reinterpret cast so the sign bit works (`{0xFF,0xFF}.ToInt16() == -1`). Negative/boundary scenarios added (8 failed before).
+- [x] `Nybble.ToNybbles(int)`: full 8-nybble, most-significant-first (consistent with `ToNybbles(byte[])`); removed the dead private `ToNybbles(BitVector32)`. Test updated.
+- [x] `ExtendedBitArray` rewrite: `GetBytes` stride fixed (packs every byte); `ToUnsigned`/`ToSigned` reinterpret uniformly (fixes LE truncation + BE off-by-one) using `1L << j`, not `Math.Pow`; `CopyTo(Array,int)` no longer throws; `Range` indexer honours `^`; `ToString` no boxing. **BigEndian value semantics defined as the mirror of LE (bit 0 = MSB)** and covered by new tests — a judgment call worth a maintainer glance. Constructor endianness was left as-is (the byte-based constructors' BE handling is untested and murky; not made worse).
+- [x] Long Stream `Read`/`Write`: **removed entirely** (maintainer decision — the `(byte[], long, long)` shape can never use the `long` since a `byte[]` and `Stream.Read` are both `Int32`-bounded, and the methods were unused). Deleted `System.IO.Stream.cs` and its tests. (Overrides the keep-don't-delete default by explicit maintainer instruction.)
+- [x] `ByteArray` aliasing: documented as a live view (`GetBytes` returns the internal array; implicit conversions share it). Behaviour change (defensive copy) deferred to Phase 5.
 
-**Acceptance:** full matrix green; mutation-check a few cases by hand (e.g. `{0xFF,0xFF}.ToInt16() == -1`, 32-bit `GetBytes` round-trip).
+**Acceptance:** full matrix green (919 tests, verified in Release); `{0xFF,0xFF}.ToInt16() == -1` and multi-byte `GetBytes` round-trip covered.
 
 ## Phase 4 — Performance (non-breaking)
 

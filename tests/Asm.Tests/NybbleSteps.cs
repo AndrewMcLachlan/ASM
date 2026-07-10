@@ -112,6 +112,13 @@ public class NybbleSteps(ScenarioContext context)
         _nybbleArray = Nybble.ToNybbles(_intValue);
     }
 
+    [Then(@"the full Nybble array should be (.*)")]
+    public void ThenTheFullNybbleArrayShouldBe(string expected)
+    {
+        var expectedBytes = expected.Split(',').Select(s => Byte.Parse(s.Trim())).ToArray();
+        Assert.Equal(expectedBytes, _nybbleArray.Select(n => n.ByteValue).ToArray());
+    }
+
     [Then(@"the Nybble array should be ([^,].*), ([^,]*)")]
     public void ThenTheNybbleArrayShouldBe(byte byte1, byte byte2)
     {
