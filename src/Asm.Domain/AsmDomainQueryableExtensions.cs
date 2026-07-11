@@ -14,7 +14,7 @@ public static class AsmDomainQueryableExtensions
     /// <param name="query">The queryable that this method extends.</param>
     /// <param name="specification">The specification to be applied.</param>
     /// <returns>The <paramref name="query"/> with the specification applied.</returns>
-    public static IQueryable<T> Specify<T>(this IQueryable<T> query, ISpecification<T> specification) where T : Entity
+    public static IQueryable<T> Specify<T>(this IQueryable<T> query, ISpecification<T> specification) where T : class
         => specification == null ? query : specification.Apply(query);
 
     /// <summary>
@@ -24,7 +24,7 @@ public static class AsmDomainQueryableExtensions
     /// <typeparam name="TSpecification">The specification to be applied.</typeparam>
     /// <param name="query">The queryable that this method extends.</param>
     /// <returns>The <paramref name="query"/> with the specification applied.</returns>
-    public static IQueryable<TEntity> Specify<TEntity, TSpecification>(this IQueryable<TEntity> query) where TEntity : Entity
+    public static IQueryable<TEntity> Specify<TEntity, TSpecification>(this IQueryable<TEntity> query) where TEntity : class
         where TSpecification : ISpecification<TEntity>, new()
         => new TSpecification().Apply(query);
 }

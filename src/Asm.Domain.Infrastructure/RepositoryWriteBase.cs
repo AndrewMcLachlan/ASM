@@ -12,7 +12,7 @@ namespace Asm.Domain.Infrastructure;
 public abstract class RepositoryWriteBase<TContext, TEntity, TKey>(TContext context) : RepositoryBase<TContext, TEntity, TKey>(context), IWritableRepository<TEntity, TKey>
     where TEntity : KeyedEntity<TKey>
     where TContext : DbContext
-    where TKey : struct
+    where TKey : notnull
 {
     /// <inheritdoc/>
     public virtual TEntity Add(TEntity entity)

@@ -12,7 +12,7 @@ namespace Asm.Domain.Infrastructure;
 public abstract class RepositoryBase<TContext, TEntity, TKey>(TContext context) : IRepository<TEntity, TKey>
     where TEntity : KeyedEntity<TKey>
     where TContext : DbContext
-    where TKey : struct
+    where TKey : notnull
 {
     /// <summary>
     /// Gets the DB context.
@@ -49,6 +49,22 @@ public abstract class RepositoryBase<TContext, TEntity, TKey>(TContext context) 
         var entity = await specification.Apply(GetById(id)).SingleOrDefaultAsync(cancellationToken);
         return entity ?? throw new NotFoundException();
     }
+
+    /// <inheritdoc/>
+    public virtual async Task<TEntity?> Find(TKey id, CancellationToken cancellationToken = default) =>
+        await GetById(id).SingleOrDefaultAsync(cancellationToken);
+
+    /// <inheritdoc/>
+    public virtual async Task<TEntity?> Find(TKey id, ISpecification<TEntity> specification, CancellationToken cancellationToken = default) =>
+        await specification.Apply(GetById(id)).SingleOrDefaultAsync(cancellationToken);
+
+    /// <inheritdoc/>
+    public virtual Task<TEntity?> TryGet(TKey id, CancellationToken cancellationToken = default) =>
+        Find(id, cancellationToken);
+
+    /// <inheritdoc/>
+    public virtual Task<TEntity?> TryGet(TKey id, ISpecification<TEntity> specification, CancellationToken cancellationToken = default) =>
+        Find(id, specification, cancellationToken);
 
     /// <summary>
     /// Gets a query for a single entity by ID.

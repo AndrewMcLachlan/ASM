@@ -96,17 +96,43 @@ public class OrderCreatedEventHandler : INotificationHandler<OrderCreatedEvent>
 
 ### Specifications
 
-Use specifications to apply common patterns to queries.
+Use specifications to encapsulate a query's filter. Express the filter as a `Criteria` expression (by
+deriving from `Specification<T>`) so it stays translatable by EF Core and can be composed:
 
 ```csharp
+using System.Linq.Expressions;
 using Asm.Domain;
 
-public class RecentOrders : ISpecification<Order>
+public sealed class RecentOrders : Specification<Order>
 {
-    public IQueryable<Order> Apply(IQueryable<Order> query) =>
-        query.Where(o => o.OrderDate > DateTime.UtcNow.AddDays(-30));
+    public override Expression<Func<Order, bool>> Criteria =>
+        o => o.OrderDate > DateTime.UtcNow.AddDays(-30);
 }
 ```
+
+Override `Apply` when you also need shaping such as `Include`, `OrderBy` or paging:
+
+```csharp
+public sealed class RecentOrdersWithCustomer : Specification<Order>
+{
+    public override Expression<Func<Order, bool>> Criteria =>
+        o => o.OrderDate > DateTime.UtcNow.AddDays(-30);
+
+    public override IQueryable<Order> Apply(IQueryable<Order> query) =>
+        query.Where(Criteria).Include(o => o.Customer).OrderByDescending(o => o.OrderDate);
+}
+```
+
+Combine specifications with `And`, `Or` and `Not` — the criteria are merged into a single translatable
+expression:
+
+```csharp
+var spec = new RecentOrders().And(new HighValue());
+var results = await repository.Get(spec, cancellationToken);
+```
+
+The constraint is `where T : class`, so specifications can also target read models, DTOs or interfaces —
+not only entities.
 
 ## Contributing
 
