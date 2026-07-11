@@ -2,8 +2,20 @@
 
   <PropertyGroup>
     <CoverletInclude>[Asm.Win32]*</CoverletInclude>
-    <CoverletExcludeByFile>**/*</CoverletExcludeByFile> 
+    <CoverletExcludeByFile>**/*</CoverletExcludeByFile>
   </PropertyGroup>
+
+  <!--
+    Asm.Win32.Hosts is annotated [SupportedOSPlatform("windows")]. These tests deliberately
+    exercise it cross-platform via injected streams and temp files, so the test assembly
+    declares the same platform support to keep the CA1416 analyzer satisfied (the attribute
+    is analyzer-only and does not affect runtime execution on Linux CI).
+  -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.Versioning.SupportedOSPlatform">
+      <_Parameter1>windows</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector">
