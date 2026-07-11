@@ -47,7 +47,13 @@ public class NybbleSteps(ScenarioContext context)
     [When(@"I add the two Nybbles")]
     public void WhenIAddTheTwoNybbles()
     {
-        context.AddResult(_nybble1 + _nybble2);
+        context.AddResult((_nybble1 + _nybble2).ByteValue);
+    }
+
+    [When(@"I combine the two Nybbles")]
+    public void WhenICombineTheTwoNybbles()
+    {
+        context.AddResult(Nybble.Combine(_nybble1, _nybble2));
     }
 
     [Given(@"I have a Nybble array with values (.*)")]
@@ -153,10 +159,22 @@ public class NybbleSteps(ScenarioContext context)
         context.AddResult(_uintValue + _nybble1);
     }
 
+    [When(@"I append the Nybble to the uint")]
+    public void WhenIAppendTheNybbleToTheUint()
+    {
+        context.AddResult(Nybble.Append(_uintValue, _nybble1));
+    }
+
     [When(@"I add the byte and Nybble")]
     public void WhenIAddTheByteAndNybble()
     {
         context.AddResult(_byteValue + _nybble1);
+    }
+
+    [When(@"I append the Nybble to the byte")]
+    public void WhenIAppendTheNybbleToTheByte()
+    {
+        context.AddResult(Nybble.Append(_byteValue, _nybble1));
     }
 
     [When(@"I check inequality")]
