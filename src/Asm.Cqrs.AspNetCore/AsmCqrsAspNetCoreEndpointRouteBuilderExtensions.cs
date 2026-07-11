@@ -103,11 +103,12 @@ public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="statusCode">The success status code for the response body. Defaults to 200 OK.</param>
     /// <param name="binding">How the handler should bind the request. Defaults to <see cref="CommandBinding.Parameters"/>.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapDelete<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
-        endpoints.MapDelete(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(binding))
-                 .Produces<TResponse>();
+    public static RouteHandlerBuilder MapDelete<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, int statusCode = StatusCodes.Status200OK, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
+        endpoints.MapDelete(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(statusCode, binding))
+                 .Produces<TResponse>(statusCode);
 
     /// <summary>
     /// Maps a POST request to a command and returns a response with 200 OK.
@@ -116,11 +117,12 @@ public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="statusCode">The success status code for the response body. Defaults to 200 OK.</param>
     /// <param name="binding">How the handler should bind the request. Defaults to <see cref="CommandBinding.Parameters"/>.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
-        endpoints.MapPost(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(binding))
-                 .Produces<TResponse>();
+    public static RouteHandlerBuilder MapCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, int statusCode = StatusCodes.Status200OK, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPost(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(statusCode, binding))
+                 .Produces<TResponse>(statusCode);
 
     /// <summary>
     /// Maps a POST request to a command that returns no response.
@@ -145,11 +147,12 @@ public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="statusCode">The success status code for the response body. Defaults to 200 OK.</param>
     /// <param name="binding">How the handler should bind the request. Defaults to <see cref="CommandBinding.Parameters"/>.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapPatchCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
-        endpoints.MapPatch(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(binding))
-                 .Produces<TResponse>();
+    public static RouteHandlerBuilder MapPatchCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, int statusCode = StatusCodes.Status200OK, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPatch(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(statusCode, binding))
+                 .Produces<TResponse>(statusCode);
 
     /// <summary>
     /// Maps a PUT request to a command and returns a response with 200 OK.
@@ -158,11 +161,12 @@ public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="statusCode">The success status code for the response body. Defaults to 200 OK.</param>
     /// <param name="binding">How the handler should bind the request. Defaults to <see cref="CommandBinding.Parameters"/>.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapPutCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
-        endpoints.MapPut(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(binding))
-                 .Produces<TResponse>();
+    public static RouteHandlerBuilder MapPutCommand<TRequest, TResponse>(this IEndpointRouteBuilder endpoints, string pattern, int statusCode = StatusCodes.Status200OK, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand<TResponse> =>
+        endpoints.MapPut(pattern, Handlers.CreateCommandHandler<TRequest, TResponse>(statusCode, binding))
+                 .Produces<TResponse>(statusCode);
 
     /// <summary>
     /// Maps a PUT request to a command that returns no response.

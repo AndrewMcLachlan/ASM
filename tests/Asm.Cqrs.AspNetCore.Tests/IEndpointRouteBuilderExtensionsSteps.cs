@@ -102,7 +102,7 @@ public class IEndpointRouteBuilderExtensionsSteps
     public void WhenIMapAPostCommandWithResponsePatternAndBinding(string pattern, string binding)
     {
         var commandBinding = Enum.Parse<CommandBinding>(binding);
-        _routeHandlerBuilder = _endpoints.MapCommand<TestCommand, TestResponse>(pattern, commandBinding);
+        _routeHandlerBuilder = _endpoints.MapCommand<TestCommand, TestResponse>(pattern, binding: commandBinding);
     }
 
     [When(@"I map a POST command without response with pattern ""(.*)"" and binding ""(.*)""")]
@@ -116,14 +116,14 @@ public class IEndpointRouteBuilderExtensionsSteps
     public void WhenIMapAPatchCommandWithPatternAndBinding(string pattern, string binding)
     {
         var commandBinding = Enum.Parse<CommandBinding>(binding);
-        _routeHandlerBuilder = _endpoints.MapPatchCommand<TestCommand, TestResponse>(pattern, commandBinding);
+        _routeHandlerBuilder = _endpoints.MapPatchCommand<TestCommand, TestResponse>(pattern, binding: commandBinding);
     }
 
     [When(@"I map a PUT command with pattern ""(.*)"" and binding ""(.*)""")]
     public void WhenIMapAPutCommandWithPatternAndBinding(string pattern, string binding)
     {
         var commandBinding = Enum.Parse<CommandBinding>(binding);
-        _routeHandlerBuilder = _endpoints.MapPutCommand<TestCommand, TestResponse>(pattern, commandBinding);
+        _routeHandlerBuilder = _endpoints.MapPutCommand<TestCommand, TestResponse>(pattern, binding: commandBinding);
     }
 
     [Then(@"the route should be mapped correctly")]

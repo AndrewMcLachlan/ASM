@@ -33,6 +33,12 @@ Scenario: Command handler with response returns Ok with result
     Then the result should be Ok with int value 42
 
 @Unit
+Scenario: Command handler with response honours a custom status code
+    Given I have a command dispatcher that returns 42
+    When I invoke the command handler with response and status code 202
+    Then the result should have status code 202
+
+@Unit
 Scenario: Void command handler executes the command
     Given I have a command dispatcher
     When I invoke the void command handler

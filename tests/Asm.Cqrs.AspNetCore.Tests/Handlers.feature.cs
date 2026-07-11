@@ -105,7 +105,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Handlers.feature.ndjson", 18);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Handlers.feature.ndjson", 19);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -319,17 +319,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Void command handler executes the command")]
+        [global::Xunit.FactAttribute(DisplayName="Command handler with response honours a custom status code")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
-        [global::Xunit.TraitAttribute("Description", "Void command handler executes the command")]
+        [global::Xunit.TraitAttribute("Description", "Command handler with response honours a custom status code")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task VoidCommandHandlerExecutesTheCommand()
+        public async global::System.Threading.Tasks.Task CommandHandlerWithResponseHonoursACustomStatusCode()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Void command handler executes the command", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Command handler with response honours a custom status code", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 36
@@ -343,12 +343,48 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 37
-    await testRunner.GivenAsync("I have a command dispatcher", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have a command dispatcher that returns 42", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 38
-    await testRunner.WhenAsync("I invoke the void command handler", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I invoke the command handler with response and status code 202", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 39
+    await testRunner.ThenAsync("the result should have status code 202", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Void command handler executes the command")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
+        [global::Xunit.TraitAttribute("Description", "Void command handler executes the command")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task VoidCommandHandlerExecutesTheCommand()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "6";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Void command handler executes the command", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 42
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 43
+    await testRunner.GivenAsync("I have a command dispatcher", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 44
+    await testRunner.WhenAsync("I invoke the void command handler", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 45
     await testRunner.ThenAsync("the command should be executed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -364,11 +400,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "6";
+            string pickleIndex = "7";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateCreateHandler returns CreatedAtRoute result", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 42
+#line 48
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -378,13 +414,13 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 43
+#line 49
     await testRunner.GivenAsync("I have a command dispatcher that returns a created item with id 123", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 44
+#line 50
     await testRunner.WhenAsync("I invoke the create handler with route name \'GetItem\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 45
+#line 51
     await testRunner.ThenAsync("the result should be CreatedAtRoute", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -395,9 +431,9 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "Void command handler respects binding options")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("None", "7", new string[0])]
-        [global::Xunit.InlineDataAttribute("Body", "8", new string[0])]
-        [global::Xunit.InlineDataAttribute("Parameters", "9", new string[0])]
+        [global::Xunit.InlineDataAttribute("None", "8", new string[0])]
+        [global::Xunit.InlineDataAttribute("Body", "9", new string[0])]
+        [global::Xunit.InlineDataAttribute("Parameters", "10", new string[0])]
         public async global::System.Threading.Tasks.Task VoidCommandHandlerRespectsBindingOptions(string binding, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -413,7 +449,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Void command handler respects binding options", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 48
+#line 54
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -423,16 +459,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 49
+#line 55
     await testRunner.GivenAsync("I have a command dispatcher", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 50
+#line 56
     await testRunner.WhenAsync(string.Format("I invoke the void command handler with binding \'{0}\'", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 57
     await testRunner.ThenAsync("the command should be executed", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 52
+#line 58
     await testRunner.AndAsync(string.Format("the handler should use \'{0}\' binding", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -443,9 +479,9 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "Command handler with response respects binding options")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("None", "10", new string[0])]
-        [global::Xunit.InlineDataAttribute("Body", "11", new string[0])]
-        [global::Xunit.InlineDataAttribute("Parameters", "12", new string[0])]
+        [global::Xunit.InlineDataAttribute("None", "11", new string[0])]
+        [global::Xunit.InlineDataAttribute("Body", "12", new string[0])]
+        [global::Xunit.InlineDataAttribute("Parameters", "13", new string[0])]
         public async global::System.Threading.Tasks.Task CommandHandlerWithResponseRespectsBindingOptions(string binding, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -461,7 +497,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Command handler with response respects binding options", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 61
+#line 67
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -471,16 +507,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 62
+#line 68
     await testRunner.GivenAsync("I have a command dispatcher that returns 42", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 63
+#line 69
     await testRunner.WhenAsync(string.Format("I invoke the command handler with response and binding \'{0}\'", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 64
+#line 70
     await testRunner.ThenAsync("the result should be Ok with int value 42", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 65
+#line 71
     await testRunner.AndAsync(string.Format("the handler should use \'{0}\' binding", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -491,9 +527,9 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
         [global::Xunit.TraitAttribute("FeatureTitle", "Handlers")]
         [global::Xunit.TraitAttribute("Description", "CreateCreateHandler respects binding options")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        [global::Xunit.InlineDataAttribute("None", "13", new string[0])]
-        [global::Xunit.InlineDataAttribute("Body", "14", new string[0])]
-        [global::Xunit.InlineDataAttribute("Parameters", "15", new string[0])]
+        [global::Xunit.InlineDataAttribute("None", "14", new string[0])]
+        [global::Xunit.InlineDataAttribute("Body", "15", new string[0])]
+        [global::Xunit.InlineDataAttribute("Parameters", "16", new string[0])]
         public async global::System.Threading.Tasks.Task CreateCreateHandlerRespectsBindingOptions(string binding, string @__pickleIndex, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -509,7 +545,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("CreateCreateHandler respects binding options", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 74
+#line 80
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -519,16 +555,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 75
+#line 81
     await testRunner.GivenAsync("I have a command dispatcher that returns a created item with id 456", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 76
+#line 82
     await testRunner.WhenAsync(string.Format("I invoke the create handler with route name \'GetItem\' and binding \'{0}\'", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 77
+#line 83
     await testRunner.ThenAsync("the result should be CreatedAtRoute", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 78
+#line 84
     await testRunner.AndAsync(string.Format("the handler should use \'{0}\' binding", binding), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }

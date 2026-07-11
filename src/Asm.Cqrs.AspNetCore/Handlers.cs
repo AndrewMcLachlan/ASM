@@ -35,12 +35,16 @@ internal static class Handlers
             },
             binding);
 
-    internal static Delegate CreateCommandHandler<TRequest, TResponse>(CommandBinding binding) where TRequest : ICommand<TResponse> =>
+    internal static Delegate CreateCommandHandler<TRequest, TResponse>(int statusCode, CommandBinding binding) where TRequest : ICommand<TResponse> =>
         ApplyBinding<TRequest, TResponse>(
             async (request, dispatcher, cancellationToken) =>
             {
                 var result = await dispatcher.Dispatch(request, cancellationToken);
-                return Results.Ok(result);
+                // 200 uses the idiomatic typed Ok result; other codes (e.g. 202 Accepted with a
+                // body) go through Json so the requested status is honoured.
+                return statusCode == StatusCodes.Status200OK
+                    ? Results.Ok(result)
+                    : Results.Json(result, statusCode: statusCode);
             },
             binding);
 
