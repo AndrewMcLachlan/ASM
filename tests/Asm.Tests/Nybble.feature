@@ -17,6 +17,20 @@ Scenario: Add two Nybbles
     Given I have a Nybble with value 5
     And I have another Nybble with value 3
     When I add the two Nybbles
+    Then the byte result should be 8
+
+@Unit
+Scenario: Adding two Nybbles wraps modulo 16 on overflow
+    Given I have a Nybble with value 15
+    And I have another Nybble with value 15
+    When I add the two Nybbles
+    Then the byte result should be 14
+
+@Unit
+Scenario: Combine two Nybbles into a byte
+    Given I have a Nybble with value 5
+    And I have another Nybble with value 3
+    When I combine the two Nybbles
     Then the byte result should be 83
 
 @Unit
@@ -59,6 +73,13 @@ Scenario: Add uint and Nybble
     Given I have a uint value 5
     And I have a Nybble with value 3
     When I add the uint and Nybble
+    Then the uint result should be 8
+
+@Unit
+Scenario: Append a Nybble to a uint
+    Given I have a uint value 5
+    And I have a Nybble with value 3
+    When I append the Nybble to the uint
     Then the ulong result should be 83
 
 @Unit
@@ -66,6 +87,13 @@ Scenario: Add byte and Nybble
     Given I have a byte value 5
     And I have a Nybble with value 3
     When I add the byte and Nybble
+    Then the integer result should be 8
+
+@Unit
+Scenario: Append a Nybble to a byte
+    Given I have a byte value 5
+    And I have a Nybble with value 3
+    When I append the Nybble to the byte
     Then the integer result should be 83
 
 @Unit
