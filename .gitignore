@@ -331,3 +331,6 @@ ASALocalRun/
 
 *.ignore/
 /.claude/settings.local.json
+
+# Agent worktrees
+.claude/worktrees/

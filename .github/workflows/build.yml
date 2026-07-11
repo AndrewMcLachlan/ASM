@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - "main"
+      - "release/**"
   pull_request:
-    branches:
-      - "main"
   workflow_dispatch:
 
 permissions:
@@ -28,31 +27,36 @@ jobs:
       with:
         dotnet-version: 10.x
 
-    - name: Setup GitVersion
-      uses: gittools/actions/gitversion/setup@v4.7.0
-      with:
-        versionSpec: '6.x'
-    - name: Execute GitVersion
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@v4.7.0
     - name: Set version
       id: set-version-number
       run: |
-        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-          echo "version=${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.commitsSinceVersionSource }}" >> "$GITHUB_OUTPUT"
+        # Major.Minor is stated in Directory.Build.props (<VersionPrefix>, optional <VersionSuffix>).
+        # The patch is the number of commits since that version LINE last changed, so unrelated edits
+        # to the props file do not reset it.
+        PREFIX=$(sed -n 's:.*<VersionPrefix>\(.*\)</VersionPrefix>.*:\1:p' Directory.Build.props | head -1)
+        SUFFIX=$(sed -n 's:.*<VersionSuffix>\(.*\)</VersionSuffix>.*:\1:p' Directory.Build.props | head -1)
+        MAJOR="${PREFIX%%.*}"
+        MINOR="${PREFIX#*.}"; MINOR="${MINOR%%.*}"
+        SET=$(git log -1 --format=%H -G'<Version' -- Directory.Build.props)
+        if [ -n "$SET" ]; then COUNT=$(git rev-list --count "$SET"..HEAD); else COUNT=$(git rev-list --count HEAD); fi
+        if [ -n "$SUFFIX" ]; then
+          VERSION="$MAJOR.$MINOR.0-$SUFFIX.$COUNT"
         else
-          echo "version=${{ steps.gitversion.outputs.semVer }}" >> "$GITHUB_OUTPUT"
+          VERSION="$MAJOR.$MINOR.$COUNT"
         fi
-    - run: echo "::notice::Version ${{ steps.set-version-number.outputs.version }}"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+        echo "assemblyVersion=$MAJOR.0.0.0" >> "$GITHUB_OUTPUT"
+        echo "fileVersion=$MAJOR.$MINOR.$COUNT.0" >> "$GITHUB_OUTPUT"
+    - run: echo "::notice::Version ${{ steps.set-version-number.outputs.version }} (assembly ${{ steps.set-version-number.outputs.assemblyVersion }})"
 
     - name: Restore
       run: dotnet restore Asm.slnx
 
     - name: Build
-      run: dotnet build Asm.slnx --no-restore --configuration Release
+      run: dotnet build Asm.slnx --no-restore --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:AssemblyVersion=${{ steps.set-version-number.outputs.assemblyVersion }} --p:FileVersion=${{ steps.set-version-number.outputs.fileVersion }} --p:InformationalVersion=${{ steps.set-version-number.outputs.version }}
 
     - name: Package
-      run: dotnet pack Asm.slnx --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
+      run: dotnet pack Asm.slnx --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v7.0.1
@@ -158,7 +162,7 @@ jobs:
     permissions:
       packages: write
       contents: read
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/'))
     steps:
     - name: Download packages
       uses: actions/download-artifact@v8

@@ -11,7 +11,11 @@
     <Authors>Andrew McLachlan</Authors>
     <Company />
     <Copyright>© 2011-$([System.DateTime]::Now.Year) Andrew McLachlan</Copyright>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <!-- The current Major.Minor of the line this branch publishes. Edit this to bump (a deliberate,
+         reviewable version change); the patch is the number of commits since this line last changed,
+         and AssemblyVersion/FileVersion are assembled by CI. See .github/workflows/build.yml and
+         docs/release-branching-strategy.md. Set VersionSuffix (e.g. beta) for a prerelease line. -->
+    <VersionPrefix>4.0</VersionPrefix>
   </PropertyGroup>
 
 
