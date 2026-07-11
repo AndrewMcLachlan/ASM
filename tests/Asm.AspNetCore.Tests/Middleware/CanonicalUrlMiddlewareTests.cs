@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Asm.AspNetCore.Tests.Middleware;
@@ -27,9 +28,11 @@ public class CanonicalUrlMiddlewareTests
             .ConfigureWebHost(webHost =>
             {
                 webHost.UseTestServer();
+                webHost.ConfigureServices(services => services.AddCanonicalUrls(configure));
                 webHost.Configure(app =>
                 {
-                    app.UseCanonicalUrls(configure);
+                    // Options are resolved from DI (the options pattern).
+                    app.UseCanonicalUrls();
                     app.Run(async ctx =>
                     {
                         ctx.Response.StatusCode = 200;

@@ -237,3 +237,66 @@ malformed address lines throw.
 
 **What to change:** if you asserted on the exact old message text, update it. If you relied on a
 malformed line being swallowed, either sanitise the file first or catch `FormatException`.
+
+## Batch 7 — Options-pattern conformance
+
+This batch brings the `Asm.AspNetCore` canonical-URL and security-header/reporting extensions into line with the standard ASP.NET Core options pattern, and makes the reporting↔security-header coupling independent of registration order.
+
+### Canonical URLs: configure via `AddCanonicalUrls`, resolve via DI
+
+`UseCanonicalUrls` no longer builds options inline. Configure `CanonicalUrlOptions` at service-registration time with the new `AddCanonicalUrls`, and call the parameterless `UseCanonicalUrls()`, which resolves `IOptions<CanonicalUrlOptions>` from DI at request time.
+
+```csharp
+// Before (v3)
+app.UseCanonicalUrls(opts => opts.ForceLowercase = false);
+
+// After (v4)
+builder.Services.AddCanonicalUrls(opts => opts.ForceLowercase = false);
+// …
+app.UseCanonicalUrls();
+```
+
+- **New:** `IServiceCollection AddCanonicalUrls(this IServiceCollection, Action<CanonicalUrlOptions>? configure = null)` — registers/configures the options via `services.AddOptions<CanonicalUrlOptions>()`.
+- **New:** `IApplicationBuilder UseCanonicalUrls(this IApplicationBuilder app)` — parameterless; resolves the options from DI. With no `AddCanonicalUrls` call the middleware runs with `CanonicalUrlOptions` defaults supplied by the options infrastructure.
+- **Obsolete forwarder:** `UseCanonicalUrls(this IApplicationBuilder, Action<CanonicalUrlOptions>? configure)` remains for one major cycle, marked `[Obsolete]`. It still works (builds `Options.Create(...)` inline) so existing call sites keep compiling with a deprecation warning.
+
+**What to change:** move your inline `UseCanonicalUrls(configure)` configuration to `AddCanonicalUrls(configure)` at registration time and switch to the parameterless `UseCanonicalUrls()`.
+
+### `AddStandardSecurityHeaders` now returns `IServiceCollection`
+
+**Breaking signature change.** `AddStandardSecurityHeaders` previously returned the `HeaderPolicyCollection` singleton (so callers could mutate it in place). It now returns `IServiceCollection` for idiomatic chaining, and accepts an optional `Action<HeaderPolicyCollection>` to add or override policies (for example, a Content-Security-Policy).
+
+```csharp
+// Before (v3) — mutate the returned collection
+var policies = services.AddStandardSecurityHeaders();
+policies.AddContentSecurityPolicy(csp => csp.AddDefaultSrc().Self());
+
+// After (v4) — supply a configure callback
+services.AddStandardSecurityHeaders(policies =>
+    policies.AddContentSecurityPolicy(csp => csp.AddDefaultSrc().Self()));
+```
+
+- Signature: `IServiceCollection AddStandardSecurityHeaders(this IServiceCollection services, Action<HeaderPolicyCollection>? configure = null)`.
+- The `configure` callback runs after the standard defaults and before the reporting policies are composed.
+- The composed `HeaderPolicyCollection` is still directly resolvable from DI (`GetRequiredService<HeaderPolicyCollection>()`) — it is bridged from `IOptions<HeaderPolicyCollection>.Value`, so `UseStandardSecurityHeaders()` and any consumer that resolved the collection continue to work.
+
+**What to change:** if you captured the return value to mutate the collection, move that mutation into the `configure` callback. If you only called `services.AddStandardSecurityHeaders();` and `app.UseStandardSecurityHeaders();`, nothing changes.
+
+### Security-reporting coupling is now order-independent
+
+Previously `AddSecurityReporting` **had to be called before** `AddStandardSecurityHeaders` for the `Reporting-Endpoints` / `Report-To` header policies to be emitted; calling it afterwards silently did nothing. The coupling is now performed by an `IPostConfigureOptions<HeaderPolicyCollection>` registered by `AddSecurityReporting`, which runs after every `Configure` callback that populates the collection. As a result the two registrations compose correctly **in either order**.
+
+```csharp
+// Both orders now yield identical results:
+services.AddSecurityReporting();
+services.AddStandardSecurityHeaders();
+
+// …or…
+services.AddStandardSecurityHeaders();
+services.AddSecurityReporting();
+```
+
+- `AddSecurityReporting` still registers the `SecurityReportingOptions` singleton (so `MapSecurityReporting` continues to require it), and additionally registers `IPostConfigureOptions<HeaderPolicyCollection>`.
+- The old order-dependent auto-coupling (a `services.FirstOrDefault(...)` probe inside `AddStandardSecurityHeaders`) has been removed.
+
+**What to change:** nothing is required. Behaviour only improves — reporting headers are now emitted regardless of the order in which the two methods were registered. If your code relied on the old behaviour of *suppressing* reporting headers by deliberately registering reporting last, register the two methods in separate service collections instead.

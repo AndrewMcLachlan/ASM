@@ -59,41 +59,54 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // extend callback
+    // Return value — IServiceCollection for chaining
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
-    public void AddStandardSecurityHeaders_PostRegistrationMutation_VisibleViaResolvedSingleton()
+    public void AddStandardSecurityHeaders_ReturnsTheSameServiceCollection()
     {
         var services = new ServiceCollection();
-        var policies = services.AddStandardSecurityHeaders();
-        policies.AddCustomHeader("X-Custom-Test", "custom-value");
+        var returned = services.AddStandardSecurityHeaders();
+
+        Assert.Same(services, returned);
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // configure callback — additional/overriding policies are composed in
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public void AddStandardSecurityHeaders_ConfigureCallback_ContributesAdditionalPolicies()
+    {
+        var services = new ServiceCollection();
+        services.AddStandardSecurityHeaders(policies => policies.AddCustomHeader("X-Custom-Test", "custom-value"));
 
         var provider = services.BuildServiceProvider();
         var resolved = provider.GetRequiredService<HeaderPolicyCollection>();
 
-        Assert.True(resolved.ContainsKey("X-Custom-Test"), "Post-registration mutation of returned HeaderPolicyCollection should be visible on the resolved singleton.");
-        Assert.Same(policies, resolved);
+        Assert.True(resolved.ContainsKey("X-Custom-Test"), "The configure callback should contribute additional policies to the resolved collection.");
+        // Standard defaults are still present alongside the custom policy.
+        Assert.True(resolved.ContainsKey("X-Frame-Options"), "Standard defaults should remain when a configure callback is supplied.");
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // Auto-coupling: AddSecurityReporting BEFORE AddStandardSecurityHeaders
+    // Order-independent reporting coupling: AddSecurityReporting BEFORE
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
     public void AddStandardSecurityHeaders_AfterAddSecurityReporting_ReportingPoliciesIncluded()
     {
         var services = new ServiceCollection();
-        services.AddSecurityReporting();                 // must come first
+        services.AddSecurityReporting();
         services.AddStandardSecurityHeaders();
 
         var provider = services.BuildServiceProvider();
         var collection = provider.GetRequiredService<HeaderPolicyCollection>();
 
         Assert.True(collection.ContainsKey("Reporting-Endpoints"),
-            "Reporting-Endpoints policy should be auto-coupled when AddSecurityReporting is called first");
+            "Reporting-Endpoints policy should be coupled when AddSecurityReporting is called first");
         Assert.True(collection.ContainsKey("Report-To"),
-            "Report-To policy should be auto-coupled when AddSecurityReporting is called first");
+            "Report-To policy should be coupled when AddSecurityReporting is called first");
     }
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -116,24 +129,46 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // Auto-coupling: AddSecurityReporting AFTER AddStandardSecurityHeaders → NOT coupled
+    // Order-independent reporting coupling: AddSecurityReporting AFTER
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
-    public void AddStandardSecurityHeaders_BeforeAddSecurityReporting_ReportingPoliciesNotPresent()
+    public void AddStandardSecurityHeaders_BeforeAddSecurityReporting_ReportingPoliciesIncluded()
     {
-        // Documents the ordering requirement: AddSecurityReporting must come BEFORE
-        // AddStandardSecurityHeaders for auto-coupling to take effect.
+        // Order-independence (item 2): AddSecurityReporting composes the reporting policies via an
+        // IPostConfigureOptions, so calling it AFTER AddStandardSecurityHeaders still works.
         var services = new ServiceCollection();
         services.AddStandardSecurityHeaders();           // called first
-        services.AddSecurityReporting();                 // too late — no effect on the already-built collection
+        services.AddSecurityReporting();                 // still composes via IPostConfigureOptions
 
         var provider = services.BuildServiceProvider();
         var collection = provider.GetRequiredService<HeaderPolicyCollection>();
 
-        Assert.False(collection.ContainsKey("Reporting-Endpoints"),
-            "Reporting-Endpoints should be absent when AddSecurityReporting is called AFTER AddStandardSecurityHeaders");
-        Assert.False(collection.ContainsKey("Report-To"),
-            "Report-To should be absent when AddSecurityReporting is called AFTER AddStandardSecurityHeaders");
+        Assert.True(collection.ContainsKey("Reporting-Endpoints"),
+            "Reporting-Endpoints should be present regardless of registration order");
+        Assert.True(collection.ContainsKey("Report-To"),
+            "Report-To should be present regardless of registration order");
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Order-independence: both registration orders produce the same composed result
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public void AddStandardSecurityHeaders_ReportingCoupling_IsOrderIndependent()
+    {
+        var reportingFirst = new ServiceCollection();
+        reportingFirst.AddSecurityReporting();
+        reportingFirst.AddStandardSecurityHeaders();
+
+        var headersFirst = new ServiceCollection();
+        headersFirst.AddStandardSecurityHeaders();
+        headersFirst.AddSecurityReporting();
+
+        var a = reportingFirst.BuildServiceProvider().GetRequiredService<HeaderPolicyCollection>();
+        var b = headersFirst.BuildServiceProvider().GetRequiredService<HeaderPolicyCollection>();
+
+        // Same set of header keys regardless of registration order.
+        Assert.Equal(a.Keys.OrderBy(k => k), b.Keys.OrderBy(k => k));
     }
 }

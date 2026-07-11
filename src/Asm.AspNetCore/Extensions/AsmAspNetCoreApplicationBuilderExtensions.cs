@@ -31,17 +31,42 @@ public static class AsmAspNetCoreApplicationBuilderExtensions
         });
 
     /// <summary>
-    /// Adds <see cref="CanonicalUrlMiddleware"/> to the pipeline.
+    /// Adds <see cref="CanonicalUrlMiddleware"/> to the pipeline, resolving
+    /// <see cref="CanonicalUrlOptions"/> from dependency injection.
     /// </summary>
+    /// <remarks>
+    /// Configure the options at service-registration time with
+    /// <see cref="AsmAspNetCoreServiceCollectionExtensions.AddCanonicalUrls"/>. When no options are
+    /// registered the middleware runs with the <see cref="CanonicalUrlOptions"/> defaults supplied by
+    /// the options infrastructure.
+    /// </remarks>
     /// <param name="app">The application builder.</param>
-    /// <param name="configure">Optional callback to configure canonicalisation options.</param>
     /// <returns>The application builder.</returns>
-    public static IApplicationBuilder UseCanonicalUrls(this IApplicationBuilder app, Action<CanonicalUrlOptions>? configure = null)
+    public static IApplicationBuilder UseCanonicalUrls(this IApplicationBuilder app)
     {
         ArgumentNullException.ThrowIfNull(app);
 
+        return app.UseMiddleware<CanonicalUrlMiddleware>();
+    }
+
+    /// <summary>
+    /// Adds <see cref="CanonicalUrlMiddleware"/> to the pipeline, configuring options inline.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="configure">Callback to configure canonicalisation options.</param>
+    /// <returns>The application builder.</returns>
+    [Obsolete("Configure options via AddCanonicalUrls(...) at service-registration time and call the parameterless UseCanonicalUrls(). This overload will be removed in a future major version.")]
+    public static IApplicationBuilder UseCanonicalUrls(this IApplicationBuilder app, Action<CanonicalUrlOptions>? configure)
+    {
+        ArgumentNullException.ThrowIfNull(app);
+
+        if (configure is null)
+        {
+            return app.UseMiddleware<CanonicalUrlMiddleware>();
+        }
+
         var options = new CanonicalUrlOptions();
-        configure?.Invoke(options);
+        configure.Invoke(options);
 
         return app.UseMiddleware<CanonicalUrlMiddleware>(Options.Create(options));
     }

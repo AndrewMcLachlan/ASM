@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Asm.AspNetCore.Tests.Extensions;
@@ -48,19 +49,21 @@ public class IApplicationBuilderExtensionsSecurityTests
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // UseCanonicalUrls with configure — smoke test
+    // AddCanonicalUrls(configure) + DI-resolved UseCanonicalUrls() — options applied
     // ──────────────────────────────────────────────────────────────────────────
 
     [Fact]
-    public async Task UseCanonicalUrls_WithConfigure_PipelineRunsAndOptionsApplied()
+    public async Task AddCanonicalUrls_ConfiguredOptions_ResolvedByUseCanonicalUrls()
     {
         using var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
             {
                 webHost.UseTestServer();
+                webHost.ConfigureServices(services =>
+                    services.AddCanonicalUrls(opts => opts.ForceLowercase = false));
                 webHost.Configure(app =>
                 {
-                    app.UseCanonicalUrls(opts => opts.ForceLowercase = false);
+                    app.UseCanonicalUrls();
                     app.Run(async ctx =>
                     {
                         ctx.Response.ContentType = "text/html";
@@ -71,7 +74,37 @@ public class IApplicationBuilderExtensionsSecurityTests
             .StartAsync(TestContext.Current.CancellationToken);
 
         var client = host.GetTestClient();
-        // With ForceLowercase=false, /Hello should pass through (200)
+        // With ForceLowercase=false configured via DI, /Hello should pass through (200)
+        var response = await client.GetAsync("/Hello", TestContext.Current.CancellationToken);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Obsolete inline-configure overload still forwards correctly
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task UseCanonicalUrls_ObsoleteInlineConfigure_StillApplies()
+    {
+        using var host = await new HostBuilder()
+            .ConfigureWebHost(webHost =>
+            {
+                webHost.UseTestServer();
+                webHost.Configure(app =>
+                {
+#pragma warning disable CS0618 // Type or member is obsolete
+                    app.UseCanonicalUrls(opts => opts.ForceLowercase = false);
+#pragma warning restore CS0618
+                    app.Run(async ctx =>
+                    {
+                        ctx.Response.ContentType = "text/html";
+                        await ctx.Response.WriteAsync("ok");
+                    });
+                });
+            })
+            .StartAsync(TestContext.Current.CancellationToken);
+
+        var client = host.GetTestClient();
         var response = await client.GetAsync("/Hello", TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
