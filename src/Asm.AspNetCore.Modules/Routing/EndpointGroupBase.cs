@@ -10,15 +10,6 @@ namespace Asm.AspNetCore.Routing;
 public abstract class EndpointGroupBase : IEndpointGroup
 {
     /// <summary>
-    /// Gets the Open API name of the group, or <c>null</c> to let individual endpoints supply their own names.
-    /// </summary>
-    /// <remarks>
-    /// When <c>null</c> (the default) no group-level name is applied, so each endpoint mapped in
-    /// <see cref="MapEndpoints"/> can define its own name via <c>WithName</c> without colliding with the group.
-    /// </remarks>
-    public virtual string? Name => null;
-
-    /// <summary>
     /// Gets the URL path of the group.
     /// </summary>
     public abstract string Path { get; }
@@ -45,7 +36,9 @@ public abstract class EndpointGroupBase : IEndpointGroup
     /// Maps the group endpoints.
     /// </summary>
     /// <remarks>
-    /// Sets the operation name, display name, tags, authorisation policy and maps the endpoints.
+    /// Applies the group tags and authorisation policy, then maps the endpoints. Endpoint names
+    /// (<c>WithName</c>) are the responsibility of individual endpoints in <see cref="MapEndpoints"/>,
+    /// since a group-level name would be applied to every endpoint and endpoint names must be unique.
     /// </remarks>
     /// <param name="builder">The builder instance that this group attaches to.</param>
     /// <returns>
@@ -57,11 +50,6 @@ public abstract class EndpointGroupBase : IEndpointGroup
     public virtual RouteGroupBuilder MapGroup(IEndpointRouteBuilder builder)
     {
         var subBuilder = builder.MapGroup(Path);
-
-        if (!String.IsNullOrEmpty(Name))
-        {
-            subBuilder.WithName(Name);
-        }
 
         if (Tags is { Length: > 0 } tags)
         {

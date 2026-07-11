@@ -330,22 +330,22 @@ The OAuth `AddMicrosoftAccount` handler is retained (this is **not** a switch to
 - Update the Entra **app-registration redirect URI** from `https://<host>/signin-oidc` to `https://<host>/signin-entraid`.
 - Existing back-office external logins keyed on the old `"OpenIdConnect"` scheme name may need to be **re-linked** (the persisted login provider key changes).
 
-### `EndpointGroupBase` — nullable sentinels, per-endpoint names, multiple tags, anonymous opt-out
+### `EndpointGroupBase` — `Name` removed, nullable sentinels, multiple tags, anonymous opt-out
 
 `Asm.AspNetCore.Routing.EndpointGroupBase` no longer uses `String.Empty` sentinels and now supports richer configuration:
 
 | Member | Before | After |
 |---|---|---|
-| `Name` | `abstract string` | `virtual string?` (default `null`) |
+| `Name` | `abstract string` | **removed** |
 | `Tags` | `virtual string` (`String.Empty`) | `virtual string[]?` (default `null`) |
 | `AuthorisationPolicy` | `virtual string` (`String.Empty`) | `virtual string?` (default `null`) |
 | `AllowAnonymous` | — | `virtual bool` (default `false`) |
 
-- **Per-endpoint names:** when `Name` is `null` (the new default) no group-level `WithName` is applied, so individual endpoints can supply their own names without colliding with the group.
+- **`Name` removed (endpoint names are per-endpoint):** the base previously called `WithName(Name)` on the *group*, which stamps that name onto **every** endpoint in the group — and endpoint names must be globally unique, so any group with more than one endpoint threw `InvalidOperationException` at startup. `WithName` is not an OpenAPI grouping mechanism. Group-level labelling is `Tags` (Swagger UI sections); set endpoint names on individual endpoints inside `MapEndpoints` (`builder.MapGet(...).WithName("GetFoo")`).
 - **Multiple tags:** `Tags` is now a `string[]`, applied via `WithTags(params string[])`.
 - **Anonymous opt-out:** override `AllowAnonymous => true` to make the whole group anonymous (calls `AllowAnonymous()` instead of `RequireAuthorization`).
 
-**What to change:** derived groups that `override string Tags` / `override string AuthorisationPolicy` / `override string Name` must update the member type. For example `public override string Tags => "a,b";` becomes `public override string[] Tags => ["a", "b"];`. Groups that only override `Path` and `MapEndpoints` are unaffected.
+**What to change:** remove any `override string Name` from derived groups (move the name to the individual endpoint via `.WithName(...)` if you relied on it). Derived groups that `override string Tags` / `override string AuthorisationPolicy` must update the member type — e.g. `public override string Tags => "a,b";` becomes `public override string[] Tags => ["a", "b"];`. Groups that only override `Path` and `MapEndpoints` are unaffected.
 
 ### `IEnumerable<T>.Page` / `IQueryable<T>.Page` now validate arguments
 
