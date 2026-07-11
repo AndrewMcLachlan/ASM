@@ -11,6 +11,9 @@ namespace Asm.AspNetCore.Tests.Infrastructure;
 [Binding]
 public class ProblemDetailsFactorySteps
 {
+    // AsmException is abstract; use a concrete subclass to exercise its ProblemDetails handling.
+    private sealed class TestAsmException(string message, int errorId) : AsmException(message, errorId);
+
     private Mock<IHostEnvironment> _hostEnvironmentMock;
     private ProblemDetailsFactory _factory;
     private DefaultHttpContext _httpContext;
@@ -73,7 +76,7 @@ public class ProblemDetailsFactorySteps
     [Given(@"I have an HttpContext with an AsmException '(.*)' and error id (.*)")]
     public void GivenIHaveAnHttpContextWithAnAsmExceptionAndErrorId(string message, int errorId)
     {
-        _httpContext = CreateHttpContextWithException(new AsmException(message, errorId));
+        _httpContext = CreateHttpContextWithException(new TestAsmException(message, errorId));
     }
 
     [Given(@"I have an HttpContext with an unknown exception '(.*)'")]

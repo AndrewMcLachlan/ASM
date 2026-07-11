@@ -300,3 +300,89 @@ services.AddSecurityReporting();
 - The old order-dependent auto-coupling (a `services.FirstOrDefault(...)` probe inside `AddStandardSecurityHeaders`) has been removed.
 
 **What to change:** nothing is required. Behaviour only improves — reporting headers are now emitted regardless of the order in which the two methods were registered. If your code relied on the old behaviour of *suppressing* reporting headers by deliberately registering reporting last, register the two methods in separate service collections instead.
+
+## Batch 9 — Consistency
+
+A grab-bag of consistency and correctness fixes. Additive/annotation-only items (`ToIPAddress`, Reqnroll numeric null transforms, nullability attributes, `MockDbSet` refactor, MCP referenced-assembly loading) are source-compatible and listed briefly at the end; the breaking changes are detailed first.
+
+### `AsmException` is now `abstract`
+
+`Asm.AsmException` is now `abstract` with `protected` constructors. It exists purely as a base so consumers can derive their own exception types and so ASM exceptions can be distinguished from framework ones. The existing concrete ASM exception types (`NotFoundException`, `ExistsException`, `NotAuthorisedException`, `BoundExceededException`) are unaffected — they derive from the most appropriate framework base, not `AsmException`.
+
+**What to change:** stop instantiating `AsmException` directly (`new AsmException(...)` no longer compiles). Derive a concrete type and construct that instead:
+
+```csharp
+public sealed class MyException(string message, int errorId) : AsmException(message, errorId);
+```
+
+### `EntraId` back-office scheme name and callback path (Umbraco)
+
+The Umbraco Entra ID back-office login provider previously named its scheme `"OpenIdConnect"` and squatted on `/signin-oidc` — the default callback path of the real OpenID Connect handler — even though it uses the OAuth 2.0 `AddMicrosoftAccount` handler, not OIDC. Both have been renamed to provider-specific values:
+
+| | Before | After |
+|---|---|---|
+| `EntraIdLoginOptions.SchemeName` | `"OpenIdConnect"` | `"EntraId"` |
+| `MicrosoftAccountOptions.CallbackPath` | `/signin-oidc` | `/signin-entraid` |
+
+The OAuth `AddMicrosoftAccount` handler is retained (this is **not** a switch to `AddOpenIdConnect`).
+
+**What to change (breaking — `SchemeName` is a `const` so it cannot carry an `[Obsolete]` shim):**
+- Update the Entra **app-registration redirect URI** from `https://<host>/signin-oidc` to `https://<host>/signin-entraid`.
+- Existing back-office external logins keyed on the old `"OpenIdConnect"` scheme name may need to be **re-linked** (the persisted login provider key changes).
+
+### `EndpointGroupBase` — nullable sentinels, per-endpoint names, multiple tags, anonymous opt-out
+
+`Asm.AspNetCore.Routing.EndpointGroupBase` no longer uses `String.Empty` sentinels and now supports richer configuration:
+
+| Member | Before | After |
+|---|---|---|
+| `Name` | `abstract string` | `virtual string?` (default `null`) |
+| `Tags` | `virtual string` (`String.Empty`) | `virtual string[]?` (default `null`) |
+| `AuthorisationPolicy` | `virtual string` (`String.Empty`) | `virtual string?` (default `null`) |
+| `AllowAnonymous` | — | `virtual bool` (default `false`) |
+
+- **Per-endpoint names:** when `Name` is `null` (the new default) no group-level `WithName` is applied, so individual endpoints can supply their own names without colliding with the group.
+- **Multiple tags:** `Tags` is now a `string[]`, applied via `WithTags(params string[])`.
+- **Anonymous opt-out:** override `AllowAnonymous => true` to make the whole group anonymous (calls `AllowAnonymous()` instead of `RequireAuthorization`).
+
+**What to change:** derived groups that `override string Tags` / `override string AuthorisationPolicy` / `override string Name` must update the member type. For example `public override string Tags => "a,b";` becomes `public override string[] Tags => ["a", "b"];`. Groups that only override `Path` and `MapEndpoints` are unaffected.
+
+### `IEnumerable<T>.Page` / `IQueryable<T>.Page` now validate arguments
+
+Both `Page` overloads now throw `ArgumentOutOfRangeException` when `pageSize` or `pageNumber` is less than one, and `ArgumentNullException` for a null source/`IPageable`. Previously an invalid page number silently produced the wrong page (a negative `Skip` is ignored) and a negative page size silently returned an empty sequence.
+
+**What to change:** ensure callers pass `pageSize >= 1` and `pageNumber >= 1` (pages are 1-based).
+
+### `IEnumerator.GetEnumerator<T>()` renamed to `AsGeneric<T>()`
+
+The `System.Collections.IEnumerator` extension that adapts to `IEnumerator<T>` was named `GetEnumerator<T>`, which is confusing (it is not the `foreach` pattern method). It is renamed to `AsGeneric<T>`. The old name remains as an `[Obsolete]` forwarder for one major cycle.
+
+**What to change:** replace `enumerator.GetEnumerator<T>()` with `enumerator.AsGeneric<T>()`.
+
+### `RouteHandlerBuilder.WithValidation<T>` locates the parameter by type
+
+`WithValidation<T>()` now finds the argument to validate by its **type** rather than by position. The positional `WithValidation<T>(int parameterIndex)` overload is retained but `[Obsolete]`.
+
+**What to change:** prefer `WithValidation<T>()` (no index). The positional overload still works but is deprecated.
+
+### `OneOfAuthorisationRequirementHandler` — correct any-of semantics
+
+The handler for `OneOfAuthorisationRequirement` had three problems, now fixed:
+- It called `context.Fail()` when no sub-requirement passed. In an any-of handler a single failing option must **not** veto the whole requirement, so `context.Fail()` is no longer called — an unmet requirement is denied by the middleware anyway, but other handlers for the same requirement can still succeed.
+- It passed `null` as the resource to each sub-check; it now passes `context.Resource` through.
+- The `abstract IsAuthorised` hook was never invoked. It is now consulted (with the resource) when none of the sub-requirements succeed, and its signature is `ValueTask<bool> IsAuthorised(object? resource)`.
+
+**What to change:** implementations of `IsAuthorised` should accept `object?` (the resource) and return whether to grant the custom check. Return `false` to preserve pure any-of behaviour.
+
+### `RouteParamAuthorisationHandler` — new strongly-typed variant
+
+A new `RouteParamAuthorisationHandler<TRequirement, TValue>` extracts the route value as a strongly-typed `TValue` (via `TypeConverter`, overridable through `TryConvert`) before calling `ValueTask<bool> IsAuthorised(TValue value)`. The original stringly-typed `RouteParamAuthorisationHandler<TRequirement>` is unchanged.
+
+### Additive / source-compatible changes
+
+- **`Asm.Net`:** added `uint.ToIPAddress()`, the inverse of `IPAddress.ToUInt32()`.
+- **`Asm.Reqnroll`:** added `<NULL>` step-argument transforms for `long?`, `decimal?`, and `double?`, mirroring the existing `int?` transform.
+- **Nullability:** `IsNullOrEmpty` extensions (enumerable/list/array) are annotated `[NotNullWhen(false)]`; `Asm.Reqnroll` `DecodeWhitespace` is annotated `[return: NotNullIfNotNull]` and accepts `string?`.
+- **`WebApplicationStart`:** is now a `static` class and gained `RunAsync`; `AppStart.Run`/`RunAsync` share a single implementation.
+- **`Asm.Testing.Domain`:** `MockDbSet<T>` now delegates its setup to `MockDbSetFactory` (no duplicated Moq wiring).
+- **`Asm.ModelContextProtocol`:** `WithToolsFromAssemblies` guards null/empty inputs and also loads matching *referenced* assemblies that are not yet loaded.

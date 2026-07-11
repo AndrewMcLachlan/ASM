@@ -59,7 +59,7 @@ public class EntraIdBackOfficeOptionsTests
 
         sut.Configure(MatchingName, options);
 
-        Assert.Equal("/signin-oidc", options.CallbackPath);
+        Assert.Equal("/signin-entraid", options.CallbackPath);
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class EntraIdBackOfficeOptionsTests
 
         sut.Configure(options);
 
-        Assert.Equal("/signin-oidc", options.CallbackPath);
+        Assert.Equal("/signin-entraid", options.CallbackPath);
     }
 
     [Fact]

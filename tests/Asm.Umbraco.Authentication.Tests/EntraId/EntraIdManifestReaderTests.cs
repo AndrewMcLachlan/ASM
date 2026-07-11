@@ -69,7 +69,7 @@ public class EntraIdManifestReaderTests
 
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task ReadPackageManifestsAsync_ExtensionForProviderNameContainsOpenIdConnect()
+    public async Task ReadPackageManifestsAsync_ExtensionForProviderNameMatchesSchemeName()
     {
         var expectedProviderName =
             Constants.Security.BackOfficeExternalAuthenticationTypePrefix + EntraIdLoginOptions.SchemeName;

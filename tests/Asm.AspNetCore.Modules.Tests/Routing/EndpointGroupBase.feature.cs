@@ -106,7 +106,7 @@ namespace Asm.AspNetCore.Modules.Tests.Routing
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Routing/EndpointGroupBase.feature.ndjson", 11);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Routing/EndpointGroupBase.feature.ndjson", 13);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -419,17 +419,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Endpoint group base cannot be instantiated directly")]
+        [global::Xunit.FactAttribute(DisplayName="Endpoint group base has a null name by default")]
         [global::Xunit.TraitAttribute("FeatureTitle", "EndpointGroupBase")]
-        [global::Xunit.TraitAttribute("Description", "Endpoint group base cannot be instantiated directly")]
+        [global::Xunit.TraitAttribute("Description", "Endpoint group base has a null name by default")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task EndpointGroupBaseCannotBeInstantiatedDirectly()
+        public async global::System.Threading.Tasks.Task EndpointGroupBaseHasANullNameByDefault()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "8";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base cannot be instantiated directly", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base has a null name by default", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 54
@@ -443,6 +443,78 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             {
                 await this.ScenarioStartAsync();
 #line 55
+    await testRunner.GivenAsync("I have an anonymous endpoint group", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 56
+    await testRunner.ThenAsync("the group name should be null", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Endpoint group base supports an anonymous group opt-out")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "EndpointGroupBase")]
+        [global::Xunit.TraitAttribute("Description", "Endpoint group base supports an anonymous group opt-out")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task EndpointGroupBaseSupportsAnAnonymousGroupOpt_Out()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "9";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base supports an anonymous group opt-out", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 59
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 60
+    await testRunner.GivenAsync("I have an anonymous endpoint group", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 61
+    await testRunner.AndAsync("I have an endpoint route builder", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 62
+    await testRunner.WhenAsync("I map the endpoint group", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 63
+    await testRunner.ThenAsync("the route group builder should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Endpoint group base cannot be instantiated directly")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "EndpointGroupBase")]
+        [global::Xunit.TraitAttribute("Description", "Endpoint group base cannot be instantiated directly")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task EndpointGroupBaseCannotBeInstantiatedDirectly()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "10";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base cannot be instantiated directly", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 66
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 67
     await testRunner.ThenAsync("EndpointGroupBase cannot be instantiated directly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

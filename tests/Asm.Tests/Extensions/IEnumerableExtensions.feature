@@ -24,6 +24,19 @@ Scenario: Page enumerable with page beyond range returns empty
     Then the result should be empty
 
 @Unit
+Scenario Outline: Page enumerable with invalid arguments throws
+    Given I have an enumerable with values [1, 2, 3]
+    When I call Page with page size <PageSize> and page number <PageNumber> expecting an exception
+    Then an ArgumentOutOfRangeException is thrown
+
+Examples:
+    | PageSize | PageNumber |
+    | 0        | 1          |
+    | -1       | 1          |
+    | 3        | 0          |
+    | 3        | -1         |
+
+@Unit
 Scenario: Shuffle enumerable returns same elements
     Given I have an enumerable with values [1, 2, 3, 4, 5]
     When I call Shuffle on the enumerable

@@ -51,5 +51,17 @@ Scenario: Endpoint group base requires any authorization when policy is empty
     Then the route group builder should be returned
 
 @Unit
+Scenario: Endpoint group base has a null name by default
+    Given I have an anonymous endpoint group
+    Then the group name should be null
+
+@Unit
+Scenario: Endpoint group base supports an anonymous group opt-out
+    Given I have an anonymous endpoint group
+    And I have an endpoint route builder
+    When I map the endpoint group
+    Then the route group builder should be returned
+
+@Unit
 Scenario: Endpoint group base cannot be instantiated directly
     Then EndpointGroupBase cannot be instantiated directly

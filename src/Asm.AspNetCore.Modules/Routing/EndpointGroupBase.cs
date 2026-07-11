@@ -10,9 +10,13 @@ namespace Asm.AspNetCore.Routing;
 public abstract class EndpointGroupBase : IEndpointGroup
 {
     /// <summary>
-    /// Gets the Open API name of the group.
+    /// Gets the Open API name of the group, or <c>null</c> to let individual endpoints supply their own names.
     /// </summary>
-    public abstract string Name { get; }
+    /// <remarks>
+    /// When <c>null</c> (the default) no group-level name is applied, so each endpoint mapped in
+    /// <see cref="MapEndpoints"/> can define its own name via <c>WithName</c> without colliding with the group.
+    /// </remarks>
+    public virtual string? Name => null;
 
     /// <summary>
     /// Gets the URL path of the group.
@@ -20,21 +24,26 @@ public abstract class EndpointGroupBase : IEndpointGroup
     public abstract string Path { get; }
 
     /// <summary>
-    /// Gets the Open API tags of the group.
+    /// Gets the Open API tags of the group, or <c>null</c> for no tags.
     /// </summary>
-    public virtual string Tags => String.Empty;
+    public virtual string[]? Tags => null;
 
     /// <summary>
-    /// Gets the authorisation policy name that is applied to the group.
+    /// Gets the authorisation policy name that is applied to the group, or <c>null</c> to apply the default (any authenticated user).
     /// </summary>
     /// <remarks>
-    /// Do not override if a policy does not apply to the group.
+    /// Leave as <c>null</c> if no specific policy applies to the group. To make the whole group anonymous, override <see cref="AllowAnonymous"/> instead.
     /// </remarks>
-    public virtual string AuthorisationPolicy => String.Empty;
+    public virtual string? AuthorisationPolicy => null;
+
+    /// <summary>
+    /// Gets a value indicating whether the group is anonymous (opts out of authorisation entirely).
+    /// </summary>
+    public virtual bool AllowAnonymous => false;
 
     /// <summary>
     /// Maps the group endpoints.
-    /// </summary>r
+    /// </summary>
     /// <remarks>
     /// Sets the operation name, display name, tags, authorisation policy and maps the endpoints.
     /// </remarks>
@@ -47,11 +56,30 @@ public abstract class EndpointGroupBase : IEndpointGroup
     /// </returns>
     public virtual RouteGroupBuilder MapGroup(IEndpointRouteBuilder builder)
     {
-        var subBuilder = builder.MapGroup(Path)
-            .WithName(Name)
-            .WithTags(Tags);
+        var subBuilder = builder.MapGroup(Path);
 
-        subBuilder = String.IsNullOrEmpty(AuthorisationPolicy) ? subBuilder.RequireAuthorization() : subBuilder.RequireAuthorization(AuthorisationPolicy);
+        if (!String.IsNullOrEmpty(Name))
+        {
+            subBuilder.WithName(Name);
+        }
+
+        if (Tags is { Length: > 0 } tags)
+        {
+            subBuilder.WithTags(tags);
+        }
+
+        if (AllowAnonymous)
+        {
+            subBuilder.AllowAnonymous();
+        }
+        else if (String.IsNullOrEmpty(AuthorisationPolicy))
+        {
+            subBuilder.RequireAuthorization();
+        }
+        else
+        {
+            subBuilder.RequireAuthorization(AuthorisationPolicy);
+        }
 
         MapEndpoints(subBuilder);
 

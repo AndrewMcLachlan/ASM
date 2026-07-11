@@ -13,7 +13,7 @@ public class EndpointGroupBaseSteps
     {
         public override string Name => "SimpleGroup";
         public override string Path => "/api/simple";
-        public override string Tags => "simple,test";
+        public override string[] Tags => ["simple", "test"];
         public override string AuthorisationPolicy => "RequireAdmin";
 
         protected override void MapEndpoints(IEndpointRouteBuilder builder)
@@ -54,9 +54,21 @@ public class EndpointGroupBaseSteps
         }
     }
 
+    private class AnonymousEndpointGroup : EndpointGroupBase
+    {
+        public override string Path => "/api/anon";
+        public override bool AllowAnonymous => true;
+
+        protected override void MapEndpoints(IEndpointRouteBuilder builder)
+        {
+            builder.MapGet("/", () => "Hello from anonymous group");
+        }
+    }
+
     private EndpointGroupBase _simpleEndpointGroup;
     private EndpointGroupBase _minimalEndpointGroup;
     private EndpointGroupBase _customAuthGroup;
+    private EndpointGroupBase _anonymousEndpointGroup;
     private IEndpointRouteBuilder _endpointRouteBuilder;
     private RouteGroupBuilder _routeGroupBuilder;
 
@@ -76,6 +88,12 @@ public class EndpointGroupBaseSteps
     public void GivenIHaveASimpleEndpointGroupWithPolicy(string policy)
     {
         _customAuthGroup = new CustomAuthEndpointGroup(policy);
+    }
+
+    [Given(@"I have an anonymous endpoint group")]
+    public void GivenIHaveAnAnonymousEndpointGroup()
+    {
+        _anonymousEndpointGroup = new AnonymousEndpointGroup();
     }
 
     [Given(@"I have an endpoint route builder")]
@@ -100,6 +118,16 @@ public class EndpointGroupBaseSteps
         {
             _routeGroupBuilder = _customAuthGroup.MapGroup(_endpointRouteBuilder);
         }
+        else if (_anonymousEndpointGroup != null)
+        {
+            _routeGroupBuilder = _anonymousEndpointGroup.MapGroup(_endpointRouteBuilder);
+        }
+    }
+
+    [Then(@"the group name should be null")]
+    public void ThenTheGroupNameShouldBeNull()
+    {
+        Assert.Null(_anonymousEndpointGroup.Name);
     }
 
     [Then(@"the group name should be '(.*)'")]
@@ -118,19 +146,20 @@ public class EndpointGroupBaseSteps
     [Then(@"the group tags should be empty")]
     public void ThenTheGroupTagsShouldBeEmpty()
     {
-        Assert.Empty(_minimalEndpointGroup.Tags);
+        Assert.True(_minimalEndpointGroup.Tags is null or { Length: 0 });
     }
 
     [Then(@"the group tags should be '(.*)'")]
     public void ThenTheGroupTagsShouldBe(string expectedTags)
     {
-        Assert.Equal(expectedTags, _simpleEndpointGroup.Tags);
+        Assert.NotNull(_simpleEndpointGroup.Tags);
+        Assert.Equal(expectedTags, String.Join(",", _simpleEndpointGroup.Tags));
     }
 
     [Then(@"the authorization policy should be empty")]
     public void ThenTheAuthorizationPolicyShouldBeEmpty()
     {
-        Assert.Empty(_minimalEndpointGroup.AuthorisationPolicy);
+        Assert.True(String.IsNullOrEmpty(_minimalEndpointGroup.AuthorisationPolicy));
     }
 
     [Then(@"the authorization policy should be '(.*)'")]

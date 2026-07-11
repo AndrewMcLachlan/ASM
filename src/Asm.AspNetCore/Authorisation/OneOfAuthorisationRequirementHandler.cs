@@ -3,7 +3,8 @@
 namespace Asm.AspNetCore.Authorisation;
 
 /// <summary>
-/// Route parameter authorisation handler.
+/// Authorisation handler for a <see cref="OneOfAuthorisationRequirement"/> that succeeds when any of
+/// the sub-requirements pass, or when the derived <see cref="IsAuthorised"/> check grants access.
 /// </summary>
 /// <param name="authorisationService">An <see cref="IAuthorizationService"/> instance.</param>
 public abstract class OneOfAuthorisationRequirementHandler(IAuthorizationService authorisationService) : AuthorizationHandler<OneOfAuthorisationRequirement>
@@ -13,7 +14,8 @@ public abstract class OneOfAuthorisationRequirementHandler(IAuthorizationService
     {
         foreach (var subRequirement in requirement.Requirements)
         {
-            var result = await authorisationService.AuthorizeAsync(context.User, null, subRequirement);
+            // Pass the resource through so resource-based sub-requirements can evaluate it.
+            var result = await authorisationService.AuthorizeAsync(context.User, context.Resource, subRequirement);
 
             if (result.Succeeded)
             {
@@ -22,12 +24,20 @@ public abstract class OneOfAuthorisationRequirementHandler(IAuthorizationService
             }
         }
 
-        context.Fail();
+        // Give derived handlers a final, custom say based on the resource. In an any-of handler a
+        // single failing option must never veto the whole requirement, so we never call context.Fail();
+        // an unmet requirement is denied by the authorisation middleware anyway.
+        if (await IsAuthorised(context.Resource))
+        {
+            context.Succeed(requirement);
+        }
     }
 
     /// <summary>
-    /// Performs authorisation based on the route parameter value.
+    /// Performs a custom authorisation check for the requirement's resource, consulted when none of the
+    /// sub-requirements succeed.
     /// </summary>
-    protected abstract ValueTask<bool> IsAuthorised(object value);
-
+    /// <param name="resource">The resource associated with the current authorisation context, or <c>null</c>.</param>
+    /// <returns><c>true</c> to grant access; otherwise <c>false</c>.</returns>
+    protected abstract ValueTask<bool> IsAuthorised(object? resource);
 }

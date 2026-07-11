@@ -12,7 +12,11 @@ internal sealed class EntraIdLoginOptions(IOptions<EntraIdOptions> options) : IC
     /// <summary>
     /// The scheme name (without Umbraco's back-office prefix) used for the Entra ID login provider.
     /// </summary>
-    public const string SchemeName = "OpenIdConnect";
+    /// <remarks>
+    /// This is a provider-specific value. The underlying handler is <c>AddMicrosoftAccount</c> (OAuth 2.0),
+    /// not an OpenID Connect handler, so the scheme is named after the provider rather than "OpenIdConnect".
+    /// </remarks>
+    public const string SchemeName = "EntraId";
 
     private readonly EntraIdOptions _options = options.Value;
 

@@ -22,7 +22,9 @@ internal sealed class EntraIdBackOfficeOptions(IOptions<EntraIdOptions> entraIdO
     public void Configure(MicrosoftAccountOptions options)
     {
         var entraId = entraIdOptions.Value;
-        options.CallbackPath = "/signin-oidc";
+        // Provider-specific callback path; must not collide with the OpenID Connect handler's
+        // default "/signin-oidc". The Entra app-registration redirect URI must match this path.
+        options.CallbackPath = "/signin-entraid";
         options.ClientId = entraId.ClientId;
         options.ClientSecret = entraId.ClientSecret;
         options.TokenEndpoint = $"https://login.microsoftonline.com/{entraId.TenantId}/oauth2/v2.0/token";
