@@ -14,7 +14,7 @@ public static class AsmAspNetCoreServiceCollectionExtensions
     /// <summary>
     /// Registers a <see cref="HeaderPolicyCollection"/> singleton populated with the
     /// standard Asm security-header defaults, ready to be applied by
-    /// <see cref="IApplicationBuilderExtensions.UseStandardSecurityHeaders"/>.
+    /// <see cref="AsmAspNetCoreApplicationBuilderExtensions.UseStandardSecurityHeaders"/>.
     /// </summary>
     /// <remarks>
     /// <para>Defaults applied:</para>

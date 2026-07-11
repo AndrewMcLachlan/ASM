@@ -133,12 +133,12 @@ public class IEndpointRouteBuilderExtensionsTests
             await client.PostAsync("/reporting/integrity", content, TestContext.Current.CancellationToken);
 
             var matchingEntries = logProvider.Entries
-                .Where(e => e.Category == IEndpointRouteBuilderExtensions.IntegrityLoggerCategory &&
+                .Where(e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.IntegrityLoggerCategory &&
                             e.Level == LogLevel.Warning)
                 .ToList();
 
             Assert.True(matchingEntries.Count > 0,
-                $"Expected a Warning log entry under category '{IEndpointRouteBuilderExtensions.IntegrityLoggerCategory}'");
+                $"Expected a Warning log entry under category '{AsmAspNetCoreEndpointRouteBuilderExtensions.IntegrityLoggerCategory}'");
             Assert.Contains(reportBody, matchingEntries[0].Message);
         }
     }
@@ -154,12 +154,12 @@ public class IEndpointRouteBuilderExtensionsTests
             await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             var matchingEntries = logProvider.Entries
-                .Where(e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory &&
+                .Where(e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory &&
                             e.Level == LogLevel.Warning)
                 .ToList();
 
             Assert.True(matchingEntries.Count > 0,
-                $"Expected a Warning log entry under category '{IEndpointRouteBuilderExtensions.CspLoggerCategory}'");
+                $"Expected a Warning log entry under category '{AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory}'");
             Assert.Contains(reportBody, matchingEntries[0].Message);
         }
     }
@@ -244,7 +244,7 @@ public class IEndpointRouteBuilderExtensionsTests
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
             var matchingEntries = logProvider.Entries
-                .Where(e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory &&
+                .Where(e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory &&
                             e.Level == LogLevel.Warning)
                 .ToList();
 
@@ -271,7 +271,7 @@ public class IEndpointRouteBuilderExtensionsTests
 
             // Nothing should have been logged
             Assert.DoesNotContain(logProvider.Entries,
-                e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory);
+                e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory);
         }
     }
 
@@ -298,7 +298,7 @@ public class IEndpointRouteBuilderExtensionsTests
 
             // Nothing should have been logged
             Assert.DoesNotContain(logProvider.Entries,
-                e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory);
+                e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory);
         }
     }
 
@@ -318,7 +318,7 @@ public class IEndpointRouteBuilderExtensionsTests
             await client.PostAsync("/reporting/csp", content, TestContext.Current.CancellationToken);
 
             var matchingEntries = logProvider.Entries
-                .Where(e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory &&
+                .Where(e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory &&
                             e.Level == LogLevel.Warning)
                 .ToList();
 
@@ -354,7 +354,7 @@ public class IEndpointRouteBuilderExtensionsTests
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
             var matchingEntries = logProvider.Entries
-                .Where(e => e.Category == IEndpointRouteBuilderExtensions.CspLoggerCategory &&
+                .Where(e => e.Category == AsmAspNetCoreEndpointRouteBuilderExtensions.CspLoggerCategory &&
                             e.Level == LogLevel.Warning)
                 .ToList();
 

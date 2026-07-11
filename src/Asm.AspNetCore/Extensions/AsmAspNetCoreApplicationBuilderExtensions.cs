@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Builder;
 /// <summary>
 /// Extensions for the <see cref="IApplicationBuilder"/> interface.
 /// </summary>
-public static class IApplicationBuilderExtensions
+public static class AsmAspNetCoreApplicationBuilderExtensions
 {
     /// <summary>
     /// Adds a standard exception handler to the middleware pipeline.

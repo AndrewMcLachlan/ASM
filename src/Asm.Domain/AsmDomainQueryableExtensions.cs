@@ -5,7 +5,7 @@ namespace System.Linq;
 /// <summary>
 /// Extensions for the <see cref="IQueryable{T}"/> interface.
 /// </summary>
-public static class IQueryableExtensions
+public static class AsmDomainQueryableExtensions
 {
     /// <summary>
     /// Apply a specification to a query.

@@ -3,7 +3,7 @@
 /// <summary>
 /// Extensions for the <see cref="IEndpointConventionBuilder"/> interface.
 /// </summary>
-public static class IEndpointConventionBuilderExtensions
+public static class AsmAspNetCoreModulesEndpointConventionBuilderExtensions
 {
     /// <summary>
     /// Adds a name and display name to the endpoint.

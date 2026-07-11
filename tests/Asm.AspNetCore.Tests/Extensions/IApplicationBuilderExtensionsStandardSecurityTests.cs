@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 namespace Asm.AspNetCore.Tests.Extensions;
 
 /// <summary>
-/// Tests for <see cref="IApplicationBuilderExtensions.UseStandardSecurityHeaders"/>.
+/// Tests for <see cref="AsmAspNetCoreApplicationBuilderExtensions.UseStandardSecurityHeaders"/>.
 /// Uses <see cref="ITestServer"/> via <c>HostBuilder</c>, following the same pattern as
 /// <c>CanonicalUrlMiddlewareTests</c>.
 /// </summary>
@@ -22,7 +22,7 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // ──────────────────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Builds a test host with <see cref="IApplicationBuilderExtensions.UseStandardSecurityHeaders"/>
+    /// Builds a test host with <see cref="AsmAspNetCoreApplicationBuilderExtensions.UseStandardSecurityHeaders"/>
     /// registered and a terminal HTML-200 handler.
     /// </summary>
     private static async Task<(IHost host, HttpClient client)> BuildAsync(

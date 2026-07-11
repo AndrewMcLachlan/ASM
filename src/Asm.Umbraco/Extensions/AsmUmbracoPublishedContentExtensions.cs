@@ -5,7 +5,7 @@ namespace Umbraco.Extensions;
 /// <summary>
 /// Extension helpers for <see cref="IPublishedContent"/>.
 /// </summary>
-public static class IPublishedContentExtensions
+public static class AsmUmbracoPublishedContentExtensions
 {
     /// <summary>
     /// Returns the content item's <c>Name</c> as a lowercase, hyphen-separated CSS class name.

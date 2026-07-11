@@ -3,7 +3,7 @@ namespace Microsoft.AspNetCore.Http;
 /// <summary>
 /// Extensions for the <see cref="IHeaderDictionary"/> interface.
 /// </summary>
-public static class IHeaderDictionaryExtensions
+public static class AsmAspNetCoreHeaderDictionaryExtensions
 {
     /// <summary>
     /// Appends the specified header only when <paramref name="value"/> is not null.

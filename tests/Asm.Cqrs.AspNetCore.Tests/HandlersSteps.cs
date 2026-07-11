@@ -395,7 +395,7 @@ internal static class Handlers
 
     private static T InvokeInternal<T>(string methodName, Type[] genericTypes, params object[] args)
     {
-        var handlersType = typeof(Asm.AspNetCore.IEndpointRouteBuilderExtensions).Assembly.GetType("Asm.AspNetCore.Handlers")!;
+        var handlersType = typeof(Asm.AspNetCore.AsmCqrsAspNetCoreEndpointRouteBuilderExtensions).Assembly.GetType("Asm.AspNetCore.Handlers")!;
         var methods = handlersType.GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
             .Where(m => m.Name == methodName && m.GetGenericArguments().Length == genericTypes.Length);
 

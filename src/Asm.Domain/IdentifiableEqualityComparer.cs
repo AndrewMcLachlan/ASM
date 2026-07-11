@@ -1,11 +1,11 @@
-﻿namespace Asm.Domain;
+namespace Asm.Domain;
 
 /// <summary>
 /// An equality comparer for <see cref="IIdentifiable{T}"/> objects.
 /// </summary>
 /// <typeparam name="TType">The type to compare.</typeparam>
 /// <typeparam name="TKey">The type of the identifiable item's key.</typeparam>
-public class IIdentifiableEqualityComparer<TType, TKey> : EqualityComparer<TType> where TType : IIdentifiable<TKey>
+public class IdentifiableEqualityComparer<TType, TKey> : EqualityComparer<TType> where TType : IIdentifiable<TKey>
 {
     /// <summary>
     /// Determines whether the specified objects are equal.
@@ -32,4 +32,14 @@ public class IIdentifiableEqualityComparer<TType, TKey> : EqualityComparer<TType
         if (obj is null || obj.Id is null) return 0;
         return obj.Id.GetHashCode();
     }
+}
+
+/// <summary>
+/// An equality comparer for <see cref="IIdentifiable{T}"/> objects.
+/// </summary>
+/// <typeparam name="TType">The type to compare.</typeparam>
+/// <typeparam name="TKey">The type of the identifiable item's key.</typeparam>
+[Obsolete("Renamed to IdentifiableEqualityComparer (a static-looking 'I' prefix on a class is misleading). This forwarding alias will be removed in the next major.")]
+public class IIdentifiableEqualityComparer<TType, TKey> : IdentifiableEqualityComparer<TType, TKey> where TType : IIdentifiable<TKey>
+{
 }

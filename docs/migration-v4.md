@@ -22,3 +22,41 @@ Several extension classes shared a type name *and* a namespace across different 
 **What to change:** if you referenced any of these classes by name (e.g. `IServiceCollectionExtensions.AddStandardSecurityHeaders(services)`), update to the new name. If you only ever called the extension methods (`services.AddStandardSecurityHeaders()`), nothing changes.
 
 These renames ship **without `[Obsolete]` forwarders**: the whole point is that the colliding fully-qualified names cannot coexist, and two static classes exposing the same extension methods on the same type would make every call ambiguous (`CS0121`).
+
+## Batch 1b — Drop the `I` prefix from static classes
+
+A leading `I` on a **static** class is misleading (it reads as an interface). All remaining `I`-prefixed extension classes are renamed to the same `Asm<Package><Target>Extensions` convention used in Batch 1a — uniform across the library, and collision-proof (a naive "drop the I" would have re-created `CS0433` for `EndpointRouteBuilderExtensions` and `QueryableExtensions`, which are defined in more than one assembly under a shared namespace). Namespaces are unchanged, so — as in 1a — only *by-name* references need updating; extension-method call sites do not.
+
+| Assembly | Old name | New name |
+|---|---|---|
+| Asm | `ICollectionExtensions` | `AsmCollectionExtensions` |
+| Asm | `IEnumerableExtensions` | `AsmEnumerableExtensions` |
+| Asm | `IListExtensions` | `AsmListExtensions` |
+| Asm | `IEnumeratorExtensions` | `AsmEnumeratorExtensions` |
+| Asm | `IQueryableExtensions` | `AsmQueryableExtensions` |
+| Asm.AspNetCore | `IApplicationBuilderExtensions` | `AsmAspNetCoreApplicationBuilderExtensions` |
+| Asm.AspNetCore | `IHeaderDictionaryExtensions` | `AsmAspNetCoreHeaderDictionaryExtensions` |
+| Asm.AspNetCore | `IEndpointRouteBuilderExtensions` | `AsmAspNetCoreEndpointRouteBuilderExtensions` |
+| Asm.AspNetCore.Api | `IEndpointRouteBuilderExtensions` | `AsmAspNetCoreApiEndpointRouteBuilderExtensions` |
+| Asm.AspNetCore.Modules | `IEndpointConventionBuilderExtensions` | `AsmAspNetCoreModulesEndpointConventionBuilderExtensions` |
+| Asm.AspNetCore.Mvc | `IHtmlHelperExtensions` | `AsmAspNetCoreMvcHtmlHelperExtensions` |
+| Asm.Cqrs.AspNetCore | `IEndpointRouteBuilderExtensions` | `AsmCqrsAspNetCoreEndpointRouteBuilderExtensions` |
+| Asm.Domain | `IQueryableExtensions` | `AsmDomainQueryableExtensions` |
+| Asm.Domain.Infrastructure | `IQueryableExtensions` | `AsmDomainInfrastructureQueryableExtensions` |
+| Asm.ModelContextProtocol | `IMcpServerBuilderExtensions` | `AsmModelContextProtocolMcpServerBuilderExtensions` |
+| Asm.Net | `IPAddressExtensions` | `AsmNetIPAddressExtensions` |
+| Asm.Serilog | `IHostBuilderExtensions` | `AsmSerilogHostBuilderExtensions` |
+| Asm.Umbraco | `IPublishedContentExtensions` | `AsmUmbracoPublishedContentExtensions` |
+
+`IPAddressExtensions` keeps its `IP` (it extends `IPAddress`; the `I` is part of the type name, not an interface marker) — so it becomes `AsmNetIPAddressExtensions`, not `AsmNetPAddressExtensions`.
+
+### `IIdentifiableEqualityComparer` → `IdentifiableEqualityComparer`
+
+The equality comparer is a real instantiable class (not an extension class), so it keeps its short name minus the misleading `I`, and — unlike the extension classes — ships **with** an `[Obsolete]` forwarding alias:
+
+```csharp
+[Obsolete("Renamed to IdentifiableEqualityComparer …")]
+public class IIdentifiableEqualityComparer<TType, TKey> : IdentifiableEqualityComparer<TType, TKey> …
+```
+
+Existing `new IIdentifiableEqualityComparer<T, TKey>()` code keeps compiling with a deprecation warning; move to `IdentifiableEqualityComparer<T, TKey>` at your convenience. The alias is removed in the next major.

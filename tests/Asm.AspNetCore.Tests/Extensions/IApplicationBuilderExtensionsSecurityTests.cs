@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 namespace Asm.AspNetCore.Tests.Extensions;
 
 /// <summary>
-/// Tests for <see cref="IApplicationBuilderExtensions"/>:
+/// Tests for <see cref="AsmAspNetCoreApplicationBuilderExtensions"/>:
 /// <c>UseCanonicalUrls</c> and <c>UseStandardSecurityHeaders</c>.
 /// Isolated from the existing Reqnroll feature tests.
 /// </summary>
