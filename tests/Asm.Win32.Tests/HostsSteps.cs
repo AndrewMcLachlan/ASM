@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 
 namespace Asm.Win32.Tests;
@@ -6,6 +7,7 @@ namespace Asm.Win32.Tests;
 public class HostsSteps(ScenarioContext context) : IDisposable
 {
     private Hosts _hosts = null!;
+    private IReadOnlyList<HostEntry> _snapshot = null!;
     private MemoryStream _inputStream = null!;
     private MemoryStream _outputStream = null!;
     private string _tempFilePath = null!;
@@ -140,7 +142,77 @@ public class HostsSteps(ScenarioContext context) : IDisposable
     [When(@"I remove the last entry")]
     public void WhenIRemoveTheLastEntry()
     {
-        _hosts.Entries.RemoveAt(_hosts.Entries.Count - 1);
+        _hosts.RemoveEntryAt(_hosts.Entries.Count - 1);
+    }
+
+    [When(@"I add a host entry for ""(.*)"" aliased ""(.*)""")]
+    public void WhenIAddAHostEntry(string address, string alias)
+    {
+        _hosts.AddEntry(new HostEntry(IPAddress.Parse(address), alias, null, false));
+    }
+
+    [When(@"I insert a host entry for ""(.*)"" aliased ""(.*)"" at index (.*)")]
+    public void WhenIInsertAHostEntry(string address, string alias, int index)
+    {
+        _hosts.InsertEntry(index, new HostEntry(IPAddress.Parse(address), alias, null, false));
+    }
+
+    [When(@"I update entry (.*) with alias ""(.*)""")]
+    public void WhenIUpdateEntry(int index, string alias)
+    {
+        HostEntry existing = _hosts.Entries[index];
+        _hosts.UpdateEntry(index, new HostEntry(existing.Address, alias, existing.Comment, existing.IsCommented));
+    }
+
+    [When(@"I clear all entries")]
+    public void WhenIClearAllEntries()
+    {
+        _hosts.ClearEntries();
+    }
+
+    [When(@"I try to add a null host entry")]
+    public void WhenITryToAddANullHostEntry()
+    {
+        context.CatchException(() => _hosts.AddEntry(null!));
+    }
+
+    [When(@"I concurrently refresh and read the entries")]
+    public void WhenIConcurrentlyRefreshAndReadTheEntries()
+    {
+        // Repeatedly refresh on one thread while another enumerates the read-only
+        // snapshot. A non-thread-safe implementation would tear or throw here.
+        using CancellationTokenSource cts = new();
+        Exception failure = null;
+
+        Thread reader = new(() =>
+        {
+            try
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    foreach (HostEntry entry in _hosts.Entries)
+                    {
+                        _ = entry.EntryType;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                failure = ex;
+            }
+        });
+
+        reader.Start();
+
+        for (int i = 0; i < 200; i++)
+        {
+            _hosts.Refresh();
+        }
+
+        cts.Cancel();
+        reader.Join();
+
+        Assert.Null(failure);
     }
 
     [When(@"I write the hosts file")]
@@ -171,6 +243,12 @@ public class HostsSteps(ScenarioContext context) : IDisposable
         _hosts.Refresh();
     }
 
+    [When(@"I capture the current entries snapshot")]
+    public void WhenICaptureTheCurrentEntriesSnapshot()
+    {
+        _snapshot = _hosts.Entries;
+    }
+
     [When(@"I write the hosts to an output stream")]
     public void WhenIWriteTheHostsToAnOutputStream()
     {
@@ -183,6 +261,20 @@ public class HostsSteps(ScenarioContext context) : IDisposable
     public void ThenTheHostsFileShouldHaveEntries(int count)
     {
         Assert.Equal(count, _hosts.Entries.Count);
+    }
+
+    [Then(@"the captured snapshot should still have (.*) entries")]
+    public void ThenTheCapturedSnapshotShouldStillHaveEntries(int count)
+    {
+        Assert.Equal(count, _snapshot.Count);
+    }
+
+    [Then(@"the exception message should contain ""(.*)""")]
+    public void ThenTheExceptionMessageShouldContain(string fragment)
+    {
+        Exception ex = context.GetException();
+        Assert.NotNull(ex);
+        Assert.Contains(fragment, ex.Message);
     }
 
     [Then(@"entry (.*) should be a Comment")]

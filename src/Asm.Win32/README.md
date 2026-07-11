@@ -39,8 +39,8 @@ foreach (var entry in hosts.Entries)
     }
 }
 
-// Add a new entry
-hosts.Entries.Add(new HostEntry
+// Add a new entry (Entries is a read-only snapshot; mutate via the methods below)
+hosts.AddEntry(new HostEntry
 {
     Address = IPAddress.Parse("192.168.1.100"),
     Alias = "myserver.local",
@@ -136,11 +136,14 @@ var commentEntry = new HostEntry("This is a section header");
 // Blank line
 var blankEntry = new HostEntry();
 
-hosts.Entries.Add(entry1);
-hosts.Entries.Add(entry2);
-hosts.Entries.Add(entry3);
-hosts.Entries.Add(commentEntry);
-hosts.Entries.Add(blankEntry);
+hosts.AddEntry(entry1);
+hosts.AddEntry(entry2);
+hosts.AddEntry(entry3);
+hosts.AddEntry(commentEntry);
+hosts.AddEntry(blankEntry);
+
+// Other mutators: InsertEntry(index, entry), UpdateEntry(index, entry),
+// RemoveEntry(entry), RemoveEntryAt(index), ClearEntries()
 
 // Save to file
 hosts.WriteHostsToFile(@"C:\temp\hosts");
@@ -177,7 +180,10 @@ using (var stream = File.Create("hosts-backup.txt"))
 - **Administrator Privileges**: Writing to the Windows hosts file requires administrator privileges
 - **File Location**: The Windows hosts file is typically located at `%SystemRoot%\system32\drivers\etc\hosts`
 - **Automatic Monitoring**: `Hosts.Current` automatically monitors the file for external changes every 10 seconds
-- **Thread Safety**: Be cautious when accessing `Hosts.Current` from multiple threads
+- **Windows only**: `Hosts` is annotated `[SupportedOSPlatform("windows")]`; calling it from non-Windows-scoped code raises analyzer warning CA1416
+- **Read-only entries**: `Entries` is an `IReadOnlyList<HostEntry>` snapshot — mutate with `AddEntry`/`InsertEntry`/`UpdateEntry`/`RemoveEntry`/`RemoveEntryAt`/`ClearEntries`
+- **Thread Safety**: reads of `Entries` and the background `Refresh` are safe to run concurrently; each `Entries` access returns an independent snapshot
+- **Malformed input**: a line that is not blank, not a comment, and not a valid IP entry throws `FormatException` naming the offending line and line number
 
 ## HostEntry Properties
 

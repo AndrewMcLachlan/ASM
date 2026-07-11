@@ -1,4 +1,5 @@
-﻿using System.Net;
+using System.Net;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Timers;
@@ -9,6 +10,7 @@ namespace Asm.Win32;
 /// <summary>
 /// Class for controlling the Windows Hosts file.
 /// </summary>
+[SupportedOSPlatform("windows")]
 public sealed partial class Hosts : IDisposable
 {
     #region Constants
@@ -26,6 +28,8 @@ public sealed partial class Hosts : IDisposable
     private static Hosts? _instance;
     private static readonly Lock _lock = new();
     private static string _systemHostsFile = DefaultHostsFile;
+    private readonly Lock _entriesLock = new();
+    private readonly List<HostEntry> _entries = [];
     private readonly string? _hostsFile;
     private readonly Timer? _pollTimer;
     private DateTime _hostsFileLastUpdated;
@@ -82,11 +86,23 @@ public sealed partial class Hosts : IDisposable
     /// <summary>
     /// The host file entries.
     /// </summary>
-    public IList<HostEntry> Entries
+    /// <remarks>
+    /// This is a read-only snapshot taken at the point of access. Use
+    /// <see cref="AddEntry(HostEntry)"/>, <see cref="InsertEntry(int, HostEntry)"/>,
+    /// <see cref="UpdateEntry(int, HostEntry)"/>, <see cref="RemoveEntry(HostEntry)"/>,
+    /// <see cref="RemoveEntryAt(int)"/> and <see cref="ClearEntries"/> to mutate the
+    /// entry collection.
+    /// </remarks>
+    public IReadOnlyList<HostEntry> Entries
     {
-        get;
-        private set;
-    } = new List<HostEntry>();
+        get
+        {
+            lock (_entriesLock)
+            {
+                return _entries.ToArray();
+            }
+        }
+    }
     #endregion
 
     #region Constructors
@@ -134,6 +150,98 @@ public sealed partial class Hosts : IDisposable
             _instance = null;
         }
         instance?.Dispose();
+    }
+
+    /// <summary>
+    /// Adds a host entry to the end of the collection.
+    /// </summary>
+    /// <param name="entry">The entry to add.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="entry"/> is <see langword="null"/>.</exception>
+    public void AddEntry(HostEntry entry)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+
+        lock (_entriesLock)
+        {
+            _entries.Add(entry);
+        }
+    }
+
+    /// <summary>
+    /// Inserts a host entry at the specified index.
+    /// </summary>
+    /// <param name="index">The zero-based index at which the entry should be inserted.</param>
+    /// <param name="entry">The entry to insert.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="entry"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside the bounds of the collection.</exception>
+    public void InsertEntry(int index, HostEntry entry)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+
+        lock (_entriesLock)
+        {
+            ArgumentOutOfRangeException.ThrowIfGreaterThan((uint)index, (uint)_entries.Count, nameof(index));
+            _entries.Insert(index, entry);
+        }
+    }
+
+    /// <summary>
+    /// Replaces the host entry at the specified index.
+    /// </summary>
+    /// <param name="index">The zero-based index of the entry to replace.</param>
+    /// <param name="entry">The replacement entry.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="entry"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside the bounds of the collection.</exception>
+    public void UpdateEntry(int index, HostEntry entry)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+
+        lock (_entriesLock)
+        {
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual((uint)index, (uint)_entries.Count, nameof(index));
+            _entries[index] = entry;
+        }
+    }
+
+    /// <summary>
+    /// Removes the first occurrence of the specified host entry.
+    /// </summary>
+    /// <param name="entry">The entry to remove.</param>
+    /// <returns><see langword="true"/> if the entry was found and removed; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="entry"/> is <see langword="null"/>.</exception>
+    public bool RemoveEntry(HostEntry entry)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+
+        lock (_entriesLock)
+        {
+            return _entries.Remove(entry);
+        }
+    }
+
+    /// <summary>
+    /// Removes the host entry at the specified index.
+    /// </summary>
+    /// <param name="index">The zero-based index of the entry to remove.</param>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is outside the bounds of the collection.</exception>
+    public void RemoveEntryAt(int index)
+    {
+        lock (_entriesLock)
+        {
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual((uint)index, (uint)_entries.Count, nameof(index));
+            _entries.RemoveAt(index);
+        }
+    }
+
+    /// <summary>
+    /// Removes all host entries.
+    /// </summary>
+    public void ClearEntries()
+    {
+        lock (_entriesLock)
+        {
+            _entries.Clear();
+        }
     }
 
     /// <summary>
@@ -215,19 +323,25 @@ public sealed partial class Hosts : IDisposable
 
     private void ReadHosts(Stream hosts)
     {
-        Entries = new List<HostEntry>();
+        // Parse into a local list first, then swap it in atomically under the lock so
+        // concurrent readers (and the poll timer's Refresh) never observe a partially
+        // built collection.
+        List<HostEntry> parsed = [];
         using StreamReader reader = new(hosts);
+        int lineNumber = 0;
         while (!reader.EndOfStream)
         {
             string? line = reader.ReadLine()?.Trim();
 
             if (line == null) break;
 
+            lineNumber++;
+
             Match match = BlankRegex().Match(line);
 
             if (match.Success)
             {
-                Entries.Add(new HostEntry());
+                parsed.Add(new HostEntry());
                 continue;
             }
 
@@ -237,11 +351,11 @@ public sealed partial class Hosts : IDisposable
 
                 if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                 {
-                    Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), Comment = match.Groups[3].Value.Trim(), IsCommented = true });
+                    parsed.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), Comment = match.Groups[3].Value.Trim(), IsCommented = true });
                 }
                 else
                 {
-                    Entries.Add(new HostEntry(line[1..]));
+                    parsed.Add(new HostEntry(line[1..]));
                 }
                 continue;
             }
@@ -252,11 +366,11 @@ public sealed partial class Hosts : IDisposable
 
                 if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                 {
-                    Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), IsCommented = true });
+                    parsed.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), IsCommented = true });
                 }
                 else
                 {
-                    Entries.Add(new HostEntry(line[1..]));
+                    parsed.Add(new HostEntry(line[1..]));
                 }
                 continue;
             }
@@ -265,7 +379,7 @@ public sealed partial class Hosts : IDisposable
 
             if (match.Success)
             {
-                Entries.Add(new HostEntry(match.Groups[1].Value));
+                parsed.Add(new HostEntry(match.Groups[1].Value));
                 continue;
             }
 
@@ -276,11 +390,11 @@ public sealed partial class Hosts : IDisposable
 
                 if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                 {
-                    Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), Comment = match.Groups[3].Value.Trim() });
+                    parsed.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Value.Trim(), Comment = match.Groups[3].Value.Trim() });
                 }
                 else
                 {
-                    throw new FormatException(String.Format("Unexpected entry in hosts file: {0}", line));
+                    throw MalformedEntry(lineNumber, line);
                 }
                 continue;
             }
@@ -292,16 +406,22 @@ public sealed partial class Hosts : IDisposable
 
                 if (IPAddress.TryParse(match.Groups[1].Value.Trim(), out IPAddress? ip))
                 {
-                    Entries.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Success ? match.Groups[2].Value.Trim() : null });
+                    parsed.Add(new HostEntry { Address = ip, Alias = match.Groups[2].Success ? match.Groups[2].Value.Trim() : null });
                 }
                 else
                 {
-                    throw new FormatException(String.Format("Unexpected entry in hosts file: {0}", line));
+                    throw MalformedEntry(lineNumber, line);
                 }
                 continue;
             }
 
-            throw new FormatException(String.Format("Unexpected entry in hosts file: {0}", line));
+            throw MalformedEntry(lineNumber, line);
+        }
+
+        lock (_entriesLock)
+        {
+            _entries.Clear();
+            _entries.AddRange(parsed);
         }
     }
 
@@ -332,6 +452,9 @@ public sealed partial class Hosts : IDisposable
     {
         HostsFileChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    private static FormatException MalformedEntry(int lineNumber, string line) =>
+        new($"Malformed host entry at line {lineNumber}: '{line}'. Expected an IP address followed by an optional alias and comment (e.g. '127.0.0.1 localhost #comment').");
 
     [GeneratedRegex(@"^$")]
     private static partial Regex BlankRegex();
