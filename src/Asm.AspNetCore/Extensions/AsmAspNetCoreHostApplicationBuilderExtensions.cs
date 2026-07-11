@@ -13,7 +13,7 @@ namespace Asm.AspNetCore.Extensions;
 /// <summary>
 /// Extensions to the <see cref="IHostApplicationBuilder"/> interface.
 /// </summary>
-public static class IHostApplicationBuilderExtensions
+public static class AsmAspNetCoreHostApplicationBuilderExtensions
 {
     /// <summary>
     /// Adds the standard OpenTelemetry configuration.

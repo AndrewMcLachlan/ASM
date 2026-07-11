@@ -41,7 +41,7 @@ public class IEnumerableExtensionsSteps(ScenarioContext context)
     [When(@"I call Shuffle on the enumerable")]
     public void WhenICallShuffleOnTheEnumerable()
     {
-        _result = IEnumerableExtensions.Shuffle(_enumerable!);
+        _result = AsmEnumerableExtensions.Shuffle(_enumerable!);
     }
 
     [When(@"I call IsNullOrEmpty on the enumerable")]

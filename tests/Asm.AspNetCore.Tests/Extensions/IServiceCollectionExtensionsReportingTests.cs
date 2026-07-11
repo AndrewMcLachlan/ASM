@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Asm.AspNetCore.Tests.Extensions;
 
 /// <summary>
-/// Tests for <see cref="IServiceCollectionExtensions.AddSecurityReporting"/> —
+/// Tests for <see cref="AsmAspNetCoreServiceCollectionExtensions.AddSecurityReporting"/> —
 /// isolated from the existing Reqnroll-based IServiceCollectionExtensions feature tests.
 /// </summary>
 public class IServiceCollectionExtensionsReportingTests

@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// Extensions for the <see cref="IServiceCollection"/> interface.
 /// </summary>
-public static class IServiceCollectionExtensions
+public static class AsmOAuthServiceCollectionExtensions
 {
     /// <summary>
     /// Adds OAuth options to the service collection, validated on startup.

@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Routing;
 /// <summary>
 /// Endpoint-routing extensions for mapping the security-reporting endpoints.
 /// </summary>
-public static class IEndpointRouteBuilderExtensions
+public static class AsmAspNetCoreEndpointRouteBuilderExtensions
 {
     /// <summary>Logger category used for integrity-report messages.</summary>
     public const string IntegrityLoggerCategory = "Asm.AspNetCore.Reporting.Integrity";
@@ -20,7 +20,7 @@ public static class IEndpointRouteBuilderExtensions
 
     /// <summary>
     /// Maps the security-reporting endpoints.
-    /// Requires <see cref="IServiceCollectionExtensions.AddSecurityReporting"/>
+    /// Requires <see cref="AsmAspNetCoreServiceCollectionExtensions.AddSecurityReporting"/>
     /// to have been called.
     /// </summary>
     /// <param name="endpoints">The endpoint-route builder.</param>

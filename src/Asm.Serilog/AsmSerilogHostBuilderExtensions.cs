@@ -6,7 +6,7 @@ namespace Microsoft.Extensions.Hosting;
 /// <summary>
 /// Extensions to the <see cref="IHostBuilder"/> interface.
 /// </summary>
-public static class IHostBuilderExtensions
+public static class AsmSerilogHostBuilderExtensions
 {
     /// <summary>
     /// Use the ASM default Serilog configuration.

@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Builder;
 /// <summary>
 /// Extensions for the <see cref="IApplicationBuilder"/> interface.
 /// </summary>
-public static class IApplicationBuilderExtensions
+public static class AsmAspNetCoreApplicationBuilderExtensions
 {
     /// <summary>
     /// Adds a standard exception handler to the middleware pipeline.
@@ -49,7 +49,7 @@ public static class IApplicationBuilderExtensions
     /// <summary>
     /// Adds the NetEscapades security-headers middleware to the pipeline using the
     /// <see cref="HeaderPolicyCollection"/> registered via
-    /// <see cref="IServiceCollectionExtensions.AddStandardSecurityHeaders"/>, optionally
+    /// <see cref="AsmAspNetCoreServiceCollectionExtensions.AddStandardSecurityHeaders"/>, optionally
     /// skipping the supplied request path prefixes.
     /// </summary>
     /// <remarks>

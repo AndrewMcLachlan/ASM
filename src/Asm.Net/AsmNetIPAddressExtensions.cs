@@ -4,7 +4,7 @@
 /// Extensions for the <see cref="IPAddress"/> class.
 /// </summary>
 [CLSCompliant(false)]
-public static class IPAddressExtensions
+public static class AsmNetIPAddressExtensions
 {
     /// <summary>
     /// Converts an IP address and subnet mask to a CIDR notation string.

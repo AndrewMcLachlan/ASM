@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Routing;
 /// <summary>
 /// Extension methods for <see cref="IEndpointRouteBuilder"/>.
 /// </summary>
-public static class IEndpointRouteBuilderExtensions
+public static class AsmAspNetCoreApiEndpointRouteBuilderExtensions
 {
     /// <summary>
     /// Maps a metadata endpoint to /metaz.

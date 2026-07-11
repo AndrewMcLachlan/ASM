@@ -5,7 +5,7 @@ namespace Microsoft.AspNetCore.Mvc.Rendering;
 /// <summary>
 /// Extension methods for <see cref="IHtmlHelper"/>.
 /// </summary>
-public static class IHtmlHelperExtensions
+public static class AsmAspNetCoreMvcHtmlHelperExtensions
 {
     /// <summary>
     /// Determines whether the application is running in debug mode.

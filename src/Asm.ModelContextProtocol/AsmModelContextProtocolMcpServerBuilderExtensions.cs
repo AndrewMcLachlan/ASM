@@ -3,7 +3,7 @@
 /// <summary>
 /// Extension for the <see cref="IMcpServerBuilder"/> interface.
 /// </summary>
-public static class IMcpServerBuilderExtensions
+public static class AsmModelContextProtocolMcpServerBuilderExtensions
 {
     /// <summary>
     /// Adds tools from all assemblies in the current app domain that match the specified pattern. 

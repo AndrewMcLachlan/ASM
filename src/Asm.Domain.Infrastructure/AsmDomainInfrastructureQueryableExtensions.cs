@@ -5,7 +5,7 @@ namespace Asm.Domain.Infrastructure;
 /// <summary>
 /// Extension methods for <see cref="IQueryable{TEntity}"/>.
 /// </summary>
-public static class IQueryableExtensions
+public static class AsmDomainInfrastructureQueryableExtensions
 {
     /// <summary>
     /// Finds an entity with the given primary key.

@@ -7,7 +7,7 @@ namespace Asm.AspNetCore;
 /// <summary>
 /// Extensions for the <see cref="IEndpointRouteBuilder"/> interface.
 /// </summary>
-public static class IEndpointRouteBuilderExtensions
+public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
 {
     /// <summary>
     /// Map a request to a query.

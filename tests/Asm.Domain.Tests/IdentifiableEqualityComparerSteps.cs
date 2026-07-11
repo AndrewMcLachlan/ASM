@@ -7,7 +7,7 @@ public class IdentifiableEqualityComparerSteps(ScenarioContext context)
 {
     private TestKeyedEntity _first;
     private TestKeyedEntity _second;
-    private IIdentifiableEqualityComparer<TestKeyedEntity, int> _comparer = new();
+    private IdentifiableEqualityComparer<TestKeyedEntity, int> _comparer = new();
     private int _hashCode;
 
     [Given(@"I have an identifiable entity with ID (.*)")]

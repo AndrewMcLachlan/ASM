@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// Extensions for <see cref="IServiceCollection"/>.
 /// </summary>
-public static class IServiceCollectionExtensions
+public static class AsmCqrsServiceCollectionExtensions
 {
     // Cache generic type definitions to avoid repeated reflection calls
     private static readonly Type CommandHandlerGenericType = typeof(ICommandHandler<,>);
