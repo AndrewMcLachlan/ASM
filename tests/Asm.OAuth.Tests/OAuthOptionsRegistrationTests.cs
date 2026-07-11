@@ -29,9 +29,14 @@ public class OAuthOptionsRegistrationTests
         ("AzureOAuth:TenantId", "11111111-1111-1111-1111-111111111111"),
     ];
 
+    /// <summary>
+    /// Given Azure OAuth options registered from valid configuration
+    /// When base OAuthOptions are resolved via IOptions, IOptionsMonitor and IOptionsSnapshot
+    /// Then each returns the polymorphic Azure options with the correct Authority and Audience
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddAzureOAuthOptions_BridgesBaseOAuthOptions_AcrossAllOptionsInterfaces()
+    public void AddAzureOAuthOptionsBridgesBaseOAuthOptionsAcrossAllOptionsInterfaces()
     {
         using var provider = BuildAzure(ValidAzureSettings());
 
@@ -50,9 +55,14 @@ public class OAuthOptionsRegistrationTests
         Assert.Equal("api://my-api", fromOptions.Audience);
     }
 
+    /// <summary>
+    /// Given Azure OAuth options bound from configuration that does not set ValidateAudience
+    /// When the AzureOAuthOptions are resolved
+    /// Then ValidateAudience defaults to true
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddAzureOAuthOptions_ValidateAudience_DefaultsToTrueThroughBinding()
+    public void AddAzureOAuthOptionsValidateAudienceDefaultsToTrueThroughBinding()
     {
         using var provider = BuildAzure(ValidAzureSettings());
 
@@ -61,9 +71,14 @@ public class OAuthOptionsRegistrationTests
         Assert.True(options.ValidateAudience);
     }
 
+    /// <summary>
+    /// Given Azure OAuth configuration that omits the TenantId
+    /// When the AzureOAuthOptions are resolved
+    /// Then an OptionsValidationException is thrown whose message mentions TenantId
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddAzureOAuthOptions_MissingTenantId_FailsValidation()
+    public void AddAzureOAuthOptionsMissingTenantIdFailsValidation()
     {
         using var provider = BuildAzure(
             ("AzureOAuth:Domain", "https://login.microsoftonline.com"),
@@ -76,9 +91,14 @@ public class OAuthOptionsRegistrationTests
         Assert.Contains("TenantId", exception.Message);
     }
 
+    /// <summary>
+    /// Given Azure OAuth configuration whose Domain has a trailing slash
+    /// When the AzureOAuthOptions are resolved
+    /// Then an OptionsValidationException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddAzureOAuthOptions_TrailingSlashDomain_FailsValidation()
+    public void AddAzureOAuthOptionsTrailingSlashDomainFailsValidation()
     {
         using var provider = BuildAzure(
             ("AzureOAuth:Domain", "https://login.microsoftonline.com/"),
@@ -90,9 +110,14 @@ public class OAuthOptionsRegistrationTests
             () => _ = provider.GetRequiredService<IOptions<AzureOAuthOptions>>().Value);
     }
 
+    /// <summary>
+    /// Given plain OAuth options registered from empty configuration missing required fields
+    /// When the OAuthOptions are resolved
+    /// Then an OptionsValidationException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddOAuthOptions_MissingRequiredFields_FailsValidation()
+    public void AddOAuthOptionsMissingRequiredFieldsFailsValidation()
     {
         var config = new ConfigurationBuilder().AddInMemoryCollection([]).Build();
         var services = new ServiceCollection();

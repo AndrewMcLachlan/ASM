@@ -5,9 +5,14 @@ namespace Asm.Cqrs.Tests.Commands;
 
 public class CommandTests
 {
+    /// <summary>
+    /// Given a command dispatcher with registered command handlers
+    /// When a TestCommand with mixed-case input "Abc" is dispatched
+    /// Then the handler returns false
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task NegaTest()
+    public async Task DispatchCommandWithMixedCaseInputReturnsFalse()
     {
         ServiceCollection services = new();
 
@@ -22,9 +27,14 @@ public class CommandTests
         Assert.False(result);
     }
 
+    /// <summary>
+    /// Given a command dispatcher with registered command handlers
+    /// When a TestCommand with uppercase input "ABC" is dispatched
+    /// Then the handler returns true
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task PosiTest()
+    public async Task DispatchCommandWithUppercaseInputReturnsTrue()
     {
         ServiceCollection services = new();
 
@@ -39,9 +49,14 @@ public class CommandTests
         Assert.True(result);
     }
 
+    /// <summary>
+    /// Given a command whose handler throws synchronously
+    /// When the command is executed through the dispatcher
+    /// Then the handler's original InvalidOperationException surfaces, not a TargetInvocationException
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task SynchronousHandlerThrow_SurfacesOriginalExceptionType()
+    public async Task SynchronousHandlerThrowSurfacesOriginalExceptionType()
     {
         ServiceCollection services = new();
         services.AddCommandHandlers(GetType().Assembly);
@@ -53,9 +68,14 @@ public class CommandTests
             async () => await commandDispatcher.Execute(new ThrowingCommand(), TestContext.Current.CancellationToken));
     }
 
+    /// <summary>
+    /// Given a response-returning command referenced through the non-generic ICommand interface
+    /// When it is executed via the void Execute method that cannot resolve a handler
+    /// Then an InvalidOperationException is thrown whose message points to Dispatch&lt;TResponse&gt;
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task ResponseCommand_DispatchedAsVoidCommand_ThrowsHelpfulError()
+    public async Task ResponseCommandDispatchedAsVoidCommandThrowsHelpfulError()
     {
         ServiceCollection services = new();
         services.AddCommandHandlers(GetType().Assembly);

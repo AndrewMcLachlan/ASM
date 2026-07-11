@@ -28,9 +28,14 @@ public class FixedMachineInfoFactoryTests : IDisposable
         Environment.SetEnvironmentVariable(CustomEnvVar, null);
     }
 
+    /// <summary>
+    /// Given the configured environment variable is set
+    /// When GetMachineIdentifier is called
+    /// Then the environment variable value is returned in preference to the fallback machine name
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void GetMachineIdentifier_WhenEnvVarSet_ReturnsEnvVarValue()
+    public void GetMachineIdentifierReturnsEnvVarValueWhenEnvVarSet()
     {
         Environment.SetEnvironmentVariable(TestEnvVar, "env-machine-name");
 
@@ -40,9 +45,14 @@ public class FixedMachineInfoFactoryTests : IDisposable
         Assert.Equal("env-machine-name", factory.GetMachineIdentifier());
     }
 
+    /// <summary>
+    /// Given the configured environment variable is not set
+    /// When GetMachineIdentifier is called
+    /// Then the fallback machine name from options is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void GetMachineIdentifier_WhenEnvVarNotSet_ReturnsFallbackMachineName()
+    public void GetMachineIdentifierReturnsFallbackMachineNameWhenEnvVarNotSet()
     {
         Environment.SetEnvironmentVariable(TestEnvVar, null);
 
@@ -52,9 +62,14 @@ public class FixedMachineInfoFactoryTests : IDisposable
         Assert.Equal("fallback-name", factory.GetMachineIdentifier());
     }
 
+    /// <summary>
+    /// Given options specify a custom environment variable name that is set
+    /// When GetMachineIdentifier is called
+    /// Then the value of the custom environment variable is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void GetMachineIdentifier_WhenCustomEnvVarSet_ReturnsCustomEnvVarValue()
+    public void GetMachineIdentifierReturnsCustomEnvVarValueWhenCustomEnvVarSet()
     {
         Environment.SetEnvironmentVariable(CustomEnvVar, "custom-env-machine");
 
@@ -68,9 +83,14 @@ public class FixedMachineInfoFactoryTests : IDisposable
         Assert.Equal("custom-env-machine", factory.GetMachineIdentifier());
     }
 
+    /// <summary>
+    /// Given a factory built with a discriminator and machine name options
+    /// When GetLocalIdentity is called
+    /// Then the returned identity contains the discriminator, process id prefix, domain id prefix and a GUID segment
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void GetLocalIdentity_ContainsMachineNameDiscriminatorProcessIdDomainIdAndGuid()
+    public void GetLocalIdentityContainsDiscriminatorProcessIdDomainIdAndGuid()
     {
         var options = Options.Create(new FixedMachineInfoFactoryOptions { MachineName = "test-machine" });
         var factory = new FixedMachineInfoFactory(_discriminatorMock.Object, options);
@@ -83,9 +103,14 @@ public class FixedMachineInfoFactoryTests : IDisposable
         Assert.Matches(@"[0-9A-F]{32}", identity);              // GUID segment (N format, uppercased)
     }
 
+    /// <summary>
+    /// Given a single factory instance
+    /// When GetLocalIdentity is called more than once
+    /// Then the same identity value is returned on every call
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void GetLocalIdentity_ReturnsSameValueOnMultipleCalls()
+    public void GetLocalIdentityReturnsSameValueOnMultipleCalls()
     {
         var options = Options.Create(new FixedMachineInfoFactoryOptions { MachineName = "test-machine" });
         var factory = new FixedMachineInfoFactory(_discriminatorMock.Object, options);
