@@ -112,6 +112,13 @@ await dbContext.Orders.Add(order);
 await dbContext.SaveChangesAsync(); // Events published here
 ```
 
+Events are dispatched in two phases around the write. Implement `IPreSaveDomainEventHandler<TEvent>`
+for reactions that must persist in the same transaction (they run before `SaveChanges`), and/or
+`IPostSaveDomainEventHandler<TEvent>` for external side-effects that must only run after a successful
+commit. A handler may implement one, the other, or both. The legacy `IDomainEventHandler<TEvent>`
+continues to run pre-save. Post-save handlers run against an already-committed aggregate with no
+rollback, so they must be idempotent. See [the v4 migration guide](../../docs/migration-v4.md) for details.
+
 ### DbSet Extensions
 
 Use extension methods to enhance `DbSet` operations:

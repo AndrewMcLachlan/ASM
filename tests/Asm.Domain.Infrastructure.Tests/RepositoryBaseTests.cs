@@ -50,7 +50,10 @@ public class RepositoryBaseTests
 
     private sealed class NoOpPublisher : IPublisher
     {
-        public ValueTask Publish<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken = default) where TDomainEvent : IDomainEvent =>
+        public ValueTask PublishPreSave<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken = default) where TDomainEvent : IDomainEvent =>
+            ValueTask.CompletedTask;
+
+        public ValueTask PublishPostSave<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken = default) where TDomainEvent : IDomainEvent =>
             ValueTask.CompletedTask;
     }
 

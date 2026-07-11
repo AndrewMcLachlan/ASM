@@ -35,7 +35,7 @@ public class DomainDbContextDrainTests
         // the bounded drain must throw instead.
         var publisher = new Mock<IPublisher>();
         publisher
-            .Setup(p => p.Publish(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()))
+            .Setup(p => p.PublishPreSave(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()))
             .Callback(() => entity.Events.Add(new DrainEvent()))
             .Returns(ValueTask.CompletedTask);
 

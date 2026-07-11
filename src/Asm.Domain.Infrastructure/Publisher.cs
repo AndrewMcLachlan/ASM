@@ -6,21 +6,36 @@ namespace Asm.Domain.Infrastructure;
 
 internal class Publisher(IServiceProvider serviceProvider) : IPublisher
 {
-    private static readonly Type DomainEventHandlerGenericType = typeof(IDomainEventHandler<>);
+    private static readonly Type PreSaveHandlerGenericType = typeof(IDomainEventHandler<>);
+    private static readonly Type PostSaveHandlerGenericType = typeof(IPostSaveDomainEventHandler<>);
 
     // Compiled Handle invokers cached for the process lifetime — avoids per-publish reflection and
     // surfaces a handler's exceptions as their own type rather than a TargetInvocationException.
-    private static readonly ConcurrentDictionary<Type, (Type HandlerType, Func<object, object, CancellationToken, ValueTask> Invoker)> Handlers = new();
+    // Keyed on the open handler type and event type so the pre-save (IDomainEventHandler<T>) and
+    // post-save (IPostSaveDomainEventHandler<T>) contracts each get their own invoker.
+    private static readonly ConcurrentDictionary<(Type HandlerGenericType, Type EventType), (Type HandlerType, Func<object, object, CancellationToken, ValueTask> Invoker)> Handlers = new();
 
-    public async ValueTask Publish<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken = default)
+    public ValueTask PublishPreSave<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken = default)
+        where TDomainEvent : IDomainEvent
+        => Publish(domainEvent, PreSaveHandlerGenericType, cancellationToken);
+
+    public ValueTask PublishPostSave<TDomainEvent>(TDomainEvent domainEvent, CancellationToken cancellationToken = default)
+        where TDomainEvent : IDomainEvent
+        => Publish(domainEvent, PostSaveHandlerGenericType, cancellationToken);
+
+    private async ValueTask Publish<TDomainEvent>(TDomainEvent domainEvent, Type handlerGenericType, CancellationToken cancellationToken)
         where TDomainEvent : IDomainEvent
     {
+        ArgumentNullException.ThrowIfNull(domainEvent);
+
         var eventType = domainEvent.GetType();
 
-        var (handlerType, invoker) = Handlers.GetOrAdd(eventType, static type =>
+        var (handlerType, invoker) = Handlers.GetOrAdd((handlerGenericType, eventType), static key =>
         {
-            var handlerType = DomainEventHandlerGenericType.MakeGenericType(type);
-            var handleMethod = handlerType.GetMethod("Handle")!;
+            var (openHandlerType, type) = key;
+
+            var handlerType = openHandlerType.MakeGenericType(type);
+            var handleMethod = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.Handle))!;
 
             var handlerParam = Expression.Parameter(typeof(object), "handler");
             var eventParam = Expression.Parameter(typeof(object), "domainEvent");

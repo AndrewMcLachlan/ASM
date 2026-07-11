@@ -41,6 +41,16 @@ public class DomainEventsSteps(ScenarioContext context)
         dbContext.Add(testEntity);
     }
 
+    [Given("An entity defines a two-phase domain event")]
+    public void GivenAnEntityDefinesATwoPhaseDomainEvent()
+    {
+        TestEntity testEntity = new(1);
+        testEntity.TriggerTwoPhaseDomainEvent();
+
+        TestDbContext dbContext = _serviceProvider.GetRequiredService<TestDbContext>();
+        dbContext.Add(testEntity);
+    }
+
     [When(@"I call SaveChanges")]
     public void WhenICallSaveChanges()
     {
@@ -62,5 +72,12 @@ public class DomainEventsSteps(ScenarioContext context)
 
         Assert.Equal(1, result1);
         Assert.Equal(2, result2);
+    }
+
+    [Then("The domain event is handled pre-save and post-save")]
+    public void ThenTheDomainEventIsHandledPreSaveAndPostSave()
+    {
+        Assert.True(context.Get<bool>("PreSave"));
+        Assert.True(context.Get<bool>("PostSave"));
     }
 }
