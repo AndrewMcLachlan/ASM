@@ -17,9 +17,14 @@ public class IUmbracoBuilderExtensionsTests
         return (builderMock.Object, services);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder
+    /// When AddFixedMachineInfoFactory is called with a configuration action
+    /// Then a service descriptor mapping IMachineInfoFactory to FixedMachineInfoFactory is registered
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_WithActionConfigure_RegistersIMachineInfoFactory()
+    public void AddFixedMachineInfoFactoryWithActionConfigureRegistersMachineInfoFactory()
     {
         var (builder, services) = CreateBuilder();
 
@@ -35,9 +40,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(FixedMachineInfoFactory));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder
+    /// When AddFixedMachineInfoFactory is called with a configuration action that sets options
+    /// Then the resolved FixedMachineInfoFactoryOptions reflect the configured values
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_WithActionConfigure_BindsOptions()
+    public void AddFixedMachineInfoFactoryWithActionConfigureBindsOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -53,9 +63,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Equal("CUSTOM_VAR", options.Value.EnvironmentVariableName);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder
+    /// When AddFixedMachineInfoFactory is called with a configuration action
+    /// Then the same builder instance is returned to allow fluent chaining
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_WithActionConfigure_ReturnsBuilder()
+    public void AddFixedMachineInfoFactoryWithActionConfigureReturnsBuilder()
     {
         var (builder, _) = CreateBuilder();
 
@@ -64,9 +79,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Same(builder, returned);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder
+    /// When AddFixedMachineInfoFactory is called with a configuration section
+    /// Then a service descriptor mapping IMachineInfoFactory to FixedMachineInfoFactory is registered
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_WithConfigSection_RegistersIMachineInfoFactory()
+    public void AddFixedMachineInfoFactoryWithConfigSectionRegistersMachineInfoFactory()
     {
         var (builder, services) = CreateBuilder();
 
@@ -85,9 +105,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(FixedMachineInfoFactory));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder and a configuration section with machine info values
+    /// When AddFixedMachineInfoFactory is called with that section
+    /// Then the resolved FixedMachineInfoFactoryOptions are bound from the section values
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_WithConfigSection_BindsOptions()
+    public void AddFixedMachineInfoFactoryWithConfigSectionBindsOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -107,9 +132,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Equal("SECTION_VAR", options.Value.EnvironmentVariableName);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder
+    /// When AddFixedMachineInfoFactory is called with a configuration section
+    /// Then the same builder instance is returned to allow fluent chaining
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_WithConfigSection_ReturnsBuilder()
+    public void AddFixedMachineInfoFactoryWithConfigSectionReturnsBuilder()
     {
         var (builder, _) = CreateBuilder();
 
@@ -122,18 +152,28 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Same(builder, returned);
     }
 
+    /// <summary>
+    /// Given a null Umbraco builder
+    /// When AddFixedMachineInfoFactory is called with a configuration action
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_NullBuilder_ThrowsArgumentNullException()
+    public void AddFixedMachineInfoFactoryWithNullBuilderThrowsArgumentNullException()
     {
         IUmbracoBuilder nullBuilder = null;
         Assert.Throws<ArgumentNullException>(() =>
             nullBuilder.AddFixedMachineInfoFactory(opts => opts.MachineName = "x"));
     }
 
+    /// <summary>
+    /// Given a valid Umbraco builder but a null configuration action
+    /// When AddFixedMachineInfoFactory is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddFixedMachineInfoFactory_NullConfigure_ThrowsArgumentNullException()
+    public void AddFixedMachineInfoFactoryWithNullConfigureThrowsArgumentNullException()
     {
         var (builder, _) = CreateBuilder();
         Assert.Throws<ArgumentNullException>(() =>

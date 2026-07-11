@@ -28,9 +28,14 @@ public class IUmbracoBuilderExtensionsTests
     // AddEntraIdAuthentication(Action<EntraIdOptions>)
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configure action.
+    /// Then EntraIdLoginOptions is registered as IConfigureOptions of BackOfficeExternalLoginProviderOptions.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithAction_RegistersEntraIdLoginOptions()
+    public void AddEntraIdAuthenticationWithActionRegistersEntraIdLoginOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -46,9 +51,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(EntraIdLoginOptions));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configure action.
+    /// Then EntraIdBackOfficeOptions is registered as IConfigureOptions of MicrosoftAccountOptions.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithAction_RegistersEntraIdBackOfficeOptions()
+    public void AddEntraIdAuthenticationWithActionRegistersEntraIdBackOfficeOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -64,9 +74,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(EntraIdBackOfficeOptions));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configure action.
+    /// Then EntraIdManifestReader is registered as an IPackageManifestReader.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithAction_RegistersPackageManifestReader()
+    public void AddEntraIdAuthenticationWithActionRegistersPackageManifestReader()
     {
         var (builder, services) = CreateBuilder();
 
@@ -82,9 +97,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(EntraIdManifestReader));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configure action setting tenant, client and secret.
+    /// Then the resolved EntraIdOptions carry those bound values.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithAction_BindsEntraIdOptions()
+    public void AddEntraIdAuthenticationWithActionBindsEntraIdOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -103,9 +123,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Equal("test-secret", options.Value.ClientSecret);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configure action.
+    /// Then the same builder instance is returned.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithAction_ReturnsBuilder()
+    public void AddEntraIdAuthenticationWithActionReturnsBuilder()
     {
         var (builder, _) = CreateBuilder();
 
@@ -119,9 +144,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Same(builder, returned);
     }
 
+    /// <summary>
+    /// Given a null Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configure action.
+    /// Then an ArgumentNullException is thrown.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithNullBuilder_ThrowsArgumentNullException()
+    public void AddEntraIdAuthenticationWithNullBuilderThrowsArgumentNullException()
     {
         IUmbracoBuilder nullBuilder = null;
 
@@ -134,9 +164,14 @@ public class IUmbracoBuilderExtensionsTests
             }));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a null configure action.
+    /// Then an ArgumentNullException is thrown.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithNullAction_ThrowsArgumentNullException()
+    public void AddEntraIdAuthenticationWithNullActionThrowsArgumentNullException()
     {
         var (builder, _) = CreateBuilder();
 
@@ -148,9 +183,14 @@ public class IUmbracoBuilderExtensionsTests
     // AddEntraIdAuthentication(IConfigurationSection)
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given an Umbraco builder and a configuration section.
+    /// When AddEntraIdAuthentication is called with that section.
+    /// Then EntraIdLoginOptions is registered as IConfigureOptions of BackOfficeExternalLoginProviderOptions.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithConfigSection_RegistersEntraIdLoginOptions()
+    public void AddEntraIdAuthenticationWithConfigSectionRegistersEntraIdLoginOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -161,9 +201,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(EntraIdLoginOptions));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder and a configuration section.
+    /// When AddEntraIdAuthentication is called with that section.
+    /// Then EntraIdBackOfficeOptions is registered as IConfigureOptions of MicrosoftAccountOptions.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithConfigSection_RegistersEntraIdBackOfficeOptions()
+    public void AddEntraIdAuthenticationWithConfigSectionRegistersEntraIdBackOfficeOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -174,9 +219,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(EntraIdBackOfficeOptions));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder and a configuration section.
+    /// When AddEntraIdAuthentication is called with that section.
+    /// Then EntraIdManifestReader is registered as an IPackageManifestReader.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithConfigSection_RegistersPackageManifestReader()
+    public void AddEntraIdAuthenticationWithConfigSectionRegistersPackageManifestReader()
     {
         var (builder, services) = CreateBuilder();
 
@@ -187,9 +237,14 @@ public class IUmbracoBuilderExtensionsTests
             sd.ImplementationType == typeof(EntraIdManifestReader));
     }
 
+    /// <summary>
+    /// Given an Umbraco builder and a configuration section with tenant, client and secret values.
+    /// When AddEntraIdAuthentication is called with that section.
+    /// Then the resolved EntraIdOptions carry those bound values.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithConfigSection_BindsEntraIdOptions()
+    public void AddEntraIdAuthenticationWithConfigSectionBindsEntraIdOptions()
     {
         var (builder, services) = CreateBuilder();
 
@@ -206,9 +261,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Equal("section-secret", options.Value.ClientSecret);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder and a configuration section.
+    /// When AddEntraIdAuthentication is called with that section.
+    /// Then the same builder instance is returned.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithConfigSection_ReturnsBuilder()
+    public void AddEntraIdAuthenticationWithConfigSectionReturnsBuilder()
     {
         var (builder, _) = CreateBuilder();
 
@@ -217,9 +277,14 @@ public class IUmbracoBuilderExtensionsTests
         Assert.Same(builder, returned);
     }
 
+    /// <summary>
+    /// Given an Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a null configuration section.
+    /// Then an ArgumentNullException is thrown.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithNullConfigSection_ThrowsArgumentNullException()
+    public void AddEntraIdAuthenticationWithNullConfigSectionThrowsArgumentNullException()
     {
         var (builder, _) = CreateBuilder();
 
@@ -227,9 +292,14 @@ public class IUmbracoBuilderExtensionsTests
             builder.AddEntraIdAuthentication((IConfigurationSection)null));
     }
 
+    /// <summary>
+    /// Given a null Umbraco builder.
+    /// When AddEntraIdAuthentication is called with a configuration section.
+    /// Then an ArgumentNullException is thrown.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddEntraIdAuthentication_WithConfigSection_NullBuilder_ThrowsArgumentNullException()
+    public void AddEntraIdAuthenticationWithConfigSectionNullBuilderThrowsArgumentNullException()
     {
         IUmbracoBuilder nullBuilder = null;
 

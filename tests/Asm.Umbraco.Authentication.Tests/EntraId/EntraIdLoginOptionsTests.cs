@@ -21,9 +21,14 @@ public class EntraIdLoginOptionsTests
             ClientSecret = "secret",
         }));
 
+    /// <summary>
+    /// Given the EntraIdLoginOptions type.
+    /// When its SchemeName constant is read.
+    /// Then it is the provider-specific value "EntraId".
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void SchemeName_IsProviderSpecific()
+    public void SchemeNameIsProviderSpecific()
     {
         // v4: renamed from "OpenIdConnect" so it does not masquerade as an OIDC handler.
         Assert.Equal("EntraId", EntraIdLoginOptions.SchemeName);
@@ -33,9 +38,14 @@ public class EntraIdLoginOptionsTests
     // Configure(string?, BackOfficeExternalLoginProviderOptions)
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then the AutoLinkOptions are not null.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsAutoLinkOptionsNotNull()
+    public void ConfigureWithMatchingNameSetsAutoLinkOptionsNotNull()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -45,9 +55,14 @@ public class EntraIdLoginOptionsTests
         Assert.NotNull(options.AutoLinkOptions);
     }
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then AutoLinkExternalAccount is enabled.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_AutoLinksExternalAccount()
+    public void ConfigureWithMatchingNameAutoLinksExternalAccount()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -57,9 +72,14 @@ public class EntraIdLoginOptionsTests
         Assert.True(options.AutoLinkOptions.AutoLinkExternalAccount);
     }
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then DenyLocalLogin is false.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsDenyLocalLoginFalse()
+    public void ConfigureWithMatchingNameSetsDenyLocalLoginFalse()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -69,9 +89,14 @@ public class EntraIdLoginOptionsTests
         Assert.False(options.DenyLocalLogin);
     }
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When Configure is called with a non-matching scheme name.
+    /// Then AutoLinkExternalAccount is unchanged and remains disabled.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithNonMatchingName_LeavesAutoLinkOptionsUnchanged()
+    public void ConfigureWithNonMatchingNameLeavesAutoLinkOptionsUnchanged()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -91,9 +116,14 @@ public class EntraIdLoginOptionsTests
     // Configure(BackOfficeExternalLoginProviderOptions) — no-name overload
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When the no-name Configure overload is called.
+    /// Then the AutoLinkOptions are not null.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsAutoLinkOptionsNotNull()
+    public void ConfigureWithoutNameSetsAutoLinkOptionsNotNull()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -103,9 +133,14 @@ public class EntraIdLoginOptionsTests
         Assert.NotNull(options.AutoLinkOptions);
     }
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When the no-name Configure overload is called.
+    /// Then AutoLinkExternalAccount is enabled.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_AutoLinksExternalAccount()
+    public void ConfigureWithoutNameAutoLinksExternalAccount()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -115,9 +150,14 @@ public class EntraIdLoginOptionsTests
         Assert.True(options.AutoLinkOptions.AutoLinkExternalAccount);
     }
 
+    /// <summary>
+    /// Given EntraIdLoginOptions and BackOfficeExternalLoginProviderOptions.
+    /// When the no-name Configure overload is called.
+    /// Then DenyLocalLogin is false.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsDenyLocalLoginFalse()
+    public void ConfigureWithoutNameSetsDenyLocalLoginFalse()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -131,9 +171,14 @@ public class EntraIdLoginOptionsTests
     // OnAutoLinking callback
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given configured EntraIdLoginOptions and a back-office identity user with external login info.
+    /// When the AutoLinkOptions OnAutoLinking callback is invoked.
+    /// Then the user's IsApproved is set to true.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void OnAutoLinking_SetsIsApprovedTrue()
+    public void OnAutoLinkingSetsIsApprovedTrue()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -151,9 +196,14 @@ public class EntraIdLoginOptionsTests
     // OnExternalLogin callback
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given configured EntraIdLoginOptions and a back-office identity user with external login info.
+    /// When the AutoLinkOptions OnExternalLogin callback is invoked.
+    /// Then it returns true.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void OnExternalLogin_ReturnsTrue()
+    public void OnExternalLoginReturnsTrue()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -171,9 +221,14 @@ public class EntraIdLoginOptionsTests
     // Options flow through from EntraIdOptions
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given EntraIdOptions with AutoLink set to false.
+    /// When Configure is called on the resulting login options.
+    /// Then AutoLinkExternalAccount is disabled.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_HonoursAutoLinkFalse()
+    public void ConfigureHonoursAutoLinkFalse()
     {
         var sut = CreateSut(new EntraIdOptions { TenantId = "t", ClientId = "c", ClientSecret = "s", AutoLink = false });
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -183,9 +238,14 @@ public class EntraIdLoginOptionsTests
         Assert.False(options.AutoLinkOptions.AutoLinkExternalAccount);
     }
 
+    /// <summary>
+    /// Given EntraIdOptions with DenyLocalLogin set to true.
+    /// When Configure is called on the resulting login options.
+    /// Then DenyLocalLogin is true.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_HonoursDenyLocalLoginTrue()
+    public void ConfigureHonoursDenyLocalLoginTrue()
     {
         var sut = CreateSut(new EntraIdOptions { TenantId = "t", ClientId = "c", ClientSecret = "s", DenyLocalLogin = true });
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -195,9 +255,14 @@ public class EntraIdLoginOptionsTests
         Assert.True(options.DenyLocalLogin);
     }
 
+    /// <summary>
+    /// Given EntraIdOptions with custom DefaultUserGroups.
+    /// When Configure is called on the resulting login options.
+    /// Then the AutoLinkOptions DefaultUserGroups match the configured groups.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_HonoursCustomDefaultUserGroups()
+    public void ConfigureHonoursCustomDefaultUserGroups()
     {
         var sut = CreateSut(new EntraIdOptions { TenantId = "t", ClientId = "c", ClientSecret = "s", DefaultUserGroups = ["writer", "translator"] });
         var options = new BackOfficeExternalLoginProviderOptions();
@@ -207,9 +272,14 @@ public class EntraIdLoginOptionsTests
         Assert.Equal(["writer", "translator"], options.AutoLinkOptions.DefaultUserGroups);
     }
 
+    /// <summary>
+    /// Given EntraIdLoginOptions created with default EntraIdOptions.
+    /// When Configure is called.
+    /// Then the AutoLinkOptions DefaultUserGroups default to the editor group.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_DefaultUserGroups_IsEditor()
+    public void ConfigureDefaultUserGroupsIsEditor()
     {
         var sut = CreateSut();
         var options = new BackOfficeExternalLoginProviderOptions();
