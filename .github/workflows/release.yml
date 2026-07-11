@@ -1,0 +1,71 @@
+name: Release
+
+# Deliberately starts or graduates a version line. Everything else (patches) is automatic:
+# a push to a release branch publishes the next patch (see build.yml).
+#
+# Each line is anchored by an empty "Start X.Y" commit on its own branch, tagged X.Y.0. Because the
+# tag lives on a commit unique to that branch, other lines never see it, so lines are fully isolated
+# (a 5.0 beta can run alongside the 4.x stable line without disturbing it). GitVersion then reads
+# Major.Minor from the tag and CommitsSinceVersionSource as the patch/beta counter.
+#
+#   start-beta   -> branch release/X.Y-beta + anchor -> publishes X.Y.0-beta.N (default unchanged)
+#   start-stable -> branch release/X.Y + anchor + make default -> publishes X.Y.x (a new minor line)
+#   graduate     -> rename release/X.Y-beta -> release/X.Y + make default (anchor already on the branch)
+#
+# Requires a repo secret RELEASE_TOKEN: a PAT (or GitHub App token) with admin, because the stock
+# GITHUB_TOKEN cannot rename a branch or change the repository default branch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Major.Minor to act on, e.g. 5.0"
+        required: true
+        type: string
+      action:
+        description: "Operation"
+        required: true
+        type: choice
+        options:
+          - start-beta
+          - start-stable
+          - graduate
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      REPO: ${{ github.repository }}
+      V: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Start a new line (branch + anchor commit + tag)
+        if: inputs.action == 'start-beta' || inputs.action == 'start-stable'
+        run: |
+          if [ "${{ inputs.action }}" = "start-beta" ]; then BRANCH="release/$V-beta"; else BRANCH="release/$V"; fi
+          git checkout -b "$BRANCH"
+          git commit --allow-empty -m "Start $V"
+          git tag "$V.0"
+          git push origin "$BRANCH" "$V.0"
+          echo "::notice::Created $BRANCH anchored at $V.0."
+
+      - name: Make the new stable line the default
+        if: inputs.action == 'start-stable'
+        run: gh api -X PATCH "repos/$REPO" -f default_branch="release/$V"
+
+      - name: Graduate beta to stable and make default
+        if: inputs.action == 'graduate'
+        run: |
+          gh api -X POST "repos/$REPO/branches/release%2F$V-beta/rename" -f new_name="release/$V"
+          gh api -X PATCH "repos/$REPO" -f default_branch="release/$V"
+          echo "::notice::Renamed release/$V-beta -> release/$V and set it as the default branch."

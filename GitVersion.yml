@@ -1,8 +1,25 @@
+# Versions are anchored by a per-line tag X.Y.0 that the Release workflow creates when it cuts a
+# release line (see .github/workflows/release.yml). GitVersion then gives Major.Minor from that tag
+# and CommitsSinceVersionSource as the patch/beta counter (which resets per line, because each line
+# gets its own anchor tag). build.yml assembles the final version:
+#   release/X.Y       -> X.Y.<commits>            stable, published
+#   release/X.Y-beta  -> X.Y.0-beta.<commits>     prerelease, published
+#   main / feature/*  -> prerelease, never published (publishing is gated to release/** in CI)
+#
+# AssemblyVersion is pinned to <Major>.0.0.0 (Major scheme) so there are no binding redirects
+# within a major line.
 workflow: GitHubFlow/v1
-next-version: 4.0.0
+
+assembly-versioning-scheme: Major
+
 branches:
-  main:
-    is-main-branch: true
+  release:
+    regex: ^releases?[/-]v?\d+\.\d+(-beta)?$
+    label: ''
+    increment: Patch
     mode: ContinuousDeployment
+    is-release-branch: true
+  main:
+    label: ci
   feature:
-    label: beta
+    label: alpha

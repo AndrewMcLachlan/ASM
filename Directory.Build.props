@@ -11,7 +11,8 @@
     <Authors>Andrew McLachlan</Authors>
     <Company />
     <Copyright>© 2011-$([System.DateTime]::Now.Year) Andrew McLachlan</Copyright>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <!-- Version, AssemblyVersion (pinned to Major.0.0.0) and FileVersion are supplied by CI
+         from GitVersion (see .github/workflows/build.yml). Local builds default to 0.0.0/1.0.0. -->
   </PropertyGroup>
 
 
