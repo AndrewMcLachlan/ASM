@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Asm.AspNetCore;
 
@@ -13,17 +14,23 @@ namespace Asm.AspNetCore;
 /// <summary>
 /// Initializes a new instance of the <see cref="ProblemDetailsFactory"/> class.
 /// </summary>
-/// <param name="hostEnvironment"></param>
-/// <exception cref="ArgumentNullException"></exception>
-public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
+/// <param name="hostEnvironment">The host environment.</param>
+/// <param name="options">
+/// The per-container <see cref="ProblemDetailsFactoryOptions"/> that carry the registered exception handlers.
+/// Optional so the factory can be constructed directly (for example in tests) without dependency injection.
+/// </param>
+/// <exception cref="ArgumentNullException"><paramref name="hostEnvironment"/> is <see langword="null"/>.</exception>
+public class ProblemDetailsFactory(IHostEnvironment hostEnvironment, IOptions<ProblemDetailsFactoryOptions>? options = null) : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
 {
-    private readonly IHostEnvironment _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
-
     private static readonly Dictionary<Type, Func<HttpContext, IExceptionHandlerFeature, ProblemDetails>> HandlersInternal = [];
 
+    private readonly IHostEnvironment _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
+    private readonly ProblemDetailsFactoryOptions _options = options?.Value ?? new ProblemDetailsFactoryOptions();
+
     /// <summary>
-    /// Gets a dictionary of registered handlers.
+    /// Gets a dictionary of handlers registered via the obsolete static <see cref="AddHandler{T}"/> API.
     /// </summary>
+    [Obsolete("Register handlers per-container via AddProblemDetailsHandler<T> / ProblemDetailsFactoryOptions instead. Static handlers are shared across all containers and will be removed in a future major version.")]
     public static IReadOnlyDictionary<Type, Func<HttpContext, IExceptionHandlerFeature, ProblemDetails>> Handlers { get => HandlersInternal; }
 
     /// <inheritdoc/>
@@ -43,7 +50,10 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
             };
         }
 
-        if (Handlers.TryGetValue(errorContext.Error.GetType(), out var handler))
+        // Per-container handlers (registered via options) take precedence; the obsolete static
+        // handlers are consulted second so legacy AddHandler registrations keep working.
+        if (_options.Handlers.TryGetValue(errorContext.Error.GetType(), out var handler) ||
+            HandlersInternal.TryGetValue(errorContext.Error.GetType(), out handler))
         {
             var customProblemDetails = handler(httpContext, errorContext);
             customProblemDetails.Status ??= StatusCodes.Status500InternalServerError;
@@ -145,12 +155,19 @@ public class ProblemDetailsFactory(IHostEnvironment hostEnvironment) : Microsoft
     /// </summary>
     /// <typeparam name="T">The type of exception to handle.</typeparam>
     /// <param name="handler">A delegate that returns a problem details object.</param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException"><paramref name="handler"/> is <see langword="null"/>.</exception>
+    /// <remarks>
+    /// This registration is global and shared by every <see cref="ProblemDetailsFactory"/> in the process,
+    /// which leaks handler state between applications and containers. Prefer the per-container
+    /// <c>services.AddProblemDetailsHandler&lt;T&gt;(...)</c> extension (or
+    /// <c>services.Configure&lt;ProblemDetailsFactoryOptions&gt;(...)</c>) instead.
+    /// </remarks>
+    [Obsolete("Register handlers per-container via AddProblemDetailsHandler<T> / ProblemDetailsFactoryOptions instead. Static handlers are shared across all containers and will be removed in a future major version.")]
     public static void AddHandler<T>(Func<HttpContext, IExceptionHandlerFeature, ProblemDetails> handler) where T : Exception
     {
         ArgumentNullException.ThrowIfNull(handler);
 
-        HandlersInternal.Add(typeof(T), handler);
+        HandlersInternal[typeof(T)] = handler;
     }
 
     private static void AddExtensions(HttpContext httpContext, ProblemDetails problemDetails)

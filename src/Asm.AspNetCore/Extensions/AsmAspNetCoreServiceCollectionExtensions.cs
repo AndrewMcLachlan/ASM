@@ -85,6 +85,28 @@ public static class AsmAspNetCoreServiceCollectionExtensions
         services.AddTransient<ProblemDetailsFactory, Asm.AspNetCore.ProblemDetailsFactory>();
 
     /// <summary>
+    /// Registers a per-container exception handler for the Asm <see cref="Asm.AspNetCore.ProblemDetailsFactory"/>.
+    /// </summary>
+    /// <remarks>
+    /// The handler is stored on a <see cref="Asm.AspNetCore.ProblemDetailsFactoryOptions"/> instance resolved
+    /// from this container, so handlers registered here are isolated to this application and are not shared with
+    /// any other container. This is the replacement for the obsolete static
+    /// <see cref="Asm.AspNetCore.ProblemDetailsFactory.AddHandler{T}"/>.
+    /// </remarks>
+    /// <typeparam name="T">The type of exception to handle.</typeparam>
+    /// <param name="services">The <see cref="IServiceCollection"/> that this method extends.</param>
+    /// <param name="handler">A delegate that returns a problem details object for the handled exception.</param>
+    /// <returns>The <see cref="IServiceCollection"/> so that calls can be chained.</returns>
+    public static IServiceCollection AddProblemDetailsHandler<T>(this IServiceCollection services, Func<Microsoft.AspNetCore.Http.HttpContext, Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature, Microsoft.AspNetCore.Mvc.ProblemDetails> handler) where T : Exception
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(handler);
+
+        services.Configure<Asm.AspNetCore.ProblemDetailsFactoryOptions>(options => options.AddHandler<T>(handler));
+        return services;
+    }
+
+    /// <summary>
     /// Adds the <see cref="HttpContextPrincipalProvider"/> to the services collection.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> that this method extends.</param>

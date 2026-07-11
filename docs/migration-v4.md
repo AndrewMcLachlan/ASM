@@ -300,3 +300,86 @@ services.AddSecurityReporting();
 - The old order-dependent auto-coupling (a `services.FirstOrDefault(...)` probe inside `AddStandardSecurityHeaders`) has been removed.
 
 **What to change:** nothing is required. Behaviour only improves — reporting headers are now emitted regardless of the order in which the two methods were registered. If your code relied on the old behaviour of *suppressing* reporting headers by deliberately registering reporting last, register the two methods in separate service collections instead.
+
+## Batch 5 — Modules and ProblemDetails to DI/options
+
+This batch moves two subsystems off process-wide **static** state and onto **dependency injection** so that
+multiple applications, test hosts, or DI containers in the same process no longer share (and clobber) each
+other's registrations.
+
+### Modules: registered in DI, mapped from the service provider
+
+Previously the module system kept a **static** `List<IModule>` inside `Modules`. `RegisterModules(...)`
+overwrote that list and `MapModuleEndpoints()` read from it. Two `WebApplication`s built in the same process
+shared the list — the last `RegisterModules` call won, and registration was **not** additive.
+
+Modules are now registered into DI as `IModule` singletons, and `MapModuleEndpoints()` resolves them from
+`IEndpointRouteBuilder.ServiceProvider`:
+
+```csharp
+// Register (additive — call as many times as you like, nothing is clobbered):
+builder.Services.AddModule<MyModule>();
+builder.Services.AddModule(new MyOtherModule());
+builder.Services.AddModules([new ModuleA(), new ModuleB()]);
+builder.Services.AddModules(typeof(MyModule).Assembly);   // assembly scan
+
+// Map (resolves every registered IModule from the app's service provider):
+app.MapModuleEndpoints();
+```
+
+New service-collection helpers:
+
+- `IServiceCollection AddModule<T>()` — `T : class, IModule, new()`
+- `IServiceCollection AddModule(IModule module)`
+- `IServiceCollection AddModules(IEnumerable<IModule> modules)`
+- `IServiceCollection AddModules(params Assembly[] assemblies)` / `AddModules(IEnumerable<Assembly>)`
+
+**Breaking changes:**
+
+- The static `Modules.RegisteredModules` list is gone. `RegisterModules(...)` and `MapModuleEndpoints()`
+  keep the same signatures, but they now flow through DI. Because `MapModuleEndpoints()` reads modules from
+  `IEndpointRouteBuilder.ServiceProvider`, **the modules must have been registered into the same
+  application's service collection** (which `RegisterModules(...)` and the new `AddModule*` helpers do).
+- Registration is now **additive**. Code that relied on a second `RegisterModules(...)` call *replacing* the
+  first set of modules must be updated — every registered module is now mapped.
+
+**What to change:** most callers need no change — keep using `builder.RegisterModules(...)` then
+`app.MapModuleEndpoints()`. Prefer the new `AddModule*` helpers when composing modules directly on the
+service collection.
+
+### ProblemDetails: exception handlers via options, isolated per container
+
+`ProblemDetailsFactory.AddHandler<T>(...)` wrote to a **static** dictionary shared by every factory instance
+in the process, so two apps registering handlers for the same exception type overwrote each other.
+
+Handlers are now carried on a per-container `ProblemDetailsFactoryOptions`, configured through the options
+pattern:
+
+```csharp
+services.AddProblemDetailsFactory();
+services.AddProblemDetailsHandler<MyException>((httpContext, feature) => new ProblemDetails
+{
+    Title = "My error",
+    Status = StatusCodes.Status400BadRequest,
+});
+
+// equivalently:
+services.Configure<ProblemDetailsFactoryOptions>(o =>
+    o.AddHandler<MyException>((httpContext, feature) => new ProblemDetails { /* ... */ }));
+```
+
+The factory now consults per-container option handlers **first**, then falls back to the (obsolete) static
+handlers, then to the built-in exception mapping. Handlers registered in one container are invisible to
+another.
+
+**Breaking changes / deprecations:**
+
+- `ProblemDetailsFactory.AddHandler<T>(...)` and `ProblemDetailsFactory.Handlers` are now `[Obsolete]`. They
+  still work (as a process-wide fallback) for one major cycle but leak state across containers — migrate to
+  `services.AddProblemDetailsHandler<T>(...)`.
+- `ProblemDetailsFactory` gained an optional `IOptions<ProblemDetailsFactoryOptions>` constructor parameter.
+  The single-argument `new ProblemDetailsFactory(hostEnvironment)` form still compiles (the parameter is
+  optional), and DI supplies the options automatically.
+
+**What to change:** replace static `ProblemDetailsFactory.AddHandler<T>(...)` calls with
+`services.AddProblemDetailsHandler<T>(...)` at service-registration time.
