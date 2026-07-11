@@ -30,6 +30,27 @@ public class StepArgumentTransformations
     public int? ToIntNull() => null;
 
     /// <summary>
+    /// Converts a string to a <c>null</c> long.
+    /// </summary>
+    /// <returns><c>null</c>.</returns>
+    [StepArgumentTransformation(NullString)]
+    public long? ToLongNull() => null;
+
+    /// <summary>
+    /// Converts a string to a <c>null</c> decimal.
+    /// </summary>
+    /// <returns><c>null</c>.</returns>
+    [StepArgumentTransformation(NullString)]
+    public decimal? ToDecimalNull() => null;
+
+    /// <summary>
+    /// Converts a string to a <c>null</c> double.
+    /// </summary>
+    /// <returns><c>null</c>.</returns>
+    [StepArgumentTransformation(NullString)]
+    public double? ToDoubleNull() => null;
+
+    /// <summary>
     /// Converts a string to <see cref="IPAddress"/>.
     /// </summary>
     /// <param name="input">The string to convert</param>

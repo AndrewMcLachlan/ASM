@@ -18,8 +18,12 @@ public static class AsmQueryableExtensions
     /// An <see cref="IQueryable{T}"/> that contains the specified number of elements from
     /// the page.
     /// </returns>
-    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, IPageable page) =>
-        source.Page(page.PageSize, page.PageNumber);
+    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, IPageable page)
+    {
+        ArgumentNullException.ThrowIfNull(page);
+
+        return source.Page(page.PageSize, page.PageNumber);
+    }
 
     /// <summary>
     /// Skip / takes a page of data.
@@ -32,8 +36,16 @@ public static class AsmQueryableExtensions
     /// An <see cref="IQueryable{T}"/> that contains the specified number of elements from
     /// the page.
     /// </returns>
-    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, int pageSize, int pageNumber) =>
-        source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="source"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="pageSize"/> or <paramref name="pageNumber"/> is less than one.</exception>
+    public static IQueryable<TSource> Page<TSource>(this IQueryable<TSource> source, int pageSize, int pageNumber)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 1);
+        ArgumentOutOfRangeException.ThrowIfLessThan(pageNumber, 1);
+
+        return source.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+    }
 
     /// <summary>
     /// Converts the supplied expressions into a single OR'd where expression.

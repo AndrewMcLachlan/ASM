@@ -1,4 +1,6 @@
-﻿namespace System;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace System;
 
 /// <summary>
 /// Extensions for the <see cref="Array"/> class.
@@ -35,7 +37,7 @@ public static class ArrayExtensions
     /// <typeparam name="T">The type of elements in the array.</typeparam>
     /// <param name="array">The array to check.</param>
     /// <returns><c>true</c> if the array is <c>null</c> or empty; otherwise, <c>false</c>.</returns>
-    public static bool IsNullOrEmpty<T>(this T[]? array) =>
+    public static bool IsNullOrEmpty<T>([NotNullWhen(false)] this T[]? array) =>
         (array?.Length ?? 0) == 0;
 
     /// <summary>

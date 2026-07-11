@@ -301,6 +301,184 @@ services.AddSecurityReporting();
 
 **What to change:** nothing is required. Behaviour only improves — reporting headers are now emitted regardless of the order in which the two methods were registered. If your code relied on the old behaviour of *suppressing* reporting headers by deliberately registering reporting last, register the two methods in separate service collections instead.
 
+## Batch 3 — Repositories & specifications
+
+This batch tightens the repository generics, adds ergonomic lookup and bulk-add members, and reworks
+`ISpecification<TEntity>` so specifications can target any class and be composed with `And`/`Or`/`Not`.
+
+### Repository key constraint relaxed: `struct` → `notnull`
+
+`IRepository<TEntity, TKey>`, `IWritableRepository<TEntity, TKey>`, `IDeletableRepository<TEntity, TKey>`
+and the `RepositoryBase`/`RepositoryWriteBase`/`RepositoryDeleteBase` classes previously constrained
+`TKey` to `struct` (non-nullable value types only). They now constrain it to `notnull`, which additionally
+permits **reference-type keys** such as `string`.
+
+**What to change:** nothing. `notnull` is a *wider* constraint than `struct`, so every existing value-type
+key (`int`, `Guid`, …) still satisfies it and all existing repositories compile unchanged. You may now
+declare repositories over string- or record-keyed entities.
+
+### `AddRange` is now on `IWritableRepository`
+
+`RepositoryWriteBase` already exposed `AddRange`; the member is now declared on the
+`IWritableRepository<TEntity, TKey>` interface so it can be called through the abstraction. It ships as a
+**default interface method** (adds each entity via `Add`), so existing implementers are not broken;
+`RepositoryWriteBase` overrides it with the provider-optimised `DbSet.AddRange`.
+
+**What to change:** nothing. Override `AddRange` if you want a bulk-optimised path.
+
+### New null-returning lookups: `Find` and `TryGet`
+
+`Get(TKey …)` throws `NotFoundException` when the entity is absent — unchanged. Two new
+**default interface methods** return `TEntity?` (null) instead, for when a missing entity is an expected
+outcome:
+
+```csharp
+Task<TEntity?> Find(TKey id, CancellationToken ct = default);
+Task<TEntity?> Find(TKey id, ISpecification<TEntity> specification, CancellationToken ct = default);
+Task<TEntity?> TryGet(TKey id, CancellationToken ct = default);            // alias for Find
+Task<TEntity?> TryGet(TKey id, ISpecification<TEntity> specification, CancellationToken ct = default);
+```
+
+`RepositoryBase` overrides `Find`/`TryGet` with an efficient keyed query (`SingleOrDefaultAsync`); the
+interface default (filtering the full collection) exists only for hand-rolled implementations.
+
+**What to change:** nothing. Prefer `Get` when absence is an error (it throws `NotFoundException`), and
+`Find`/`TryGet` when absence is normal (they return `null`).
+
+### `ISpecification<TEntity>` — relaxed constraint, expression criteria, and composition
+
+**Breaking (widening):** the constraint changed from `where TEntity : Entity` to `where TEntity : class`,
+so specifications can now target read models, DTOs and projected interfaces — not just domain entities.
+`Entity` is a class, so existing entity specifications are unaffected, and the `IQueryable.Specify(…)`
+extensions were relaxed to `class` to match.
+
+The interface gained an **expression-based criterion** alongside the existing `Apply`:
+
+```csharp
+public interface ISpecification<TEntity> where TEntity : class
+{
+    Expression<Func<TEntity, bool>> Criteria => static _ => true;      // NEW — the filter predicate
+    IQueryable<TEntity> Apply(IQueryable<TEntity> query) => query.Where(Criteria); // now defaulted
+    ISpecification<TEntity> And(ISpecification<TEntity> specification); // NEW
+    ISpecification<TEntity> Or(ISpecification<TEntity> specification);  // NEW
+    ISpecification<TEntity> Not();                                     // NEW
+}
+```
+
+- `Criteria` is a translatable expression tree, so it round-trips through EF Core.
+- `Apply` is now a default method (`query.Where(Criteria)`); override it to add `Include`/`OrderBy`/paging.
+- `And`/`Or`/`Not` combine the operands' **`Criteria`** (via `Expression.AndAlso`/`OrElse`/`Not`), rebinding
+  the two lambdas onto a single parameter with an `ExpressionVisitor` so the result stays EF-translatable.
+  Composition intentionally combines the `Criteria` only — it does **not** merge the `Apply`-side shaping
+  (there is no meaningful way to combine, say, two `OrderBy` clauses under an `OR`).
+
+New supporting types (all in `Asm.Domain`):
+
+- `Specification<TEntity>` — an abstract base; override `Criteria` and optionally `Apply`.
+- `AsmDomainExpressionExtensions` — public `AndAlso`/`OrElse`/`Not` predicate combinators with parameter
+  rebinding, usable directly on `Expression<Func<T, bool>>`.
+
+**What to change:** existing specifications that implement `Apply` continue to work unchanged (their
+`Criteria` defaults to "match all", which only affects composition). To make a specification composable,
+express its filter as `Criteria` (typically by deriving from `Specification<TEntity>`):
+
+```csharp
+public sealed class RecentOrders : Specification<Order>
+{
+    public override Expression<Func<Order, bool>> Criteria => o => o.OrderDate > DateTime.UtcNow.AddDays(-30);
+}
+
+// Compose:
+var spec = new RecentOrders().And(new HighValue()).Not();
+var results = await repository.Get(spec, cancellationToken);
+```
+
+## Batch 9 — Consistency
+
+A grab-bag of consistency and correctness fixes. Additive/annotation-only items (`ToIPAddress`, Reqnroll numeric null transforms, nullability attributes, `MockDbSet` refactor, MCP referenced-assembly loading) are source-compatible and listed briefly at the end; the breaking changes are detailed first.
+
+### `AsmException` is now `abstract`
+
+`Asm.AsmException` is now `abstract` with `protected` constructors. It exists purely as a base so consumers can derive their own exception types and so ASM exceptions can be distinguished from framework ones. The existing concrete ASM exception types (`NotFoundException`, `ExistsException`, `NotAuthorisedException`, `BoundExceededException`) are unaffected — they derive from the most appropriate framework base, not `AsmException`.
+
+**What to change:** stop instantiating `AsmException` directly (`new AsmException(...)` no longer compiles). Derive a concrete type and construct that instead:
+
+```csharp
+public sealed class MyException(string message, int errorId) : AsmException(message, errorId);
+```
+
+### `EntraId` back-office scheme name and callback path (Umbraco)
+
+The Umbraco Entra ID back-office login provider previously named its scheme `"OpenIdConnect"` and squatted on `/signin-oidc` — the default callback path of the real OpenID Connect handler — even though it uses the OAuth 2.0 `AddMicrosoftAccount` handler, not OIDC. Both have been renamed to provider-specific values:
+
+| | Before | After |
+|---|---|---|
+| `EntraIdLoginOptions.SchemeName` | `"OpenIdConnect"` | `"EntraId"` |
+| `MicrosoftAccountOptions.CallbackPath` | `/signin-oidc` | `/signin-entraid` |
+
+The OAuth `AddMicrosoftAccount` handler is retained (this is **not** a switch to `AddOpenIdConnect`).
+
+**What to change (breaking — `SchemeName` is a `const` so it cannot carry an `[Obsolete]` shim):**
+- Update the Entra **app-registration redirect URI** from `https://<host>/signin-oidc` to `https://<host>/signin-entraid`.
+- Existing back-office external logins keyed on the old `"OpenIdConnect"` scheme name may need to be **re-linked** (the persisted login provider key changes).
+
+### `EndpointGroupBase` — `Name` removed, nullable sentinels, multiple tags, anonymous opt-out
+
+`Asm.AspNetCore.Routing.EndpointGroupBase` no longer uses `String.Empty` sentinels and now supports richer configuration:
+
+| Member | Before | After |
+|---|---|---|
+| `Name` | `abstract string` | **removed** |
+| `Tags` | `virtual string` (`String.Empty`) | `virtual string[]?` (default `null`) |
+| `AuthorisationPolicy` | `virtual string` (`String.Empty`) | `virtual string?` (default `null`) |
+| `AllowAnonymous` | — | `virtual bool` (default `false`) |
+
+- **`Name` removed (endpoint names are per-endpoint):** the base previously called `WithName(Name)` on the *group*, which stamps that name onto **every** endpoint in the group — and endpoint names must be globally unique, so any group with more than one endpoint threw `InvalidOperationException` at startup. `WithName` is not an OpenAPI grouping mechanism. Group-level labelling is `Tags` (Swagger UI sections); set endpoint names on individual endpoints inside `MapEndpoints` (`builder.MapGet(...).WithName("GetFoo")`).
+- **Multiple tags:** `Tags` is now a `string[]`, applied via `WithTags(params string[])`.
+- **Anonymous opt-out:** override `AllowAnonymous => true` to make the whole group anonymous (calls `AllowAnonymous()` instead of `RequireAuthorization`).
+
+**What to change:** remove any `override string Name` from derived groups (move the name to the individual endpoint via `.WithName(...)` if you relied on it). Derived groups that `override string Tags` / `override string AuthorisationPolicy` must update the member type — e.g. `public override string Tags => "a,b";` becomes `public override string[] Tags => ["a", "b"];`. Groups that only override `Path` and `MapEndpoints` are unaffected.
+
+### `IEnumerable<T>.Page` / `IQueryable<T>.Page` now validate arguments
+
+Both `Page` overloads now throw `ArgumentOutOfRangeException` when `pageSize` or `pageNumber` is less than one, and `ArgumentNullException` for a null source/`IPageable`. Previously an invalid page number silently produced the wrong page (a negative `Skip` is ignored) and a negative page size silently returned an empty sequence.
+
+**What to change:** ensure callers pass `pageSize >= 1` and `pageNumber >= 1` (pages are 1-based).
+
+### `IEnumerator.GetEnumerator<T>()` renamed to `AsGeneric<T>()`
+
+The `System.Collections.IEnumerator` extension that adapts to `IEnumerator<T>` was named `GetEnumerator<T>`, which is confusing (it is not the `foreach` pattern method). It is renamed to `AsGeneric<T>`. The old name remains as an `[Obsolete]` forwarder for one major cycle.
+
+**What to change:** replace `enumerator.GetEnumerator<T>()` with `enumerator.AsGeneric<T>()`.
+
+### `RouteHandlerBuilder.WithValidation<T>` locates the parameter by type
+
+`WithValidation<T>()` now finds the argument to validate by its **type** rather than by position. The positional `WithValidation<T>(int parameterIndex)` overload is retained but `[Obsolete]`.
+
+**What to change:** prefer `WithValidation<T>()` (no index). The positional overload still works but is deprecated.
+
+### `OneOfAuthorisationRequirementHandler` — correct any-of semantics
+
+The handler for `OneOfAuthorisationRequirement` had three problems, now fixed:
+- It called `context.Fail()` when no sub-requirement passed. In an any-of handler a single failing option must **not** veto the whole requirement, so `context.Fail()` is no longer called — an unmet requirement is denied by the middleware anyway, but other handlers for the same requirement can still succeed.
+- It passed `null` as the resource to each sub-check; it now passes `context.Resource` through.
+- The `abstract IsAuthorised` hook was never invoked. It is now consulted (with the resource) when none of the sub-requirements succeed, and its signature is `ValueTask<bool> IsAuthorised(object? resource)`.
+
+**What to change:** implementations of `IsAuthorised` should accept `object?` (the resource) and return whether to grant the custom check. Return `false` to preserve pure any-of behaviour.
+
+### `RouteParamAuthorisationHandler` — new strongly-typed variant
+
+A new `RouteParamAuthorisationHandler<TRequirement, TValue>` extracts the route value as a strongly-typed `TValue` (via `TypeConverter`, overridable through `TryConvert`) before calling `ValueTask<bool> IsAuthorised(TValue value)`. The original stringly-typed `RouteParamAuthorisationHandler<TRequirement>` is unchanged.
+
+### Additive / source-compatible changes
+
+- **`Asm.Net`:** added `uint.ToIPAddress()`, the inverse of `IPAddress.ToUInt32()`.
+- **`Asm.Reqnroll`:** added `<NULL>` step-argument transforms for `long?`, `decimal?`, and `double?`, mirroring the existing `int?` transform.
+- **Nullability:** `IsNullOrEmpty` extensions (enumerable/list/array) are annotated `[NotNullWhen(false)]`; `Asm.Reqnroll` `DecodeWhitespace` is annotated `[return: NotNullIfNotNull]` and accepts `string?`.
+- **`WebApplicationStart`:** is now a `static` class and gained `RunAsync`; `AppStart.Run`/`RunAsync` share a single implementation.
+- **`Asm.Testing.Domain`:** `MockDbSet<T>` now delegates its setup to `MockDbSetFactory` (no duplicated Moq wiring).
+- **`Asm.ModelContextProtocol`:** `WithToolsFromAssemblies` guards null/empty inputs and also loads matching *referenced* assemblies that are not yet loaded.
+
 ## Batch 5 — Modules to DI; ProblemDetails to `IExceptionHandler`
 
 This batch moves two subsystems off process-wide **static** state and onto **dependency injection** so that

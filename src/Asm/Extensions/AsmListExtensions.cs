@@ -1,4 +1,6 @@
-﻿namespace System.Collections.Generic;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace System.Collections.Generic;
 
 /// <summary>
 /// Extensions for the <see cref="IList{T}"/> interface.
@@ -36,7 +38,7 @@ public static class AsmListExtensions
     /// <typeparam name="T">The type of elements in the list.</typeparam>
     /// <param name="list">The list to check.</param>
     /// <returns><c>true</c> if the list is <c>null</c> or empty; otherwise, <c>false</c>.</returns>
-    public static bool IsNullOrEmpty<T>(this IList<T>? list) =>
+    public static bool IsNullOrEmpty<T>([NotNullWhen(false)] this IList<T>? list) =>
         (list?.Count ?? 0) == 0;
 
     /// <summary>

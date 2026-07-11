@@ -7,7 +7,7 @@
 /// <typeparam name="TKey">The type of the entity's key.</typeparam>
 public interface IDeletableRepository<TEntity, TKey> : IRepository<TEntity, TKey>
     where TEntity : KeyedEntity<TKey>
-    where TKey : struct
+    where TKey : notnull
 {
     /// <summary>
     /// Deletes an entity by its key.

@@ -3,6 +3,17 @@ namespace Asm.Tests;
 [Binding]
 public class ExceptionsSteps
 {
+    // AsmException is abstract; exercise its behaviour through a minimal concrete subclass.
+    private sealed class TestAsmException : AsmException
+    {
+        public TestAsmException() : base() { }
+        public TestAsmException(string message) : base(message) { }
+        public TestAsmException(string message, Exception innerException) : base(message, innerException) { }
+        public TestAsmException(int errorId) : base(errorId) { }
+        public TestAsmException(string message, int errorId) : base(message, errorId) { }
+        public TestAsmException(string message, int errorId, Exception innerException) : base(message, errorId, innerException) { }
+    }
+
     private AsmException _asmException = null!;
     private Exception _innerException = null!;
 
@@ -15,37 +26,43 @@ public class ExceptionsSteps
     [When(@"I create an AsmException with the default constructor")]
     public void WhenICreateAnAsmExceptionWithTheDefaultConstructor()
     {
-        _asmException = new AsmException();
+        _asmException = new TestAsmException();
     }
 
     [When(@"I create an AsmException with message '(.*)'")]
     public void WhenICreateAnAsmExceptionWithMessage(string message)
     {
-        _asmException = new AsmException(message);
+        _asmException = new TestAsmException(message);
     }
 
     [When(@"I create an AsmException with message '(.*)' and the inner exception")]
     public void WhenICreateAnAsmExceptionWithMessageAndInnerException(string message)
     {
-        _asmException = new AsmException(message, _innerException);
+        _asmException = new TestAsmException(message, _innerException);
     }
 
     [When(@"I create an AsmException with error id (.*)")]
     public void WhenICreateAnAsmExceptionWithErrorId(int errorId)
     {
-        _asmException = new AsmException(errorId);
+        _asmException = new TestAsmException(errorId);
     }
 
     [When(@"I create an AsmException with message '(.*)' and error id (.*)")]
     public void WhenICreateAnAsmExceptionWithMessageAndErrorId(string message, int errorId)
     {
-        _asmException = new AsmException(message, errorId);
+        _asmException = new TestAsmException(message, errorId);
     }
 
     [When(@"I create an AsmException with message '(.*)', error id (.*) and the inner exception")]
     public void WhenICreateAnAsmExceptionWithMessageErrorIdAndInnerException(string message, int errorId)
     {
-        _asmException = new AsmException(message, errorId, _innerException);
+        _asmException = new TestAsmException(message, errorId, _innerException);
+    }
+
+    [Then(@"AsmException is abstract")]
+    public void ThenAsmExceptionIsAbstract()
+    {
+        Assert.True(typeof(AsmException).IsAbstract);
     }
 
     [Then(@"the AsmException has a unique Id")]

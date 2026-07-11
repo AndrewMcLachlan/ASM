@@ -29,12 +29,24 @@ public static class MockDbSetFactory
     public static Mock<DbSet<T>> Create<T>(IQueryable<T> data) where T : class
     {
         var mockSet = new Mock<DbSet<T>>();
+        Configure(mockSet, data);
+        return mockSet;
+    }
+
+    /// <summary>
+    /// Configures the supplied <see cref="DbSet{T}"/> mock to serve the given data with both
+    /// synchronous and asynchronous LINQ support.
+    /// </summary>
+    /// <typeparam name="T">The entity type.</typeparam>
+    /// <param name="mockSet">The mock to configure.</param>
+    /// <param name="data">The data to return.</param>
+    internal static void Configure<T>(Mock<DbSet<T>> mockSet, IQueryable<T> data) where T : class
+    {
         mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(new TestAsyncQueryProvider<T>(data.Provider));
         mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
         mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
         mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
         mockSet.As<IAsyncEnumerable<T>>().Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>())).Returns(() => new TestAsyncEnumerator<T>(data.GetEnumerator()));
-        return mockSet;
     }
 
     /// <summary>

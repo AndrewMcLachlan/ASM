@@ -6,6 +6,7 @@ public class IEnumerableExtensionsSteps(ScenarioContext context)
     private IEnumerable<int> _enumerable;
     private IEnumerable<int> _result;
     private bool _boolResult;
+    private Exception _exception;
 
     [Given(@"I have an enumerable with values \[(.*)\]")]
     public void GivenIHaveAnEnumerableWithValues(string values)
@@ -36,6 +37,12 @@ public class IEnumerableExtensionsSteps(ScenarioContext context)
     public void WhenICallPageWithPageSizeAndPageNumber(int pageSize, int pageNumber)
     {
         _result = _enumerable!.Page(pageSize, pageNumber);
+    }
+
+    [When(@"I call Page with page size (.*) and page number (.*) expecting an exception")]
+    public void WhenICallPageExpectingAnException(int pageSize, int pageNumber)
+    {
+        _exception = Record.Exception(() => _enumerable!.Page(pageSize, pageNumber))!;
     }
 
     [When(@"I call Shuffle on the enumerable")]
@@ -76,6 +83,12 @@ public class IEnumerableExtensionsSteps(ScenarioContext context)
     public void ThenTheResultShouldBeEmpty()
     {
         Assert.Empty(_result!);
+    }
+
+    [Then(@"an ArgumentOutOfRangeException is thrown")]
+    public void ThenAnArgumentOutOfRangeExceptionIsThrown()
+    {
+        Assert.IsType<ArgumentOutOfRangeException>(_exception);
     }
 
     [Then(@"the result should contain all original elements")]

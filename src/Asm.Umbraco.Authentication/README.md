@@ -53,4 +53,6 @@ Harden this to suit your app:
 
 ### App registration
 
-Register the app in Entra ID with redirect URI `https://<your-host>/signin-oidc`. Grant `openid`, `profile`, and `email` delegated permissions.
+Register the app in Entra ID with redirect URI `https://<your-host>/signin-entraid`. Grant `openid`, `profile`, and `email` delegated permissions.
+
+> **v4 breaking change:** the callback path moved from `/signin-oidc` to `/signin-entraid` and the back-office scheme name changed from `OpenIdConnect` to `EntraId`. Update the Entra app-registration redirect URI accordingly. Existing back-office external logins keyed on the old scheme name may need to be re-linked.
