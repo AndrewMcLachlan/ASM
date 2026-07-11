@@ -105,3 +105,66 @@ MapCommand<TRequest>(pattern, CommandBinding binding = CommandBinding.Parameters
 **What to change:**
 - Void `MapCommand<TRequest>` / `MapPutCommand<TRequest>` are source-compatible with v3 — the status-code parameter is retained (renamed `returnStatusCode` → `statusCode`, same position and `204` default), now with `binding` added after it.
 - If you passed `binding` **positionally** to a body-returning map (`MapCommand<Cmd, Result>(pattern, CommandBinding.Body)`), it now needs to be named — `MapCommand<Cmd, Result>(pattern, binding: CommandBinding.Body)` — because `statusCode` is now the second parameter. Everything else is source-compatible (both `statusCode` and `binding` are optional).
+
+## Batch 6 — Nybble arithmetic
+
+> ⚠️ **Silent behavioural change — no compiler will flag most call sites.** The `+` operator on `Asm.Nybble` now performs **arithmetic addition**. In v3 it performed **concatenation** (packing two 4-bit values into a byte). Code that compiles unchanged against v4 will silently compute different results.
+
+### What changed
+
+In v3 the `+` operators (and the underlying `Add` methods) were documented as "adds" but actually **concatenated** — they shifted the left operand up four bits and OR-ed the nybble into the low four bits:
+
+```csharp
+// v3
+Nybble a = new(0x5), b = new(0x3);
+byte result = a + b;   // 0x53 == 83  (concatenation, despite the "Add" name)
+```
+
+In v4 `+` does what the documentation always promised — it **adds**:
+
+```csharp
+// v4
+Nybble a = new(0x5), b = new(0x3);
+Nybble result = a + b; // 0x8 == 8   (arithmetic sum)
+```
+
+### Overflow decision
+
+`Nybble + Nybble` **wraps modulo 16** (only the low four bits are kept), mirroring how a physical 4-bit register overflows. It never throws and always yields a valid `Nybble`:
+
+```csharp
+Nybble max = new(0xF);
+Nybble wrapped = max + max;  // 30 & 0xF == 14  (0xE)
+```
+
+The integer-mixed operators wrap in the usual unchecked manner for their result type.
+
+### Return types are now coherent (breaking)
+
+Each operator now returns the type that arithmetic addition naturally yields, rather than the old mismatched set (`byte` / `ulong` / `int`):
+
+| Expression        | v3 return (concatenation) | v4 return (arithmetic)      |
+|-------------------|---------------------------|-----------------------------|
+| `Nybble + Nybble` | `byte`                    | `Nybble` (wraps mod 16)     |
+| `uint + Nybble`   | `ulong`                   | `uint`                      |
+| `byte + Nybble`   | `int`                     | `int`                       |
+
+The `Nybble.Add(...)` static methods changed correspondingly — they too now add instead of concatenate, matching their long-standing XML docs.
+
+### Keeping the old concatenation behaviour
+
+The v3 concatenation is preserved under explicit, well-named members — replace old `+`/`Add` concatenation call sites with these:
+
+```csharp
+Nybble.Combine(high, low);      // two nybbles -> byte  (was: nybbleA + nybbleB)
+Nybble.Append(uintValue, n);    // append nybble -> ulong (was: uintValue + nybble)
+Nybble.Append(byteValue, n);    // append nybble -> int   (was: byteValue + nybble)
+```
+
+`Combine(0x5, 0x3)` returns `0x53` (83) — identical to what `+` produced in v3.
+
+### What to change
+
+- **Audit every `a + b` / `Nybble.Add(...)` involving a `Nybble`.** If you relied on the packing behaviour (building a byte/word out of nybbles), switch to `Nybble.Combine` / `Nybble.Append`.
+- If you genuinely wanted addition, you were previously getting the wrong answer — `+` now returns the correct arithmetic sum (and, for two nybbles, a `Nybble` that wraps mod 16).
+- Update any variable declarations whose type was inferred from the old return type (e.g. `byte r = a + b;` no longer compiles for two nybbles — the result is now a `Nybble`).

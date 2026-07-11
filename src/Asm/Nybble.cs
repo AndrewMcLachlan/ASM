@@ -77,87 +77,101 @@ public readonly struct Nybble
     }
 
     /// <summary>
-    ///
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static byte operator +(Nybble a, Nybble b)
-    {
-        return Add(a, b);
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static ulong operator +(uint a, Nybble b)
-    {
-        return Add(a, b);
-    }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static int operator +(byte a, Nybble b)
-    {
-        return Add(a, b);
-    }
-
-    /// <summary>
-    /// Adds two nybbles together.
+    /// Adds two nybbles together arithmetically.
     /// </summary>
     /// <param name="a">The first nybble.</param>
     /// <param name="b">The second nybble.</param>
-    /// <returns>the sum of the two nybbles.</returns>
-    public static byte Add(Nybble a, Nybble b)
-    {
-        byte aa = a.ByteValue;
-        byte bb = b.ByteValue;
-
-        aa <<= 4;
-
-        return Convert.ToByte(aa | bb);
-    }
+    /// <returns>
+    /// A <see cref="Nybble"/> holding the arithmetic sum. The result wraps modulo 16 (that is, only the
+    /// low four bits are kept), so <c>15 + 15</c> yields <c>14</c>, mirroring how a 4-bit register overflows.
+    /// To concatenate two nybbles into a byte (the pre-v4 behaviour of this operator) use <see cref="Combine"/>.
+    /// </returns>
+    public static Nybble operator +(Nybble a, Nybble b) => Add(a, b);
 
     /// <summary>
-    /// Adds a nybble to an integer.
+    /// Adds a nybble to an unsigned integer arithmetically.
     /// </summary>
-    /// <param name="a">The integer to add to.</param>
+    /// <param name="a">The unsigned integer to add to.</param>
     /// <param name="b">The nybble to add.</param>
-    /// <returns>the sum of the two numbers.</returns>
-    public static ulong Add(uint a, Nybble b)
-    {
-        long aa = a;
-        byte bb = b.ByteValue;
-
-        aa <<= 4;
-
-        long cc = aa | bb;
-
-        return Convert.ToUInt64(cc);
-    }
+    /// <returns>
+    /// The arithmetic sum as a <see cref="uint"/>. The result wraps in the usual unchecked <see cref="uint"/>
+    /// manner on overflow. To append the nybble as an extra hexadecimal digit (the pre-v4 behaviour of this
+    /// operator) use <see cref="Append(uint, Nybble)"/>.
+    /// </returns>
+    public static uint operator +(uint a, Nybble b) => Add(a, b);
 
     /// <summary>
-    /// Adds a nybble to a byte.
+    /// Adds a nybble to a byte arithmetically.
     /// </summary>
     /// <param name="a">The byte to add to.</param>
     /// <param name="b">The nybble to add.</param>
-    /// <returns>the sum of the two numbers.</returns>
-    public static int Add(byte a, Nybble b)
-    {
-        int aa = a;
-        byte bb = b.ByteValue;
+    /// <returns>
+    /// The arithmetic sum as an <see cref="int"/> (matching C# numeric promotion for <see cref="byte"/> addition).
+    /// To append the nybble as an extra hexadecimal digit (the pre-v4 behaviour of this operator) use
+    /// <see cref="Append(byte, Nybble)"/>.
+    /// </returns>
+    public static int operator +(byte a, Nybble b) => Add(a, b);
 
-        aa <<= 4;
+    /// <summary>
+    /// Adds two nybbles together arithmetically, wrapping modulo 16.
+    /// </summary>
+    /// <param name="a">The first nybble.</param>
+    /// <param name="b">The second nybble.</param>
+    /// <returns>The arithmetic sum as a <see cref="Nybble"/>; values above 15 wrap modulo 16.</returns>
+    public static Nybble Add(Nybble a, Nybble b) => new((byte)((a.ByteValue + b.ByteValue) & MaxValue));
 
-        return aa | bb;
-    }
+    /// <summary>
+    /// Adds a nybble to an unsigned integer arithmetically.
+    /// </summary>
+    /// <param name="a">The unsigned integer to add to.</param>
+    /// <param name="b">The nybble to add.</param>
+    /// <returns>The arithmetic sum as a <see cref="uint"/>.</returns>
+    public static uint Add(uint a, Nybble b) => a + (uint)b.ByteValue;
+
+    /// <summary>
+    /// Adds a nybble to a byte arithmetically.
+    /// </summary>
+    /// <param name="a">The byte to add to.</param>
+    /// <param name="b">The nybble to add.</param>
+    /// <returns>The arithmetic sum as an <see cref="int"/>.</returns>
+    public static int Add(byte a, Nybble b) => a + b.ByteValue;
+
+    /// <summary>
+    /// Combines two nybbles into a single byte, placing <paramref name="high"/> in the upper four bits
+    /// and <paramref name="low"/> in the lower four bits.
+    /// </summary>
+    /// <param name="high">The nybble to place in the most-significant four bits.</param>
+    /// <param name="low">The nybble to place in the least-significant four bits.</param>
+    /// <returns>The combined byte. For example, <c>Combine(0x5, 0x3)</c> returns <c>0x53</c> (83).</returns>
+    /// <remarks>
+    /// This is the concatenation behaviour that the <c>+</c> operator performed prior to v4. Use this method
+    /// where you previously relied on <c>nybbleA + nybbleB</c> producing a combined byte.
+    /// </remarks>
+    public static byte Combine(Nybble high, Nybble low) => (byte)((high.ByteValue << 4) | low.ByteValue);
+
+    /// <summary>
+    /// Appends a nybble to an unsigned integer as an extra least-significant hexadecimal digit
+    /// (shifts <paramref name="value"/> left four bits and stores <paramref name="nybble"/> in the low four bits).
+    /// </summary>
+    /// <param name="value">The value to shift left and append to.</param>
+    /// <param name="nybble">The nybble to place in the least-significant four bits.</param>
+    /// <returns>The combined value as a <see cref="ulong"/>. For example, <c>Append(0x5u, 0x3)</c> returns <c>0x53</c> (83).</returns>
+    /// <remarks>
+    /// This is the concatenation behaviour that the <c>uint + Nybble</c> operator performed prior to v4.
+    /// </remarks>
+    public static ulong Append(uint value, Nybble nybble) => ((ulong)value << 4) | nybble.ByteValue;
+
+    /// <summary>
+    /// Appends a nybble to a byte as an extra least-significant hexadecimal digit
+    /// (shifts <paramref name="value"/> left four bits and stores <paramref name="nybble"/> in the low four bits).
+    /// </summary>
+    /// <param name="value">The value to shift left and append to.</param>
+    /// <param name="nybble">The nybble to place in the least-significant four bits.</param>
+    /// <returns>The combined value as an <see cref="int"/>. For example, <c>Append((byte)0x5, 0x3)</c> returns <c>0x53</c> (83).</returns>
+    /// <remarks>
+    /// This is the concatenation behaviour that the <c>byte + Nybble</c> operator performed prior to v4.
+    /// </remarks>
+    public static int Append(byte value, Nybble nybble) => (value << 4) | nybble.ByteValue;
 
     /// <summary>
     /// Checks equality a given nybble against this one.
