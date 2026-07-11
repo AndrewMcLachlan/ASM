@@ -564,3 +564,38 @@ free. Exceptions the handler doesn't recognise fall through to other handlers or
 - Replace `services.AddProblemDetailsFactory()` with `services.AddAsmExceptionHandler()`. `UseStandardExceptionHandler()` is unchanged at the call site (it now delegates to `UseExceptionHandler()`).
 - To map your own exception types, add an `IExceptionHandler` (`services.AddExceptionHandler<MyHandler>()`) that writes via `IProblemDetailsService` — handlers are consulted in registration order, so register app-specific handlers before `AddAsmExceptionHandler()` to override, or after to supplement.
 - If you relied on MVC's `ProblemDetailsFactory` for controller `ValidationProblem()` shaping, register your own subclass — ASM no longer provides one (the library is minimal-API oriented).
+
+## Phase 5 — Two-phase domain events
+
+Domain-event handlers now run in one of two clearly separated phases, and a handler opts into a phase by implementing that phase's interface (in `Asm.Domain`):
+
+| Interface | Runs | Use for |
+|---|---|---|
+| `IPreSaveDomainEventHandler<TEvent>` | Inside the transaction, immediately **before** the write | In-database reactions that must be persisted atomically with the aggregate that raised the event. |
+| `IPostSaveDomainEventHandler<TEvent>` | Only **after** the transaction commits successfully | External side-effects — email, message-bus publish, cache invalidation — that must not happen unless the change is durable. |
+
+A handler may implement one interface, the other, or both. Not implementing a phase interface is the opt-out for that phase — there is no ambiguous default.
+
+### Preserved behaviour — `IDomainEventHandler<TEvent>`
+
+`IDomainEventHandler<TEvent>` is retained and unchanged. It is the base contract that `IPreSaveDomainEventHandler<TEvent>` extends, and it **runs pre-save**, exactly as it did before v4.0. Existing handlers therefore keep compiling and keep running in the pre-save phase with no changes. New handlers should prefer `IPreSaveDomainEventHandler<TEvent>` to make the phase explicit.
+
+`AddDomainEvents(assembly)` and `AddDomainEvent<THandler, TEvent>()` register a handler under every phase contract it implements, so it is dispatched in each phase it opts into.
+
+### How dispatch works
+
+`DomainDbContext.SaveChanges`/`SaveChangesAsync` now dispatch in two phases around the write:
+
+1. **Pre-save.** The context drains `entity.Events` and dispatches each event to its pre-save handlers (`IPublisher.PublishPreSave`) inside the transaction, before `base.SaveChanges`. As today, the drain loops so that events raised **by** a pre-save handler during the drain are dispatched in the same save. Every dispatched event is captured up front into an ordered snapshot — the drain clears `entity.Events` as it goes, so the snapshot (not the entity) is what the post-save phase reads. The snapshot includes events raised by pre-save handlers, because those commit in the same transaction and so their post-save handlers must fire too.
+2. **Commit.** `base.SaveChanges` runs.
+3. **Post-save.** Only if the commit succeeded, each event in the captured snapshot is dispatched to its post-save handlers (`IPublisher.PublishPostSave`).
+
+Both the synchronous and asynchronous save paths behave identically; the async path threads the `CancellationToken` through.
+
+### `IPublisher`
+
+`IPublisher` gains `PublishPreSave` and `PublishPostSave`. The original `Publish` is now `[Obsolete]` and forwards to `PublishPreSave` (preserving its pre-save semantics) for one major cycle; migrate calls to `PublishPreSave`.
+
+### Reliability caveat (post-save)
+
+A post-save handler runs against an **already-committed** aggregate. If it throws, there is **no rollback** — the data is already durable. Post-save handlers must therefore be **idempotent and safe to retry**. Guaranteed delivery is outbox territory and is deliberately out of scope; the pre/post interfaces are a clean foundation for adding an outbox later without changing them.

@@ -21,4 +21,9 @@ internal class TestEntity([DisallowNull] int id) : KeyedEntity<int>(id)
     {
         this.Events.Add(new TestDomainEventMulti());
     }
+
+    public void TriggerTwoPhaseDomainEvent()
+    {
+        this.Events.Add(new TestTwoPhaseDomainEvent());
+    }
 }
