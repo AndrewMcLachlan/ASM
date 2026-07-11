@@ -478,3 +478,89 @@ A new `RouteParamAuthorisationHandler<TRequirement, TValue>` extracts the route 
 - **`WebApplicationStart`:** is now a `static` class and gained `RunAsync`; `AppStart.Run`/`RunAsync` share a single implementation.
 - **`Asm.Testing.Domain`:** `MockDbSet<T>` now delegates its setup to `MockDbSetFactory` (no duplicated Moq wiring).
 - **`Asm.ModelContextProtocol`:** `WithToolsFromAssemblies` guards null/empty inputs and also loads matching *referenced* assemblies that are not yet loaded.
+
+## Batch 5 — Modules to DI; ProblemDetails to `IExceptionHandler`
+
+This batch moves two subsystems off process-wide **static** state and onto **dependency injection** so that
+multiple applications, test hosts, or DI containers in the same process no longer share (and clobber) each
+other's registrations.
+
+### Modules: registered in DI, mapped from the service provider
+
+Previously the module system kept a **static** `List<IModule>` inside `Modules`. `RegisterModules(...)`
+overwrote that list and `MapModuleEndpoints()` read from it. Two `WebApplication`s built in the same process
+shared the list — the last `RegisterModules` call won, and registration was **not** additive.
+
+Modules are now registered into DI as `IModule` singletons, and `MapModuleEndpoints()` resolves them from
+`IEndpointRouteBuilder.ServiceProvider`:
+
+```csharp
+// Register (additive — call as many times as you like, nothing is clobbered):
+builder.Services.AddModule<MyModule>();
+builder.Services.AddModule(new MyOtherModule());
+builder.Services.AddModules([new ModuleA(), new ModuleB()]);
+builder.Services.AddModules(typeof(MyModule).Assembly);   // assembly scan
+
+// Map (resolves every registered IModule from the app's service provider):
+app.MapModuleEndpoints();
+```
+
+New service-collection helpers:
+
+- `IServiceCollection AddModule<T>()` — `T : class, IModule, new()`
+- `IServiceCollection AddModule(IModule module)`
+- `IServiceCollection AddModules(IEnumerable<IModule> modules)`
+- `IServiceCollection AddModules(params Assembly[] assemblies)` / `AddModules(IEnumerable<Assembly>)`
+
+**Breaking changes:**
+
+- The static `Modules.RegisteredModules` list is gone. `RegisterModules(...)` and `MapModuleEndpoints()`
+  keep the same signatures, but they now flow through DI. Because `MapModuleEndpoints()` reads modules from
+  `IEndpointRouteBuilder.ServiceProvider`, **the modules must have been registered into the same
+  application's service collection** (which `RegisterModules(...)` and the new `AddModule*` helpers do).
+- Registration is now **additive**. Code that relied on a second `RegisterModules(...)` call *replacing* the
+  first set of modules must be updated — every registered module is now mapped.
+
+**What to change:** most callers need no change — keep using `builder.RegisterModules(...)` then
+`app.MapModuleEndpoints()`. Prefer the new `AddModule*` helpers when composing modules directly on the
+service collection.
+
+### ProblemDetails: `IExceptionHandler` + `AddProblemDetails()` (custom factory retired)
+
+The custom `Asm.AspNetCore.ProblemDetailsFactory` predated the framework's problem-details infrastructure.
+It subclassed MVC's `ProblemDetailsFactory` but really did exception→ProblemDetails mapping off a **static**
+handler dictionary, and `UseStandardExceptionHandler` hand-wrote the JSON. It has been replaced with the
+idiomatic ASP.NET Core pipeline (available since .NET 7/8):
+
+```csharp
+builder.Services.AddAsmExceptionHandler();   // AddProblemDetails() + AsmExceptionHandler
+// …
+app.UseStandardExceptionHandler();           // thin wrapper over app.UseExceptionHandler()
+```
+
+`AsmExceptionHandler : IExceptionHandler` carries the ASM exception mapping (`NotFoundException`→404,
+`ExistsException`→409, `NotAuthorisedException`→403, `ValidationException`→400 with an `errors` extension,
+`AsmException`→500 with a `Code` extension, `BadHttpRequestException`/`InvalidOperationException`→400) and
+writes through `IProblemDetailsService`. `AddAsmExceptionHandler()` also registers a `CustomizeProblemDetails`
+that adds the `traceId` extension and, outside production, the full error detail for unmapped failures.
+
+**Why:** `IExceptionHandler` registrations are **per container** (no static state — this is the real fix for
+the cross-container leakage), compose by chaining, and get content negotiation and the writer abstraction for
+free. Exceptions the handler doesn't recognise fall through to other handlers or the framework's default
+500 problem-detail.
+
+**Removed (breaking):**
+
+| Old | New |
+|---|---|
+| `ProblemDetailsFactory` (class) | `AsmExceptionHandler : IExceptionHandler` |
+| `ProblemDetailsFactoryOptions` | — (no per-handler options type needed) |
+| `services.AddProblemDetailsFactory()` | `services.AddAsmExceptionHandler()` |
+| `services.AddProblemDetailsHandler<T>(...)` | register your own `IExceptionHandler` (`services.AddExceptionHandler<T>()`) |
+| `ProblemDetailsFactory.AddHandler<T>(...)` / `.Handlers` | register your own `IExceptionHandler` |
+
+**What to change:**
+
+- Replace `services.AddProblemDetailsFactory()` with `services.AddAsmExceptionHandler()`. `UseStandardExceptionHandler()` is unchanged at the call site (it now delegates to `UseExceptionHandler()`).
+- To map your own exception types, add an `IExceptionHandler` (`services.AddExceptionHandler<MyHandler>()`) that writes via `IProblemDetailsService` — handlers are consulted in registration order, so register app-specific handlers before `AddAsmExceptionHandler()` to override, or after to supplement.
+- If you relied on MVC's `ProblemDetailsFactory` for controller `ValidationProblem()` shaping, register your own subclass — ASM no longer provides one (the library is minimal-API oriented).

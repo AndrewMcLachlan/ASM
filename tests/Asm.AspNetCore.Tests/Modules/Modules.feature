@@ -28,3 +28,24 @@ Scenario: MapModuleEndpoints maps registered module endpoints
     And I have registered modules
     When I build the application and map module endpoints
     Then the module endpoints should be mapped
+
+@Unit
+Scenario: AddModule registers a module in dependency injection
+    Given I have a module service collection
+    When I add a TestModule to the collection
+    Then the service provider should resolve 1 module(s)
+    And the module services should be registered in the collection
+
+@Unit
+Scenario: Module registration is additive
+    Given I have a module service collection
+    When I add a TestModule to the collection
+    And I add a SecondTestModule to the collection
+    Then the service provider should resolve 2 module(s)
+
+@Unit
+Scenario: MapModuleEndpoints maps endpoints for every DI-registered module
+    Given I have a WebApplicationBuilder
+    And I have registered two modules
+    When I build the application and map module endpoints
+    Then both module endpoints should be mapped

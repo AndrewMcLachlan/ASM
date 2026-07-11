@@ -1,10 +1,12 @@
+using System.Diagnostics;
+using Asm.AspNetCore;
 using Asm.AspNetCore.Middleware;
 using Asm.AspNetCore.Reporting;
 using Asm.AspNetCore.Security;
 using Asm.Security;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -77,12 +79,48 @@ public static class AsmAspNetCoreServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Adds the custom <see cref="ProblemDetailsFactory"/> to the services collection.
+    /// Registers the Asm problem-details pipeline: the <see cref="AsmExceptionHandler"/> plus
+    /// <c>AddProblemDetails()</c> with a customisation that adds a <c>traceId</c> extension and,
+    /// outside production, the full error detail for otherwise-undescribed failures.
     /// </summary>
+    /// <remarks>
+    /// Wire the handler into the pipeline with <c>app.UseExceptionHandler()</c> (or the equivalent
+    /// <see cref="AsmAspNetCoreApplicationBuilderExtensions.UseStandardExceptionHandler"/>). To map
+    /// further exception types, register additional
+    /// <see cref="Microsoft.AspNetCore.Diagnostics.IExceptionHandler"/> implementations — they compose
+    /// per container, so there is no shared static handler state.
+    /// </remarks>
     /// <param name="services">The <see cref="IServiceCollection"/> that this method extends.</param>
     /// <returns>The <see cref="IServiceCollection"/> so that calls can be chained.</returns>
-    public static IServiceCollection AddProblemDetailsFactory(this IServiceCollection services) =>
-        services.AddTransient<ProblemDetailsFactory, Asm.AspNetCore.ProblemDetailsFactory>();
+    public static IServiceCollection AddAsmExceptionHandler(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        services.AddProblemDetails(options =>
+            options.CustomizeProblemDetails = static context =>
+            {
+                var traceId = Activity.Current?.Id ?? context.HttpContext.TraceIdentifier;
+                if (traceId is not null)
+                {
+                    context.ProblemDetails.Extensions["traceId"] = traceId;
+                }
+
+                // Outside production, surface the full error for failures that carry no detail
+                // (for example the framework's default 500 for an exception this library does not map).
+                if (context.ProblemDetails.Detail is null && context.Exception is not null)
+                {
+                    var environment = context.HttpContext.RequestServices.GetService<IHostEnvironment>();
+                    if (environment is null || !environment.IsProduction())
+                    {
+                        context.ProblemDetails.Detail = context.Exception.ToString();
+                    }
+                }
+            });
+
+        services.AddExceptionHandler<AsmExceptionHandler>();
+
+        return services;
+    }
 
     /// <summary>
     /// Adds the <see cref="HttpContextPrincipalProvider"/> to the services collection.
