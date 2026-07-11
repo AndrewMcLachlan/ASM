@@ -59,6 +59,70 @@ Scenario: Invalid entry throws FormatException
     When I create a Hosts instance from the invalid stream
     Then an exception of type 'System.FormatException' is thrown
 
+@Unit
+Scenario: Malformed entry throws an actionable exception naming the line
+    Given I have a hosts file stream with an invalid entry
+    When I create a Hosts instance from the invalid stream
+    Then an exception of type 'System.FormatException' is thrown
+    And the exception message should contain "Wibble"
+    And the exception message should contain "line 2"
+
+@Unit
+Scenario: AddEntry appends a host entry
+    Given I have a hosts file stream with standard entries
+    And I create a Hosts instance from the stream
+    When I add a host entry for "10.0.0.1" aliased "added"
+    Then the hosts file should have 9 entries
+    And entry 8 should have address "10.0.0.1"
+    And entry 8 should have alias "added"
+
+@Unit
+Scenario: InsertEntry inserts a host entry at an index
+    Given I have a hosts file stream with standard entries
+    And I create a Hosts instance from the stream
+    When I insert a host entry for "10.0.0.2" aliased "inserted" at index 0
+    Then the hosts file should have 9 entries
+    And entry 0 should have address "10.0.0.2"
+    And entry 0 should have alias "inserted"
+
+@Unit
+Scenario: UpdateEntry replaces a host entry
+    Given I have a hosts file stream with standard entries
+    And I create a Hosts instance from the stream
+    When I update entry 4 with alias "updated"
+    Then entry 4 should have alias "updated"
+    And the hosts file should have 8 entries
+
+@Unit
+Scenario: ClearEntries removes all host entries
+    Given I have a hosts file stream with standard entries
+    And I create a Hosts instance from the stream
+    When I clear all entries
+    Then the hosts file should have 0 entries
+
+@Unit
+Scenario: AddEntry rejects a null entry
+    Given I have a hosts file stream with standard entries
+    And I create a Hosts instance from the stream
+    When I try to add a null host entry
+    Then an exception of type 'System.ArgumentNullException' is thrown
+
+@Unit
+Scenario: Entries returns an immutable snapshot
+    Given I have a hosts file stream with standard entries
+    And I create a Hosts instance from the stream
+    When I capture the current entries snapshot
+    And I add a host entry for "10.0.0.9" aliased "later"
+    Then the captured snapshot should still have 8 entries
+    And the hosts file should have 9 entries
+
+@Integration
+Scenario: Concurrent refresh and read does not tear
+    Given I have a mock hosts file on disk
+    And I create a Hosts instance from the file path
+    When I concurrently refresh and read the entries
+    Then no exception is thrown
+
 @Integration
 Scenario: Load hosts file from file path
     Given I have a mock hosts file on disk

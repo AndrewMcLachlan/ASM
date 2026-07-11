@@ -169,6 +169,75 @@ Nybble.Append(byteValue, n);    // append nybble -> int   (was: byteValue + nybb
 - If you genuinely wanted addition, you were previously getting the wrong answer — `+` now returns the correct arithmetic sum (and, for two nybbles, a `Nybble` that wraps mod 16).
 - Update any variable declarations whose type was inferred from the old return type (e.g. `byte r = a + b;` no longer compiles for two nybbles — the result is now a `Nybble`).
 
+## Batch 4 — Hosts redesign
+
+`Asm.Win32.Hosts` (the Windows hosts-file reader/writer) has been hardened around its entry
+collection, made thread-safe on refresh, annotated as Windows-only, and made strict about
+malformed input. `HostEntry` and `HostEntryType` are unchanged.
+
+### `Entries` is now a read-only snapshot
+
+`Hosts.Entries` changed from a **mutable** `IList<HostEntry>` to an immutable
+`IReadOnlyList<HostEntry>`. Each `get` returns a point-in-time **snapshot**, so it can no longer
+be mutated in place, and a reference you captured earlier does not observe later changes.
+
+Direct mutation is replaced by explicit methods on `Hosts`:
+
+| Old (v3) | New (v4) |
+|---|---|
+| `hosts.Entries.Add(entry)` | `hosts.AddEntry(entry)` |
+| `hosts.Entries.Insert(i, entry)` | `hosts.InsertEntry(i, entry)` |
+| `hosts.Entries[i] = entry` | `hosts.UpdateEntry(i, entry)` |
+| `hosts.Entries.Remove(entry)` | `hosts.RemoveEntry(entry)` |
+| `hosts.Entries.RemoveAt(i)` | `hosts.RemoveEntryAt(i)` |
+| `hosts.Entries.Clear()` | `hosts.ClearEntries()` |
+
+All mutators guard their arguments (`AddEntry`/`InsertEntry`/`UpdateEntry` throw
+`ArgumentNullException` for a null entry; the index-based mutators throw
+`ArgumentOutOfRangeException` for an out-of-range index). This is a breaking, **compile-time**
+change with no `[Obsolete]` shim — the member type itself changed, so old mutation call sites
+will not compile until switched to the methods above. Read access (`Entries[i]`, `.Count`,
+enumeration) is unchanged.
+
+### Refresh is now thread-safe
+
+The internal poll timer calls `Refresh()` on a background thread. Previously the reparse cleared
+and repopulated the live entry list while callers could be enumerating `Entries`, which could
+throw `InvalidOperationException` ("Collection was modified") or observe a half-built list.
+
+Parsing now builds a local list and swaps it into the shared state under a lock, and `Entries`
+returns a locked snapshot. Concurrent reads and a concurrent refresh no longer tear or throw.
+No API change — existing code simply becomes safe.
+
+### `[SupportedOSPlatform("windows")]`
+
+`Hosts` is now annotated `[SupportedOSPlatform("windows")]` (it targets the Windows hosts file at
+`%SystemRoot%\System32\drivers\etc\hosts`). Consumers that call it from code not already scoped to
+Windows will get analyzer warning **CA1416**. Guard usage with `OperatingSystem.IsWindows()`, or
+annotate the calling member/assembly with `[SupportedOSPlatform("windows")]`. The attribute is
+analyzer-only and does not change runtime behaviour, so stream/file-based usage (e.g. in tests)
+continues to work cross-platform. `HostEntry`/`HostEntryType` are pure data types and are **not**
+annotated.
+
+### Malformed entries throw instead of degrading silently
+
+An inconsistent/malformed host line (a non-blank, non-comment line whose first token is not a
+valid IP address) now throws a `FormatException` with an actionable message that names the
+offending line **and its line number**, e.g.:
+
+```
+Malformed host entry at line 2: 'Wibble'. Expected an IP address followed by an optional alias and comment (e.g. '127.0.0.1 localhost #comment').
+```
+
+Previously such input was reported with a terse `Unexpected entry in hosts file: <line>` message
+(no line number). The exception **type is unchanged (`FormatException`)**, so `catch` blocks keep
+working; only the message text and precision improved. Genuinely blank lines and comment lines
+(including `#`-prefixed free text) still parse as `Blank`/`Comment` as before — only truly
+malformed address lines throw.
+
+**What to change:** if you asserted on the exact old message text, update it. If you relied on a
+malformed line being swallowed, either sanitise the file first or catch `FormatException`.
+
 ## Batch 7 — Options-pattern conformance
 
 This batch brings the `Asm.AspNetCore` canonical-URL and security-header/reporting extensions into line with the standard ASP.NET Core options pattern, and makes the reporting↔security-header coupling independent of registration order.
