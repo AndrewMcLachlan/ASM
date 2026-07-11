@@ -12,7 +12,7 @@ namespace Umbraco.Cms.Core.DependencyInjection;
 /// Extensions on <see cref="IUmbracoBuilder"/> for registering
 /// Microsoft Entra ID back-office authentication.
 /// </summary>
-public static class IUmbracoBuilderExtensions
+public static class AsmUmbracoAuthenticationBuilderExtensions
 {
     /// <summary>
     /// Registers Microsoft Entra ID as an Umbraco back-office external login provider

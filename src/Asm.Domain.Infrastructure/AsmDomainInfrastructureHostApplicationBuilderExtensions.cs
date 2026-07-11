@@ -8,7 +8,7 @@ namespace Asm.AspNetCore.Extensions;
 /// <summary>
 /// Extensions to the <see cref="IHostApplicationBuilder"/> interface.
 /// </summary>
-public static class IHostApplicationBuilderExtensions
+public static class AsmDomainInfrastructureHostApplicationBuilderExtensions
 {
     /// <summary>
     /// Adds the OpenTelemetry for Entity Framework and SQL Client instrumentation to the application builder.

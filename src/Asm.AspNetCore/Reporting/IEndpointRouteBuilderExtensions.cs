@@ -20,7 +20,7 @@ public static class IEndpointRouteBuilderExtensions
 
     /// <summary>
     /// Maps the security-reporting endpoints.
-    /// Requires <see cref="IServiceCollectionExtensions.AddSecurityReporting"/>
+    /// Requires <see cref="AsmAspNetCoreServiceCollectionExtensions.AddSecurityReporting"/>
     /// to have been called.
     /// </summary>
     /// <param name="endpoints">The endpoint-route builder.</param>

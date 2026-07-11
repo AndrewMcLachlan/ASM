@@ -11,7 +11,7 @@ namespace Umbraco.Cms.Core.DependencyInjection;
 /// Extensions on <see cref="IUmbracoBuilder"/> for registering
 /// <see cref="FixedMachineInfoFactory"/>.
 /// </summary>
-public static class IUmbracoBuilderExtensions
+public static class AsmUmbracoBuilderExtensions
 {
     /// <summary>
     /// Registers <see cref="FixedMachineInfoFactory"/> as the Umbraco

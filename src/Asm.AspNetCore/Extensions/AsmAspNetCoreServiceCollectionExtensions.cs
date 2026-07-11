@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// Extensions for the <see cref="IServiceCollection"/> class.
 /// </summary>
-public static class IServiceCollectionExtensions
+public static class AsmAspNetCoreServiceCollectionExtensions
 {
     /// <summary>
     /// Registers a <see cref="HeaderPolicyCollection"/> singleton populated with the

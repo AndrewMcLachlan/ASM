@@ -6,7 +6,7 @@ using NetEscapades.AspNetCore.SecurityHeaders.Headers;
 namespace Asm.AspNetCore.Tests.Extensions;
 
 /// <summary>
-/// Tests for <see cref="IServiceCollectionExtensions.AddStandardSecurityHeaders"/>.
+/// Tests for <see cref="AsmAspNetCoreServiceCollectionExtensions.AddStandardSecurityHeaders"/>.
 /// </summary>
 public class IServiceCollectionExtensionsStandardSecurityTests
 {

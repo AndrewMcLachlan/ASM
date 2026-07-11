@@ -49,7 +49,7 @@ public static class IApplicationBuilderExtensions
     /// <summary>
     /// Adds the NetEscapades security-headers middleware to the pipeline using the
     /// <see cref="HeaderPolicyCollection"/> registered via
-    /// <see cref="IServiceCollectionExtensions.AddStandardSecurityHeaders"/>, optionally
+    /// <see cref="AsmAspNetCoreServiceCollectionExtensions.AddStandardSecurityHeaders"/>, optionally
     /// skipping the supplied request path prefixes.
     /// </summary>
     /// <remarks>
