@@ -60,3 +60,43 @@ public class IIdentifiableEqualityComparer<TType, TKey> : IdentifiableEqualityCo
 ```
 
 Existing `new IIdentifiableEqualityComparer<T, TKey>()` code keeps compiling with a deprecation warning; move to `IdentifiableEqualityComparer<T, TKey>` at your convenience. The alias is removed in the next major.
+
+## Batch 2 — CQRS surface
+
+### Void-command dispatch renamed to `Execute`
+
+`ICommandDispatcher` had two `Dispatch` overloads: `Dispatch<TResponse>(ICommand<TResponse>)` and the void `Dispatch(ICommand)`. Because `ICommand<T>` derives from `ICommand`, a value-returning command held in a variable typed as the non-generic `ICommand` bound silently to the **void** overload — a compile-time trap. The void overload is now:
+
+```csharp
+ValueTask Execute(ICommand command, CancellationToken cancellationToken = default);
+```
+
+`Dispatch(ICommand)` remains as an `[Obsolete]` default-interface method forwarding to `Execute` for one major cycle, so existing calls keep compiling with a deprecation warning. **What to change:** replace `dispatcher.Dispatch(voidCommand)` with `dispatcher.Execute(voidCommand)`. Value-returning `Dispatch<TResponse>(...)` is unchanged.
+
+### Variance removed from the CQRS interfaces
+
+The covariant/contravariant annotations provided no usable benefit (the dispatcher resolves exact closed generic handler types via DI, where variance does not participate) and were inconsistent between commands and queries. They are removed:
+
+| Interface | Before | After |
+|---|---|---|
+| `IDispatchable<TResponse>` | `<out TResponse>` | invariant |
+| `ICommand<TResponse>` | `<out TResponse>` | invariant |
+| `IQuery<TResponse>` | `<out TResponse>` | invariant |
+| `ICommandHandler<TCommand, TResponse>` | `<in TCommand, …>` | invariant (aligns with `IQueryHandler`) |
+
+**What to change:** only code that relied on the variance — e.g. assigning an `IQuery<Derived>` to an `IQuery<Base>` variable, or an `ICommandHandler<BaseCommand, …>` where a derived-command handler was expected. Handler registrations and normal dispatch are unaffected.
+
+### Endpoint mapping: consistent binding, no forced status codes
+
+The `Map*` command extensions previously came in pairs (with/without a `CommandBinding`), and the two paths bound differently — the simple overload hard-coded `[AsParameters]` while the binding overload defaulted to body. They are now **single methods** with one consistent, overridable default:
+
+```csharp
+MapCommand<TRequest, TResponse>(pattern, CommandBinding binding = CommandBinding.Parameters)
+MapCommand<TRequest>(pattern, CommandBinding binding = CommandBinding.Parameters)
+// …likewise MapPatchCommand, MapPutCommand, MapPostCreate, MapPutCreate, MapDelete
+```
+
+- **Default binding is `CommandBinding.Parameters`** (`[AsParameters]`) everywhere — matching what the old simple overloads did. Pass `CommandBinding.Body` to bind the whole request from the JSON body, or `CommandBinding.None` to let the framework decide.
+- **Void commands no longer take a `returnStatusCode` and no longer declare a status.** `MapCommand<TRequest>` / `MapPutCommand<TRequest>` complete as the framework default (**200 OK, no body**). Opt into a specific code on the returned builder — `.Produces(StatusCodes.Status202Accepted)` — or return your own `IResult`. Semantic verbs keep their conventional codes: **Create maps still return 201**, **Delete still returns 204**.
+
+**What to change:** callers of `MapCommand<TRequest>(pattern, returnStatusCode)` (or the `returnStatusCode, binding` overload) drop the status-code argument; if you relied on the previous `204` default, add `.Produces(StatusCodes.Status204NoContent)` and return `Results.NoContent()` from your handler, or use `MapDelete`. All other `Map*` call sites are source-compatible (the new `binding` parameter is optional).

@@ -50,7 +50,7 @@ public class CommandTests
         // A handler that throws synchronously must surface its own exception type, not a
         // TargetInvocationException from the reflection dispatch.
         await Assert.ThrowsAsync<InvalidOperationException>(
-            async () => await commandDispatcher.Dispatch(new ThrowingCommand(), TestContext.Current.CancellationToken));
+            async () => await commandDispatcher.Execute(new ThrowingCommand(), TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -61,12 +61,12 @@ public class CommandTests
         services.AddCommandHandlers(GetType().Assembly);
         var commandDispatcher = services.BuildServiceProvider().GetRequiredService<ICommandDispatcher>();
 
-        // TestCommand implements ICommand<bool>; dispatching it through a variable typed as the
-        // non-generic ICommand selects the void overload, which cannot resolve a handler.
+        // TestCommand implements ICommand<bool>; executing it through a variable typed as the
+        // non-generic ICommand uses the void Execute method, which cannot resolve a handler.
         ICommand command = new TestCommand { Input = "ABC" };
 
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            async () => await commandDispatcher.Dispatch(command, TestContext.Current.CancellationToken));
+            async () => await commandDispatcher.Execute(command, TestContext.Current.CancellationToken));
 
         Assert.Contains("Dispatch<TResponse>", exception.Message);
     }

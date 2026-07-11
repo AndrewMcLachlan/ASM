@@ -106,7 +106,7 @@ namespace Asm.Cqrs.AspNetCore.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("IEndpointRouteBulderExtensions.feature.ndjson", 20);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("IEndpointRouteBulderExtensions.feature.ndjson", 19);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -643,17 +643,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Map a POST command without response with custom status code")]
+        [global::Xunit.FactAttribute(DisplayName="Map a POST command without response with binding")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
-        [global::Xunit.TraitAttribute("Description", "Map a POST command without response with custom status code")]
+        [global::Xunit.TraitAttribute("Description", "Map a POST command without response with binding")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task MapAPOSTCommandWithoutResponseWithCustomStatusCode()
+        public async global::System.Threading.Tasks.Task MapAPOSTCommandWithoutResponseWithBinding()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "14";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a POST command without response with custom status code", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a POST command without response with binding", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 91
@@ -670,8 +670,8 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have an IEndpointRouteBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 93
-    await testRunner.WhenAsync("I map a POST command without response with pattern \"/test-command-status\" and sta" +
-                        "tus code 202", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I map a POST command without response with pattern \"/test-command-empty-binding\" " +
+                        "and binding \"Body\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 94
     await testRunner.ThenAsync("the route should be mapped correctly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -680,17 +680,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Map a POST command without response with status code and binding")]
+        [global::Xunit.FactAttribute(DisplayName="Map a PATCH command with binding")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
-        [global::Xunit.TraitAttribute("Description", "Map a POST command without response with status code and binding")]
+        [global::Xunit.TraitAttribute("Description", "Map a PATCH command with binding")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task MapAPOSTCommandWithoutResponseWithStatusCodeAndBinding()
+        public async global::System.Threading.Tasks.Task MapAPATCHCommandWithBinding()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "15";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a POST command without response with status code and binding", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a PATCH command with binding", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 97
@@ -707,8 +707,8 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have an IEndpointRouteBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 99
-    await testRunner.WhenAsync("I map a POST command without response with pattern \"/test-command-status-binding\"" +
-                        ", status code 202 and binding \"Body\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I map a PATCH command with pattern \"/test-patch-binding\" and binding \"Parameters\"" +
+                        "", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 100
     await testRunner.ThenAsync("the route should be mapped correctly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
@@ -717,17 +717,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Map a PATCH command with binding")]
+        [global::Xunit.FactAttribute(DisplayName="Map a PUT command with binding")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
-        [global::Xunit.TraitAttribute("Description", "Map a PATCH command with binding")]
+        [global::Xunit.TraitAttribute("Description", "Map a PUT command with binding")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task MapAPATCHCommandWithBinding()
+        public async global::System.Threading.Tasks.Task MapAPUTCommandWithBinding()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "16";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a PATCH command with binding", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a PUT command with binding", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 103
@@ -744,46 +744,9 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have an IEndpointRouteBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 105
-    await testRunner.WhenAsync("I map a PATCH command with pattern \"/test-patch-binding\" and binding \"Parameters\"" +
-                        "", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 106
-    await testRunner.ThenAsync("the route should be mapped correctly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.FactAttribute(DisplayName="Map a PUT command with binding")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "IEndpointRouteBuilderExtensions")]
-        [global::Xunit.TraitAttribute("Description", "Map a PUT command with binding")]
-        [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task MapAPUTCommandWithBinding()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "Unit"};
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "17";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Map a PUT command with binding", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 109
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 110
-    await testRunner.GivenAsync("I have an IEndpointRouteBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 111
     await testRunner.WhenAsync("I map a PUT command with pattern \"/test-put-binding\" and binding \"Body\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 112
+#line 106
     await testRunner.ThenAsync("the route should be mapped correctly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }

@@ -105,17 +105,11 @@ public class IEndpointRouteBuilderExtensionsSteps
         _routeHandlerBuilder = _endpoints.MapCommand<TestCommand, TestResponse>(pattern, commandBinding);
     }
 
-    [When(@"I map a POST command without response with pattern ""(.*)"" and status code (.*)")]
-    public void WhenIMapAPostCommandWithoutResponseWithPatternAndStatusCode(string pattern, int statusCode)
-    {
-        _routeHandlerBuilder = _endpoints.MapCommand<TestCommandEmpty>(pattern, statusCode);
-    }
-
-    [When(@"I map a POST command without response with pattern ""(.*)"", status code (.*) and binding ""(.*)""")]
-    public void WhenIMapAPostCommandWithoutResponseWithPatternStatusCodeAndBinding(string pattern, int statusCode, string binding)
+    [When(@"I map a POST command without response with pattern ""(.*)"" and binding ""(.*)""")]
+    public void WhenIMapAPostCommandWithoutResponseWithPatternAndBinding(string pattern, string binding)
     {
         var commandBinding = Enum.Parse<CommandBinding>(binding);
-        _routeHandlerBuilder = _endpoints.MapCommand<TestCommandEmpty>(pattern, statusCode, commandBinding);
+        _routeHandlerBuilder = _endpoints.MapCommand<TestCommandEmpty>(pattern, commandBinding);
     }
 
     [When(@"I map a PATCH command with pattern ""(.*)"" and binding ""(.*)""")]
