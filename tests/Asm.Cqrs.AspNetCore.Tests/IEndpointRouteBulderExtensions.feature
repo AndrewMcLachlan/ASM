@@ -88,15 +88,9 @@ Scenario: Map a POST command with response and binding
     Then the route should be mapped correctly
 
 @Unit
-Scenario: Map a POST command without response with custom status code
+Scenario: Map a POST command without response with binding
     Given I have an IEndpointRouteBuilder
-    When I map a POST command without response with pattern "/test-command-status" and status code 202
-    Then the route should be mapped correctly
-
-@Unit
-Scenario: Map a POST command without response with status code and binding
-    Given I have an IEndpointRouteBuilder
-    When I map a POST command without response with pattern "/test-command-status-binding", status code 202 and binding "Body"
+    When I map a POST command without response with pattern "/test-command-empty-binding" and binding "Body"
     Then the route should be mapped correctly
 
 @Unit

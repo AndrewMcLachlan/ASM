@@ -51,18 +51,18 @@ internal class Dispatcher(IServiceProvider serviceProvider) : IQueryDispatcher, 
         return ((Func<object, object, CancellationToken, ValueTask<TResponse>>)invoker)(handler, command, cancellationToken);
     }
 
-    public ValueTask Dispatch(ICommand command, CancellationToken cancellationToken = default)
+    public ValueTask Execute(ICommand command, CancellationToken cancellationToken = default)
     {
         var commandType = command.GetType();
 
-        // A command that actually returns a response can reach this void overload when dispatched
-        // through a variable statically typed as ICommand. Only ICommandHandler<TCommand> is looked
-        // up here (never registered for such commands), so fail with an actionable message rather
-        // than an opaque "no service registered" error.
+        // A command that actually returns a response can reach Execute when passed through a variable
+        // statically typed as ICommand. Only ICommandHandler<TCommand> is looked up here (never
+        // registered for such commands), so fail with an actionable message rather than an opaque
+        // "no service registered" error.
         if (Array.Exists(commandType.GetInterfaces(), i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommand<>)))
         {
             throw new InvalidOperationException(
-                $"Command '{commandType.Name}' returns a response; dispatch it with Dispatch<TResponse>(ICommand<TResponse>) rather than the void Dispatch(ICommand) overload.");
+                $"Command '{commandType.Name}' returns a response; dispatch it with Dispatch<TResponse>(ICommand<TResponse>) rather than the void Execute(ICommand) method.");
         }
 
         var (handlerType, invoker) = VoidCommandHandlers.GetOrAdd(

@@ -60,3 +60,48 @@ public class IIdentifiableEqualityComparer<TType, TKey> : IdentifiableEqualityCo
 ```
 
 Existing `new IIdentifiableEqualityComparer<T, TKey>()` code keeps compiling with a deprecation warning; move to `IdentifiableEqualityComparer<T, TKey>` at your convenience. The alias is removed in the next major.
+
+## Batch 2 — CQRS surface
+
+### Void-command dispatch renamed to `Execute`
+
+`ICommandDispatcher` had two `Dispatch` overloads: `Dispatch<TResponse>(ICommand<TResponse>)` and the void `Dispatch(ICommand)`. Because `ICommand<T>` derives from `ICommand`, a value-returning command held in a variable typed as the non-generic `ICommand` bound silently to the **void** overload — a compile-time trap. The void overload is now:
+
+```csharp
+ValueTask Execute(ICommand command, CancellationToken cancellationToken = default);
+```
+
+`Dispatch(ICommand)` remains as an `[Obsolete]` default-interface method forwarding to `Execute` for one major cycle, so existing calls keep compiling with a deprecation warning. **What to change:** replace `dispatcher.Dispatch(voidCommand)` with `dispatcher.Execute(voidCommand)`. Value-returning `Dispatch<TResponse>(...)` is unchanged.
+
+### Variance removed from the CQRS interfaces
+
+The covariant/contravariant annotations provided no usable benefit (the dispatcher resolves exact closed generic handler types via DI, where variance does not participate) and were inconsistent between commands and queries. They are removed:
+
+| Interface | Before | After |
+|---|---|---|
+| `IDispatchable<TResponse>` | `<out TResponse>` | invariant |
+| `ICommand<TResponse>` | `<out TResponse>` | invariant |
+| `IQuery<TResponse>` | `<out TResponse>` | invariant |
+| `ICommandHandler<TCommand, TResponse>` | `<in TCommand, …>` | invariant (aligns with `IQueryHandler`) |
+
+**What to change:** only code that relied on the variance — e.g. assigning an `IQuery<Derived>` to an `IQuery<Base>` variable, or an `ICommandHandler<BaseCommand, …>` where a derived-command handler was expected. Handler registrations and normal dispatch are unaffected.
+
+### Endpoint mapping: consistent binding, no forced status codes
+
+The `Map*` command extensions previously came in pairs (with/without a `CommandBinding`), and the two paths bound differently — the simple overload hard-coded `[AsParameters]` while the binding overload defaulted to body. They are now **single methods** with one consistent, overridable default:
+
+```csharp
+MapCommand<TRequest, TResponse>(pattern, CommandBinding binding = CommandBinding.Parameters)
+MapCommand<TRequest>(pattern, CommandBinding binding = CommandBinding.Parameters)
+// …likewise MapPatchCommand, MapPutCommand, MapPostCreate, MapPutCreate, MapDelete
+```
+
+- **Default binding is `CommandBinding.Parameters`** (`[AsParameters]`) everywhere — matching what the old simple overloads did. Pass `CommandBinding.Body` to bind the whole request from the JSON body, or `CommandBinding.None` to let the framework decide.
+- **Body-returning commands take an optional `statusCode` (default 200 OK).** `MapCommand<TRequest, TResponse>`, `MapPatchCommand`, `MapPutCommand` and `MapDelete<TRequest, TResponse>` accept `int statusCode = StatusCodes.Status200OK` before `binding`, so a command that returns a body can use e.g. `202 Accepted` — `MapCommand<Cmd, Result>(pattern, StatusCodes.Status202Accepted)`. 200 uses a typed `Ok<T>` result; other codes are emitted via `Results.Json(result, statusCode)`.
+- **Void commands take an optional `statusCode` (default 204 No Content).** `MapCommand<TRequest>` / `MapPutCommand<TRequest>` respond with the given code via `Results.StatusCode(statusCode)`, declared through `.Produces(statusCode)` — so the 204 default and the ability to override (e.g. `202 Accepted`) both survive from v3. Create maps still return 201, and `MapDelete` (no response) returns 204.
+
+> **Note on `.Produces(...)`:** it only adds OpenAPI metadata — it does **not** change the runtime status. That's why the status is set inside the handler (`Results.StatusCode` / `Results.Json`) rather than left to the framework default and "documented" with `.Produces`.
+
+**What to change:**
+- Void `MapCommand<TRequest>` / `MapPutCommand<TRequest>` are source-compatible with v3 — the status-code parameter is retained (renamed `returnStatusCode` → `statusCode`, same position and `204` default), now with `binding` added after it.
+- If you passed `binding` **positionally** to a body-returning map (`MapCommand<Cmd, Result>(pattern, CommandBinding.Body)`), it now needs to be named — `MapCommand<Cmd, Result>(pattern, binding: CommandBinding.Body)` — because `statusCode` is now the second parameter. Everything else is source-compatible (both `statusCode` and `binding` are optional).

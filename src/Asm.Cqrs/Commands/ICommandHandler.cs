@@ -6,7 +6,7 @@ namespace Asm.Cqrs.Commands;
 /// </summary>
 /// <typeparam name="TCommand">The type of the command.</typeparam>
 /// <typeparam name="TResponse">The type of the response.</typeparam>
-public interface ICommandHandler<in TCommand, TResponse> where TCommand : ICommand<TResponse>
+public interface ICommandHandler<TCommand, TResponse> where TCommand : ICommand<TResponse>
 {
     /// <summary>
     /// Handles the command.
@@ -21,7 +21,7 @@ public interface ICommandHandler<in TCommand, TResponse> where TCommand : IComma
 /// A handler for a command that does not return a response.
 /// </summary>
 /// <typeparam name="TCommand">The type of the command</typeparam>
-public interface ICommandHandler<in TCommand> where TCommand : ICommand
+public interface ICommandHandler<TCommand> where TCommand : ICommand
 {
     /// <summary>
     /// Handles the command.

@@ -11,8 +11,7 @@ public class HandlersSteps
     private Mock<ICommandDispatcher> _commandDispatcherMock;
     private DefaultHttpContext _httpContext;
     private IResult _result;
-    private int _intResult;
-    private bool _commandDispatched;
+    private bool _commandExecuted;
     private object _expectedResult;
     private Delegate _lastHandler;
     private CommandBinding _lastBinding;
@@ -26,6 +25,16 @@ public class HandlersSteps
     private record TestCommandNoResponse(string Value) : ICommand;
     private record TestCreateCommand(string Name) : ICommand<TestCreatedItem>;
     private record TestCreatedItem(int Id, string Name);
+
+    private static readonly Type ProductionHandlers =
+        typeof(Asm.AspNetCore.AsmCqrsAspNetCoreEndpointRouteBuilderExtensions).Assembly.GetType("Asm.AspNetCore.Handlers")!;
+
+    private static MethodInfo Factory(string name, int genericArgs, Func<MethodInfo, bool> filter = null) =>
+        ProductionHandlers.GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
+            .Where(m => m.Name == name && m.GetGenericArguments().Length == genericArgs)
+            .First(m => filter?.Invoke(m) ?? true);
+
+    // ── Given ───────────────────────────────────────────────────────────────
 
     [Given(@"I have a query dispatcher that returns '(.*)'")]
     public void GivenIHaveAQueryDispatcherThatReturns(string result)
@@ -58,9 +67,9 @@ public class HandlersSteps
     {
         _commandDispatcherMock = new Mock<ICommandDispatcher>();
         _commandDispatcherMock
-            .Setup(x => x.Dispatch(It.IsAny<ICommand>(), It.IsAny<CancellationToken>()))
+            .Setup(x => x.Execute(It.IsAny<ICommand>(), It.IsAny<CancellationToken>()))
             .Returns(ValueTask.CompletedTask)
-            .Callback(() => _commandDispatched = true);
+            .Callback(() => _commandExecuted = true);
     }
 
     [Given(@"I have a command dispatcher that returns '(.*)'")]
@@ -93,190 +102,91 @@ public class HandlersSteps
         _expectedResult = createdItem;
     }
 
-    [When(@"I invoke HandleQuery with the query")]
-    public async Task WhenIInvokeHandleQueryWithTheQuery()
-    {
-        var handleQueryMethod = typeof(Handlers).GetMethod("HandleQuery", BindingFlags.Static | BindingFlags.NonPublic)!
-            .MakeGenericMethod(typeof(TestQuery), typeof(string));
+    // ── When ────────────────────────────────────────────────────────────────
 
-        var query = new TestQuery("test");
-        var resultTask = (ValueTask<IResult>)handleQueryMethod.Invoke(null, [query, _queryDispatcherMock.Object, CancellationToken.None])!;
-        _result = await resultTask;
+    [When(@"I invoke the query handler")]
+    public async Task WhenIInvokeTheQueryHandler()
+    {
+        var method = Factory("HandleQuery", 2).MakeGenericMethod(typeof(TestQuery), typeof(string));
+        _result = await (ValueTask<IResult>)method.Invoke(null, [new TestQuery("test"), _queryDispatcherMock.Object, CancellationToken.None])!;
     }
 
-    [When(@"I invoke HandlePagedQuery with the query")]
-    public async Task WhenIInvokeHandlePagedQueryWithTheQuery()
+    [When(@"I invoke the paged query handler")]
+    public async Task WhenIInvokeThePagedQueryHandler()
     {
-        var handlePagedQueryMethod = typeof(Handlers).GetMethod("HandlePagedQuery", BindingFlags.Static | BindingFlags.NonPublic)!
-            .MakeGenericMethod(typeof(TestPagedQuery), typeof(string));
-
-        var query = new TestPagedQuery();
-        var resultTask = (ValueTask<IResult>)handlePagedQueryMethod.Invoke(null, [query, _httpContext, _queryDispatcherMock.Object, CancellationToken.None])!;
-        _result = await resultTask;
+        var method = Factory("HandlePagedQuery", 2).MakeGenericMethod(typeof(TestPagedQuery), typeof(string));
+        _result = await (ValueTask<IResult>)method.Invoke(null, [new TestPagedQuery(), _httpContext, _queryDispatcherMock.Object, CancellationToken.None])!;
     }
 
-    [When(@"I invoke HandleDelete with a delete command")]
-    public async Task WhenIInvokeHandleDeleteWithADeleteCommand()
-    {
-        var handleDeleteMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "HandleDelete" && m.GetGenericArguments().Length == 1)
-            .MakeGenericMethod(typeof(TestDeleteCommand));
+    [When(@"I invoke the delete handler")]
+    public Task WhenIInvokeTheDeleteHandler() => InvokeDeleteHandler(CommandBinding.None);
 
-        var command = new TestDeleteCommand(1);
-        var resultTask = (ValueTask<IResult>)handleDeleteMethod.Invoke(null, [command, _commandDispatcherMock.Object, CancellationToken.None])!;
-        _result = await resultTask;
+    [When(@"I invoke the delete handler with response")]
+    public async Task WhenIInvokeTheDeleteHandlerWithResponse()
+    {
+        var handler = (Delegate)Factory("CreateCommandHandler", 2)
+            .MakeGenericMethod(typeof(TestDeleteCommandWithResponse), typeof(string))
+            .Invoke(null, [StatusCodes.Status200OK, CommandBinding.None])!;
+        _result = await (Task<IResult>)handler.DynamicInvoke(new TestDeleteCommandWithResponse(1), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
-    [When(@"I invoke HandleDelete with response with the command")]
-    public async Task WhenIInvokeHandleDeleteWithResponseWithTheCommand()
-    {
-        var handleDeleteMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "HandleDelete" && m.GetGenericArguments().Length == 2)
-            .MakeGenericMethod(typeof(TestDeleteCommandWithResponse), typeof(string));
+    [When(@"I invoke the command handler with response")]
+    public Task WhenIInvokeTheCommandHandlerWithResponse() => InvokeValueCommandHandler(StatusCodes.Status200OK, CommandBinding.None);
 
-        var command = new TestDeleteCommandWithResponse(1);
-        var resultTask = (ValueTask<IResult>)handleDeleteMethod.Invoke(null, [command, _commandDispatcherMock.Object, CancellationToken.None])!;
-        _result = await resultTask;
+    [When(@"I invoke the command handler with response and status code (.*)")]
+    public Task WhenIInvokeTheCommandHandlerWithResponseAndStatusCode(int statusCode) => InvokeValueCommandHandler(statusCode, CommandBinding.None);
+
+    [When(@"I invoke the command handler with response and binding '(.*)'")]
+    public Task WhenIInvokeTheCommandHandlerWithResponseAndBinding(string binding) => InvokeValueCommandHandler(StatusCodes.Status200OK, Enum.Parse<CommandBinding>(binding));
+
+    [When(@"I invoke the void command handler")]
+    public Task WhenIInvokeTheVoidCommandHandler() => InvokeVoidCommandHandler(StatusCodes.Status204NoContent, CommandBinding.None);
+
+    [When(@"I invoke the void command handler with status code (.*)")]
+    public Task WhenIInvokeTheVoidCommandHandlerWithStatusCode(int statusCode) => InvokeVoidCommandHandler(statusCode, CommandBinding.None);
+
+    [When(@"I invoke the void command handler with binding '(.*)'")]
+    public Task WhenIInvokeTheVoidCommandHandlerWithBinding(string binding) => InvokeVoidCommandHandler(StatusCodes.Status204NoContent, Enum.Parse<CommandBinding>(binding));
+
+    [When(@"I invoke the create handler with route name '([^']+)'$")]
+    public Task WhenIInvokeTheCreateHandler(string routeName) => InvokeCreateHandler(routeName, CommandBinding.None);
+
+    [When(@"I invoke the create handler with route name '(.*)' and binding '(.*)'")]
+    public Task WhenIInvokeTheCreateHandlerWithBinding(string routeName, string binding) => InvokeCreateHandler(routeName, Enum.Parse<CommandBinding>(binding));
+
+    private async Task InvokeDeleteHandler(CommandBinding binding)
+    {
+        _lastBinding = binding;
+        _lastHandler = (Delegate)Factory("CreateDeleteHandler", 1).MakeGenericMethod(typeof(TestDeleteCommand)).Invoke(null, [binding])!;
+        _result = await (Task<IResult>)_lastHandler.DynamicInvoke(new TestDeleteCommand(1), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
-    [When(@"I invoke HandleCommand with the command")]
-    public async Task WhenIInvokeHandleCommandWithTheCommand()
+    private async Task InvokeValueCommandHandler(int statusCode, CommandBinding binding)
     {
-        var handleCommandMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "HandleCommand" && m.GetGenericArguments().Length == 2)
-            .MakeGenericMethod(typeof(TestCommand), typeof(int));
-
-        var command = new TestCommand("test");
-        var resultTask = (ValueTask<int>)handleCommandMethod.Invoke(null, [command, _commandDispatcherMock.Object, CancellationToken.None])!;
-        _intResult = await resultTask;
+        _lastBinding = binding;
+        _lastHandler = (Delegate)Factory("CreateCommandHandler", 2).MakeGenericMethod(typeof(TestCommand), typeof(int)).Invoke(null, [statusCode, binding])!;
+        _result = await (Task<IResult>)_lastHandler.DynamicInvoke(new TestCommand("Test"), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
-    [When(@"I invoke HandleCommand without response")]
-    public async Task WhenIInvokeHandleCommandWithoutResponse()
+    private async Task InvokeVoidCommandHandler(int statusCode, CommandBinding binding)
     {
-        _commandDispatched = false;
-        _commandDispatcherMock
-            .Setup(x => x.Dispatch(It.IsAny<TestCommandNoResponse>(), It.IsAny<CancellationToken>()))
-            .Returns(ValueTask.CompletedTask)
-            .Callback(() => _commandDispatched = true);
-
-        var handleCommandMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "HandleCommand" && m.GetGenericArguments().Length == 1)
-            .MakeGenericMethod(typeof(TestCommandNoResponse));
-
-        var command = new TestCommandNoResponse("test");
-        var resultTask = (ValueTask)handleCommandMethod.Invoke(null, [command, _commandDispatcherMock.Object, CancellationToken.None])!;
-        await resultTask;
+        _commandExecuted = false;
+        _lastBinding = binding;
+        _lastHandler = (Delegate)Factory("CreateVoidCommandHandler", 1).MakeGenericMethod(typeof(TestCommandNoResponse)).Invoke(null, [statusCode, binding])!;
+        _result = await (Task<IResult>)_lastHandler.DynamicInvoke(new TestCommandNoResponse("Test"), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
-    [When(@"I invoke CreateCreateHandler with route name '([^']+)' and the command$")]
-    public async Task WhenIInvokeCreateCreateHandlerWithRouteNameAndTheCommand(string routeName)
+    private async Task InvokeCreateHandler(string routeName, CommandBinding binding)
     {
-        var createCreateHandlerMethod = typeof(Handlers).GetMethod("CreateCreateHandler", BindingFlags.Static | BindingFlags.NonPublic)!
+        _lastBinding = binding;
+        var factory = Factory("CreateCreateHandler", 2, m => m.GetParameters()[1].ParameterType.GetGenericArguments().Length == 2)
             .MakeGenericMethod(typeof(TestCreateCommand), typeof(TestCreatedItem));
-
         Func<TestCreatedItem, object> getRouteParams = item => new { id = item.Id };
-        var handler = (Delegate)createCreateHandlerMethod.Invoke(null, [routeName, getRouteParams, CommandBinding.None])!;
-
-        var command = new TestCreateCommand("Test");
-        var task = (Task<IResult>)handler.DynamicInvoke(command, _commandDispatcherMock.Object, CancellationToken.None)!;
-        _result = await task;
+        _lastHandler = (Delegate)factory.Invoke(null, [routeName, getRouteParams, binding])!;
+        _result = await (Task<IResult>)_lastHandler.DynamicInvoke(new TestCreateCommand("Test"), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
-    [When(@"I invoke CreateCommandHandler with status code (.*)")]
-    public async Task WhenIInvokeCreateCommandHandlerWithStatusCode(int statusCode)
-    {
-        _commandDispatcherMock
-            .Setup(x => x.Dispatch(It.IsAny<TestCommandNoResponse>(), It.IsAny<CancellationToken>()))
-            .Returns(ValueTask.CompletedTask);
-
-        var createCommandHandlerMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "CreateCommandHandler" && m.GetGenericArguments().Length == 1)
-            .MakeGenericMethod(typeof(TestCommandNoResponse));
-
-        var handler = (Delegate)createCommandHandlerMethod.Invoke(null, [statusCode, CommandBinding.None])!;
-
-        var command = new TestCommandNoResponse("Test");
-        var task = (Task<IResult>)handler.DynamicInvoke(command, _commandDispatcherMock.Object, CancellationToken.None)!;
-        _result = await task;
-    }
-
-    [When(@"I invoke CreateCommandHandler with response and status code (.*)")]
-    public async Task WhenIInvokeCreateCommandHandlerWithResponseAndStatusCode(int statusCode)
-    {
-        _commandDispatcherMock
-            .Setup(x => x.Dispatch(It.IsAny<TestCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(42);
-
-        var createCommandHandlerMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "CreateCommandHandler" && m.GetGenericArguments().Length == 2)
-            .MakeGenericMethod(typeof(TestCommand), typeof(int));
-
-        var handler = (Delegate)createCommandHandlerMethod.Invoke(null, [statusCode, CommandBinding.None])!;
-
-        var command = new TestCommand("Test");
-        var task = (Task<IResult>)handler.DynamicInvoke(command, _commandDispatcherMock.Object, CancellationToken.None)!;
-        _result = await task;
-    }
-
-    [When(@"I invoke CreateCommandHandler with status code (.*) and binding '(.*)'")]
-    public async Task WhenIInvokeCreateCommandHandlerWithStatusCodeAndBinding(int statusCode, string bindingName)
-    {
-        var binding = Enum.Parse<CommandBinding>(bindingName);
-        _lastBinding = binding;
-
-        _commandDispatcherMock
-            .Setup(x => x.Dispatch(It.IsAny<TestCommandNoResponse>(), It.IsAny<CancellationToken>()))
-            .Returns(ValueTask.CompletedTask);
-
-        var createCommandHandlerMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "CreateCommandHandler" && m.GetGenericArguments().Length == 1)
-            .MakeGenericMethod(typeof(TestCommandNoResponse));
-
-        _lastHandler = (Delegate)createCommandHandlerMethod.Invoke(null, [statusCode, binding])!;
-
-        var command = new TestCommandNoResponse("Test");
-        var task = (Task<IResult>)_lastHandler.DynamicInvoke(command, _commandDispatcherMock.Object, CancellationToken.None)!;
-        _result = await task;
-    }
-
-    [When(@"I invoke CreateCommandHandler with response, status code (.*) and binding '(.*)'")]
-    public async Task WhenIInvokeCreateCommandHandlerWithResponseStatusCodeAndBinding(int statusCode, string bindingName)
-    {
-        var binding = Enum.Parse<CommandBinding>(bindingName);
-        _lastBinding = binding;
-
-        _commandDispatcherMock
-            .Setup(x => x.Dispatch(It.IsAny<TestCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(42);
-
-        var createCommandHandlerMethod = typeof(Handlers).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .First(m => m.Name == "CreateCommandHandler" && m.GetGenericArguments().Length == 2)
-            .MakeGenericMethod(typeof(TestCommand), typeof(int));
-
-        _lastHandler = (Delegate)createCommandHandlerMethod.Invoke(null, [statusCode, binding])!;
-
-        var command = new TestCommand("Test");
-        var task = (Task<IResult>)_lastHandler.DynamicInvoke(command, _commandDispatcherMock.Object, CancellationToken.None)!;
-        _result = await task;
-    }
-
-    [When(@"I invoke CreateCreateHandler with route name '(.*)', binding '(.*)' and the command")]
-    public async Task WhenIInvokeCreateCreateHandlerWithRouteNameBindingAndTheCommand(string routeName, string bindingName)
-    {
-        var binding = Enum.Parse<CommandBinding>(bindingName);
-        _lastBinding = binding;
-
-        var createCreateHandlerMethod = typeof(Handlers).GetMethod("CreateCreateHandler", BindingFlags.Static | BindingFlags.NonPublic)!
-            .MakeGenericMethod(typeof(TestCreateCommand), typeof(TestCreatedItem));
-
-        Func<TestCreatedItem, object> getRouteParams = item => new { id = item.Id };
-        _lastHandler = (Delegate)createCreateHandlerMethod.Invoke(null, [routeName, getRouteParams, binding])!;
-
-        var command = new TestCreateCommand("Test");
-        var task = (Task<IResult>)_lastHandler.DynamicInvoke(command, _commandDispatcherMock.Object, CancellationToken.None)!;
-        _result = await task;
-    }
+    // ── Then ────────────────────────────────────────────────────────────────
 
     [Then(@"the result should be Ok with value '(.*)'")]
     public void ThenTheResultShouldBeOkWithValue(string expectedValue)
@@ -285,11 +195,17 @@ public class HandlersSteps
         Assert.Equal(expectedValue, okResult.Value);
     }
 
+    [Then(@"the result should be Ok with int value (.*)")]
+    public void ThenTheResultShouldBeOkWithIntValue(int expectedValue)
+    {
+        var okResult = Assert.IsType<Ok<int>>(_result);
+        Assert.Equal(expectedValue, okResult.Value);
+    }
+
     [Then(@"the result should be Ok")]
     public void ThenTheResultShouldBeOk()
     {
-        Assert.IsAssignableFrom<IStatusCodeHttpResult>(_result);
-        var statusResult = (IStatusCodeHttpResult)_result;
+        var statusResult = Assert.IsAssignableFrom<IStatusCodeHttpResult>(_result);
         Assert.Equal(StatusCodes.Status200OK, statusResult.StatusCode);
     }
 
@@ -306,16 +222,10 @@ public class HandlersSteps
         Assert.IsType<NoContent>(_result);
     }
 
-    [Then(@"the command result should be (.*)")]
-    public void ThenTheCommandResultShouldBe(int expectedValue)
+    [Then(@"the command should be executed")]
+    public void ThenTheCommandShouldBeExecuted()
     {
-        Assert.Equal(expectedValue, _intResult);
-    }
-
-    [Then(@"the command should be dispatched")]
-    public void ThenTheCommandShouldBeDispatched()
-    {
-        Assert.True(_commandDispatched);
+        Assert.True(_commandExecuted);
     }
 
     [Then(@"the result should be CreatedAtRoute")]
@@ -337,9 +247,8 @@ public class HandlersSteps
         var expectedBinding = Enum.Parse<CommandBinding>(bindingName);
         Assert.Equal(expectedBinding, _lastBinding);
 
-        // Verify the delegate has the expected parameter attributes based on binding
-        var method = _lastHandler.Method;
-        var parameters = method.GetParameters();
+        // Verify the delegate has the expected parameter attributes based on binding.
+        var parameters = _lastHandler.Method.GetParameters();
 
         if (parameters.Length > 0)
         {
@@ -356,51 +265,9 @@ public class HandlersSteps
                     Assert.True(hasAsParameters, "Expected [AsParameters] attribute on first parameter");
                     break;
                 case CommandBinding.None:
-                    // None binding should not have either attribute on the outer lambda
+                    // None binding should not have either attribute on the outer lambda.
                     break;
             }
         }
-    }
-}
-
-// Helper class to access internal Handlers
-internal static class Handlers
-{
-    internal static ValueTask<IResult> HandleQuery<TQuery, TResult>(TQuery query, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<TResult>
-        => InvokeInternal<ValueTask<IResult>>("HandleQuery", [typeof(TQuery), typeof(TResult)], query, dispatcher, cancellationToken);
-
-    internal static ValueTask<IResult> HandlePagedQuery<TQuery, TResult>(TQuery query, HttpContext http, IQueryDispatcher dispatcher, CancellationToken cancellationToken) where TQuery : IQuery<PagedResult<TResult>>
-        => InvokeInternal<ValueTask<IResult>>("HandlePagedQuery", [typeof(TQuery), typeof(TResult)], query, http, dispatcher, cancellationToken);
-
-    internal static ValueTask<IResult> HandleDelete<TRequest>(TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand
-        => InvokeInternal<ValueTask<IResult>>("HandleDelete", [typeof(TRequest)], request, dispatcher, cancellationToken);
-
-    internal static ValueTask<IResult> HandleDelete<TRequest, TResult>(TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand<TResult>
-        => InvokeInternal<ValueTask<IResult>>("HandleDelete", [typeof(TRequest), typeof(TResult)], request, dispatcher, cancellationToken);
-
-    internal static ValueTask<TResult> HandleCommand<TRequest, TResult>(TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand<TResult>
-        => InvokeInternal<ValueTask<TResult>>("HandleCommand", [typeof(TRequest), typeof(TResult)], request, dispatcher, cancellationToken);
-
-    internal static ValueTask HandleCommand<TRequest>(TRequest request, ICommandDispatcher dispatcher, CancellationToken cancellationToken) where TRequest : ICommand
-        => InvokeInternal<ValueTask>("HandleCommand", [typeof(TRequest)], request, dispatcher, cancellationToken);
-
-    internal static Delegate CreateCreateHandler<TRequest, TResult>(string routeName, Func<TResult, object> getRouteParams, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResult>
-        => InvokeInternal<Delegate>("CreateCreateHandler", [typeof(TRequest), typeof(TResult)], routeName, getRouteParams, binding);
-
-    internal static Delegate CreateCommandHandler<TRequest>(int returnStatusCode, CommandBinding binding = CommandBinding.None) where TRequest : ICommand
-        => InvokeInternal<Delegate>("CreateCommandHandler", [typeof(TRequest)], returnStatusCode, binding);
-
-    internal static Delegate CreateCommandHandler<TRequest, TResponse>(int returnStatusCode, CommandBinding binding = CommandBinding.None) where TRequest : ICommand<TResponse>
-        => InvokeInternal<Delegate>("CreateCommandHandler", [typeof(TRequest), typeof(TResponse)], returnStatusCode, binding);
-
-    private static T InvokeInternal<T>(string methodName, Type[] genericTypes, params object[] args)
-    {
-        var handlersType = typeof(Asm.AspNetCore.AsmCqrsAspNetCoreEndpointRouteBuilderExtensions).Assembly.GetType("Asm.AspNetCore.Handlers")!;
-        var methods = handlersType.GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-            .Where(m => m.Name == methodName && m.GetGenericArguments().Length == genericTypes.Length);
-
-        var method = methods.First();
-        var genericMethod = method.MakeGenericMethod(genericTypes);
-        return (T)genericMethod.Invoke(null, args)!;
     }
 }
