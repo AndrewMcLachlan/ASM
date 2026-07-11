@@ -32,6 +32,27 @@ public class SpecificationSteps
         _result = _query.Specify<TestSpecifiableEntity, GreaterThanTwoSpecification>();
     }
 
+    [When(@"I apply the greater-than-two AND less-than-five specification")]
+    public void WhenIApplyTheGreaterThanTwoAndLessThanFiveSpecification()
+    {
+        ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification().And(new IdLessThanFiveSpecification());
+        _result = _query.Specify(spec);
+    }
+
+    [When(@"I apply the greater-than-two OR even specification")]
+    public void WhenIApplyTheGreaterThanTwoOrEvenSpecification()
+    {
+        ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification().Or(new IdIsEvenSpecification());
+        _result = _query.Specify(spec);
+    }
+
+    [When(@"I apply the NOT greater-than-two specification")]
+    public void WhenIApplyTheNotGreaterThanTwoSpecification()
+    {
+        ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification().Not();
+        _result = _query.Specify(spec);
+    }
+
     [Then(@"the result should contain entities with IDs \[(.*)\]")]
     public void ThenTheResultShouldContainEntitiesWithIds(string expectedIds)
     {

@@ -300,3 +300,95 @@ services.AddSecurityReporting();
 - The old order-dependent auto-coupling (a `services.FirstOrDefault(...)` probe inside `AddStandardSecurityHeaders`) has been removed.
 
 **What to change:** nothing is required. Behaviour only improves — reporting headers are now emitted regardless of the order in which the two methods were registered. If your code relied on the old behaviour of *suppressing* reporting headers by deliberately registering reporting last, register the two methods in separate service collections instead.
+
+## Batch 3 — Repositories & specifications
+
+This batch tightens the repository generics, adds ergonomic lookup and bulk-add members, and reworks
+`ISpecification<TEntity>` so specifications can target any class and be composed with `And`/`Or`/`Not`.
+
+### Repository key constraint relaxed: `struct` → `notnull`
+
+`IRepository<TEntity, TKey>`, `IWritableRepository<TEntity, TKey>`, `IDeletableRepository<TEntity, TKey>`
+and the `RepositoryBase`/`RepositoryWriteBase`/`RepositoryDeleteBase` classes previously constrained
+`TKey` to `struct` (non-nullable value types only). They now constrain it to `notnull`, which additionally
+permits **reference-type keys** such as `string`.
+
+**What to change:** nothing. `notnull` is a *wider* constraint than `struct`, so every existing value-type
+key (`int`, `Guid`, …) still satisfies it and all existing repositories compile unchanged. You may now
+declare repositories over string- or record-keyed entities.
+
+### `AddRange` is now on `IWritableRepository`
+
+`RepositoryWriteBase` already exposed `AddRange`; the member is now declared on the
+`IWritableRepository<TEntity, TKey>` interface so it can be called through the abstraction. It ships as a
+**default interface method** (adds each entity via `Add`), so existing implementers are not broken;
+`RepositoryWriteBase` overrides it with the provider-optimised `DbSet.AddRange`.
+
+**What to change:** nothing. Override `AddRange` if you want a bulk-optimised path.
+
+### New null-returning lookups: `Find` and `TryGet`
+
+`Get(TKey …)` throws `NotFoundException` when the entity is absent — unchanged. Two new
+**default interface methods** return `TEntity?` (null) instead, for when a missing entity is an expected
+outcome:
+
+```csharp
+Task<TEntity?> Find(TKey id, CancellationToken ct = default);
+Task<TEntity?> Find(TKey id, ISpecification<TEntity> specification, CancellationToken ct = default);
+Task<TEntity?> TryGet(TKey id, CancellationToken ct = default);            // alias for Find
+Task<TEntity?> TryGet(TKey id, ISpecification<TEntity> specification, CancellationToken ct = default);
+```
+
+`RepositoryBase` overrides `Find`/`TryGet` with an efficient keyed query (`SingleOrDefaultAsync`); the
+interface default (filtering the full collection) exists only for hand-rolled implementations.
+
+**What to change:** nothing. Prefer `Get` when absence is an error (it throws `NotFoundException`), and
+`Find`/`TryGet` when absence is normal (they return `null`).
+
+### `ISpecification<TEntity>` — relaxed constraint, expression criteria, and composition
+
+**Breaking (widening):** the constraint changed from `where TEntity : Entity` to `where TEntity : class`,
+so specifications can now target read models, DTOs and projected interfaces — not just domain entities.
+`Entity` is a class, so existing entity specifications are unaffected, and the `IQueryable.Specify(…)`
+extensions were relaxed to `class` to match.
+
+The interface gained an **expression-based criterion** alongside the existing `Apply`:
+
+```csharp
+public interface ISpecification<TEntity> where TEntity : class
+{
+    Expression<Func<TEntity, bool>> Criteria => static _ => true;      // NEW — the filter predicate
+    IQueryable<TEntity> Apply(IQueryable<TEntity> query) => query.Where(Criteria); // now defaulted
+    ISpecification<TEntity> And(ISpecification<TEntity> specification); // NEW
+    ISpecification<TEntity> Or(ISpecification<TEntity> specification);  // NEW
+    ISpecification<TEntity> Not();                                     // NEW
+}
+```
+
+- `Criteria` is a translatable expression tree, so it round-trips through EF Core.
+- `Apply` is now a default method (`query.Where(Criteria)`); override it to add `Include`/`OrderBy`/paging.
+- `And`/`Or`/`Not` combine the operands' **`Criteria`** (via `Expression.AndAlso`/`OrElse`/`Not`), rebinding
+  the two lambdas onto a single parameter with an `ExpressionVisitor` so the result stays EF-translatable.
+  Composition intentionally combines the `Criteria` only — it does **not** merge the `Apply`-side shaping
+  (there is no meaningful way to combine, say, two `OrderBy` clauses under an `OR`).
+
+New supporting types (all in `Asm.Domain`):
+
+- `Specification<TEntity>` — an abstract base; override `Criteria` and optionally `Apply`.
+- `AsmDomainExpressionExtensions` — public `AndAlso`/`OrElse`/`Not` predicate combinators with parameter
+  rebinding, usable directly on `Expression<Func<T, bool>>`.
+
+**What to change:** existing specifications that implement `Apply` continue to work unchanged (their
+`Criteria` defaults to "match all", which only affects composition). To make a specification composable,
+express its filter as `Criteria` (typically by deriving from `Specification<TEntity>`):
+
+```csharp
+public sealed class RecentOrders : Specification<Order>
+{
+    public override Expression<Func<Order, bool>> Criteria => o => o.OrderDate > DateTime.UtcNow.AddDays(-30);
+}
+
+// Compose:
+var spec = new RecentOrders().And(new HighValue()).Not();
+var results = await repository.Get(spec, cancellationToken);
+```
