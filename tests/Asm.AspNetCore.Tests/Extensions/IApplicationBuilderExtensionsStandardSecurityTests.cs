@@ -40,8 +40,7 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
                 webHost.ConfigureServices(services =>
                 {
                     configureServices?.Invoke(services);
-                    var policies = services.AddStandardSecurityHeaders();
-                    extend?.Invoke(policies);
+                    services.AddStandardSecurityHeaders(extend);
                 });
                 webHost.Configure(app =>
                 {
@@ -184,6 +183,48 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
                 "Reporting-Endpoints should be emitted when AddSecurityReporting is called before AddStandardSecurityHeaders");
             Assert.True(response.Headers.Contains("Report-To"),
                 "Report-To should be emitted when AddSecurityReporting is called before AddStandardSecurityHeaders");
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Order-independence: AddSecurityReporting AFTER AddStandardSecurityHeaders
+    // still emits the reporting headers at runtime
+    // ──────────────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task WithAddSecurityReportingAfterAddStandardHeaders_ReportingHeadersEmitted()
+    {
+        var host = await new HostBuilder()
+            .ConfigureWebHost(webHost =>
+            {
+                webHost.UseTestServer();
+                webHost.ConfigureServices(services =>
+                {
+                    services.AddStandardSecurityHeaders();   // headers first
+                    services.AddSecurityReporting();         // reporting AFTER — must still couple
+                });
+                webHost.Configure(app =>
+                {
+                    app.UseStandardSecurityHeaders();
+                    app.Run(async ctx =>
+                    {
+                        ctx.Response.ContentType = "text/html";
+                        await ctx.Response.WriteAsync("ok");
+                    });
+                });
+            })
+            .StartAsync(TestContext.Current.CancellationToken);
+
+        using (host)
+        {
+            var client = host.GetTestServer().CreateClient();
+            var response = await client.GetAsync("/", TestContext.Current.CancellationToken);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.True(response.Headers.Contains("Reporting-Endpoints"),
+                "Reporting-Endpoints should be emitted even when AddSecurityReporting is called AFTER AddStandardSecurityHeaders");
+            Assert.True(response.Headers.Contains("Report-To"),
+                "Report-To should be emitted even when AddSecurityReporting is called AFTER AddStandardSecurityHeaders");
         }
     }
 

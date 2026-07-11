@@ -1,8 +1,11 @@
+using Asm.AspNetCore.Middleware;
 using Asm.AspNetCore.Reporting;
 using Asm.AspNetCore.Security;
 using Asm.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -30,38 +33,47 @@ public static class AsmAspNetCoreServiceCollectionExtensions
     ///   <item><description>Server-fingerprint header removal</description></item>
     /// </list>
     /// <para>HSTS is intentionally not included — use ASP.NET Core's <c>AddHsts()</c> and <c>UseHsts()</c> instead.</para>
-    /// <para><b>Auto-coupling:</b> if <see cref="AddSecurityReporting"/> was called before this
-    /// method, <c>Reporting-Endpoints</c> and <c>Report-To</c> header policies are automatically
-    /// included in the collection. <see cref="AddSecurityReporting"/> <b>must</b> be called first
-    /// for auto-emit to work; calling it after this method has no effect on the header policies.</para>
+    /// <para><b>Reporting coupling (order-independent):</b> if <see cref="AddSecurityReporting"/> is
+    /// called — <em>before or after</em> this method — the <c>Reporting-Endpoints</c> and
+    /// <c>Report-To</c> header policies are automatically composed into the collection via an
+    /// <see cref="Options.IPostConfigureOptions{TOptions}"/>. Registration order no longer matters.</para>
     /// </remarks>
     /// <param name="services">The service collection.</param>
-    /// <returns>The registered <see cref="HeaderPolicyCollection"/>, returned so the caller can chain additional policy configuration. Mutations to the returned instance are visible at request time because it is the same singleton registered in <paramref name="services"/>.</returns>
-    public static HeaderPolicyCollection AddStandardSecurityHeaders(this IServiceCollection services)
+    /// <param name="configure">
+    /// Optional callback to add or override policies on the standard <see cref="HeaderPolicyCollection"/>
+    /// (for example, to add a Content-Security-Policy). Runs after the standard defaults and before the
+    /// reporting policies are composed.
+    /// </param>
+    /// <returns>The <see cref="IServiceCollection"/> so that calls can be chained.</returns>
+    public static IServiceCollection AddStandardSecurityHeaders(this IServiceCollection services, Action<HeaderPolicyCollection>? configure = null)
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        var policies = new HeaderPolicyCollection();
+        services.AddOptions<HeaderPolicyCollection>()
+            .Configure(static policies =>
+            {
+                policies.AddCrossOriginOpenerPolicy(b => b.SameOriginAllowPopups());
+                policies.AddCrossOriginEmbedderPolicy(b => b.RequireCorp());
+                policies.AddCrossOriginResourcePolicy(b => b.SameOrigin());
+                policies.AddFrameOptionsSameOrigin();
+                policies.AddContentTypeOptionsNoSniff();
+                policies.AddReferrerPolicyStrictOriginWhenCrossOrigin();
+                policies.AddCustomHeader("X-Permitted-Cross-Domain-Policies", "none");
+                policies.RemoveServerHeader();
+            });
 
-        policies.AddCrossOriginOpenerPolicy(b => b.SameOriginAllowPopups());
-        policies.AddCrossOriginEmbedderPolicy(b => b.RequireCorp());
-        policies.AddCrossOriginResourcePolicy(b => b.SameOrigin());
-        policies.AddFrameOptionsSameOrigin();
-        policies.AddContentTypeOptionsNoSniff();
-        policies.AddReferrerPolicyStrictOriginWhenCrossOrigin();
-        policies.AddCustomHeader("X-Permitted-Cross-Domain-Policies", "none");
-        policies.RemoveServerHeader();
-
-        // Auto-coupling: if AddSecurityReporting was called first, the SecurityReportingOptions
-        // singleton is already registered. Lift it and apply the reporting header policies.
-        var reportingDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(SecurityReportingOptions));
-        if (reportingDescriptor?.ImplementationInstance is SecurityReportingOptions reportingOptions)
+        if (configure is not null)
         {
-            policies.AddSecurityReportingHeaders(reportingOptions);
+            services.AddOptions<HeaderPolicyCollection>().Configure(configure);
         }
 
-        services.AddSingleton(policies);
-        return policies;
+        // Bridge the configured options instance to a directly-resolvable singleton so that
+        // UseStandardSecurityHeaders (and any consumer resolving HeaderPolicyCollection) sees the
+        // fully-composed collection, including any reporting policies contributed via
+        // IPostConfigureOptions regardless of registration order.
+        services.TryAddSingleton(static sp => sp.GetRequiredService<Options.IOptions<HeaderPolicyCollection>>().Value);
+
+        return services;
     }
 
     /// <summary>
@@ -84,15 +96,17 @@ public static class AsmAspNetCoreServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers <see cref="SecurityReportingOptions"/> in the service collection.
-    /// When registered before <see cref="AddStandardSecurityHeaders"/>, the resulting
-    /// <see cref="HeaderPolicyCollection"/> automatically includes <c>Reporting-Endpoints</c>
-    /// and <c>Report-To</c> header policies via
-    /// <see cref="HeaderPolicyCollectionReportingExtensions.AddSecurityReportingHeaders"/>.
+    /// Registers <see cref="SecurityReportingOptions"/> in the service collection and couples the
+    /// <c>Reporting-Endpoints</c> and <c>Report-To</c> header policies into the standard
+    /// <see cref="HeaderPolicyCollection"/> via an
+    /// <see cref="Options.IPostConfigureOptions{TOptions}"/>.
     /// </summary>
     /// <remarks>
-    /// Call this method <b>before</b> <see cref="AddStandardSecurityHeaders"/> for the
-    /// auto-coupling to take effect. Registering after has no effect on the header policies.
+    /// The coupling with <see cref="AddStandardSecurityHeaders"/> is <b>order-independent</b>: this
+    /// method may be called before or after <c>AddStandardSecurityHeaders</c> and the reporting
+    /// header policies will still be composed into the collection, because they are contributed by an
+    /// <see cref="Options.IPostConfigureOptions{TOptions}"/> that runs after every <c>Configure</c>
+    /// callback.
     /// </remarks>
     /// <param name="services">The service collection.</param>
     /// <param name="configure">Optional callback to customise options.</param>
@@ -106,10 +120,39 @@ public static class AsmAspNetCoreServiceCollectionExtensions
         var options = new SecurityReportingOptions();
         configure?.Invoke(options);
 
-        // Registered as a singleton (not via services.Configure<T>) so that
-        // AddStandardSecurityHeaders can detect its presence via FirstOrDefault —
-        // IOptions<T> is always resolvable and wouldn't signal "reporting not configured".
+        // Registered as a singleton so that MapSecurityReporting can require its presence
+        // (GetRequiredService throws when reporting was not configured).
         services.AddSingleton(options);
+
+        // Contribute the reporting header policies via IPostConfigureOptions so the coupling with
+        // AddStandardSecurityHeaders is order-independent. The presence of this registration is the
+        // signal that reporting is enabled — nothing is contributed unless this method was called.
+        services.AddSingleton<Options.IPostConfigureOptions<HeaderPolicyCollection>, SecurityReportingHeaderPostConfigure>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Registers and configures <see cref="CanonicalUrlOptions"/> using the options pattern, for use
+    /// by <see cref="AsmAspNetCoreApplicationBuilderExtensions.UseCanonicalUrls(IApplicationBuilder)"/>.
+    /// </summary>
+    /// <remarks>
+    /// Call this at service-registration time; <c>UseCanonicalUrls()</c> then resolves the configured
+    /// <see cref="Options.IOptions{TOptions}"/> from DI at request time.
+    /// </remarks>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configure">Optional callback to configure canonicalisation options.</param>
+    /// <returns>The <see cref="IServiceCollection"/> so that calls can be chained.</returns>
+    public static IServiceCollection AddCanonicalUrls(this IServiceCollection services, Action<CanonicalUrlOptions>? configure = null)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        var builder = services.AddOptions<CanonicalUrlOptions>();
+        if (configure is not null)
+        {
+            builder.Configure(configure);
+        }
+
         return services;
     }
 }
