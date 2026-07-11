@@ -1,4 +1,6 @@
-﻿namespace Asm.Reqnroll;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Asm.Reqnroll;
 
 /// <summary>
 /// Extensions for the <see cref="String" /> class.
@@ -12,8 +14,9 @@ public static class StringExtensions
     /// Supports '\r', '\n', and '\t'.
     /// </remarks>
     /// <param name="str">The string to decode.</param>
-    /// <returns>The decoded string.</returns>
-    public static string? DecodeWhitespace(this string str)
+    /// <returns>The decoded string, or <c>null</c> if <paramref name="str"/> is <c>null</c>.</returns>
+    [return: NotNullIfNotNull(nameof(str))]
+    public static string? DecodeWhitespace(this string? str)
     {
         if (str == null) return null;
 

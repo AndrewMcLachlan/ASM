@@ -84,6 +84,14 @@ public static class AsmNetIPAddressExtensions
     }
 
     /// <summary>
+    /// Converts a 32-bit unsigned integer to an <see cref="IPAddress"/>.
+    /// </summary>
+    /// <remarks>This is the inverse of <see cref="ToUInt32(IPAddress)"/>.</remarks>
+    /// <param name="address">The address as a 32-bit unsigned integer.</param>
+    /// <returns>The IPv4 <see cref="IPAddress"/>.</returns>
+    public static IPAddress ToIPAddress(this uint address) => FromUInt32(address);
+
+    /// <summary>
     /// Converts a 32-bit unsigned integer to an IP address.
     /// </summary>
     /// <param name="address">The address as a 32-bit unsigned integer.</param>

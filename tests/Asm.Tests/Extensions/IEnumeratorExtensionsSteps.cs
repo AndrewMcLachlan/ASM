@@ -29,7 +29,7 @@ public class IEnumeratorExtensionsSteps(ScenarioContext scenarioContext)
     public void WhenICallGetEnumeratorToConvertToIEnumeratorOfInt()
     {
         var enumerator = _arrayList.GetEnumerator();
-        var genericEnumerator = enumerator.GetEnumerator<int>();
+        var genericEnumerator = enumerator.AsGeneric<int>();
         var results = new List<int>();
         while (genericEnumerator.MoveNext())
         {
@@ -42,7 +42,7 @@ public class IEnumeratorExtensionsSteps(ScenarioContext scenarioContext)
     public void WhenICallGetEnumeratorToConvertToIEnumeratorOfString()
     {
         var enumerator = _arrayList.GetEnumerator();
-        var genericEnumerator = enumerator.GetEnumerator<string>();
+        var genericEnumerator = enumerator.AsGeneric<string>();
         var results = new List<string>();
         while (genericEnumerator.MoveNext())
         {

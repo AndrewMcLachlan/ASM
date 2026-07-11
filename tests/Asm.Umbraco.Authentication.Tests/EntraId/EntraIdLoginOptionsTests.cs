@@ -21,6 +21,14 @@ public class EntraIdLoginOptionsTests
             ClientSecret = "secret",
         }));
 
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void SchemeName_IsProviderSpecific()
+    {
+        // v4: renamed from "OpenIdConnect" so it does not masquerade as an OIDC handler.
+        Assert.Equal("EntraId", EntraIdLoginOptions.SchemeName);
+    }
+
     // -----------------------------------------------------------------------
     // Configure(string?, BackOfficeExternalLoginProviderOptions)
     // -----------------------------------------------------------------------

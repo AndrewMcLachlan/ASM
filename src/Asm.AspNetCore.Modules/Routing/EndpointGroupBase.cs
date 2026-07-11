@@ -10,33 +10,35 @@ namespace Asm.AspNetCore.Routing;
 public abstract class EndpointGroupBase : IEndpointGroup
 {
     /// <summary>
-    /// Gets the Open API name of the group.
-    /// </summary>
-    public abstract string Name { get; }
-
-    /// <summary>
     /// Gets the URL path of the group.
     /// </summary>
     public abstract string Path { get; }
 
     /// <summary>
-    /// Gets the Open API tags of the group.
+    /// Gets the Open API tags of the group, or <c>null</c> for no tags.
     /// </summary>
-    public virtual string Tags => String.Empty;
+    public virtual string[]? Tags => null;
 
     /// <summary>
-    /// Gets the authorisation policy name that is applied to the group.
+    /// Gets the authorisation policy name that is applied to the group, or <c>null</c> to apply the default (any authenticated user).
     /// </summary>
     /// <remarks>
-    /// Do not override if a policy does not apply to the group.
+    /// Leave as <c>null</c> if no specific policy applies to the group. To make the whole group anonymous, override <see cref="AllowAnonymous"/> instead.
     /// </remarks>
-    public virtual string AuthorisationPolicy => String.Empty;
+    public virtual string? AuthorisationPolicy => null;
+
+    /// <summary>
+    /// Gets a value indicating whether the group is anonymous (opts out of authorisation entirely).
+    /// </summary>
+    public virtual bool AllowAnonymous => false;
 
     /// <summary>
     /// Maps the group endpoints.
-    /// </summary>r
+    /// </summary>
     /// <remarks>
-    /// Sets the operation name, display name, tags, authorisation policy and maps the endpoints.
+    /// Applies the group tags and authorisation policy, then maps the endpoints. Endpoint names
+    /// (<c>WithName</c>) are the responsibility of individual endpoints in <see cref="MapEndpoints"/>,
+    /// since a group-level name would be applied to every endpoint and endpoint names must be unique.
     /// </remarks>
     /// <param name="builder">The builder instance that this group attaches to.</param>
     /// <returns>
@@ -47,11 +49,25 @@ public abstract class EndpointGroupBase : IEndpointGroup
     /// </returns>
     public virtual RouteGroupBuilder MapGroup(IEndpointRouteBuilder builder)
     {
-        var subBuilder = builder.MapGroup(Path)
-            .WithName(Name)
-            .WithTags(Tags);
+        var subBuilder = builder.MapGroup(Path);
 
-        subBuilder = String.IsNullOrEmpty(AuthorisationPolicy) ? subBuilder.RequireAuthorization() : subBuilder.RequireAuthorization(AuthorisationPolicy);
+        if (Tags is { Length: > 0 } tags)
+        {
+            subBuilder.WithTags(tags);
+        }
+
+        if (AllowAnonymous)
+        {
+            subBuilder.AllowAnonymous();
+        }
+        else if (String.IsNullOrEmpty(AuthorisationPolicy))
+        {
+            subBuilder.RequireAuthorization();
+        }
+        else
+        {
+            subBuilder.RequireAuthorization(AuthorisationPolicy);
+        }
 
         MapEndpoints(subBuilder);
 

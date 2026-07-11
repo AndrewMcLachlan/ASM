@@ -109,7 +109,7 @@ namespace Asm.Net.Tests
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("IPAddressExtensions.feature.ndjson", 42);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("IPAddressExtensions.feature.ndjson", 47);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -442,6 +442,91 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 99
     await testRunner.AndAsync("the exception parameter name is \'ipAddress\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Create an IP address from an unsigned 32 bit integer using ToIPAddress")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Create an IP address from an unsigned 32 bit integer using ToIPAddress")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task CreateAnIPAddressFromAnUnsigned32BitIntegerUsingToIPAddress()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "40";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create an IP address from an unsigned 32 bit integer using ToIPAddress", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 102
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 103
+    await testRunner.GivenAsync("I have an unsigned 32 bit integer 3435973836", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 104
+    await testRunner.WhenAsync("I call ToIPAddress", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 105
+    await testRunner.ThenAsync("the IP Address 204.204.204.204 is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.TheoryAttribute(DisplayName="Round trip an IP address through ToUInt32 and ToIPAddress")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "IPAddress Extensions")]
+        [global::Xunit.TraitAttribute("Description", "Round trip an IP address through ToUInt32 and ToIPAddress")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        [global::Xunit.InlineDataAttribute("0.0.0.0", "41", new string[0])]
+        [global::Xunit.InlineDataAttribute("192.168.1.1", "42", new string[0])]
+        [global::Xunit.InlineDataAttribute("204.204.204.204", "43", new string[0])]
+        [global::Xunit.InlineDataAttribute("255.255.255.255", "44", new string[0])]
+        public async global::System.Threading.Tasks.Task RoundTripAnIPAddressThroughToUInt32AndToIPAddress(string iPAddress, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "Unit"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("IP Address", iPAddress);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Round trip an IP address through ToUInt32 and ToIPAddress", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 108
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 109
+    await testRunner.GivenAsync(string.Format("I have an IP Address \'{0}\'", iPAddress), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 110
+    await testRunner.WhenAsync("I call ToUInt32", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 111
+    await testRunner.AndAsync("I call ToIPAddress", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 112
+    await testRunner.ThenAsync(string.Format("the IP Address {0} is returned", iPAddress), ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
