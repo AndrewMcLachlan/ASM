@@ -27,7 +27,7 @@ public class TestWebApplication : IDisposable
                 {
                     services.AddStandardSecurityHeaders();
                     services.AddRouting();
-                    services.AddProblemDetailsFactory();
+                    services.AddAsmExceptionHandler();
                     services.AddHealthChecks()
                         .AddCheck("test-check", () => HealthCheckResult.Healthy("Test check passed"));
                 });

@@ -27,10 +27,10 @@ public class IServiceCollectionExtensionsSteps
         _services.AddSingleton<IHostEnvironment>(new TestHostEnvironment());
     }
 
-    [When(@"I call AddProblemDetailsFactory")]
-    public void WhenICallAddProblemDetailsFactory()
+    [When(@"I call AddAsmExceptionHandler")]
+    public void WhenICallAddAsmExceptionHandler()
     {
-        _returnedServices = _services.AddProblemDetailsFactory();
+        _returnedServices = _services.AddAsmExceptionHandler();
     }
 
     [When(@"I call AddPrincipalProvider")]
@@ -39,27 +39,19 @@ public class IServiceCollectionExtensionsSteps
         _returnedServices = _services.AddPrincipalProvider();
     }
 
-    [Then(@"ProblemDetailsFactory should be registered")]
-    public void ThenProblemDetailsFactoryShouldBeRegistered()
+    [Then(@"the Asm exception handler should be registered")]
+    public void ThenTheAsmExceptionHandlerShouldBeRegistered()
     {
-        // Check that at least one service is registered (basic sanity check)
-        Assert.True(_services.Count > 0, $"Expected services to be registered, but found {_services.Count}");
+        // The AsmExceptionHandler is registered as an IExceptionHandler...
+        Assert.Contains(_services, d =>
+            d.ServiceType == typeof(Microsoft.AspNetCore.Diagnostics.IExceptionHandler) &&
+            d.ImplementationType == typeof(Asm.AspNetCore.AsmExceptionHandler));
 
-        // List all registered services for debugging
-        var serviceTypes = _services.Select(s => s.ServiceType.FullName).ToList();
+        // ...alongside the framework problem-details service that writes the responses.
+        Assert.Contains(_services, d => d.ServiceType == typeof(Microsoft.AspNetCore.Http.IProblemDetailsService));
 
-        // Check service descriptor is registered for the abstract type
-        var descriptor = _services.FirstOrDefault(d =>
-            d.ServiceType == typeof(Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory));
-        Assert.NotNull(descriptor);
-        Assert.Equal(typeof(Asm.AspNetCore.ProblemDetailsFactory), descriptor.ImplementationType);
-        Assert.Equal(ServiceLifetime.Transient, descriptor.Lifetime);
-
-        // Verify it can be resolved
         var serviceProvider = _services.BuildServiceProvider();
-        var factory = serviceProvider.GetService<Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory>();
-        Assert.NotNull(factory);
-        Assert.IsType<Asm.AspNetCore.ProblemDetailsFactory>(factory);
+        Assert.NotNull(serviceProvider.GetService<Microsoft.AspNetCore.Http.IProblemDetailsService>());
     }
 
     [Then(@"IPrincipalProvider should be registered as HttpContextPrincipalProvider")]

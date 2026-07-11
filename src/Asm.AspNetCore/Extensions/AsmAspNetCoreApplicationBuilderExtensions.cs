@@ -11,24 +11,18 @@ namespace Microsoft.AspNetCore.Builder;
 public static class AsmAspNetCoreApplicationBuilderExtensions
 {
     /// <summary>
-    /// Adds a standard exception handler to the middleware pipeline.
+    /// Adds the standard exception handler to the middleware pipeline. Exceptions are translated to
+    /// problem-detail responses by the registered <see cref="Microsoft.AspNetCore.Diagnostics.IExceptionHandler"/>
+    /// implementations (see <c>AddAsmExceptionHandler</c>) and the framework's problem-details service.
     /// </summary>
     /// <param name="builder">The <see cref="IApplicationBuilder"/> instance that this method extends.</param>
     /// <returns>The <see cref="IApplicationBuilder"/> so that calls can be chained.</returns>
-    public static IApplicationBuilder UseStandardExceptionHandler(this IApplicationBuilder builder) =>
-        builder.UseExceptionHandler(errorApp =>
-        {
-            errorApp.Run(async context =>
-            {
-                var factory = context.RequestServices.GetRequiredService<Mvc.Infrastructure.ProblemDetailsFactory>();
+    public static IApplicationBuilder UseStandardExceptionHandler(this IApplicationBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
 
-                var problemDetails = factory.CreateProblemDetails(context);
-
-                // Serialize as object so derived types (e.g. HttpValidationProblemDetails and its
-                // errors dictionary) are written in full, not sliced down to the base ProblemDetails.
-                await context.Response.WriteAsJsonAsync<object>(problemDetails, options: null, contentType: System.Net.Mime.MediaTypeNames.Application.ProblemJson);
-            });
-        });
+        return builder.UseExceptionHandler();
+    }
 
     /// <summary>
     /// Adds <see cref="CanonicalUrlMiddleware"/> to the pipeline, resolving

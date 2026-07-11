@@ -301,7 +301,7 @@ services.AddSecurityReporting();
 
 **What to change:** nothing is required. Behaviour only improves — reporting headers are now emitted regardless of the order in which the two methods were registered. If your code relied on the old behaviour of *suppressing* reporting headers by deliberately registering reporting last, register the two methods in separate service collections instead.
 
-## Batch 5 — Modules and ProblemDetails to DI/options
+## Batch 5 — Modules to DI; ProblemDetails to `IExceptionHandler`
 
 This batch moves two subsystems off process-wide **static** state and onto **dependency injection** so that
 multiple applications, test hosts, or DI containers in the same process no longer share (and clobber) each
@@ -347,39 +347,42 @@ New service-collection helpers:
 `app.MapModuleEndpoints()`. Prefer the new `AddModule*` helpers when composing modules directly on the
 service collection.
 
-### ProblemDetails: exception handlers via options, isolated per container
+### ProblemDetails: `IExceptionHandler` + `AddProblemDetails()` (custom factory retired)
 
-`ProblemDetailsFactory.AddHandler<T>(...)` wrote to a **static** dictionary shared by every factory instance
-in the process, so two apps registering handlers for the same exception type overwrote each other.
-
-Handlers are now carried on a per-container `ProblemDetailsFactoryOptions`, configured through the options
-pattern:
+The custom `Asm.AspNetCore.ProblemDetailsFactory` predated the framework's problem-details infrastructure.
+It subclassed MVC's `ProblemDetailsFactory` but really did exception→ProblemDetails mapping off a **static**
+handler dictionary, and `UseStandardExceptionHandler` hand-wrote the JSON. It has been replaced with the
+idiomatic ASP.NET Core pipeline (available since .NET 7/8):
 
 ```csharp
-services.AddProblemDetailsFactory();
-services.AddProblemDetailsHandler<MyException>((httpContext, feature) => new ProblemDetails
-{
-    Title = "My error",
-    Status = StatusCodes.Status400BadRequest,
-});
-
-// equivalently:
-services.Configure<ProblemDetailsFactoryOptions>(o =>
-    o.AddHandler<MyException>((httpContext, feature) => new ProblemDetails { /* ... */ }));
+builder.Services.AddAsmExceptionHandler();   // AddProblemDetails() + AsmExceptionHandler
+// …
+app.UseStandardExceptionHandler();           // thin wrapper over app.UseExceptionHandler()
 ```
 
-The factory now consults per-container option handlers **first**, then falls back to the (obsolete) static
-handlers, then to the built-in exception mapping. Handlers registered in one container are invisible to
-another.
+`AsmExceptionHandler : IExceptionHandler` carries the ASM exception mapping (`NotFoundException`→404,
+`ExistsException`→409, `NotAuthorisedException`→403, `ValidationException`→400 with an `errors` extension,
+`AsmException`→500 with a `Code` extension, `BadHttpRequestException`/`InvalidOperationException`→400) and
+writes through `IProblemDetailsService`. `AddAsmExceptionHandler()` also registers a `CustomizeProblemDetails`
+that adds the `traceId` extension and, outside production, the full error detail for unmapped failures.
 
-**Breaking changes / deprecations:**
+**Why:** `IExceptionHandler` registrations are **per container** (no static state — this is the real fix for
+the cross-container leakage), compose by chaining, and get content negotiation and the writer abstraction for
+free. Exceptions the handler doesn't recognise fall through to other handlers or the framework's default
+500 problem-detail.
 
-- `ProblemDetailsFactory.AddHandler<T>(...)` and `ProblemDetailsFactory.Handlers` are now `[Obsolete]`. They
-  still work (as a process-wide fallback) for one major cycle but leak state across containers — migrate to
-  `services.AddProblemDetailsHandler<T>(...)`.
-- `ProblemDetailsFactory` gained an optional `IOptions<ProblemDetailsFactoryOptions>` constructor parameter.
-  The single-argument `new ProblemDetailsFactory(hostEnvironment)` form still compiles (the parameter is
-  optional), and DI supplies the options automatically.
+**Removed (breaking):**
 
-**What to change:** replace static `ProblemDetailsFactory.AddHandler<T>(...)` calls with
-`services.AddProblemDetailsHandler<T>(...)` at service-registration time.
+| Old | New |
+|---|---|
+| `ProblemDetailsFactory` (class) | `AsmExceptionHandler : IExceptionHandler` |
+| `ProblemDetailsFactoryOptions` | — (no per-handler options type needed) |
+| `services.AddProblemDetailsFactory()` | `services.AddAsmExceptionHandler()` |
+| `services.AddProblemDetailsHandler<T>(...)` | register your own `IExceptionHandler` (`services.AddExceptionHandler<T>()`) |
+| `ProblemDetailsFactory.AddHandler<T>(...)` / `.Handlers` | register your own `IExceptionHandler` |
+
+**What to change:**
+
+- Replace `services.AddProblemDetailsFactory()` with `services.AddAsmExceptionHandler()`. `UseStandardExceptionHandler()` is unchanged at the call site (it now delegates to `UseExceptionHandler()`).
+- To map your own exception types, add an `IExceptionHandler` (`services.AddExceptionHandler<MyHandler>()`) that writes via `IProblemDetailsService` — handlers are consulted in registration order, so register app-specific handlers before `AddAsmExceptionHandler()` to override, or after to supplement.
+- If you relied on MVC's `ProblemDetailsFactory` for controller `ValidationProblem()` shaping, register your own subclass — ASM no longer provides one (the library is minimal-API oriented).
