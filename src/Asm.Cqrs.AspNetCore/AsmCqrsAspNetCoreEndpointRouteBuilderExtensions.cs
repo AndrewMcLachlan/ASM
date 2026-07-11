@@ -125,20 +125,18 @@ public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
                  .Produces<TResponse>(statusCode);
 
     /// <summary>
-    /// Maps a POST request to a command that returns no response.
+    /// Maps a POST request to a command that returns no body, responding with
+    /// <paramref name="statusCode"/> (204 No Content by default).
     /// </summary>
-    /// <remarks>
-    /// No response status is declared: the appropriate code depends on what the endpoint means
-    /// (e.g. 200, 202 or 204). The endpoint completes as 200 OK with no body; declare a different
-    /// code on the returned <see cref="RouteHandlerBuilder"/> with <c>.Produces(...)</c>.
-    /// </remarks>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="statusCode">The status code to return. Defaults to 204 No Content.</param>
     /// <param name="binding">How the handler should bind the request. Defaults to <see cref="CommandBinding.Parameters"/>.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand =>
-        endpoints.MapPost(pattern, Handlers.CreateVoidCommandHandler<TRequest>(binding));
+    public static RouteHandlerBuilder MapCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, int statusCode = StatusCodes.Status204NoContent, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand =>
+        endpoints.MapPost(pattern, Handlers.CreateVoidCommandHandler<TRequest>(statusCode, binding))
+                 .Produces(statusCode);
 
     /// <summary>
     /// Maps a PATCH request to a command and returns a response with 200 OK.
@@ -169,18 +167,16 @@ public static class AsmCqrsAspNetCoreEndpointRouteBuilderExtensions
                  .Produces<TResponse>(statusCode);
 
     /// <summary>
-    /// Maps a PUT request to a command that returns no response.
+    /// Maps a PUT request to a command that returns no body, responding with
+    /// <paramref name="statusCode"/> (204 No Content by default).
     /// </summary>
-    /// <remarks>
-    /// No response status is declared: the appropriate code depends on what the endpoint means
-    /// (e.g. 200, 201 or 204). The endpoint completes as 200 OK with no body; declare a different
-    /// code on the returned <see cref="RouteHandlerBuilder"/> with <c>.Produces(...)</c>.
-    /// </remarks>
     /// <typeparam name="TRequest">The type of the command.</typeparam>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to add the route to.</param>
     /// <param name="pattern">The route pattern.</param>
+    /// <param name="statusCode">The status code to return. Defaults to 204 No Content.</param>
     /// <param name="binding">How the handler should bind the request. Defaults to <see cref="CommandBinding.Parameters"/>.</param>
     /// <returns>A <see cref="RouteHandlerBuilder"/> that can be used to further customise the endpoint.</returns>
-    public static RouteHandlerBuilder MapPutCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand =>
-        endpoints.MapPut(pattern, Handlers.CreateVoidCommandHandler<TRequest>(binding));
+    public static RouteHandlerBuilder MapPutCommand<TRequest>(this IEndpointRouteBuilder endpoints, string pattern, int statusCode = StatusCodes.Status204NoContent, CommandBinding binding = CommandBinding.Parameters) where TRequest : ICommand =>
+        endpoints.MapPut(pattern, Handlers.CreateVoidCommandHandler<TRequest>(statusCode, binding))
+                 .Produces(statusCode);
 }

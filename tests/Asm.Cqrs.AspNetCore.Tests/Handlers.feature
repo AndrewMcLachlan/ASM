@@ -39,10 +39,18 @@ Scenario: Command handler with response honours a custom status code
     Then the result should have status code 202
 
 @Unit
-Scenario: Void command handler executes the command
+Scenario: Void command handler executes the command and returns 204 by default
     Given I have a command dispatcher
     When I invoke the void command handler
     Then the command should be executed
+    And the result should have status code 204
+
+@Unit
+Scenario: Void command handler honours a custom status code
+    Given I have a command dispatcher
+    When I invoke the void command handler with status code 202
+    Then the command should be executed
+    And the result should have status code 202
 
 @Unit
 Scenario: CreateCreateHandler returns CreatedAtRoute result

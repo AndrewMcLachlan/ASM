@@ -140,10 +140,13 @@ public class HandlersSteps
     public Task WhenIInvokeTheCommandHandlerWithResponseAndBinding(string binding) => InvokeValueCommandHandler(StatusCodes.Status200OK, Enum.Parse<CommandBinding>(binding));
 
     [When(@"I invoke the void command handler")]
-    public Task WhenIInvokeTheVoidCommandHandler() => InvokeVoidCommandHandler(CommandBinding.None);
+    public Task WhenIInvokeTheVoidCommandHandler() => InvokeVoidCommandHandler(StatusCodes.Status204NoContent, CommandBinding.None);
+
+    [When(@"I invoke the void command handler with status code (.*)")]
+    public Task WhenIInvokeTheVoidCommandHandlerWithStatusCode(int statusCode) => InvokeVoidCommandHandler(statusCode, CommandBinding.None);
 
     [When(@"I invoke the void command handler with binding '(.*)'")]
-    public Task WhenIInvokeTheVoidCommandHandlerWithBinding(string binding) => InvokeVoidCommandHandler(Enum.Parse<CommandBinding>(binding));
+    public Task WhenIInvokeTheVoidCommandHandlerWithBinding(string binding) => InvokeVoidCommandHandler(StatusCodes.Status204NoContent, Enum.Parse<CommandBinding>(binding));
 
     [When(@"I invoke the create handler with route name '([^']+)'$")]
     public Task WhenIInvokeTheCreateHandler(string routeName) => InvokeCreateHandler(routeName, CommandBinding.None);
@@ -165,12 +168,12 @@ public class HandlersSteps
         _result = await (Task<IResult>)_lastHandler.DynamicInvoke(new TestCommand("Test"), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
-    private async Task InvokeVoidCommandHandler(CommandBinding binding)
+    private async Task InvokeVoidCommandHandler(int statusCode, CommandBinding binding)
     {
         _commandExecuted = false;
         _lastBinding = binding;
-        _lastHandler = (Delegate)Factory("CreateVoidCommandHandler", 1).MakeGenericMethod(typeof(TestCommandNoResponse)).Invoke(null, [binding])!;
-        await (Task)_lastHandler.DynamicInvoke(new TestCommandNoResponse("Test"), _commandDispatcherMock.Object, CancellationToken.None)!;
+        _lastHandler = (Delegate)Factory("CreateVoidCommandHandler", 1).MakeGenericMethod(typeof(TestCommandNoResponse)).Invoke(null, [statusCode, binding])!;
+        _result = await (Task<IResult>)_lastHandler.DynamicInvoke(new TestCommandNoResponse("Test"), _commandDispatcherMock.Object, CancellationToken.None)!;
     }
 
     private async Task InvokeCreateHandler(string routeName, CommandBinding binding)

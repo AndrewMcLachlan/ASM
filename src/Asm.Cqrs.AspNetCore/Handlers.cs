@@ -49,13 +49,17 @@ internal static class Handlers
             binding);
 
     /// <summary>
-    /// A command that returns no response. The endpoint completes with the framework default
-    /// (200 OK, no body) and declares no status code; callers opt into a specific code (202, 204,
-    /// …) via <c>.Produces(...)</c> on the returned builder.
+    /// A command that returns no body, responding with <paramref name="statusCode"/> (204 No Content
+    /// by default). A bare-<see cref="Task"/> handler would leave the status at the framework default
+    /// of 200 with no way to change it, so the status is set explicitly here.
     /// </summary>
-    internal static Delegate CreateVoidCommandHandler<TRequest>(CommandBinding binding) where TRequest : ICommand =>
-        ApplyBinding<TRequest>(
-            (request, dispatcher, cancellationToken) => dispatcher.Execute(request, cancellationToken).AsTask(),
+    internal static Delegate CreateVoidCommandHandler<TRequest>(int statusCode, CommandBinding binding) where TRequest : ICommand =>
+        ApplyBindingResult<TRequest>(
+            async (request, dispatcher, cancellationToken) =>
+            {
+                await dispatcher.Execute(request, cancellationToken);
+                return Results.StatusCode(statusCode);
+            },
             binding);
 
     internal static Delegate CreateDeleteHandler<TRequest>(CommandBinding binding) where TRequest : ICommand =>
@@ -72,14 +76,6 @@ internal static class Handlers
     #region Binding
 
     private static Delegate ApplyBindingResult<TRequest>(Func<TRequest, ICommandDispatcher, CancellationToken, Task<IResult>> func, CommandBinding binding) where TRequest : ICommand =>
-        binding switch
-        {
-            CommandBinding.Body => ([FromBody] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),
-            CommandBinding.Parameters => ([AsParameters] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),
-            _ => func,
-        };
-
-    private static Delegate ApplyBinding<TRequest>(Func<TRequest, ICommandDispatcher, CancellationToken, Task> func, CommandBinding binding) where TRequest : ICommand =>
         binding switch
         {
             CommandBinding.Body => ([FromBody] request, dispatcher, cancellationToken) => func(request, dispatcher, cancellationToken),

@@ -109,7 +109,7 @@ public class IEndpointRouteBuilderExtensionsSteps
     public void WhenIMapAPostCommandWithoutResponseWithPatternAndBinding(string pattern, string binding)
     {
         var commandBinding = Enum.Parse<CommandBinding>(binding);
-        _routeHandlerBuilder = _endpoints.MapCommand<TestCommandEmpty>(pattern, commandBinding);
+        _routeHandlerBuilder = _endpoints.MapCommand<TestCommandEmpty>(pattern, binding: commandBinding);
     }
 
     [When(@"I map a PATCH command with pattern ""(.*)"" and binding ""(.*)""")]
