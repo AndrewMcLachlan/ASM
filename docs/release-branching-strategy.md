@@ -33,20 +33,30 @@ version decision — nothing else to do.
 Because the version lives in the props file *on the branch*, every branch is self-describing and
 isolated — no shared tags, no cross-talk.
 
-- **`main` is the trunk.** PRs and Dependabot land here; every merge publishes `X.Y.<count>`.
+- **`main` is the trunk.** PRs and Dependabot land here; every merge publishes `X.Y.<count>` (stable).
 - **`feature/*` / PRs** build and test but never publish.
-- **A parallel line is just a branch** with its own `VersionPrefix`/`VersionSuffix`:
-  - *Breaking-major beta:* branch `release/5.0-beta`, set `VersionPrefix 5.0` + `VersionSuffix beta`
-    → publishes `5.0.0-beta.N` while `main` stays on `4.x`. **Graduate** by merging to `main` and
-    setting `VersionPrefix 5.0` with no suffix.
-  - *Maintaining an old line* (only if ever needed): branch `release/4.x` off the last 4.x point;
-    it keeps `VersionPrefix 4.0` and publishes `4.0.<count>` independently.
+- **A preview line is a `release/**` branch with a `VersionSuffix`** — e.g. branch `release/5.0-beta`,
+  set `VersionPrefix 5.0` + `VersionSuffix beta` → publishes `5.0.0-beta.N` while `main` stays on `4.x`.
 
-Publishing is gated in CI to `main` and `release/**`. There are **no tags, no anchor commits, no
-release workflow, no default-branch juggling, and no admin tokens** involved.
+**Publishing is gated in CI to `main` (the stable trunk) and prerelease builds** — i.e. `main`, or any
+branch whose version carries a `VersionSuffix`. **A `release/**` branch with no suffix publishes
+nothing** (that's what lets you graduate a beta in place — see below). There are no tags, anchor
+commits, release workflow, default-branch juggling, or admin tokens.
 
-## Cutting a new major/minor — the whole procedure
+> This deliberately means a *stable* `release/**` branch is not auto-published, so there is no
+> parallel "maintain an old major (`4.0.x`) after main moves to `5.0`" flow — consistent with
+> supporting one line at a time. If that need ever arises, widen the publish gate.
 
-1. (Optional, for a breaking major you want to preview) branch `release/5.0-beta`.
-2. Edit `VersionPrefix` (and `VersionSuffix` for a beta) in `Directory.Build.props`, commit, push.
-3. Done — CI publishes the new line from there.
+## Graduating a preview to GA
+
+Because a suffix-less `release/**` branch publishes nothing, you graduate **in place** — no promotion
+or integration branch:
+
+1. On `release/5.0-beta`, delete the `<VersionSuffix>beta</VersionSuffix>` line and commit. The build
+   runs but **publishes nothing** (stable, but not `main`).
+2. Merge `release/5.0-beta` → `main`. `main` publishes **`5.0.0`** (removing the suffix line reset the patch).
+3. Delete `release/5.0-beta`.
+
+## Cutting a new major/minor
+- **Minor / non-breaking:** edit `VersionPrefix` on `main` (`4.0` → `4.1`) in a normal PR; the next merge publishes `4.1.0`.
+- **Breaking major (previewed):** branch `release/5.0-beta`, set `VersionPrefix 5.0` + `VersionSuffix beta`, then graduate as above.

@@ -18,6 +18,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-version-number.outputs.version }}
+      # A prerelease version carries a suffix (e.g. 5.0.0-beta.4); a stable one does not.
+      is-prerelease: ${{ contains(steps.set-version-number.outputs.version, '-') }}
     steps:
     - uses: actions/checkout@v7.0.0
       with:
@@ -146,7 +150,10 @@ jobs:
     permissions:
       packages: write
       contents: read
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/'))
+    # Publish only from main (the stable trunk) or from any prerelease build (a branch with a
+    # VersionSuffix, e.g. release/5.0-beta). A release/** branch with the suffix removed publishes
+    # nothing, so the beta can be graduated in place before merging to main — no accidental deploy.
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || needs.build.outputs.is-prerelease == 'true')
     steps:
     - name: Download packages
       uses: actions/download-artifact@v8
