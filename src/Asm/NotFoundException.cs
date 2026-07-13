@@ -6,7 +6,7 @@ namespace Asm;
 /// Thrown when something is not found.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public sealed class NotFoundException : Exception
+public sealed class NotFoundException : AsmException
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="NotFoundException"/> class.
