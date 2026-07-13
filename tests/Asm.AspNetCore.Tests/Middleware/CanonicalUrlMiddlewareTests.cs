@@ -59,8 +59,13 @@ public class CanonicalUrlMiddlewareTests
     // ForceLowercase — uppercase path → 301 to lowercase
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the canonical URL middleware with default options
+    /// When an uppercase path is requested
+    /// Then it responds 301 redirecting to the lowercase path
+    /// </summary>
     [Fact]
-    public async Task UppercasePath_Redirects_ToLowercase()
+    public async Task UppercasePathRedirectsToLowercase()
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -76,8 +81,13 @@ public class CanonicalUrlMiddlewareTests
     // RemoveTrailingSlash — path ending in / → 301 without slash
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the canonical URL middleware with default options
+    /// When a path ending in a trailing slash is requested
+    /// Then it responds 301 redirecting to the path without the slash
+    /// </summary>
     [Fact]
-    public async Task TrailingSlash_Redirects_WithoutSlash()
+    public async Task TrailingSlashRedirectsWithoutSlash()
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -93,8 +103,13 @@ public class CanonicalUrlMiddlewareTests
     // Canonical path passes through (200)
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the canonical URL middleware with default options
+    /// When an already-canonical path is requested
+    /// Then the request passes through with 200
+    /// </summary>
     [Fact]
-    public async Task CanonicalPath_PassesThrough_With200()
+    public async Task CanonicalPathPassesThroughWith200()
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -108,8 +123,13 @@ public class CanonicalUrlMiddlewareTests
     // LowercaseExcludedExtensions — .pdf is exempt by default
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the default excluded extensions include .pdf
+    /// When an uppercase path ending in .PDF is requested
+    /// Then it is exempt from lowercasing and passes through with 200
+    /// </summary>
     [Fact]
-    public async Task PdfExtension_UpperCase_PassesThrough()
+    public async Task PdfExtensionUpperCasePassesThrough()
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -124,8 +144,13 @@ public class CanonicalUrlMiddlewareTests
     // ExemptPathPrefixes — /umbraco prefix bypasses canonicalisation
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given an exempt path prefix is configured
+    /// When an uppercase path under that prefix is requested
+    /// Then canonicalisation is bypassed and the request passes through with 200
+    /// </summary>
     [Fact]
-    public async Task ExemptPrefix_UppercasePath_PassesThrough()
+    public async Task ExemptPrefixUppercasePathPassesThrough()
     {
         var (host, client) = await BuildAsync(opts =>
             opts.ExemptPathPrefixes = ["/umbraco"]);
@@ -140,8 +165,13 @@ public class CanonicalUrlMiddlewareTests
     // ForceLowercase = false — uppercase path passes through
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given ForceLowercase is disabled
+    /// When an uppercase path is requested
+    /// Then the request passes through with 200
+    /// </summary>
     [Fact]
-    public async Task ForceLowercaseFalse_UppercasePath_PassesThrough()
+    public async Task ForceLowercaseFalseUppercasePathPassesThrough()
     {
         var (host, client) = await BuildAsync(opts => opts.ForceLowercase = false);
         using (host)
@@ -155,8 +185,13 @@ public class CanonicalUrlMiddlewareTests
     // RemoveTrailingSlash = false — trailing slash passes through
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given RemoveTrailingSlash is disabled
+    /// When a path ending in a trailing slash is requested
+    /// Then the request passes through with 200
+    /// </summary>
     [Fact]
-    public async Task RemoveTrailingSlashFalse_TrailingSlash_PassesThrough()
+    public async Task RemoveTrailingSlashFalseTrailingSlashPassesThrough()
     {
         var (host, client) = await BuildAsync(opts => opts.RemoveTrailingSlash = false);
         using (host)
@@ -170,8 +205,13 @@ public class CanonicalUrlMiddlewareTests
     // Query string is preserved on redirect
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the canonical URL middleware with default options
+    /// When an uppercase path with a query string is requested
+    /// Then the 301 redirect preserves the query string
+    /// </summary>
     [Fact]
-    public async Task UppercasePath_WithQueryString_RedirectPreservesQueryString()
+    public async Task UppercasePathWithQueryStringRedirectPreservesQueryString()
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -187,8 +227,13 @@ public class CanonicalUrlMiddlewareTests
     // PathBase is preserved on redirect (app hosted under a sub-path)
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the app is hosted under a path base
+    /// When an uppercase path under that base is requested
+    /// Then the 301 redirect keeps the path base
+    /// </summary>
     [Fact]
-    public async Task UppercasePath_UnderPathBase_RedirectKeepsPathBase()
+    public async Task UppercasePathUnderPathBaseRedirectKeepsPathBase()
     {
         var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -223,8 +268,13 @@ public class CanonicalUrlMiddlewareTests
     // Non-GET/HEAD methods are not redirected (would drop the request body)
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the canonical URL middleware with default options
+    /// When a POST is made to an uppercase path
+    /// Then it is not redirected and passes through with 200
+    /// </summary>
     [Fact]
-    public async Task Post_ToUppercasePath_PassesThrough()
+    public async Task PostToUppercasePathPassesThrough()
     {
         var (host, client) = await BuildAsync();
         using (host)

@@ -20,8 +20,13 @@ public class SecurityReportingHeaderBuilderTests
     // BuildReportingEndpoints
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a context and default options
+    /// When BuildReportingEndpoints is called
+    /// Then the result contains both group names and their endpoint URLs
+    /// </summary>
     [Fact]
-    public void BuildReportingEndpoints_ContainsBothGroupNamesAndUrls()
+    public void BuildReportingEndpointsContainsBothGroupNamesAndUrls()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions();
@@ -34,8 +39,13 @@ public class SecurityReportingHeaderBuilderTests
         Assert.Contains("https://example.com/reporting/csp", result);
     }
 
+    /// <summary>
+    /// Given options with a custom route prefix
+    /// When BuildReportingEndpoints is called
+    /// Then the custom prefix is reflected in the endpoint URLs
+    /// </summary>
     [Fact]
-    public void BuildReportingEndpoints_CustomRoutePrefix_ReflectedInUrls()
+    public void BuildReportingEndpointsCustomRoutePrefixReflectedInUrls()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions { RoutePrefix = "api/reporting" };
@@ -46,8 +56,13 @@ public class SecurityReportingHeaderBuilderTests
         Assert.Contains("https://example.com/api/reporting/csp", result);
     }
 
+    /// <summary>
+    /// Given options with a route prefix containing leading and trailing slashes
+    /// When BuildReportingEndpoints is called
+    /// Then the slashes are handled gracefully and the URLs are well-formed
+    /// </summary>
     [Fact]
-    public void BuildReportingEndpoints_RoutePrefixWithLeadingSlash_WorksCorrectly()
+    public void BuildReportingEndpointsRoutePrefixWithLeadingSlashWorksCorrectly()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions { RoutePrefix = "/reporting/" };
@@ -63,8 +78,13 @@ public class SecurityReportingHeaderBuilderTests
     // BuildReportTo
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a context and default options
+    /// When BuildReportTo is called
+    /// Then the result contains both group names, the max-age and the endpoint URLs
+    /// </summary>
     [Fact]
-    public void BuildReportTo_ContainsBothGroups_MaxAge_AndUrls()
+    public void BuildReportToContainsBothGroupsMaxAgeAndUrls()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions();
@@ -78,8 +98,13 @@ public class SecurityReportingHeaderBuilderTests
         Assert.Contains("https://example.com/reporting/csp", result);
     }
 
+    /// <summary>
+    /// Given options with a custom max-age
+    /// When BuildReportTo is called
+    /// Then the custom max-age is reflected in the output
+    /// </summary>
     [Fact]
-    public void BuildReportTo_CustomMaxAge_ReflectedInOutput()
+    public void BuildReportToCustomMaxAgeReflectedInOutput()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions { MaxAgeSeconds = 3600 };
@@ -89,8 +114,13 @@ public class SecurityReportingHeaderBuilderTests
         Assert.Contains("3600", result);
     }
 
+    /// <summary>
+    /// Given options with a custom route prefix
+    /// When BuildReportTo is called
+    /// Then the custom prefix is reflected in the endpoint URLs
+    /// </summary>
     [Fact]
-    public void BuildReportTo_CustomRoutePrefix_ReflectedInUrls()
+    public void BuildReportToCustomRoutePrefixReflectedInUrls()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions { RoutePrefix = "api/reporting" };
@@ -101,8 +131,13 @@ public class SecurityReportingHeaderBuilderTests
         Assert.Contains("https://example.com/api/reporting/csp", result);
     }
 
+    /// <summary>
+    /// Given a context and default options
+    /// When BuildReportTo is called
+    /// Then the output is JSON-like and contains the "group" key
+    /// </summary>
     [Fact]
-    public void BuildReportTo_ContainsGroupKeyword()
+    public void BuildReportToContainsGroupKeyword()
     {
         var ctx = BuildContext();
         var options = new SecurityReportingOptions();

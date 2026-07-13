@@ -15,8 +15,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Null guard
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a null IServiceCollection
+    /// When AddStandardSecurityHeaders is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_NullServices_ThrowsArgumentNullException()
+    public void AddStandardSecurityHeadersNullServicesThrowsArgumentNullException()
     {
         IServiceCollection services = null!;
         Assert.Throws<ArgumentNullException>(() => services.AddStandardSecurityHeaders());
@@ -26,8 +31,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Default registration
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddStandardSecurityHeaders is called without an extend callback
+    /// When the HeaderPolicyCollection is resolved
+    /// Then a non-null collection is registered
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_NoExtend_RegistersHeaderPolicyCollectionSingleton()
+    public void AddStandardSecurityHeadersNoExtendRegistersHeaderPolicyCollectionSingleton()
     {
         var services = new ServiceCollection();
         services.AddStandardSecurityHeaders();
@@ -38,8 +48,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
         Assert.NotNull(policies);
     }
 
+    /// <summary>
+    /// Given AddStandardSecurityHeaders is called without an extend callback
+    /// When the HeaderPolicyCollection is resolved
+    /// Then it contains the default policies but not CSP
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_NoExtend_CollectionContainsDefaultPolicies()
+    public void AddStandardSecurityHeadersNoExtendCollectionContainsDefaultPolicies()
     {
         var services = new ServiceCollection();
         services.AddStandardSecurityHeaders();
@@ -63,8 +78,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Return value — IServiceCollection for chaining
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a service collection
+    /// When AddStandardSecurityHeaders is called
+    /// Then the same service collection instance is returned for chaining
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_ReturnsTheSameServiceCollection()
+    public void AddStandardSecurityHeadersReturnsTheSameServiceCollection()
     {
         var services = new ServiceCollection();
         var returned = services.AddStandardSecurityHeaders();
@@ -76,8 +96,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // configure callback — additional/overriding policies are composed in
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddStandardSecurityHeaders is called with a configure callback adding a custom header
+    /// When the HeaderPolicyCollection is resolved
+    /// Then the custom policy is contributed alongside the standard defaults
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_ConfigureCallback_ContributesAdditionalPolicies()
+    public void AddStandardSecurityHeadersConfigureCallbackContributesAdditionalPolicies()
     {
         var services = new ServiceCollection();
         services.AddStandardSecurityHeaders(policies => policies.AddCustomHeader("X-Custom-Test", "custom-value"));
@@ -94,8 +119,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Order-independent reporting coupling: AddSecurityReporting BEFORE
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting is called before AddStandardSecurityHeaders
+    /// When the HeaderPolicyCollection is resolved
+    /// Then the Reporting-Endpoints and Report-To policies are coupled in
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_AfterAddSecurityReporting_ReportingPoliciesIncluded()
+    public void AddStandardSecurityHeadersAfterAddSecurityReportingReportingPoliciesIncluded()
     {
         var services = new ServiceCollection();
         services.AddSecurityReporting();
@@ -114,8 +144,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Auto-coupling: AddSecurityReporting NOT called → reporting policies absent
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddStandardSecurityHeaders is called without AddSecurityReporting
+    /// When the HeaderPolicyCollection is resolved
+    /// Then the Reporting-Endpoints and Report-To policies are absent
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_WithoutAddSecurityReporting_ReportingPoliciesAbsent()
+    public void AddStandardSecurityHeadersWithoutAddSecurityReportingReportingPoliciesAbsent()
     {
         var services = new ServiceCollection();
         services.AddStandardSecurityHeaders();           // no AddSecurityReporting
@@ -133,8 +168,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Order-independent reporting coupling: AddSecurityReporting AFTER
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddStandardSecurityHeaders is called before AddSecurityReporting
+    /// When the HeaderPolicyCollection is resolved
+    /// Then the Reporting-Endpoints and Report-To policies are still included
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_BeforeAddSecurityReporting_ReportingPoliciesIncluded()
+    public void AddStandardSecurityHeadersBeforeAddSecurityReportingReportingPoliciesIncluded()
     {
         // Order-independence (item 2): AddSecurityReporting composes the reporting policies via an
         // IPostConfigureOptions, so calling it AFTER AddStandardSecurityHeaders still works.
@@ -155,8 +195,13 @@ public class IServiceCollectionExtensionsStandardSecurityTests
     // Order-independence: both registration orders produce the same composed result
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the reporting and standard headers are registered in both possible orders
+    /// When the resolved HeaderPolicyCollection keys are compared
+    /// Then both orders produce the same set of header keys
+    /// </summary>
     [Fact]
-    public void AddStandardSecurityHeaders_ReportingCoupling_IsOrderIndependent()
+    public void AddStandardSecurityHeadersReportingCouplingIsOrderIndependent()
     {
         var reportingFirst = new ServiceCollection();
         reportingFirst.AddSecurityReporting();

@@ -63,8 +63,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // Null guard
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a null IApplicationBuilder
+    /// When UseStandardSecurityHeaders is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
-    public void UseStandardSecurityHeaders_NullApp_ThrowsArgumentNullException()
+    public void UseStandardSecurityHeadersNullAppThrowsArgumentNullException()
     {
         IApplicationBuilder app = null!;
         Assert.Throws<ArgumentNullException>(() => app.UseStandardSecurityHeaders());
@@ -74,6 +79,11 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // Default header set emitted on HTML responses
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host with UseStandardSecurityHeaders registered
+    /// When an HTML response is returned
+    /// Then each expected default security header is present with its expected value
+    /// </summary>
     [Theory]
     [InlineData("Cross-Origin-Opener-Policy", "same-origin-allow-popups")]
     [InlineData("Cross-Origin-Embedder-Policy", "require-corp")]
@@ -82,7 +92,7 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     [InlineData("X-Content-Type-Options", "nosniff")]
     [InlineData("Referrer-Policy", "strict-origin-when-cross-origin")]
     [InlineData("X-Permitted-Cross-Domain-Policies", "none")]
-    public async Task HtmlResponse_DefaultHeaders_ArePresent(string headerName, string expectedValue)
+    public async Task HtmlResponseDefaultHeadersArePresent(string headerName, string expectedValue)
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -99,8 +109,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // Server header is removed
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host with UseStandardSecurityHeaders registered
+    /// When an HTML response is returned
+    /// Then the Server header is removed
+    /// </summary>
     [Fact]
-    public async Task HtmlResponse_ServerHeader_IsRemoved()
+    public async Task HtmlResponseServerHeaderIsRemoved()
     {
         var (host, client) = await BuildAsync();
         using (host)
@@ -115,8 +130,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // Custom CSP via extend overrides the default
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host configured with a custom CSP via the extend callback
+    /// When an HTML response is returned
+    /// Then the Content-Security-Policy header is present
+    /// </summary>
     [Fact]
-    public async Task WithExtend_CustomCspOverridesDefault()
+    public async Task WithExtendCustomCspOverridesDefault()
     {
         var (host, client) = await BuildAsync(extend: policies =>
             policies.AddContentSecurityPolicy(csp => csp.AddDefaultSrc().Self().From("cdn.example.com")));
@@ -133,8 +153,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // Exempt path prefix — header processing is bypassed
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given an exempt path prefix is configured
+    /// When a request to an exempt path is made
+    /// Then the security headers are not added
+    /// </summary>
     [Fact]
-    public async Task ExemptPathPrefix_BypassesHeaderProcessing()
+    public async Task ExemptPathPrefixBypassesHeaderProcessing()
     {
         var (host, client) = await BuildAsync(exemptPrefixes: ["/api"]);
         using (host)
@@ -153,8 +178,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // Non-exempt path — headers ARE added
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given an exempt path prefix is configured
+    /// When a request to a non-exempt path is made
+    /// Then the security headers are added
+    /// </summary>
     [Fact]
-    public async Task NonExemptPath_HeadersAreAdded()
+    public async Task NonExemptPathHeadersAreAdded()
     {
         var (host, client) = await BuildAsync(exemptPrefixes: ["/api"]);
         using (host)
@@ -170,8 +200,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // AddSecurityReporting registered → Reporting-Endpoints + Report-To on HTML
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting is registered before AddStandardSecurityHeaders
+    /// When an HTML response is returned
+    /// Then the Reporting-Endpoints and Report-To headers are emitted
+    /// </summary>
     [Fact]
-    public async Task WithAddSecurityReportingBeforeAddStandardHeaders_ReportingHeadersEmitted()
+    public async Task WithAddSecurityReportingBeforeAddStandardHeadersReportingHeadersEmitted()
     {
         var (host, client) = await BuildAsync(configureServices: services =>
             services.AddSecurityReporting());
@@ -192,8 +227,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // still emits the reporting headers at runtime
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting is registered after AddStandardSecurityHeaders
+    /// When an HTML response is returned
+    /// Then the Reporting-Endpoints and Report-To headers are still emitted
+    /// </summary>
     [Fact]
-    public async Task WithAddSecurityReportingAfterAddStandardHeaders_ReportingHeadersEmitted()
+    public async Task WithAddSecurityReportingAfterAddStandardHeadersReportingHeadersEmitted()
     {
         var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -233,8 +273,13 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     // AddSecurityReporting NOT registered → reporting headers absent
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting is not registered
+    /// When an HTML response is returned
+    /// Then the Reporting-Endpoints and Report-To headers are absent
+    /// </summary>
     [Fact]
-    public async Task WithoutAddSecurityReporting_ReportingHeadersAbsent()
+    public async Task WithoutAddSecurityReportingReportingHeadersAbsent()
     {
         var (host, client) = await BuildAsync(); // no AddSecurityReporting
         using (host)

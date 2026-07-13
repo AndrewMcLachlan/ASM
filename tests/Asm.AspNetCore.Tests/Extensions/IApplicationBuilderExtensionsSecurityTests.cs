@@ -22,8 +22,13 @@ public class IApplicationBuilderExtensionsSecurityTests
     // UseCanonicalUrls() — smoke test: pipeline runs end-to-end
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a pipeline configured with UseCanonicalUrls and no options
+    /// When a request for an uppercase path is made
+    /// Then it responds 301 redirecting to the lowercase path
+    /// </summary>
     [Fact]
-    public async Task UseCanonicalUrls_NoConfigure_PipelineRunsAndRedirectsUppercase()
+    public async Task UseCanonicalUrlsNoConfigurePipelineRunsAndRedirectsUppercase()
     {
         using var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -53,8 +58,13 @@ public class IApplicationBuilderExtensionsSecurityTests
     // AddCanonicalUrls(configure) + DI-resolved UseCanonicalUrls() — options applied
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddCanonicalUrls configured with ForceLowercase disabled via DI
+    /// When an uppercase path is requested through UseCanonicalUrls
+    /// Then the configured options are applied and the request passes through with 200
+    /// </summary>
     [Fact]
-    public async Task AddCanonicalUrls_ConfiguredOptions_ResolvedByUseCanonicalUrls()
+    public async Task AddCanonicalUrlsConfiguredOptionsResolvedByUseCanonicalUrls()
     {
         using var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -84,8 +94,13 @@ public class IApplicationBuilderExtensionsSecurityTests
     // Obsolete inline-configure overload still forwards correctly
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given the obsolete UseCanonicalUrls inline-configure overload with ForceLowercase disabled
+    /// When an uppercase path is requested
+    /// Then the inline configuration still applies and the request passes through with 200
+    /// </summary>
     [Fact]
-    public async Task UseCanonicalUrls_ObsoleteInlineConfigure_StillApplies()
+    public async Task UseCanonicalUrlsObsoleteInlineConfigureStillApplies()
     {
         using var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -114,8 +129,13 @@ public class IApplicationBuilderExtensionsSecurityTests
     // Argument null checks
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a null IApplicationBuilder
+    /// When UseCanonicalUrls is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
-    public void UseCanonicalUrls_NullApp_ThrowsArgumentNullException()
+    public void UseCanonicalUrlsNullAppThrowsArgumentNullException()
     {
         IApplicationBuilder app = null!;
         Assert.Throws<ArgumentNullException>(() => app.UseCanonicalUrls());

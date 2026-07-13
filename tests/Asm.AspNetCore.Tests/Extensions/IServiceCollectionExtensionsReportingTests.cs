@@ -14,8 +14,13 @@ public class IServiceCollectionExtensionsReportingTests
     // AddSecurityReporting with no configure → defaults
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting is called without configuration
+    /// When the SecurityReportingOptions are resolved
+    /// Then the default route, group name and max-age values are registered
+    /// </summary>
     [Fact]
-    public void AddSecurityReporting_NoConfiguration_RegistersDefaultOptions()
+    public void AddSecurityReportingNoConfigurationRegistersDefaultOptions()
     {
         var services = new ServiceCollection();
         services.AddSecurityReporting();
@@ -36,8 +41,13 @@ public class IServiceCollectionExtensionsReportingTests
     // AddSecurityReporting with configure → custom options reflected
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting is called with a configure callback
+    /// When the SecurityReportingOptions are resolved
+    /// Then the customised option values are reflected
+    /// </summary>
     [Fact]
-    public void AddSecurityReporting_WithConfigure_RegistersCustomisedOptions()
+    public void AddSecurityReportingWithConfigureRegistersCustomisedOptions()
     {
         var services = new ServiceCollection();
         services.AddSecurityReporting(opts => opts.RoutePrefix = "x");
@@ -52,8 +62,13 @@ public class IServiceCollectionExtensionsReportingTests
     // Singleton — same instance returned on multiple resolutions
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddSecurityReporting has registered the options
+    /// When SecurityReportingOptions is resolved more than once
+    /// Then the same singleton instance is returned each time
+    /// </summary>
     [Fact]
-    public void AddSecurityReporting_ReturnsSameSingletonInstance()
+    public void AddSecurityReportingReturnsSameSingletonInstance()
     {
         var services = new ServiceCollection();
         services.AddSecurityReporting();
@@ -69,8 +84,13 @@ public class IServiceCollectionExtensionsReportingTests
     // Method returns the same IServiceCollection for chaining
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a service collection
+    /// When AddSecurityReporting is called
+    /// Then the same service collection instance is returned for chaining
+    /// </summary>
     [Fact]
-    public void AddSecurityReporting_ReturnsTheSameServiceCollection()
+    public void AddSecurityReportingReturnsTheSameServiceCollection()
     {
         var services = new ServiceCollection();
         var returned = services.AddSecurityReporting();

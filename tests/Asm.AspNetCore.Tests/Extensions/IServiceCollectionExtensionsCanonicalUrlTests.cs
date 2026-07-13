@@ -14,8 +14,13 @@ public class IServiceCollectionExtensionsCanonicalUrlTests
     // Null guard
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a null IServiceCollection
+    /// When AddCanonicalUrls is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
-    public void AddCanonicalUrls_NullServices_ThrowsArgumentNullException()
+    public void AddCanonicalUrlsNullServicesThrowsArgumentNullException()
     {
         IServiceCollection services = null!;
         Assert.Throws<ArgumentNullException>(() => services.AddCanonicalUrls());
@@ -25,8 +30,13 @@ public class IServiceCollectionExtensionsCanonicalUrlTests
     // Chaining
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a service collection
+    /// When AddCanonicalUrls is called
+    /// Then the same service collection instance is returned for chaining
+    /// </summary>
     [Fact]
-    public void AddCanonicalUrls_ReturnsTheSameServiceCollection()
+    public void AddCanonicalUrlsReturnsTheSameServiceCollection()
     {
         var services = new ServiceCollection();
         var returned = services.AddCanonicalUrls();
@@ -38,8 +48,13 @@ public class IServiceCollectionExtensionsCanonicalUrlTests
     // No configure → defaults resolvable via IOptions
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddCanonicalUrls is called without a configure callback
+    /// When the CanonicalUrlOptions are resolved via IOptions
+    /// Then ForceLowercase and RemoveTrailingSlash default to true
+    /// </summary>
     [Fact]
-    public void AddCanonicalUrls_NoConfigure_RegistersDefaultOptions()
+    public void AddCanonicalUrlsNoConfigureRegistersDefaultOptions()
     {
         var services = new ServiceCollection();
         services.AddCanonicalUrls();
@@ -55,8 +70,13 @@ public class IServiceCollectionExtensionsCanonicalUrlTests
     // Configure callback flows into resolved options
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given AddCanonicalUrls is called with a configure callback
+    /// When the CanonicalUrlOptions are resolved via IOptions
+    /// Then the customised option values flow through
+    /// </summary>
     [Fact]
-    public void AddCanonicalUrls_WithConfigure_AppliesCustomOptions()
+    public void AddCanonicalUrlsWithConfigureAppliesCustomOptions()
     {
         var services = new ServiceCollection();
         services.AddCanonicalUrls(opts =>

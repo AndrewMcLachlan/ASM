@@ -90,8 +90,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // POST to integrity endpoint returns 204
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host with security reporting endpoints mapped
+    /// When a report is POSTed to the integrity endpoint
+    /// Then it responds 204 No Content
+    /// </summary>
     [Fact]
-    public async Task PostIntegrity_Returns204()
+    public async Task PostIntegrityReturns204()
     {
         var (host, client, _) = await BuildHostAsync();
         using (host)
@@ -107,8 +112,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // POST to csp endpoint returns 204
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host with security reporting endpoints mapped
+    /// When a report is POSTed to the CSP endpoint
+    /// Then it responds 204 No Content
+    /// </summary>
     [Fact]
-    public async Task PostCsp_Returns204()
+    public async Task PostCspReturns204()
     {
         var (host, client, _) = await BuildHostAsync();
         using (host)
@@ -124,8 +134,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Body is logged at Warning under documented category names
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host with security reporting endpoints mapped
+    /// When a report is POSTed to the integrity endpoint
+    /// Then the body is logged at Warning under the integrity logger category
+    /// </summary>
     [Fact]
-    public async Task PostIntegrity_LogsAtWarning_UnderIntegrityCategory()
+    public async Task PostIntegrityLogsAtWarningUnderIntegrityCategory()
     {
         var (host, client, logProvider) = await BuildHostAsync();
         using (host)
@@ -145,8 +160,13 @@ public class IEndpointRouteBuilderExtensionsTests
         }
     }
 
+    /// <summary>
+    /// Given a host with security reporting endpoints mapped
+    /// When a report is POSTed to the CSP endpoint
+    /// Then the body is logged at Warning under the CSP logger category
+    /// </summary>
     [Fact]
-    public async Task PostCsp_LogsAtWarning_UnderCspCategory()
+    public async Task PostCspLogsAtWarningUnderCspCategory()
     {
         var (host, client, logProvider) = await BuildHostAsync();
         using (host)
@@ -170,8 +190,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Custom RoutePrefix shifts endpoints accordingly
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given security reporting is configured with a custom route prefix
+    /// When requests are made to the default and custom-prefix endpoints
+    /// Then the default path returns 404 and the custom-prefix path responds
+    /// </summary>
     [Fact]
-    public async Task CustomRoutePrefix_ShiftsEndpoints()
+    public async Task CustomRoutePrefixShiftsEndpoints()
     {
         var (host, client, _) = await BuildHostAsync(opts =>
             opts.RoutePrefix = "api/reporting");
@@ -191,8 +216,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // MapSecurityReporting without AddSecurityReporting → InvalidOperationException
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a host where AddSecurityReporting was not called
+    /// When MapSecurityReporting is used and a request reaches the endpoint
+    /// Then an InvalidOperationException is thrown
+    /// </summary>
     [Fact]
-    public async Task MapSecurityReporting_WithoutAddSecurityReporting_ThrowsInvalidOperationException()
+    public async Task MapSecurityReportingWithoutAddSecurityReportingThrowsInvalidOperationException()
     {
         // Build host WITHOUT calling AddSecurityReporting
         var ex = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -233,8 +263,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Body under cap: 204 + log captured
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a CSP endpoint configured with a body-size cap
+    /// When a report smaller than the cap is POSTed
+    /// Then it responds 204 and the body is logged
+    /// </summary>
     [Fact]
-    public async Task PostCsp_BodyUnderCap_Returns204AndLogsBody()
+    public async Task PostCspBodyUnderCapReturns204AndLogsBody()
     {
         var (host, client, logProvider) = await BuildHostAsync(opts => opts.MaxBodyBytes = 1024);
         using (host)
@@ -259,8 +294,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Body exceeding declared Content-Length: 413
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a CSP endpoint configured with a small body-size cap
+    /// When a body whose declared Content-Length exceeds the cap is POSTed
+    /// Then it responds 413 and nothing is logged
+    /// </summary>
     [Fact]
-    public async Task PostCsp_DeclaredContentLengthExceedsCap_Returns413()
+    public async Task PostCspDeclaredContentLengthExceedsCapReturns413()
     {
         var (host, client, logProvider) = await BuildHostAsync(opts => opts.MaxBodyBytes = 10);
         using (host)
@@ -281,8 +321,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Body exceeds cap via streaming (no Content-Length): 413
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a CSP endpoint configured with a small body-size cap
+    /// When a streamed body with no Content-Length exceeds the cap
+    /// Then the bounded read enforces the cap, responding 413 with nothing logged
+    /// </summary>
     [Fact]
-    public async Task PostCsp_StreamingBodyExceedsCap_Returns413()
+    public async Task PostCspStreamingBodyExceedsCapReturns413()
     {
         var (host, client, logProvider) = await BuildHostAsync(opts => opts.MaxBodyBytes = 10);
         using (host)
@@ -308,8 +353,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Body containing \r\n control chars: log contains sanitised text
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a report body containing CR, LF and form-feed control characters
+    /// When it is POSTed to the CSP endpoint
+    /// Then the logged message is sanitised of control characters while keeping the content
+    /// </summary>
     [Fact]
-    public async Task PostCsp_BodyWithControlChars_LogsSanitisedBody()
+    public async Task PostCspBodyWithControlCharsLogsSanitisedBody()
     {
         var (host, client, logProvider) = await BuildHostAsync();
         using (host)
@@ -339,8 +389,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // ContentType header containing \r\n: sanitised in log
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a report POSTed to the CSP endpoint with a clean content type
+    /// When the content type is logged
+    /// Then the logged message contains the content type without control characters
+    /// </summary>
     [Fact]
-    public async Task PostCsp_ContentTypeWithControlChars_LogsSanitisedContentType()
+    public async Task PostCspContentTypeWithControlCharsLogsSanitisedContentType()
     {
         var (host, client, logProvider) = await BuildHostAsync();
         using (host)
@@ -374,8 +429,13 @@ public class IEndpointRouteBuilderExtensionsTests
     // Custom MaxBodyBytes = 1024: boundary is respected
     // ──────────────────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Given a CSP endpoint configured with a custom MaxBodyBytes cap
+    /// When bodies exactly at and one byte over the cap are POSTed
+    /// Then the at-cap body responds 204 and the over-cap body responds 413
+    /// </summary>
     [Fact]
-    public async Task PostCsp_CustomMaxBodyBytes_BoundaryRespected()
+    public async Task PostCspCustomMaxBodyBytesBoundaryRespected()
     {
         const int cap = 1024;
         var (host, client, logProvider) = await BuildHostAsync(opts => opts.MaxBodyBytes = cap);
