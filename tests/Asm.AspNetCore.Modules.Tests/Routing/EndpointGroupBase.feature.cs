@@ -167,17 +167,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Endpoint group base has default empty tags")]
+        [global::Xunit.FactAttribute(DisplayName="Endpoint group base has a default empty tag")]
         [global::Xunit.TraitAttribute("FeatureTitle", "EndpointGroupBase")]
-        [global::Xunit.TraitAttribute("Description", "Endpoint group base has default empty tags")]
+        [global::Xunit.TraitAttribute("Description", "Endpoint group base has a default empty tag")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task EndpointGroupBaseHasDefaultEmptyTags()
+        public async global::System.Threading.Tasks.Task EndpointGroupBaseHasADefaultEmptyTag()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base has default empty tags", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base has a default empty tag", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 12
@@ -194,23 +194,23 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have a minimal endpoint group", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 14
-    await testRunner.ThenAsync("the group tags should be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the group tag should be empty", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="Endpoint group base can have custom tags")]
+        [global::Xunit.FactAttribute(DisplayName="Endpoint group base can have a custom tag")]
         [global::Xunit.TraitAttribute("FeatureTitle", "EndpointGroupBase")]
-        [global::Xunit.TraitAttribute("Description", "Endpoint group base can have custom tags")]
+        [global::Xunit.TraitAttribute("Description", "Endpoint group base can have a custom tag")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task EndpointGroupBaseCanHaveCustomTags()
+        public async global::System.Threading.Tasks.Task EndpointGroupBaseCanHaveACustomTag()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base can have custom tags", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Endpoint group base can have a custom tag", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 17
@@ -227,7 +227,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have a simple endpoint group", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 19
-    await testRunner.ThenAsync("the group tags should be \'simple,test\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the group tag should be \'simple\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
