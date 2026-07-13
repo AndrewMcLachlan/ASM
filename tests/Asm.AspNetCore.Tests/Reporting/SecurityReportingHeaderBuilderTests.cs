@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Asm.AspNetCore.Tests.Reporting;
 
+[Trait("Category", "Unit")]
+
 public class SecurityReportingHeaderBuilderTests
 {
     // Build a minimal HttpContext with a known scheme and host

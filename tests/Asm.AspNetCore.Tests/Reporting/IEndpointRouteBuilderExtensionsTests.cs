@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Asm.AspNetCore.Tests.Reporting;
 
+[Trait("Category", "Unit")]
+
 public class IEndpointRouteBuilderExtensionsTests
 {
     // ──────────────────────────────────────────────────────────────────────────

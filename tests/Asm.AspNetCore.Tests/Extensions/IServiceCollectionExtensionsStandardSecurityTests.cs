@@ -8,6 +8,7 @@ namespace Asm.AspNetCore.Tests.Extensions;
 /// <summary>
 /// Tests for <see cref="AsmAspNetCoreServiceCollectionExtensions.AddStandardSecurityHeaders"/>.
 /// </summary>
+[Trait("Category", "Unit")]
 public class IServiceCollectionExtensionsStandardSecurityTests
 {
     // ──────────────────────────────────────────────────────────────────────────

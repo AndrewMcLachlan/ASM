@@ -7,6 +7,7 @@ namespace Asm.AspNetCore.Tests.Extensions;
 /// Tests for <see cref="AsmAspNetCoreServiceCollectionExtensions.AddSecurityReporting"/> —
 /// isolated from the existing Reqnroll-based IServiceCollectionExtensions feature tests.
 /// </summary>
+[Trait("Category", "Unit")]
 public class IServiceCollectionExtensionsReportingTests
 {
     // ──────────────────────────────────────────────────────────────────────────

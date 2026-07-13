@@ -2,6 +2,8 @@ using Asm.AspNetCore.Middleware;
 
 namespace Asm.AspNetCore.Tests.Middleware;
 
+[Trait("Category", "Unit")]
+
 public class CanonicalUrlOptionsTests
 {
     [Fact]

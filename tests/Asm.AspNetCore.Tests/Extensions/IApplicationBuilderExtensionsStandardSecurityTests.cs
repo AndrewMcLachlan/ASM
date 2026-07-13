@@ -15,6 +15,7 @@ namespace Asm.AspNetCore.Tests.Extensions;
 /// Uses <see cref="ITestServer"/> via <c>HostBuilder</c>, following the same pattern as
 /// <c>CanonicalUrlMiddlewareTests</c>.
 /// </summary>
+[Trait("Category", "Unit")]
 public class IApplicationBuilderExtensionsStandardSecurityTests
 {
     // ──────────────────────────────────────────────────────────────────────────

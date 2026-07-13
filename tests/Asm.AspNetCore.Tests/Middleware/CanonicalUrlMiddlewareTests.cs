@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace Asm.AspNetCore.Tests.Middleware;
 
+[Trait("Category", "Unit")]
+
 public class CanonicalUrlMiddlewareTests
 {
     // ──────────────────────────────────────────────────────────────────────────

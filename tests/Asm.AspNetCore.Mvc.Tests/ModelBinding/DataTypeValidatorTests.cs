@@ -3,6 +3,8 @@ using Asm.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Asm.AspNetCore.Mvc.Tests.ModelBinding;
 
+[Trait("Category", "Unit")]
+
 public class DataTypeValidatorTests
 {
     private static ValidationResult? Validate(string value)

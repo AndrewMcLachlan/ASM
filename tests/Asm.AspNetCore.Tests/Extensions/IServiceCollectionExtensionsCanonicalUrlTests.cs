@@ -7,6 +7,7 @@ namespace Asm.AspNetCore.Tests.Extensions;
 /// <summary>
 /// Tests for <see cref="AsmAspNetCoreServiceCollectionExtensions.AddCanonicalUrls"/>.
 /// </summary>
+[Trait("Category", "Unit")]
 public class IServiceCollectionExtensionsCanonicalUrlTests
 {
     // ──────────────────────────────────────────────────────────────────────────

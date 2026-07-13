@@ -15,6 +15,7 @@ namespace Asm.AspNetCore.Tests.Extensions;
 /// <c>UseCanonicalUrls</c> and <c>UseStandardSecurityHeaders</c>.
 /// Isolated from the existing Reqnroll feature tests.
 /// </summary>
+[Trait("Category", "Unit")]
 public class IApplicationBuilderExtensionsSecurityTests
 {
     // ──────────────────────────────────────────────────────────────────────────

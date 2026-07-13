@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Asm.AspNetCore.Tests.Infrastructure;
 
+[Trait("Category", "Unit")]
+
 public class AsmExceptionHandlerTests
 {
     /// <summary>

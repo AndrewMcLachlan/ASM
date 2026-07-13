@@ -2,6 +2,8 @@ using Asm.AspNetCore.Reporting;
 
 namespace Asm.AspNetCore.Tests.Reporting;
 
+[Trait("Category", "Unit")]
+
 public class SecurityReportingOptionsTests
 {
     [Fact]
