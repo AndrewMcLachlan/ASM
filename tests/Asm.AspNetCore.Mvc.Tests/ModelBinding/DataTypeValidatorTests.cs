@@ -7,7 +7,7 @@ namespace Asm.AspNetCore.Mvc.Tests.ModelBinding;
 
 public class DataTypeValidatorTests
 {
-    private static ValidationResult? Validate(string value)
+    private static ValidationResult Validate(string value)
     {
         var attribute = new DataTypeValidatorAttribute(DataType.EmailAddress);
         var context = new ValidationContext(new object()) { DisplayName = "Email" };
