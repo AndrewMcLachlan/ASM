@@ -42,9 +42,14 @@ public class RouteParamAuthorisationHandlerTypedTests
         return (handler, context, requirement);
     }
 
+    /// <summary>
+    /// Given a route value that converts to the allowed Guid
+    /// When the requirement is handled
+    /// Then the converted value is received and the context succeeds
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_ConvertsRouteValueAndAuthorises()
+    public async Task HandleAsyncConvertsRouteValueAndAuthorises()
     {
         var allowed = Guid.NewGuid();
         var (handler, context, _) = Setup(allowed.ToString(), allowed);
@@ -55,9 +60,14 @@ public class RouteParamAuthorisationHandlerTypedTests
         Assert.True(context.HasSucceeded);
     }
 
+    /// <summary>
+    /// Given a route value that converts to a Guid other than the allowed one
+    /// When the requirement is handled
+    /// Then the converted value is received and the context fails
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_UnauthorisedTypedValue_Fails()
+    public async Task HandleAsyncUnauthorisedTypedValueFails()
     {
         var allowed = Guid.NewGuid();
         var other = Guid.NewGuid();
@@ -69,9 +79,14 @@ public class RouteParamAuthorisationHandlerTypedTests
         Assert.True(context.HasFailed);
     }
 
+    /// <summary>
+    /// Given a route value that cannot be converted to a Guid
+    /// When the requirement is handled
+    /// Then no value is received and the context fails
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_UnconvertibleRouteValue_Fails()
+    public async Task HandleAsyncUnconvertibleRouteValueFails()
     {
         var allowed = Guid.NewGuid();
         var (handler, context, _) = Setup("not-a-guid", allowed);

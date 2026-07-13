@@ -7,6 +7,7 @@ using Asm.IO;
 
 namespace Asm.Tests.IO;
 
+[Trait("Category", "Unit")]
 public class StringWriterWithEncodingTests
 {
     public static readonly List<object[]> encodings = [new Encoding[] { Encoding.UTF8 }, new Encoding[] { Encoding.ASCII }, new Encoding[] { Encoding.Latin1 }];

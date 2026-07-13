@@ -4,9 +4,14 @@ namespace Asm.Domain.Tests;
 
 public class AsmDomainExpressionExtensionsTests
 {
+    /// <summary>
+    /// Given two predicate expressions with different parameter names
+    /// When they are combined with AndAlso
+    /// Then the result shares a single parameter and evaluates as a logical AND
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AndAlso_RebindsParametersAndEvaluates()
+    public void AndAlsoRebindsParametersAndEvaluates()
     {
         Expression<Func<int, bool>> left = x => x > 2;
         Expression<Func<int, bool>> right = y => y < 5;
@@ -22,9 +27,14 @@ public class AsmDomainExpressionExtensionsTests
         Assert.False(predicate(5));
     }
 
+    /// <summary>
+    /// Given two predicate expressions with different parameter names
+    /// When they are combined with OrElse
+    /// Then the result evaluates as a logical OR
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void OrElse_RebindsParametersAndEvaluates()
+    public void OrElseRebindsParametersAndEvaluates()
     {
         Expression<Func<int, bool>> left = x => x > 4;
         Expression<Func<int, bool>> right = y => y % 2 == 0;
@@ -36,9 +46,14 @@ public class AsmDomainExpressionExtensionsTests
         Assert.False(predicate(3)); // neither
     }
 
+    /// <summary>
+    /// Given a predicate expression
+    /// When Not is applied
+    /// Then the compiled predicate returns the negated result
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Not_NegatesPredicate()
+    public void NotNegatesPredicate()
     {
         Expression<Func<int, bool>> expression = x => x > 2;
 
@@ -48,9 +63,14 @@ public class AsmDomainExpressionExtensionsTests
         Assert.True(predicate(1));
     }
 
+    /// <summary>
+    /// Given a null expression argument
+    /// When AndAlso is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AndAlso_NullArguments_Throw()
+    public void AndAlsoNullArgumentsThrow()
     {
         Expression<Func<int, bool>> expression = x => x > 2;
 
@@ -58,9 +78,14 @@ public class AsmDomainExpressionExtensionsTests
         Assert.Throws<ArgumentNullException>(() => expression.AndAlso(null!));
     }
 
+    /// <summary>
+    /// Given a null expression argument
+    /// When Not is called
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Not_NullArgument_Throws()
+    public void NotNullArgumentThrows()
     {
         Assert.Throws<ArgumentNullException>(() => AsmDomainExpressionExtensions.Not<int>(null!));
     }

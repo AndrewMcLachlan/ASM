@@ -2,9 +2,14 @@ namespace Asm.Domain.Tests;
 
 public class KeyedEntityEqualityTests
 {
+    /// <summary>
+    /// Given a transient entity with a default key
+    /// When it is compared to itself
+    /// Then it is equal to itself
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Entity_WithDefaultId_EqualsItself()
+    public void EntityWithDefaultIdEqualsItself()
     {
         var entity = new TestKeyedEntity(0);
 
@@ -13,9 +18,14 @@ public class KeyedEntityEqualityTests
         Assert.True(entity == entity);
     }
 
+    /// <summary>
+    /// Given two distinct transient entities each with a default key
+    /// When they are compared
+    /// Then they are not equal
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void TwoDistinctTransientEntities_AreNotEqual()
+    public void TwoDistinctTransientEntitiesAreNotEqual()
     {
         var a = new TestKeyedEntity(0);
         var b = new TestKeyedEntity(0);
@@ -23,9 +33,14 @@ public class KeyedEntityEqualityTests
         Assert.False(a.Equals(b));
     }
 
+    /// <summary>
+    /// Given entities of different types that share the same key
+    /// When they are compared
+    /// Then they are not equal in either direction
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void DifferentEntityTypes_WithSameId_AreNotEqual()
+    public void DifferentEntityTypesWithSameIdAreNotEqual()
     {
         var keyed = new TestKeyedEntity(1);
         var other = new OtherKeyedEntity(1);
@@ -34,9 +49,14 @@ public class KeyedEntityEqualityTests
         Assert.False(other.Equals(keyed));
     }
 
+    /// <summary>
+    /// Given two entities of the same type with the same key
+    /// When they are compared
+    /// Then they are equal and share a hash code
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void SameTypeSameId_AreEqual()
+    public void SameTypeSameIdAreEqual()
     {
         var a = new TestKeyedEntity(1);
         var b = new TestKeyedEntity(1);
@@ -46,9 +66,14 @@ public class KeyedEntityEqualityTests
         Assert.Equal(a.GetHashCode(), b.GetHashCode());
     }
 
+    /// <summary>
+    /// Given a transient entity added to a HashSet
+    /// When the same instance is looked up and re-added
+    /// Then it is found, not added twice, and the set contains a single item
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void HashSet_TreatsSameInstanceAsPresent()
+    public void HashSetTreatsSameInstanceAsPresent()
     {
         var entity = new TestKeyedEntity(0);
         var set = new HashSet<TestKeyedEntity> { entity };
@@ -58,9 +83,14 @@ public class KeyedEntityEqualityTests
         Assert.Single(set);
     }
 
+    /// <summary>
+    /// Given entities with duplicate keys added to a HashSet
+    /// When the set is built
+    /// Then entities sharing a key are deduplicated by key
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void HashSet_DeduplicatesByKey()
+    public void HashSetDeduplicatesByKey()
     {
         var set = new HashSet<TestKeyedEntity>
         {

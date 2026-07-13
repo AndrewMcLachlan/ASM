@@ -60,9 +60,14 @@ public class RepositoryBaseTests
     private static RepoDbContext CreateContext() =>
         new(new DbContextOptionsBuilder<RepoDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options, new NoOpPublisher());
 
+    /// <summary>
+    /// Given a persisted entity
+    /// When Get is called with its key
+    /// Then the matching entity is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task Get_ByKey_ReturnsEntity()
+    public async Task GetByKeyReturnsEntity()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();
@@ -75,9 +80,14 @@ public class RepositoryBaseTests
         Assert.Equal("One", widget.Name);
     }
 
+    /// <summary>
+    /// Given an empty repository
+    /// When Get is called with a key that does not exist
+    /// Then a NotFoundException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task Get_MissingKey_ThrowsNotFoundException()
+    public async Task GetMissingKeyThrowsNotFoundException()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();
@@ -86,9 +96,14 @@ public class RepositoryBaseTests
         await Assert.ThrowsAsync<NotFoundException>(() => repository.Get(42, token));
     }
 
+    /// <summary>
+    /// Given an empty repository
+    /// When Find is called with a key that does not exist
+    /// Then null is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task Find_MissingKey_ReturnsNull()
+    public async Task FindMissingKeyReturnsNull()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();
@@ -97,9 +112,14 @@ public class RepositoryBaseTests
         Assert.Null(await repository.Find(42, token));
     }
 
+    /// <summary>
+    /// Given a persisted entity
+    /// When Find is called with its key
+    /// Then the matching entity is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task Find_ExistingKey_ReturnsEntity()
+    public async Task FindExistingKeyReturnsEntity()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();
@@ -113,9 +133,14 @@ public class RepositoryBaseTests
         Assert.Equal("Seven", widget.Name);
     }
 
+    /// <summary>
+    /// Given a persisted entity
+    /// When TryGet is called with present and absent keys
+    /// Then it returns the entity for a present key and null for an absent key, matching Find
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task TryGet_MatchesFindSemantics()
+    public async Task TryGetMatchesFindSemantics()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();
@@ -128,9 +153,14 @@ public class RepositoryBaseTests
         Assert.Null(await repository.TryGet(99, token));
     }
 
+    /// <summary>
+    /// Given multiple entities added via AddRange
+    /// When changes are saved
+    /// Then all entities are persisted
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task AddRange_PersistsAllEntities()
+    public async Task AddRangePersistsAllEntities()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();
@@ -143,9 +173,14 @@ public class RepositoryBaseTests
         Assert.Equal([1, 2, 3], all.Select(w => w.Id).OrderBy(id => id));
     }
 
+    /// <summary>
+    /// Given an entity with a reference-type (string) key
+    /// When it is persisted and queried via Get and Find
+    /// Then existing keys resolve and missing keys return null or throw NotFoundException
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task ReferenceTypeKey_IsSupported()
+    public async Task ReferenceTypeKeyIsSupported()
     {
         var token = TestContext.Current.CancellationToken;
         using var context = CreateContext();

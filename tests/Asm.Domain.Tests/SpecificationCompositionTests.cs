@@ -7,9 +7,14 @@ public class SpecificationCompositionTests
     private static IQueryable<TestSpecifiableEntity> Entities(params int[] ids) =>
         ids.Select(id => new TestSpecifiableEntity(id)).AsQueryable();
 
+    /// <summary>
+    /// Given two specifications combined with And
+    /// When applied to a set of entities
+    /// Then only entities satisfying both criteria are returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void And_MatchesEntitiesSatisfyingBothCriteria()
+    public void AndMatchesEntitiesSatisfyingBothCriteria()
     {
         ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification().And(new IdLessThanFiveSpecification());
 
@@ -19,9 +24,14 @@ public class SpecificationCompositionTests
         Assert.Equal([3, 4], result);
     }
 
+    /// <summary>
+    /// Given two specifications combined with Or
+    /// When applied to a set of entities
+    /// Then entities satisfying either criterion are returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Or_MatchesEntitiesSatisfyingEitherCriteria()
+    public void OrMatchesEntitiesSatisfyingEitherCriteria()
     {
         ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification().Or(new IdIsEvenSpecification());
 
@@ -31,9 +41,14 @@ public class SpecificationCompositionTests
         Assert.Equal([2, 3, 4, 5], result);
     }
 
+    /// <summary>
+    /// Given a specification negated with Not
+    /// When applied to a set of entities
+    /// Then only entities failing the original criterion are returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Not_NegatesTheCriteria()
+    public void NotNegatesTheCriteria()
     {
         ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification().Not();
 
@@ -43,9 +58,14 @@ public class SpecificationCompositionTests
         Assert.Equal([1, 2], result);
     }
 
+    /// <summary>
+    /// Given specifications chained with And then Or
+    /// When applied to a set of entities
+    /// Then the combined criteria are evaluated correctly
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Composition_CanBeChained()
+    public void CompositionCanBeChained()
     {
         // (> 2 AND < 5) OR even
         ISpecification<TestSpecifiableEntity> spec = new IdGreaterThanTwoSpecification()
@@ -58,9 +78,14 @@ public class SpecificationCompositionTests
         Assert.Equal([2, 3, 4, 6], result);
     }
 
+    /// <summary>
+    /// Given two specifications combined with And
+    /// When the combined criteria expression is inspected
+    /// Then it is a single AndAlso binary expression with one parameter and no Invoke node
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void And_CombinedCriteria_IsASingleTranslatableExpression()
+    public void AndCombinedCriteriaIsASingleTranslatableExpression()
     {
         // A hallmark of correct parameter rebinding: the combined body is a BinaryExpression (AndAlso),
         // not an InvocationExpression that most query providers cannot translate.
@@ -73,9 +98,14 @@ public class SpecificationCompositionTests
         Assert.DoesNotContain(criteria.Body.ToString(), "Invoke");
     }
 
+    /// <summary>
+    /// Given a specification over a non-entity read model
+    /// When applied to a set of read models
+    /// Then only matching read models are returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Specification_OverNonEntityReadModel_Filters()
+    public void SpecificationOverNonEntityReadModelFilters()
     {
         var people = new[]
         {
@@ -89,9 +119,14 @@ public class SpecificationCompositionTests
         Assert.Equal(["Alice"], adults);
     }
 
+    /// <summary>
+    /// Given two specifications over a non-entity read model combined with And
+    /// When applied to a set of read models
+    /// Then only read models satisfying both criteria are returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Composition_OverNonEntityReadModel_Filters()
+    public void CompositionOverNonEntityReadModelFilters()
     {
         var people = new[]
         {
@@ -108,9 +143,14 @@ public class SpecificationCompositionTests
         Assert.Equal(["Alice"], result);
     }
 
+    /// <summary>
+    /// Given a specification that overrides only Apply, leaving the default Criteria
+    /// When the default Criteria is compiled and evaluated
+    /// Then it matches every entity
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void DefaultCriteria_MatchesEverything()
+    public void DefaultCriteriaMatchesEverything()
     {
         // GreaterThanTwoSpecification only overrides Apply, so its Criteria is the default (match all).
         ISpecification<TestSpecifiableEntity> spec = new GreaterThanTwoSpecification();
@@ -120,9 +160,14 @@ public class SpecificationCompositionTests
         Assert.True(result(new TestSpecifiableEntity(99)));
     }
 
+    /// <summary>
+    /// Given a specification
+    /// When And is called with a null specification
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void And_NullSpecification_Throws()
+    public void AndNullSpecificationThrows()
     {
         var spec = new IdGreaterThanTwoSpecification();
 

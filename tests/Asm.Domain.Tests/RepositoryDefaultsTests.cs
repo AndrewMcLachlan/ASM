@@ -36,9 +36,14 @@ public class RepositoryDefaultsTests
         // AddRange, Find and TryGet are deliberately NOT implemented, so the interface defaults run.
     }
 
+    /// <summary>
+    /// Given a repository that does not override AddRange
+    /// When multiple entities are added via the default AddRange
+    /// Then each entity is added
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task AddRange_Default_AddsEachEntity()
+    public async Task AddRangeDefaultAddsEachEntity()
     {
         IWritableRepository<TestKeyedEntity, int> repository = new InMemoryRepository();
 
@@ -48,18 +53,28 @@ public class RepositoryDefaultsTests
         Assert.Equal([1, 2, 3], all.Select(e => e.Id));
     }
 
+    /// <summary>
+    /// Given a repository that does not override AddRange
+    /// When the default AddRange is called with null
+    /// Then an ArgumentNullException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void AddRange_Default_NullEntities_Throws()
+    public void AddRangeDefaultNullEntitiesThrows()
     {
         IWritableRepository<TestKeyedEntity, int> repository = new InMemoryRepository();
 
         Assert.Throws<ArgumentNullException>(() => repository.AddRange(null!));
     }
 
+    /// <summary>
+    /// Given a repository that does not override Find and contains the entity
+    /// When the default Find is called with its key
+    /// Then the matching entity is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task Find_Default_ReturnsEntityWhenPresent()
+    public async Task FindDefaultReturnsEntityWhenPresent()
     {
         IWritableRepository<TestKeyedEntity, int> repository = new InMemoryRepository();
         repository.AddRange([new TestKeyedEntity(1), new TestKeyedEntity(2)]);
@@ -70,9 +85,14 @@ public class RepositoryDefaultsTests
         Assert.Equal(2, found.Id);
     }
 
+    /// <summary>
+    /// Given a repository that does not override Find and lacks the entity
+    /// When the default Find is called with an absent key
+    /// Then null is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task Find_Default_ReturnsNullWhenAbsent()
+    public async Task FindDefaultReturnsNullWhenAbsent()
     {
         IWritableRepository<TestKeyedEntity, int> repository = new InMemoryRepository();
         repository.AddRange([new TestKeyedEntity(1)]);
@@ -82,9 +102,14 @@ public class RepositoryDefaultsTests
         Assert.Null(found);
     }
 
+    /// <summary>
+    /// Given a repository that does not override TryGet
+    /// When the default TryGet is called with present and absent keys
+    /// Then it forwards to Find, returning the entity or null
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task TryGet_Default_ForwardsToFind()
+    public async Task TryGetDefaultForwardsToFind()
     {
         IWritableRepository<TestKeyedEntity, int> repository = new InMemoryRepository();
         repository.AddRange([new TestKeyedEntity(5)]);

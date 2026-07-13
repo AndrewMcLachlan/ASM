@@ -26,9 +26,14 @@ public class ValidatorFilterTypeLocationTests
         return new DefaultEndpointFilterInvocationContext(httpContext, arguments);
     }
 
+    /// <summary>
+    /// Given a valid model supplied as a non-first argument
+    /// When the type-based validator filter is invoked
+    /// Then the model is located, validation passes, and next is called
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task InvokeAsync_LocatesArgumentByType_RegardlessOfPosition()
+    public async Task InvokeAsyncLocatesArgumentByTypeRegardlessOfPosition()
     {
         // The Model is the second argument; the type-based filter must still find it.
         var context = CreateContext("some-string", new Model { Name = "valid" });
@@ -44,9 +49,14 @@ public class ValidatorFilterTypeLocationTests
         Assert.True(nextCalled);
     }
 
+    /// <summary>
+    /// Given an invalid model located by type among the arguments
+    /// When the type-based validator filter is invoked
+    /// Then a ValidationException is thrown
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task InvokeAsync_InvalidArgumentLocatedByType_Throws()
+    public async Task InvokeAsyncInvalidArgumentLocatedByTypeThrows()
     {
         var context = CreateContext(42, new Model { Name = "" });
         var filter = new ValidatorFilter<Model>();

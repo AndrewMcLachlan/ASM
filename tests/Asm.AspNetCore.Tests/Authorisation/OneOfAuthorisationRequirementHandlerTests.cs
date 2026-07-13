@@ -47,9 +47,14 @@ public class OneOfAuthorisationRequirementHandlerTests
     private static AuthorizationHandlerContext CreateContext(OneOfAuthorisationRequirement requirement, object? resource = null) =>
         new([requirement], new ClaimsPrincipal(new ClaimsIdentity()), resource);
 
+    /// <summary>
+    /// Given an any-of requirement where one sub-requirement succeeds
+    /// When the requirement is handled
+    /// Then the context succeeds without failing
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_OneOptionSucceeds_Succeeds()
+    public async Task HandleAsyncOneOptionSucceedsSucceeds()
     {
         var service = new FakeAuthorizationService();
         var handler = new TestHandler(service, isAuthorisedResult: false);
@@ -62,9 +67,14 @@ public class OneOfAuthorisationRequirementHandlerTests
         Assert.False(context.HasFailed);
     }
 
+    /// <summary>
+    /// Given an any-of requirement where every sub-requirement fails
+    /// When the requirement is handled
+    /// Then the context neither succeeds nor fails
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_AllOptionsFail_DoesNotFailTheRequirement()
+    public async Task HandleAsyncAllOptionsFailDoesNotFailTheRequirement()
     {
         var service = new FakeAuthorizationService();
         var handler = new TestHandler(service, isAuthorisedResult: false);
@@ -78,9 +88,14 @@ public class OneOfAuthorisationRequirementHandlerTests
         Assert.False(context.HasFailed);
     }
 
+    /// <summary>
+    /// Given every sub-requirement fails but the handler's IsAuthorised grants access
+    /// When the requirement is handled
+    /// Then IsAuthorised is invoked and the context succeeds
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_AllOptionsFail_IsAuthorisedInvokedAndCanGrant()
+    public async Task HandleAsyncAllOptionsFailIsAuthorisedInvokedAndCanGrant()
     {
         var service = new FakeAuthorizationService();
         var handler = new TestHandler(service, isAuthorisedResult: true);
@@ -93,9 +108,14 @@ public class OneOfAuthorisationRequirementHandlerTests
         Assert.True(context.HasSucceeded);
     }
 
+    /// <summary>
+    /// Given a resource on the authorization context
+    /// When the requirement is handled
+    /// Then the same resource is passed to the authorization service and IsAuthorised
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HandleAsync_PassesResourceThrough()
+    public async Task HandleAsyncPassesResourceThrough()
     {
         var resource = new object();
         var service = new FakeAuthorizationService();
