@@ -27,33 +27,17 @@ jobs:
       with:
         dotnet-version: 10.x
 
-    - name: Set version
+    - name: Get version
       id: set-version-number
-      run: |
-        # Major.Minor is stated in Directory.Build.props (<VersionPrefix>, optional <VersionSuffix>).
-        # The patch is the number of commits since that version LINE last changed, so unrelated edits
-        # to the props file do not reset it.
-        PREFIX=$(sed -n 's:.*<VersionPrefix>\(.*\)</VersionPrefix>.*:\1:p' Directory.Build.props | head -1)
-        SUFFIX=$(sed -n 's:.*<VersionSuffix>\(.*\)</VersionSuffix>.*:\1:p' Directory.Build.props | head -1)
-        MAJOR="${PREFIX%%.*}"
-        MINOR="${PREFIX#*.}"; MINOR="${MINOR%%.*}"
-        SET=$(git log -1 --format=%H -G'<Version' -- Directory.Build.props)
-        if [ -n "$SET" ]; then COUNT=$(git rev-list --count "$SET"..HEAD); else COUNT=$(git rev-list --count HEAD); fi
-        if [ -n "$SUFFIX" ]; then
-          VERSION="$MAJOR.$MINOR.0-$SUFFIX.$COUNT"
-        else
-          VERSION="$MAJOR.$MINOR.$COUNT"
-        fi
-        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-        echo "assemblyVersion=$MAJOR.0.0.0" >> "$GITHUB_OUTPUT"
-        echo "fileVersion=$MAJOR.$MINOR.$COUNT.0" >> "$GITHUB_OUTPUT"
-    - run: echo "::notice::Version ${{ steps.set-version-number.outputs.version }} (assembly ${{ steps.set-version-number.outputs.assemblyVersion }})"
+      uses: AndrewMcLachlan/Actions/get-dotnet-version@v4
+      with:
+        project: Directory.Build.props
 
     - name: Restore
       run: dotnet restore Asm.slnx
 
     - name: Build
-      run: dotnet build Asm.slnx --no-restore --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:AssemblyVersion=${{ steps.set-version-number.outputs.assemblyVersion }} --p:FileVersion=${{ steps.set-version-number.outputs.fileVersion }} --p:InformationalVersion=${{ steps.set-version-number.outputs.version }}
+      run: dotnet build Asm.slnx --no-restore --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:AssemblyVersion=${{ steps.set-version-number.outputs.assembly-version }} --p:FileVersion=${{ steps.set-version-number.outputs.file-version }} --p:InformationalVersion=${{ steps.set-version-number.outputs.version }}
 
     - name: Package
       run: dotnet pack Asm.slnx --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }}
