@@ -96,7 +96,7 @@ MapCommand<TRequest>(pattern, CommandBinding binding = CommandBinding.Parameters
 // …likewise MapPatchCommand, MapPutCommand, MapPostCreate, MapPutCreate, MapDelete
 ```
 
-- **Default binding is `CommandBinding.Parameters`** (`[AsParameters]`) everywhere — matching what the old simple overloads did. Pass `CommandBinding.Body` to bind the whole request from the JSON body, or `CommandBinding.None` to let the framework decide.
+- **Default binding is `CommandBinding.Parameters`** (`[AsParameters]`) everywhere — matching what the old simple overloads of `MapCommand`/`MapPatchCommand`/`MapPutCommand`/`MapDelete` did. Pass `CommandBinding.Body` to bind the whole request from the JSON body, or `CommandBinding.None` to let the framework decide. **`MapPostCreate`/`MapPutCreate` are the exception** — their v3 simple overload defaulted to `CommandBinding.None` (framework-inferred **body** for a complex command), so their default *changes* under v4; see the ⚠️ under _What to change_.
 - **Body-returning commands take an optional `statusCode` (default 200 OK).** `MapCommand<TRequest, TResponse>`, `MapPatchCommand`, `MapPutCommand` and `MapDelete<TRequest, TResponse>` accept `int statusCode = StatusCodes.Status200OK` before `binding`, so a command that returns a body can use e.g. `202 Accepted` — `MapCommand<Cmd, Result>(pattern, StatusCodes.Status202Accepted)`. 200 uses a typed `Ok<T>` result; other codes are emitted via `Results.Json(result, statusCode)`.
 - **Void commands take an optional `statusCode` (default 204 No Content).** `MapCommand<TRequest>` / `MapPutCommand<TRequest>` respond with the given code via `Results.StatusCode(statusCode)`, declared through `.Produces(statusCode)` — so the 204 default and the ability to override (e.g. `202 Accepted`) both survive from v3. Create maps still return 201, and `MapDelete` (no response) returns 204.
 
@@ -105,6 +105,7 @@ MapCommand<TRequest>(pattern, CommandBinding binding = CommandBinding.Parameters
 **What to change:**
 - Void `MapCommand<TRequest>` / `MapPutCommand<TRequest>` are source-compatible with v3 — the status-code parameter is retained (renamed `returnStatusCode` → `statusCode`, same position and `204` default), now with `binding` added after it.
 - If you passed `binding` **positionally** to a body-returning map (`MapCommand<Cmd, Result>(pattern, CommandBinding.Body)`), it now needs to be named — `MapCommand<Cmd, Result>(pattern, binding: CommandBinding.Body)` — because `statusCode` is now the second parameter. Everything else is source-compatible (both `statusCode` and `binding` are optional).
+- ⚠️ **`MapPostCreate`/`MapPutCreate` change binding silently — no compiler error.** Their v3 simple overload (no `CommandBinding` argument) defaulted to `CommandBinding.None`, which the framework infers as `[FromBody]` for a complex command — so the command arrived in the **JSON body**. In v4 the default is `CommandBinding.Parameters` (`[AsParameters]`), so a call like `MapPostCreate<Create, Result>(pattern, routeName, getRouteParams)` compiles unchanged but now binds the command from the **route/query** instead. Audit every no-binding `MapPostCreate`/`MapPutCreate`: add `CommandBinding.Body` where the command is a plain payload record meant to arrive in the body; keep `Parameters` where the command mixes sources (e.g. a route id plus a `[FromBody]` sub-object — only `[AsParameters]` honours per-property `[FromRoute]`/`[FromBody]`). Because nothing fails to compile, the reliable way to catch the flip is to **diff the regenerated OpenAPI document** for operations that moved between a `requestBody` and query `parameters`.
 
 ## Batch 6 — Nybble arithmetic
 
@@ -422,22 +423,22 @@ The OAuth `AddMicrosoftAccount` handler is retained (this is **not** a switch to
 - Update the Entra **app-registration redirect URI** from `https://<host>/signin-oidc` to `https://<host>/signin-entraid`.
 - Existing back-office external logins keyed on the old `"OpenIdConnect"` scheme name may need to be **re-linked** (the persisted login provider key changes).
 
-### `EndpointGroupBase` — `Name` removed, nullable sentinels, multiple tags, anonymous opt-out
+### `EndpointGroupBase` — `Name` removed, `Tags` renamed to `Tag`, nullable sentinels, anonymous opt-out
 
 `Asm.AspNetCore.Routing.EndpointGroupBase` no longer uses `String.Empty` sentinels and now supports richer configuration:
 
 | Member | Before | After |
 |---|---|---|
 | `Name` | `abstract string` | **removed** |
-| `Tags` | `virtual string` (`String.Empty`) | `virtual string[]?` (default `null`) |
+| `Tags` | `virtual string` (`String.Empty`) | renamed to `Tag`: `virtual string?` (default `null`) |
 | `AuthorisationPolicy` | `virtual string` (`String.Empty`) | `virtual string?` (default `null`) |
 | `AllowAnonymous` | — | `virtual bool` (default `false`) |
 
-- **`Name` removed (endpoint names are per-endpoint):** the base previously called `WithName(Name)` on the *group*, which stamps that name onto **every** endpoint in the group — and endpoint names must be globally unique, so any group with more than one endpoint threw `InvalidOperationException` at startup. `WithName` is not an OpenAPI grouping mechanism. Group-level labelling is `Tags` (Swagger UI sections); set endpoint names on individual endpoints inside `MapEndpoints` (`builder.MapGet(...).WithName("GetFoo")`).
-- **Multiple tags:** `Tags` is now a `string[]`, applied via `WithTags(params string[])`.
+- **`Name` removed (endpoint names are per-endpoint):** the base previously called `WithName(Name)` on the *group*, which stamps that name onto **every** endpoint in the group — and endpoint names must be globally unique, so any group with more than one endpoint threw `InvalidOperationException` at startup. `WithName` is not an OpenAPI grouping mechanism. Group-level labelling is `Tag` (Swagger UI sections); set endpoint names on individual endpoints inside `MapEndpoints` (`builder.MapGet(...).WithName("GetFoo")`).
+- **`Tags` renamed to `Tag` (single tag):** the group's OpenAPI tag is a single `string?`, applied via `WithTags(Tag)` when non-empty.
 - **Anonymous opt-out:** override `AllowAnonymous => true` to make the whole group anonymous (calls `AllowAnonymous()` instead of `RequireAuthorization`).
 
-**What to change:** remove any `override string Name` from derived groups (move the name to the individual endpoint via `.WithName(...)` if you relied on it). Derived groups that `override string Tags` / `override string AuthorisationPolicy` must update the member type — e.g. `public override string Tags => "a,b";` becomes `public override string[] Tags => ["a", "b"];`. Groups that only override `Path` and `MapEndpoints` are unaffected.
+**What to change:** remove any `override string Name` from derived groups (move the name to the individual endpoint via `.WithName(...)` if you relied on it). Derived groups that override `Tags` must rename to `Tag` and return a single `string?` — e.g. `public override string Tags => "orders";` becomes `public override string? Tag => "orders";`. Groups that only override `Path` and `MapEndpoints` are unaffected.
 
 ### `IEnumerable<T>.Page` / `IQueryable<T>.Page` now validate arguments
 

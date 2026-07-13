@@ -12,7 +12,7 @@ public class EndpointGroupBaseSteps
     private class SimpleEndpointGroup : EndpointGroupBase
     {
         public override string Path => "/api/simple";
-        public override string[] Tags => ["simple", "test"];
+        public override string Tag => "simple";
         public override string AuthorisationPolicy => "RequireAdmin";
 
         protected override void MapEndpoints(IEndpointRouteBuilder builder)
@@ -127,17 +127,16 @@ public class EndpointGroupBaseSteps
         Assert.Equal(expectedPath, _simpleEndpointGroup.Path);
     }
 
-    [Then(@"the group tags should be empty")]
-    public void ThenTheGroupTagsShouldBeEmpty()
+    [Then(@"the group tag should be empty")]
+    public void ThenTheGroupTagShouldBeEmpty()
     {
-        Assert.True(_minimalEndpointGroup.Tags is null or { Length: 0 });
+        Assert.True(String.IsNullOrEmpty(_minimalEndpointGroup.Tag));
     }
 
-    [Then(@"the group tags should be '(.*)'")]
-    public void ThenTheGroupTagsShouldBe(string expectedTags)
+    [Then(@"the group tag should be '(.*)'")]
+    public void ThenTheGroupTagShouldBe(string expectedTag)
     {
-        Assert.NotNull(_simpleEndpointGroup.Tags);
-        Assert.Equal(expectedTags, String.Join(",", _simpleEndpointGroup.Tags));
+        Assert.Equal(expectedTag, _simpleEndpointGroup.Tag);
     }
 
     [Then(@"the authorization policy should be empty")]

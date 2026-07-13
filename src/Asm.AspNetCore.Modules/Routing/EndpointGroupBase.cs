@@ -15,9 +15,9 @@ public abstract class EndpointGroupBase : IEndpointGroup
     public abstract string Path { get; }
 
     /// <summary>
-    /// Gets the Open API tags of the group, or <c>null</c> for no tags.
+    /// Gets the Open API tag of the group, or <c>null</c> for no tag.
     /// </summary>
-    public virtual string[]? Tags => null;
+    public virtual string? Tag => null;
 
     /// <summary>
     /// Gets the authorisation policy name that is applied to the group, or <c>null</c> to apply the default (any authenticated user).
@@ -36,7 +36,7 @@ public abstract class EndpointGroupBase : IEndpointGroup
     /// Maps the group endpoints.
     /// </summary>
     /// <remarks>
-    /// Applies the group tags and authorisation policy, then maps the endpoints. Endpoint names
+    /// Applies the group tag and authorisation policy, then maps the endpoints. Endpoint names
     /// (<c>WithName</c>) are the responsibility of individual endpoints in <see cref="MapEndpoints"/>,
     /// since a group-level name would be applied to every endpoint and endpoint names must be unique.
     /// </remarks>
@@ -51,9 +51,9 @@ public abstract class EndpointGroupBase : IEndpointGroup
     {
         var subBuilder = builder.MapGroup(Path);
 
-        if (Tags is { Length: > 0 } tags)
+        if (!String.IsNullOrEmpty(Tag))
         {
-            subBuilder.WithTags(tags);
+            subBuilder.WithTags(Tag);
         }
 
         if (AllowAnonymous)

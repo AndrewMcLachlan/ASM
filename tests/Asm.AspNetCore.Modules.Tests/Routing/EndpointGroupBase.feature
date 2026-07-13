@@ -9,14 +9,14 @@ Scenario: Endpoint group base defines a path
     Then the group path should be '/api/simple'
 
 @Unit
-Scenario: Endpoint group base has default empty tags
+Scenario: Endpoint group base has a default empty tag
     Given I have a minimal endpoint group
-    Then the group tags should be empty
+    Then the group tag should be empty
 
 @Unit
-Scenario: Endpoint group base can have custom tags
+Scenario: Endpoint group base can have a custom tag
     Given I have a simple endpoint group
-    Then the group tags should be 'simple,test'
+    Then the group tag should be 'simple'
 
 @Unit
 Scenario: Endpoint group base has default empty authorization policy
