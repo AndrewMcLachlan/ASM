@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.set-version-number.outputs.version }}
-      # A prerelease version carries a suffix (e.g. 5.0.0-beta.4); a stable one does not.
-      is-prerelease: ${{ contains(steps.set-version-number.outputs.version, '-') }}
+      # First-class output from get-dotnet-version: true when a VersionSuffix is set.
+      is-prerelease: ${{ steps.set-version-number.outputs.is-prerelease }}
     steps:
     - uses: actions/checkout@v7.0.0
       with:
