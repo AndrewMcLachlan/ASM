@@ -52,4 +52,33 @@ public static class AsmEnumerableExtensions
     /// <returns><c>true</c> if the enumerable is empty; otherwise, <c>false</c>.</returns>
     public static bool Empty<T>(this IEnumerable<T> enumerable) =>
         !enumerable.Any();
+
+    extension<TSource>(IEnumerable<TSource> source)
+    {
+        /// <summary>
+        /// Projects each element of a sequence using an asynchronous selector, awaiting each element in turn.
+        /// </summary>
+        /// <remarks>
+        /// Elements are awaited sequentially rather than concurrently, making this safe for selectors that
+        /// share non-thread-safe state such as an Entity Framework Core <c>DbContext</c>.
+        /// </remarks>
+        /// <typeparam name="TResult">The type of the projected elements.</typeparam>
+        /// <param name="selector">An asynchronous transform function to apply to each element.</param>
+        /// <returns>A list of the projected elements, in source order.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="source"/> or <paramref name="selector"/> is <c>null</c>.</exception>
+        public async Task<List<TResult>> SelectAsync<TResult>(Func<TSource, Task<TResult>> selector)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(selector);
+
+            List<TResult> results = source.TryGetNonEnumeratedCount(out var count) ? new(count) : [];
+
+            foreach (var item in source)
+            {
+                results.Add(await selector(item));
+            }
+
+            return results;
+        }
+    }
 }

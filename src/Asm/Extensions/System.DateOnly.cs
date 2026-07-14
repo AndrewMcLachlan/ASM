@@ -46,5 +46,17 @@ public static class DateOnlyExtensions
                    later.Day - earlier.Day > 0 ? months + 1 :
                    months;
         }
+
+        /// <summary>
+        /// Gets the first day of the month.
+        /// </summary>
+        /// <returns>A <see cref="DateOnly"/> for the first day of the same month and year.</returns>
+        public DateOnly ToStartOfMonth() => new(date.Year, date.Month, 1);
+
+        /// <summary>
+        /// Gets the last day of the month.
+        /// </summary>
+        /// <returns>A <see cref="DateOnly"/> for the last day of the same month and year.</returns>
+        public DateOnly ToEndOfMonth() => new DateOnly(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
     }
 }

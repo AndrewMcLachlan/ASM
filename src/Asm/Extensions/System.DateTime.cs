@@ -118,6 +118,18 @@ public static class DateTimeExtensions
         /// Gets the current time.
         /// </summary>
         public TimeOnly TimeOnly => TimeOnly.FromDateTime(dt);
+
+        /// <summary>
+        /// Gets the first day of the month, with the time component set to midnight.
+        /// </summary>
+        /// <returns>A <see cref="DateTime"/> for the first day of the same month and year.</returns>
+        public DateTime ToStartOfMonth() => new(dt.Year, dt.Month, 1);
+
+        /// <summary>
+        /// Gets the last day of the month, with the time component set to midnight.
+        /// </summary>
+        /// <returns>A <see cref="DateTime"/> for the last day of the same month and year.</returns>
+        public DateTime ToEndOfMonth() => new DateTime(dt.Year, dt.Month, 1).AddMonths(1).AddDays(-1);
     }
 
 }
