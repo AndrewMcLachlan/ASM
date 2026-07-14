@@ -74,7 +74,7 @@ public class TestEndpointGroupWithPolicy : EndpointGroupBase
     public bool EndpointsMapped { get; private set; }
 
     public override string Path => "/test";
-    public override string[] Tags => ["Test"];
+    public override string Tag => "Test";
     public override string AuthorisationPolicy => _authorisationPolicy;
 
     protected override void MapEndpoints(IEndpointRouteBuilder builder)
