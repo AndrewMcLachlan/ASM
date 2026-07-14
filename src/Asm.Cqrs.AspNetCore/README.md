@@ -1,84 +1,103 @@
 # Asm.Cqrs.AspNetCore
 
-The `Asm.Cqrs.AspNetCore` project provides extensions and utilities to integrate the Command Query Responsibility Segregation (CQRS) pattern into ASP.NET Core applications. It simplifies the setup and usage of CQRS in web APIs by providing middleware, model binding, and dependency injection support.
+Maps [Asm.Cqrs](https://github.com/AndrewMcLachlan/ASM/tree/main/src/Asm.Cqrs) commands and queries directly
+to ASP.NET Core minimal API endpoints, removing the boilerplate handler lambda between the route and the
+dispatcher.
 
 ## Features
 
-- **Command and Query Dispatching**: Seamless integration of `ICommandDispatcher` and `IQueryDispatcher` into ASP.NET Core.
-- **Model Binding for Commands and Queries**: Automatically bind HTTP request data to commands and queries.
-- **Middleware Support**: Add cross-cutting concerns like validation, logging, and exception handling to the CQRS pipeline.
-- **Dependency Injection Integration**: Easily register CQRS components in the ASP.NET Core DI container.
+- **Query endpoints**: `MapQuery` (GET) and `MapPagedQuery` (GET with an `X-Total-Count` header).
+- **Command endpoints**: `MapCommand` (POST), `MapPutCommand`, `MapPatchCommand` and `MapDelete`.
+- **Create endpoints**: `MapPostCreate` and `MapPutCreate`, returning `201 Created` with a `Location` header via a named route.
+- **Binding control**: bind the request from route/query parameters, the request body, or a mix of both.
+- **OpenAPI metadata**: endpoints declare their response types via `Produces`.
+- `CommandQueryController` base class for apps still using MVC controllers.
 
 ## Installation
 
-To install the `Asm.Cqrs.AspNetCore` library, use the .NET CLI:
-
-Or via the NuGet Package Manager:
-
+```
+dotnet add package Asm.Cqrs.AspNetCore
+```
 
 ## Usage
 
-### Registering CQRS Services
-
-In your `Program.cs` or `Startup.cs`, register the CQRS services:
+The mapping extension methods live in the `Asm.AspNetCore` namespace.
 
 ```csharp
-using Asm.Cqrs.AspNetCore;
+using Asm.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
-// Register CQRS services builder.Services.AddCqrs();
-var app = builder.Build(); app.Run();
+
+builder.Services.AddQueryHandlers(typeof(GetOrder).Assembly);
+builder.Services.AddCommandHandlers(typeof(CreateOrder).Assembly);
+
+var app = builder.Build();
+
+var orders = app.MapGroup("/orders");
+
+orders.MapQuery<GetOrders, IEnumerable<Order>>("/");
+orders.MapQuery<GetOrder, Order>("/{id}")
+      .WithName("GetOrder");
+orders.MapPostCreate<CreateOrder, Order>("/", routeName: "GetOrder", o => new { id = o.Id });
+orders.MapPutCommand<UpdateOrder, Order>("/{id}");
+orders.MapDelete<DeleteOrder>("/{id}");
+
+app.Run();
 ```
 
-### Defining a Command and Handler
+Each method returns the `RouteHandlerBuilder`, so the endpoint can be customised further
+(`.WithName(...)`, `.RequireAuthorization(...)`, etc.).
 
-Define a command and its handler:
+### Request binding
+
+Queries are always bound with `[AsParameters]`: each property of the query is bound from the route,
+query string or headers using the standard minimal API rules.
 
 ```csharp
-using Asm.Cqrs;
-public class CreateOrderCommand : ICommand { public string OrderId { get; set; } public string CustomerName { get; set; } }
-public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand> { public Task HandleAsync(CreateOrderCommand command, CancellationToken cancellationToken) { // Handle the command logic here Console.WriteLine($"Order created for {command.CustomerName}"); return Task.CompletedTask; } }
+// GET /orders/42 -> GetOrder(42)
+public record GetOrder(int Id) : IQuery<Order>;
 ```
 
+Command mappings take a `CommandBinding` argument that controls how the command is built from the request:
 
-### Defining a Query and Handler
+- `CommandBinding.Parameters` (the default) — the command is bound with `[AsParameters]`. Combine with
+  attributes on individual properties to mix sources, e.g. an ID from the route and a payload from the body:
 
-Define a query and its handler:
+  ```csharp
+  // PUT /orders/42 with a JSON body -> UpdateOrder(42, <body>)
+  public record UpdateOrder([FromRoute] int Id, [FromBody] OrderDetails Details) : ICommand<Order>;
+  ```
+
+- `CommandBinding.Body` — the whole command is deserialised from the JSON request body.
+
+  ```csharp
+  orders.MapCommand<CreateOrder, Order>("/", binding: CommandBinding.Body);
+  ```
+
+- `CommandBinding.None` — no binding attribute is applied; the framework's default inference applies
+  (for a complex type this is usually the request body).
+
+### Status codes
+
+Command mappings return `200 OK` (or `204 No Content` for commands without a response, and `201 Created`
+for the create mappings) by default. Pass a status code to override:
 
 ```csharp
-using Asm.Cqrs;
-public class GetOrderQuery : IQuery<Order> { public string OrderId { get; set; } }
-public class GetOrderQueryHandler : IQueryHandler<GetOrderQuery, Order> { public Task<Order> HandleAsync(GetOrderQuery query, CancellationToken cancellationToken) { // Handle the query logic here return Task.FromResult(new Order { OrderId = query.OrderId, CustomerName = "John Doe" }); } }
+orders.MapCommand<SubmitOrder, OrderReceipt>("/submit", StatusCodes.Status202Accepted);
 ```
 
-### Using Commands and Queries in Controllers
+### Error responses
 
-Use commands and queries in your ASP.NET Core controllers:
+Handlers are free to throw; this package does not translate exceptions. Pair it with
+[Asm.AspNetCore](https://github.com/AndrewMcLachlan/ASM/tree/main/src/Asm.AspNetCore), whose exception
+handler maps the `Asm` exception types (`NotFoundException`, `ExistsException`, `NotAuthorisedException`,
+FluentValidation's `ValidationException`) to RFC 9457 problem-details responses, or register your own
+`IExceptionHandler`.
 
-```csharp
-using Asm.Cqrs; using Microsoft.AspNetCore.Mvc;
-[ApiController] [Route("api/orders")] public class OrdersController : ControllerBase { private readonly ICommandDispatcher _commandDispatcher; private readonly IQueryDispatcher _queryDispatcher;
-public OrdersController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
-{
-    _commandDispatcher = commandDispatcher;
-    _queryDispatcher = queryDispatcher;
-}
+### MVC controllers
 
-[HttpPost]
-public async Task<IActionResult> CreateOrder([FromBody] CreateOrderCommand command)
-{
-    await _commandDispatcher.DispatchAsync(command);
-    return CreatedAtAction(nameof(GetOrder), new { orderId = command.OrderId }, command);
-}
-
-[HttpGet("{orderId}")]
-public async Task<IActionResult> GetOrder(string orderId)
-{
-    var query = new GetOrderQuery { OrderId = orderId };
-    var order = await _queryDispatcher.DispatchAsync(query);
-    return Ok(order);
-}
-}
-```
+For apps using MVC controllers, `CommandQueryController` provides a base class with `QueryDispatcher` and
+`CommandDispatcher` properties. It is decorated with `[ApiController]` and `[Authorize]`.
 
 ## Contributing
 
