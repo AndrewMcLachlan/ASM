@@ -38,7 +38,7 @@ public class DomainDbContextSteps
     {
         _mockPublisher = new Mock<IPublisher>();
         _mockPublisher
-            .Setup(p => p.Publish(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()))
+            .Setup(p => p.PublishPreSave(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()))
             .Returns(ValueTask.CompletedTask);
 
         var options = new DbContextOptionsBuilder<TestDomainDbContext>()
@@ -82,7 +82,7 @@ public class DomainDbContextSteps
     public void ThenPublishShouldNotHaveBeenCalled()
     {
         _mockPublisher.Verify(
-            p => p.Publish(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()),
+            p => p.PublishPreSave(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 

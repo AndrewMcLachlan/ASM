@@ -48,9 +48,14 @@ public class ImgSetTagHelperTests
         return helper;
     }
 
+    /// <summary>
+    /// Given an ImgSetTagHelper whose Images collection is null
+    /// When Process is invoked
+    /// Then the output is suppressed (TagName is set to null)
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Process_WhenImagesIsNull_SuppressesOutput()
+    public void ProcessSuppressesOutputWhenImagesIsNull()
     {
         var helper = CreateTagHelper();
         helper.Images = null;
@@ -62,9 +67,14 @@ public class ImgSetTagHelperTests
         Assert.Null(output.TagName);
     }
 
+    /// <summary>
+    /// Given an ImgSetTagHelper whose Images collection is empty
+    /// When Process is invoked
+    /// Then FirstOrDefault returns null and the output is suppressed (TagName is set to null)
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Process_WhenImagesIsEmpty_SuppressesOutput()
+    public void ProcessSuppressesOutputWhenImagesIsEmpty()
     {
         var helper = CreateTagHelper(images: []);
 

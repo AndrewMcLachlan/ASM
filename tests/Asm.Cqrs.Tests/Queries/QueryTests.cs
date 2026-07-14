@@ -5,10 +5,15 @@ namespace Asm.Cqrs.Tests.Queries;
 
 public class QueryTests
 {
+    /// <summary>
+    /// Given a query dispatcher with registered query handlers
+    /// When a TestQuery with input "Abc" is dispatched
+    /// Then the handler returns the uppercased result "ABC"
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
     [Trait("Description", "Tests a Generic Query")]
-    public async Task TestGenericQuery()
+    public async Task DispatchGenericQueryReturnsUppercasedResult()
     {
         ServiceCollection services = new();
 

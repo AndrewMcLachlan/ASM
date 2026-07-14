@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - "main"
+      - "release/**"
   pull_request:
-    branches:
-      - "main"
   workflow_dispatch:
 
 permissions:
@@ -19,6 +18,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-version-number.outputs.version }}
+      # First-class output from get-dotnet-version: true when a VersionSuffix is set.
+      is-prerelease: ${{ steps.set-version-number.outputs.is-prerelease }}
     steps:
     - uses: actions/checkout@v7.0.0
       with:
@@ -28,31 +31,20 @@ jobs:
       with:
         dotnet-version: 10.x
 
-    - name: Setup GitVersion
-      uses: gittools/actions/gitversion/setup@v4.7.0
-      with:
-        versionSpec: '6.x'
-    - name: Execute GitVersion
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@v4.7.0
-    - name: Set version
+    - name: Get version
       id: set-version-number
-      run: |
-        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-          echo "version=${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.commitsSinceVersionSource }}" >> "$GITHUB_OUTPUT"
-        else
-          echo "version=${{ steps.gitversion.outputs.semVer }}" >> "$GITHUB_OUTPUT"
-        fi
-    - run: echo "::notice::Version ${{ steps.set-version-number.outputs.version }}"
+      uses: AndrewMcLachlan/Actions/get-dotnet-version@v4
+      with:
+        project: Directory.Build.props
 
     - name: Restore
       run: dotnet restore Asm.slnx
 
     - name: Build
-      run: dotnet build Asm.slnx --no-restore --configuration Release
+      run: dotnet build Asm.slnx --no-restore --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:AssemblyVersion=${{ steps.set-version-number.outputs.assembly-version }} --p:FileVersion=${{ steps.set-version-number.outputs.file-version }} --p:InformationalVersion=${{ steps.set-version-number.outputs.version }}
 
     - name: Package
-      run: dotnet pack Asm.slnx --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }} --p:FileVersion=${{ steps.set-version-number.outputs.version }}
+      run: dotnet pack Asm.slnx --no-restore --no-build -o ${{ github.workspace }}/publish --configuration Release --p:Version=${{ steps.set-version-number.outputs.version }}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v7.0.1
@@ -158,7 +150,10 @@ jobs:
     permissions:
       packages: write
       contents: read
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    # Publish only from main (the stable trunk) or from any prerelease build (a branch with a
+    # VersionSuffix, e.g. release/5.0-beta). A release/** branch with the suffix removed publishes
+    # nothing, so the beta can be graduated in place before merging to main — no accidental deploy.
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || needs.build.outputs.is-prerelease == 'true')
     steps:
     - name: Download packages
       uses: actions/download-artifact@v8

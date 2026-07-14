@@ -34,3 +34,25 @@ internal class TestDomainEventMultiHandler2(ScenarioContext context) : IDomainEv
         return ValueTask.CompletedTask;
     }
 }
+
+internal class TestTwoPhaseDomainEvent : IDomainEvent
+{
+}
+
+internal class TestTwoPhasePreSaveHandler(ScenarioContext context) : IPreSaveDomainEventHandler<TestTwoPhaseDomainEvent>
+{
+    public ValueTask Handle(TestTwoPhaseDomainEvent notification, CancellationToken cancellationToken)
+    {
+        context.Add("PreSave", true);
+        return ValueTask.CompletedTask;
+    }
+}
+
+internal class TestTwoPhasePostSaveHandler(ScenarioContext context) : IPostSaveDomainEventHandler<TestTwoPhaseDomainEvent>
+{
+    public ValueTask Handle(TestTwoPhaseDomainEvent notification, CancellationToken cancellationToken)
+    {
+        context.Add("PostSave", true);
+        return ValueTask.CompletedTask;
+    }
+}

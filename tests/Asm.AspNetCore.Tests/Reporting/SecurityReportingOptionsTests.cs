@@ -2,10 +2,17 @@ using Asm.AspNetCore.Reporting;
 
 namespace Asm.AspNetCore.Tests.Reporting;
 
+[Trait("Category", "Unit")]
+
 public class SecurityReportingOptionsTests
 {
+    /// <summary>
+    /// Given a newly constructed SecurityReportingOptions
+    /// When its default values are inspected
+    /// Then the default routes, group names, max-age and max-body-bytes are set
+    /// </summary>
     [Fact]
-    public void DefaultValues_AreCorrect()
+    public void DefaultValuesAreCorrect()
     {
         var options = new SecurityReportingOptions();
 
@@ -18,22 +25,37 @@ public class SecurityReportingOptionsTests
         Assert.Equal(65536, options.MaxBodyBytes);
     }
 
+    /// <summary>
+    /// Given a SecurityReportingOptions with RoutePrefix changed
+    /// When the property is read
+    /// Then it reports the new value
+    /// </summary>
     [Fact]
-    public void RoutePrefix_CanBeChanged()
+    public void RoutePrefixCanBeChanged()
     {
         var options = new SecurityReportingOptions { RoutePrefix = "api/reporting" };
         Assert.Equal("api/reporting", options.RoutePrefix);
     }
 
+    /// <summary>
+    /// Given a SecurityReportingOptions with MaxAgeSeconds changed
+    /// When the property is read
+    /// Then it reports the new value
+    /// </summary>
     [Fact]
-    public void MaxAgeSeconds_CanBeChanged()
+    public void MaxAgeSecondsCanBeChanged()
     {
         var options = new SecurityReportingOptions { MaxAgeSeconds = 3600 };
         Assert.Equal(3600, options.MaxAgeSeconds);
     }
 
+    /// <summary>
+    /// Given a SecurityReportingOptions with the group names changed
+    /// When the properties are read
+    /// Then they report the new values
+    /// </summary>
     [Fact]
-    public void GroupNames_CanBeChanged()
+    public void GroupNamesCanBeChanged()
     {
         var options = new SecurityReportingOptions
         {
@@ -44,8 +66,13 @@ public class SecurityReportingOptionsTests
         Assert.Equal("my-csp", options.CspGroupName);
     }
 
+    /// <summary>
+    /// Given a SecurityReportingOptions with the route segments changed
+    /// When the properties are read
+    /// Then they report the new values
+    /// </summary>
     [Fact]
-    public void RouteSegments_CanBeChanged()
+    public void RouteSegmentsCanBeChanged()
     {
         var options = new SecurityReportingOptions
         {
@@ -56,15 +83,25 @@ public class SecurityReportingOptionsTests
         Assert.Equal("content-security-policy", options.CspRoute);
     }
 
+    /// <summary>
+    /// Given a newly constructed SecurityReportingOptions
+    /// When MaxBodyBytes is read
+    /// Then it defaults to 65536
+    /// </summary>
     [Fact]
-    public void MaxBodyBytes_DefaultsTo65536()
+    public void MaxBodyBytesDefaultsTo65536()
     {
         var options = new SecurityReportingOptions();
         Assert.Equal(65536, options.MaxBodyBytes);
     }
 
+    /// <summary>
+    /// Given a SecurityReportingOptions with MaxBodyBytes changed
+    /// When the property is read
+    /// Then it reports the new value
+    /// </summary>
     [Fact]
-    public void MaxBodyBytes_CanBeChanged()
+    public void MaxBodyBytesCanBeChanged()
     {
         var options = new SecurityReportingOptions { MaxBodyBytes = 1024 };
         Assert.Equal(1024, options.MaxBodyBytes);

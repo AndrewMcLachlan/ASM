@@ -156,17 +156,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
                             "Type",
                             "Value"});
-                table1.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "name",
                             "John Doe"});
-                table1.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "preferred_username",
                             "john.doe@test.com"});
 #line 5
-    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table1, "Given ");
+    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table3, "Given ");
 #line hidden
 #line 9
     await testRunner.WhenAsync("I call GetUserName", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -273,14 +273,14 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                             "Type",
                             "Value"});
-                table2.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "preferred_username",
                             "john.doe@test.com"});
 #line 26
-    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table2, "Given ");
+    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table4, "Given ");
 #line hidden
 #line 29
     await testRunner.WhenAsync("I call GetUserName", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -351,20 +351,20 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
                             "Type",
                             "Value"});
-                table3.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "name",
                             "John Doe"});
-                table3.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "name",
                             "Jane Doe"});
-                table3.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "preferred_username",
                             "john.doe@test.com"});
 #line 40
-    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table3, "Given ");
+    await testRunner.GivenAsync("I have an HttpContext with user claims", ((string)(null)), table5, "Given ");
 #line hidden
 #line 45
     await testRunner.WhenAsync("I call GetUserName", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");

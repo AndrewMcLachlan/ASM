@@ -5,9 +5,14 @@ namespace Asm.Tests;
 
 public class NameValueCollectionExtensionsTests
 {
+    /// <summary>
+    /// Given a NameValueCollection containing a key with a parseable value and a missing key.
+    /// When GetValue is called with a default for each.
+    /// Then the present key returns its parsed value and the missing key returns the supplied default.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void GetValueTest()
+    public void GetValueReturnsParsedValueOrDefault()
     {
         NameValueCollection collection = new NameValueCollection();
 

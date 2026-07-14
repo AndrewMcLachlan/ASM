@@ -97,3 +97,23 @@ Scenario: Get IP address as an unsigned 32 bit integer with invalid input
     Then an exception of type 'System.ArgumentException' is thrown
     And the exception message is 'Not an IPv4 address (Parameter 'ipAddress')'
     And the exception parameter name is 'ipAddress'
+
+@Unit
+Scenario: Create an IP address from an unsigned 32 bit integer using ToIPAddress
+    Given I have an unsigned 32 bit integer 3435973836
+    When I call ToIPAddress
+    Then the IP Address 204.204.204.204 is returned
+
+@Unit
+Scenario Outline: Round trip an IP address through ToUInt32 and ToIPAddress
+    Given I have an IP Address '<IP Address>'
+    When I call ToUInt32
+    And I call ToIPAddress
+    Then the IP Address <IP Address> is returned
+
+    Examples:
+    | IP Address      |
+    | 0.0.0.0         |
+    | 192.168.1.1     |
+    | 204.204.204.204 |
+    | 255.255.255.255 |

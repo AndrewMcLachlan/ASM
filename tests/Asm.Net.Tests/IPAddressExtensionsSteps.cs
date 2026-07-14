@@ -64,7 +64,13 @@ public class IPAddressExtensionsSteps(ScenarioContext context, ScenarioData scen
     [When(@"I call FromUInt32")]
     public void WhenICallFromUInt()
     {
-        scenarioData.IPAddress = IPAddressExtensions.FromUInt32(scenarioData.IPAddressAsUInt32);
+        scenarioData.IPAddress = AsmNetIPAddressExtensions.FromUInt32(scenarioData.IPAddressAsUInt32);
+    }
+
+    [When(@"I call ToIPAddress")]
+    public void WhenICallToIPAddress()
+    {
+        scenarioData.IPAddress = scenarioData.IPAddressAsUInt32.ToIPAddress();
     }
 
     [Then(@"the string value '(.*)' will be returned")]

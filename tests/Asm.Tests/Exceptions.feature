@@ -45,6 +45,10 @@ Scenario: Create AsmException with message, error id and inner exception
     And the AsmException has an inner exception with message 'Inner error'
 
 @Unit
+Scenario: AsmException is abstract
+    Then AsmException is abstract
+
+@Unit
 Scenario: An Asm library exception type resolves by its full name
     When I catch an Asm NotFoundException
     Then an exception of type 'Asm.NotFoundException' is thrown

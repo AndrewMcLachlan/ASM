@@ -133,17 +133,17 @@ namespace Asm.AspNetCore.Tests.Extensions
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="AddProblemDetailsFactory registers custom ProblemDetailsFactory")]
+        [global::Xunit.FactAttribute(DisplayName="AddAsmExceptionHandler registers the Asm exception handler")]
         [global::Xunit.TraitAttribute("FeatureTitle", "IServiceCollection Extensions")]
-        [global::Xunit.TraitAttribute("Description", "AddProblemDetailsFactory registers custom ProblemDetailsFactory")]
+        [global::Xunit.TraitAttribute("Description", "AddAsmExceptionHandler registers the Asm exception handler")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task AddProblemDetailsFactoryRegistersCustomProblemDetailsFactory()
+        public async global::System.Threading.Tasks.Task AddAsmExceptionHandlerRegistersTheAsmExceptionHandler()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddProblemDetailsFactory registers custom ProblemDetailsFactory", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddAsmExceptionHandler registers the Asm exception handler", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 5
@@ -160,10 +160,10 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have a service collection with host environment", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 7
-    await testRunner.WhenAsync("I call AddProblemDetailsFactory", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I call AddAsmExceptionHandler", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 8
-    await testRunner.ThenAsync("ProblemDetailsFactory should be registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the Asm exception handler should be registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

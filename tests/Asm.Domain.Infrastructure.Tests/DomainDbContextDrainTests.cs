@@ -25,9 +25,14 @@ public class DomainDbContextDrainTests
         public DbSet<DrainEntity> Entities { get; set; } = null!;
     }
 
+    /// <summary>
+    /// Given a handler that re-raises a domain event on every publish
+    /// When changes are saved and the event drain runs
+    /// Then a BoundExceededException is thrown instead of looping forever
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task RunawayEventCascade_ThrowsInsteadOfHanging()
+    public async Task RunawayEventCascadeThrowsInsteadOfHanging()
     {
         var entity = new DrainEntity();
 
@@ -35,7 +40,7 @@ public class DomainDbContextDrainTests
         // the bounded drain must throw instead.
         var publisher = new Mock<IPublisher>();
         publisher
-            .Setup(p => p.Publish(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()))
+            .Setup(p => p.PublishPreSave(It.IsAny<IDomainEvent>(), It.IsAny<CancellationToken>()))
             .Callback(() => entity.Events.Add(new DrainEvent()))
             .Returns(ValueTask.CompletedTask);
 

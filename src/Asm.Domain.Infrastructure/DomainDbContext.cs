@@ -41,9 +41,17 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     ///  </exception>
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
-        await DispatchDomainEventsAsync(cancellationToken).ConfigureAwait(false);
+        // Phase 1: drain and dispatch pre-save handlers inside the transaction. The returned snapshot
+        // is every event dispatched (including those raised by pre-save handlers during the drain),
+        // captured before entity.Events was cleared so it survives into the post-save phase.
+        var dispatchedEvents = await DispatchPreSaveDomainEventsAsync(cancellationToken).ConfigureAwait(false);
 
-        return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken).ConfigureAwait(false);
+
+        // Phase 2: the commit succeeded, so run the post-save handlers against the captured snapshot.
+        await DispatchPostSaveDomainEventsAsync(dispatchedEvents, cancellationToken).ConfigureAwait(false);
+
+        return result;
     }
 
     /// <summary>
@@ -89,8 +97,10 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     /// </exception>
     public override int SaveChanges(bool acceptAllChangesOnSuccess = true)
     {
-        // Drain until no new events remain (see DispatchDomainEventsAsync). SaveChanges has no
+        // Phase 1: drain and dispatch pre-save handlers, capturing the snapshot. SaveChanges has no
         // cancellation token, so none is propagated here.
+        List<IDomainEvent> dispatchedEvents = [];
+
         foreach (var _ in Bounded.While(MaxDomainEventDrainIterations))
         {
             var domainEventEntities = ChangeTracker.Entries<IEntity>()
@@ -109,12 +119,21 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
                 entity.Events.Clear();
                 foreach (var domainEvent in events)
                 {
-                    publisher.Publish(domainEvent).AsTask().GetAwaiter().GetResult();
+                    dispatchedEvents.Add(domainEvent);
+                    publisher.PublishPreSave(domainEvent).AsTask().GetAwaiter().GetResult();
                 }
             }
         }
 
-        return base.SaveChanges(acceptAllChangesOnSuccess);
+        var result = base.SaveChanges(acceptAllChangesOnSuccess);
+
+        // Phase 2: the commit succeeded, so run the post-save handlers against the captured snapshot.
+        foreach (var domainEvent in dispatchedEvents)
+        {
+            publisher.PublishPostSave(domainEvent).AsTask().GetAwaiter().GetResult();
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -124,11 +143,16 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
     /// </summary>
     private const int MaxDomainEventDrainIterations = 100;
 
-    private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
+    private async Task<List<IDomainEvent>> DispatchPreSaveDomainEventsAsync(CancellationToken cancellationToken)
     {
-        // Drain until no new events remain: a handler may itself raise events (or add tracked
-        // entities that carry events), and those must be dispatched in this same save. Bounded
-        // so a handler that raises events indefinitely fails fast rather than hanging.
+        // Drain until no new events remain: a pre-save handler may itself raise events (or add tracked
+        // entities that carry events), and those must be dispatched in this same save. Bounded so a
+        // handler that raises events indefinitely fails fast rather than hanging. Every dispatched
+        // event is captured up front (before entity.Events is cleared) so the post-save phase can
+        // re-read the whole set — including events raised by pre-save handlers, which commit in the
+        // same transaction and therefore have their post-save handlers fired too.
+        List<IDomainEvent> dispatchedEvents = [];
+
         foreach (var _ in Bounded.While(MaxDomainEventDrainIterations))
         {
             var domainEventEntities = ChangeTracker.Entries<IEntity>()
@@ -147,9 +171,23 @@ public abstract class DomainDbContext(DbContextOptions options, IPublisher publi
                 entity.Events.Clear();
                 foreach (var domainEvent in events)
                 {
-                    await publisher.Publish(domainEvent, cancellationToken).ConfigureAwait(false);
+                    dispatchedEvents.Add(domainEvent);
+                    await publisher.PublishPreSave(domainEvent, cancellationToken).ConfigureAwait(false);
                 }
             }
+        }
+
+        return dispatchedEvents;
+    }
+
+    private async Task DispatchPostSaveDomainEventsAsync(IReadOnlyList<IDomainEvent> domainEvents, CancellationToken cancellationToken)
+    {
+        // Post-save handlers run after a successful commit. A handler that throws here runs against an
+        // already-committed aggregate — there is no rollback — so post-save handlers must be
+        // idempotent and safe to retry. Guaranteed delivery is outbox territory and is out of scope.
+        foreach (var domainEvent in domainEvents)
+        {
+            await publisher.PublishPostSave(domainEvent, cancellationToken).ConfigureAwait(false);
         }
     }
 }

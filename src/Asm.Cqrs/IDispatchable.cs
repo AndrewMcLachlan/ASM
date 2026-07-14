@@ -11,6 +11,6 @@ public interface IDispatchable
 /// An object that can be dispatched.
 /// </summary>
 /// <typeparam name="TResponse">The response from the dispatched.</typeparam>
-public interface IDispatchable<out TResponse> : IDispatchable
+public interface IDispatchable<TResponse> : IDispatchable
 {
 }

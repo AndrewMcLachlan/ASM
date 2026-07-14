@@ -26,9 +26,14 @@ public class EntraIdBackOfficeOptionsTests
     // Configure(string?, MicrosoftAccountOptions)
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then the MicrosoftAccountOptions ClientId is set from the EntraId options.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsClientId()
+    public void ConfigureWithMatchingNameSetsClientId()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -38,9 +43,14 @@ public class EntraIdBackOfficeOptionsTests
         Assert.Equal(ClientId, options.ClientId);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then the MicrosoftAccountOptions ClientSecret is set from the EntraId options.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsClientSecret()
+    public void ConfigureWithMatchingNameSetsClientSecret()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -50,21 +60,31 @@ public class EntraIdBackOfficeOptionsTests
         Assert.Equal(ClientSecret, options.ClientSecret);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then the MicrosoftAccountOptions CallbackPath is "/signin-entraid".
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsCallbackPath()
+    public void ConfigureWithMatchingNameSetsCallbackPath()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
 
         sut.Configure(MatchingName, options);
 
-        Assert.Equal("/signin-oidc", options.CallbackPath);
+        Assert.Equal("/signin-entraid", options.CallbackPath);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then the MicrosoftAccountOptions TokenEndpoint is the tenant-specific token URL.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsTokenEndpoint()
+    public void ConfigureWithMatchingNameSetsTokenEndpoint()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -76,9 +96,14 @@ public class EntraIdBackOfficeOptionsTests
             options.TokenEndpoint);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with the matching scheme name.
+    /// Then the MicrosoftAccountOptions AuthorizationEndpoint is the tenant-specific authorize URL.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithMatchingName_SetsAuthorizationEndpoint()
+    public void ConfigureWithMatchingNameSetsAuthorizationEndpoint()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -90,9 +115,14 @@ public class EntraIdBackOfficeOptionsTests
             options.AuthorizationEndpoint);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with a non-matching scheme name.
+    /// Then the MicrosoftAccountOptions ClientId is left unchanged.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithNonMatchingName_LeavesClientIdUnchanged()
+    public void ConfigureWithNonMatchingNameLeavesClientIdUnchanged()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -103,9 +133,14 @@ public class EntraIdBackOfficeOptionsTests
         Assert.Equal(originalClientId, options.ClientId);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When Configure is called with a non-matching scheme name.
+    /// Then the MicrosoftAccountOptions ClientSecret is left unchanged.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithNonMatchingName_LeavesClientSecretUnchanged()
+    public void ConfigureWithNonMatchingNameLeavesClientSecretUnchanged()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -120,9 +155,14 @@ public class EntraIdBackOfficeOptionsTests
     // Configure(MicrosoftAccountOptions) — no-name overload
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When the no-name Configure overload is called.
+    /// Then the MicrosoftAccountOptions ClientId is set from the EntraId options.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsClientId()
+    public void ConfigureWithoutNameSetsClientId()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -132,9 +172,14 @@ public class EntraIdBackOfficeOptionsTests
         Assert.Equal(ClientId, options.ClientId);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When the no-name Configure overload is called.
+    /// Then the MicrosoftAccountOptions ClientSecret is set from the EntraId options.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsClientSecret()
+    public void ConfigureWithoutNameSetsClientSecret()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -144,21 +189,31 @@ public class EntraIdBackOfficeOptionsTests
         Assert.Equal(ClientSecret, options.ClientSecret);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When the no-name Configure overload is called.
+    /// Then the MicrosoftAccountOptions CallbackPath is "/signin-entraid".
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsCallbackPath()
+    public void ConfigureWithoutNameSetsCallbackPath()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
 
         sut.Configure(options);
 
-        Assert.Equal("/signin-oidc", options.CallbackPath);
+        Assert.Equal("/signin-entraid", options.CallbackPath);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When the no-name Configure overload is called.
+    /// Then the MicrosoftAccountOptions TokenEndpoint is the tenant-specific token URL.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsTokenEndpoint()
+    public void ConfigureWithoutNameSetsTokenEndpoint()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();
@@ -170,9 +225,14 @@ public class EntraIdBackOfficeOptionsTests
             options.TokenEndpoint);
     }
 
+    /// <summary>
+    /// Given EntraIdBackOfficeOptions and MicrosoftAccountOptions.
+    /// When the no-name Configure overload is called.
+    /// Then the MicrosoftAccountOptions AuthorizationEndpoint is the tenant-specific authorize URL.
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void Configure_WithoutName_SetsAuthorizationEndpoint()
+    public void ConfigureWithoutNameSetsAuthorizationEndpoint()
     {
         var sut = CreateSut();
         var options = new MicrosoftAccountOptions();

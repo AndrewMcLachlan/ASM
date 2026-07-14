@@ -4,11 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Asm.AspNetCore.Http;
 
-internal class ValidatorFilter<T>(int parameterIndex) : IEndpointFilter
+internal class ValidatorFilter<T>(int? parameterIndex = null) : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
     {
-        T? arg = context.GetArgument<T>(parameterIndex);
+        // Locate the argument by type when no explicit index is given; fall back to the index for
+        // the legacy positional overload.
+        T? arg = parameterIndex is int index
+            ? context.GetArgument<T>(index)
+            : context.Arguments.OfType<T>().FirstOrDefault();
 
         // A missing/unbindable body is a client error, not a 500 — ValidateAndThrowAsync(null)
         // would otherwise throw ArgumentNullException.

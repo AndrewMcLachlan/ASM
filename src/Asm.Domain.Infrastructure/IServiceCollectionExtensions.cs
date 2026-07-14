@@ -12,7 +12,18 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class AsmDomainInfrastructureIServiceCollectionExtensions
 {
     private static readonly Type IQueryableType = typeof(IQueryable<>);
-    private static readonly Type EventHandlerGenericType = typeof(IDomainEventHandler<>);
+
+    // The three domain-event handler contracts a type may implement. IPreSaveDomainEventHandler<T>
+    // extends IDomainEventHandler<T>, so a pre-save handler is registered under both (the pre-save
+    // phase resolves IDomainEventHandler<T>, covering legacy handlers too). Post-save handlers are
+    // resolved separately via IPostSaveDomainEventHandler<T>.
+    private static readonly Type[] EventHandlerGenericTypes =
+    [
+        typeof(IDomainEventHandler<>),
+        typeof(IPreSaveDomainEventHandler<>),
+        typeof(IPostSaveDomainEventHandler<>),
+    ];
+
     private static readonly MethodInfo DbContextSetMethod = typeof(IReadOnlyDbContext).GetTypeInfo().GetDeclaredMethod(nameof(IReadOnlyDbContext.Set))!;
     private static readonly MethodInfo AsNoTrackingMethod = typeof(EntityFrameworkQueryableExtensions).GetTypeInfo().GetDeclaredMethod(nameof(EntityFrameworkQueryableExtensions.AsNoTracking))!;
 
@@ -77,16 +88,7 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
             if (!type.IsClass || type.IsAbstract || type.IsGenericTypeDefinition)
                 continue;
 
-            var eventHandlerInterfaces = type.GetInterfaces()
-                .Where(i => i.IsGenericType && (i.GetGenericTypeDefinition() == EventHandlerGenericType))
-                .ToArray();
-
-            foreach (var interfaceType in eventHandlerInterfaces)
-            {
-                // Use TryAddEnumerable to prevent duplicate handler registrations
-                // while still allowing multiple different handlers for the same event
-                services.TryAddEnumerable(ServiceDescriptor.Transient(interfaceType, type));
-            }
+            RegisterDomainEventHandler(services, type);
         }
 
         services.TryAddTransient<IPublisher, Publisher>();
@@ -103,10 +105,30 @@ public static class AsmDomainInfrastructureIServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
     public static IServiceCollection AddDomainEvent<THandler, TDomainEvent>(this IServiceCollection services) where THandler : class, IDomainEventHandler<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        services.TryAddEnumerable(ServiceDescriptor.Transient<IDomainEventHandler<TDomainEvent>, THandler>());
+        RegisterDomainEventHandler(services, typeof(THandler));
         services.TryAddTransient<IPublisher, Publisher>();
 
         return services;
+    }
+
+    /// <summary>
+    /// Registers a handler type under every domain-event handler contract it implements
+    /// (<see cref="IDomainEventHandler{TDomainEvent}"/>, <see cref="IPreSaveDomainEventHandler{TDomainEvent}"/>,
+    /// and <see cref="IPostSaveDomainEventHandler{TDomainEvent}"/>), so it is dispatched in the phases it opts into.
+    /// </summary>
+    /// <param name="services">The service collection to register into.</param>
+    /// <param name="handlerType">The concrete handler type.</param>
+    private static void RegisterDomainEventHandler(IServiceCollection services, Type handlerType)
+    {
+        var eventHandlerInterfaces = handlerType.GetInterfaces()
+            .Where(i => i.IsGenericType && EventHandlerGenericTypes.Contains(i.GetGenericTypeDefinition()));
+
+        foreach (var interfaceType in eventHandlerInterfaces)
+        {
+            // Use TryAddEnumerable to prevent duplicate handler registrations
+            // while still allowing multiple different handlers for the same event.
+            services.TryAddEnumerable(ServiceDescriptor.Transient(interfaceType, handlerType));
+        }
     }
 
     #region Add Readonly DB Context

@@ -4,20 +4,19 @@ Feature: EndpointGroupBase
     So that I can reduce boilerplate code for endpoint mapping
 
 @Unit
-Scenario: Endpoint group base defines name and path
+Scenario: Endpoint group base defines a path
     Given I have a simple endpoint group
-    Then the group name should be 'SimpleGroup'
-    And the group path should be '/api/simple'
+    Then the group path should be '/api/simple'
 
 @Unit
-Scenario: Endpoint group base has default empty tags
+Scenario: Endpoint group base has a default empty tag
     Given I have a minimal endpoint group
-    Then the group tags should be empty
+    Then the group tag should be empty
 
 @Unit
-Scenario: Endpoint group base can have custom tags
+Scenario: Endpoint group base can have a custom tag
     Given I have a simple endpoint group
-    Then the group tags should be 'simple,test'
+    Then the group tag should be 'simple'
 
 @Unit
 Scenario: Endpoint group base has default empty authorization policy
@@ -46,6 +45,13 @@ Scenario: Endpoint group base applies authorization when policy is specified
 @Unit
 Scenario: Endpoint group base requires any authorization when policy is empty
     Given I have a minimal endpoint group
+    And I have an endpoint route builder
+    When I map the endpoint group
+    Then the route group builder should be returned
+
+@Unit
+Scenario: Endpoint group base supports an anonymous group opt-out
+    Given I have an anonymous endpoint group
     And I have an endpoint route builder
     When I map the endpoint group
     Then the route group builder should be returned

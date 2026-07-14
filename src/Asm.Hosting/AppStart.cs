@@ -1,4 +1,4 @@
-﻿using Asm.Serilog;
+using Asm.Serilog;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -17,54 +17,22 @@ public static class AppStart
     /// <param name="appName">The application name.</param>
     /// <param name="configureServices">A method to configure services.</param>
     /// <returns>A return code.</returns>
-    public static int Run(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices)
-    {
-        Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
-
-        try
+    public static int Run(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices) =>
+        RunCore(args, appName, configureServices, host =>
         {
-            Log.Information("Starting...");
-            CreateHostBuilder(args, appName, configureServices).Build().Run();
-            return 0;
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "Fatal host exception");
-            return 1;
-        }
-        finally
-        {
-            Log.CloseAndFlush();
-        }
-    }
+            host.Run();
+            return Task.CompletedTask;
+        }).AsTask().GetAwaiter().GetResult();
 
     /// <summary>
-    /// Run the hosted process synchronously.
+    /// Run the hosted process asynchronously.
     /// </summary>
     /// <param name="args">Command line arguments.</param>
     /// <param name="appName">The application name.</param>
     /// <param name="configureServices">A method to configure services.</param>
     /// <returns>A return code.</returns>
-    public static async ValueTask<int> RunAsync(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices)
-    {
-        Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
-
-        try
-        {
-            Log.Information("Starting...");
-            await CreateHostBuilder(args, appName, configureServices).Build().RunAsync();
-            return 0;
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "Fatal host exception");
-            return 1;
-        }
-        finally
-        {
-            Log.CloseAndFlush();
-        }
-    }
+    public static async ValueTask<int> RunAsync(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices) =>
+        await RunCore(args, appName, configureServices, host => host.RunAsync());
 
     /// <summary>
     /// Creates a host builder to allow customization of the host.
@@ -82,4 +50,24 @@ public static class AppStart
         .UseCustomSerilog()
         .ConfigureServices(configureServices);
 
+    private static async ValueTask<int> RunCore(string[] args, string appName, Action<HostBuilderContext, IServiceCollection> configureServices, Func<IHost, Task> run)
+    {
+        Log.Logger = LoggingConfigurator.ConfigureLogging(new LoggerConfiguration(), appName).CreateBootstrapLogger();
+
+        try
+        {
+            Log.Information("Starting...");
+            await run(CreateHostBuilder(args, appName, configureServices).Build());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Fatal host exception");
+            return 1;
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
 }

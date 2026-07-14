@@ -6,7 +6,7 @@ namespace Asm;
 /// An item already exists exception.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public sealed class ExistsException : Exception
+public sealed class ExistsException : AsmException
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ExistsException"/> class.

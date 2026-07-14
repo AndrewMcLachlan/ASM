@@ -9,9 +9,14 @@ public class IPublishedContentExtensionsTests
     // NameAsCssClass
     // -----------------------------------------------------------------------
 
+    /// <summary>
+    /// Given published content whose Name contains a space and mixed case
+    /// When NameAsCssClass is called
+    /// Then a lowercase, hyphen-separated CSS class name is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void NameAsCssClass_ReturnsLowercaseHyphenSeparatedName()
+    public void NameAsCssClassReturnsLowercaseHyphenSeparatedName()
     {
         var contentMock = new Mock<IPublishedContent>();
         contentMock.Setup(c => c.Name).Returns("Hello World");
@@ -21,18 +26,28 @@ public class IPublishedContentExtensionsTests
         Assert.Equal("hello-world", result);
     }
 
+    /// <summary>
+    /// Given a null IPublishedContent reference
+    /// When NameAsCssClass is called
+    /// Then null is returned
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void NameAsCssClass_WhenNullContent_ReturnsNull()
+    public void NameAsCssClassReturnsNullWhenContentIsNull()
     {
         IPublishedContent content = null;
         var result = content.NameAsCssClass();
         Assert.Null(result);
     }
 
+    /// <summary>
+    /// Given published content whose Name contains multiple spaces
+    /// When NameAsCssClass is called
+    /// Then each space is replaced with a hyphen in the returned CSS class name
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void NameAsCssClass_MultipleSpaces_ReplacesEachWithHyphen()
+    public void NameAsCssClassReplacesMultipleSpacesEachWithHyphen()
     {
         var contentMock = new Mock<IPublishedContent>();
         contentMock.Setup(c => c.Name).Returns("One Two Three");
@@ -42,9 +57,14 @@ public class IPublishedContentExtensionsTests
         Assert.Equal("one-two-three", result);
     }
 
+    /// <summary>
+    /// Given published content whose Name is already lowercase but contains a space
+    /// When NameAsCssClass is called
+    /// Then the name is returned unchanged except that the space is replaced with a hyphen
+    /// </summary>
     [Fact]
     [Trait("Category", "Unit")]
-    public void NameAsCssClass_AlreadyLowercase_ReturnsUnchangedExceptSpaces()
+    public void NameAsCssClassLeavesAlreadyLowercaseUnchangedExceptSpaces()
     {
         var contentMock = new Mock<IPublishedContent>();
         contentMock.Setup(c => c.Name).Returns("already lower");
