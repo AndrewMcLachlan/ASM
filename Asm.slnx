@@ -32,6 +32,9 @@
   </Folder>
   <Folder Name="/Tests/">
     <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/Asm.AspNetCore.Api.Tests/Asm.AspNetCore.Api.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Debug" />
+    </Project>
     <Project Path="tests/Asm.AspNetCore.Modules.Tests/Asm.AspNetCore.Modules.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
@@ -52,6 +55,9 @@
     </Project>
     <Project Path="tests/Asm.Domain.Tests/Asm.Domain.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
+    <Project Path="tests/Asm.Hosting.Tests/Asm.Hosting.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Debug" />
     </Project>
     <Project Path="tests/Asm.Net.Tests/Asm.Net.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
