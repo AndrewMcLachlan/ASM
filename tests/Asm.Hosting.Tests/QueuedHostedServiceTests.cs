@@ -68,6 +68,25 @@ public class QueuedHostedServiceTests
 
     [Fact]
     [Trait("Category", "Unit")]
+    public async Task DoesNotLogWorkItemContentByDefault()
+    {
+        var queue = new BackgroundWorkQueue<int>();
+        using var provider = BuildProvider();
+        var loggerFactory = new CapturingLoggerFactory();
+        var service = new AlwaysThrowingHostedService(queue, provider.GetRequiredService<IServiceScopeFactory>(), loggerFactory);
+
+        await service.StartAsync(CancellationToken.None);
+        queue.Queue(-1);
+        await WaitForAsync(() => loggerFactory.Messages.Any(m => m.Contains("Error processing")));
+        await service.StopAsync(CancellationToken.None);
+
+        // The default descriptor is null, so the item's value must not appear in the log.
+        Assert.Contains(loggerFactory.Messages, m => m.Contains("Error processing a work item"));
+        Assert.DoesNotContain(loggerFactory.Messages, m => m.Contains("-1"));
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
     public async Task CreatesAFreshScopePerItem()
     {
         var queue = new BackgroundWorkQueue<int>();
@@ -119,6 +138,17 @@ public class QueuedHostedServiceTests
             Processed.Enqueue(workItem);
             return ValueTask.CompletedTask;
         }
+
+        // An int is not sensitive, so opt in to logging it.
+        protected override object DescribeWorkItem(int workItem) => workItem;
+    }
+
+    // Throws for every item and does not override DescribeWorkItem, exercising the safe default.
+    private sealed class AlwaysThrowingHostedService(IBackgroundWorkQueue<int> queue, IServiceScopeFactory scopeFactory, ILoggerFactory loggerFactory)
+        : QueuedHostedService<int>(queue, scopeFactory, loggerFactory)
+    {
+        protected override ValueTask ProcessAsync(IServiceProvider services, int workItem, CancellationToken cancellationToken)
+            => throw new InvalidOperationException("Simulated processing failure.");
     }
 
     private sealed class ScopedMarker

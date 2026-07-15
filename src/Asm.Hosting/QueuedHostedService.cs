@@ -25,6 +25,20 @@ public abstract class QueuedHostedService<T>(IBackgroundWorkQueue<T> workQueue, 
     /// <param name="cancellationToken">A token signalled when the host is stopping.</param>
     protected abstract ValueTask ProcessAsync(IServiceProvider services, T workItem, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Returns a value describing <paramref name="workItem"/> to include in the error log when
+    /// <see cref="ProcessAsync"/> throws — typically a non-sensitive identifier such as an id.
+    /// </summary>
+    /// <remarks>
+    /// Returns <c>null</c> by default, so <b>no work-item content is logged</b> unless a derived class
+    /// opts in. The base class cannot know which parts of <typeparamref name="T"/> are sensitive, so the
+    /// safe default is to log nothing about the item. When overriding, return only values that are safe to
+    /// appear in logs — never personal data, secrets, or payloads (e.g. an imported file's contents).
+    /// </remarks>
+    /// <param name="workItem">The work item that failed.</param>
+    /// <returns>A log-safe descriptor, or <c>null</c> to omit the item from the error log.</returns>
+    protected virtual object? DescribeWorkItem(T workItem) => null;
+
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -48,7 +62,17 @@ public abstract class QueuedHostedService<T>(IBackgroundWorkQueue<T> workQueue, 
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error processing work item {WorkItem} in {Service}.", workItem, GetType().Name);
+                    // Only log a descriptor the derived class has explicitly deemed safe (default: none),
+                    // so sensitive parts of the work item never leak into logs.
+                    var description = DescribeWorkItem(workItem);
+                    if (description is null)
+                    {
+                        logger.LogError(ex, "Error processing a work item in {Service}.", GetType().Name);
+                    }
+                    else
+                    {
+                        logger.LogError(ex, "Error processing work item {WorkItem} in {Service}.", description, GetType().Name);
+                    }
                 }
             }
         }
