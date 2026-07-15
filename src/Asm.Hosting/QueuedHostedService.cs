@@ -48,7 +48,7 @@ public abstract class QueuedHostedService<T>(IBackgroundWorkQueue<T> workQueue, 
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error processing a work item in {Service}.", GetType().Name);
+                    logger.LogError(ex, "Error processing work item {WorkItem} in {Service}.", workItem, GetType().Name);
                 }
             }
         }
