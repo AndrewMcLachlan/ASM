@@ -1,92 +1,125 @@
 # Asm.Cqrs
 
-The `Asm.Cqrs` project provides a lightweight framework for implementing the Command Query Responsibility Segregation (CQRS) pattern in .NET applications. It includes abstractions and utilities for handling commands, queries, and events in a clean and maintainable way.
+A lightweight implementation of the Command Query Responsibility Segregation (CQRS) pattern for .NET.
+Commands and queries are first-class, separate concepts with their own handler and dispatcher interfaces,
+dispatched via cached compiled delegates (no per-call reflection).
 
 ## Features
 
-- **Command Handling**: Define and process commands with dedicated handlers.
-- **Query Handling**: Simplify query execution with query handlers.
-- **Event Dispatching**: Publish and handle domain events.
-- **Pipeline Behaviors**: Add cross-cutting concerns (e.g., logging, validation) to command and query pipelines.
-- **Dependency Injection Integration**: Seamless integration with ASP.NET Core's DI container.
+- **Separate command and query abstractions**: `ICommand`, `ICommand<TResponse>` and `IQuery<TResponse>` with matching handler interfaces.
+- **Separate dispatchers**: `ICommandDispatcher` and `IQueryDispatcher`, so the write and read sides of an application can be segregated at the injection point.
+- **`ValueTask`-based** handler and dispatcher signatures.
+- **Dependency injection integration**: register handlers by assembly scan or individually.
 
 ## Installation
 
-To install the `Asm.Cqrs` library, use the .NET CLI:
-
-`dotnet add package Asm.Cqrs`
-
-Or via the NuGet Package Manager:
-
-`Install-Package Asm.Cqrs`
+```
+dotnet add package Asm.Cqrs
+```
 
 ## Usage
 
-### Defining a Command
+### Defining a query
 
-Create a command by implementing the `ICommand` interface:
+Implement `IQuery<TResponse>`:
 
 ```csharp
-using Asm.Cqrs;
-public class CreateOrderCommand : ICommand { public string OrderId { get; set; } public string CustomerName { get; set; } }
+using Asm.Cqrs.Queries;
+
+public record GetOrder(int Id) : IQuery<Order>;
 ```
 
-### Handling a Command
+### Handling a query
 
-Create a command handler by implementing the `ICommandHandler<TCommand>` interface:
+Implement `IQueryHandler<TQuery, TResponse>`:
 
 ```csharp
-using Asm.Cqrs;
-public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand> { public Task HandleAsync(CreateOrderCommand command, CancellationToken cancellationToken) { // Handle the command logic here Console.WriteLine($"Order created for {command.CustomerName}"); return Task.CompletedTask; } }
+using Asm.Cqrs.Queries;
+
+public class GetOrderHandler : IQueryHandler<GetOrder, Order>
+{
+    public ValueTask<Order> Handle(GetOrder query, CancellationToken cancellationToken) =>
+        ValueTask.FromResult(new Order { Id = query.Id, CustomerName = "Joe Bloggs" });
+}
 ```
 
-### Defining a Query
+### Defining a command
 
-Create a query by implementing the `IQuery<TResult>` interface:
+Implement `ICommand<TResponse>` for a command that returns a response, or `ICommand` for one that does not:
 
 ```csharp
-using Asm.Cqrs;
-public class GetOrderQuery : IQuery<Order> { public string OrderId { get; set; } }
+using Asm.Cqrs.Commands;
+
+public record CreateOrder(string CustomerName) : ICommand<Order>;
+
+public record DeleteOrder(int Id) : ICommand;
 ```
 
-### Handling a Query
+### Handling a command
 
-Create a query handler by implementing the `IQueryHandler<TQuery, TResult>` interface:
-
-```csharp
-public class GetOrderQueryHandler : IQueryHandler<GetOrderQuery, Order> { public Task<Order> HandleAsync(GetOrderQuery query, CancellationToken cancellationToken) { // Handle the query logic here return Task.FromResult(new Order { OrderId = query.OrderId, CustomerName = "Joe Bloggs" }); } }
-```
-
-### Dispatching Commands and Queries
-
-Use the `ICommandDispatcher` and `IQueryDispatcher` to dispatch commands and queries:
+Implement `ICommandHandler<TCommand, TResponse>` or `ICommandHandler<TCommand>`:
 
 ```csharp
-using Asm.Cqrs;
-public class OrderService
-{ 
-    private readonly ICommandDispatcher _commandDispatcher;
-    private readonly IQueryDispatcher _queryDispatcher;
+using Asm.Cqrs.Commands;
 
-    public OrderService(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+public class CreateOrderHandler : ICommandHandler<CreateOrder, Order>
+{
+    public ValueTask<Order> Handle(CreateOrder command, CancellationToken cancellationToken)
     {
-        _commandDispatcher = commandDispatcher;
-        _queryDispatcher = queryDispatcher;
+        // Create the order...
     }
+}
 
-    public async Task CreateOrderAsync()
+public class DeleteOrderHandler : ICommandHandler<DeleteOrder>
+{
+    public ValueTask Handle(DeleteOrder command, CancellationToken cancellationToken)
     {
-        var command = new CreateOrderCommand { OrderId = "123", CustomerName = "Jane Doe" };
-        await _commandDispatcher.DispatchAsync(command);
-    }
-
-    public async Task<Order> GetOrderAsync(string orderId)
-    {
-        var query = new GetOrderQuery { OrderId = orderId };
-        return await _queryDispatcher.DispatchAsync(query);
+        // Delete the order...
     }
 }
 ```
+
+### Registering handlers
+
+Register all handlers in an assembly:
+
+```csharp
+builder.Services.AddCommandHandlers(typeof(CreateOrder).Assembly);
+builder.Services.AddQueryHandlers(typeof(GetOrder).Assembly);
+```
+
+Or register handlers individually:
+
+```csharp
+builder.Services.AddCommandHandler<CreateOrderHandler, CreateOrder, Order>();
+builder.Services.AddCommandHandler<DeleteOrderHandler, DeleteOrder>();
+builder.Services.AddQueryHandler<GetOrderHandler, GetOrder, Order>();
+```
+
+### Dispatching
+
+Inject `IQueryDispatcher` and `ICommandDispatcher`:
+
+```csharp
+public class OrderService(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+{
+    public async Task<Order> CreateOrderAsync(string customerName, CancellationToken cancellationToken) =>
+        await commandDispatcher.Dispatch(new CreateOrder(customerName), cancellationToken);
+
+    public async Task DeleteOrderAsync(int id, CancellationToken cancellationToken) =>
+        await commandDispatcher.Execute(new DeleteOrder(id), cancellationToken);
+
+    public async Task<Order> GetOrderAsync(int id, CancellationToken cancellationToken) =>
+        await queryDispatcher.Dispatch(new GetOrder(id), cancellationToken);
+}
+```
+
+Commands that return a response are dispatched with `Dispatch`; commands that do not are executed with `Execute`.
+
+## ASP.NET Core
+
+See [Asm.Cqrs.AspNetCore](https://github.com/AndrewMcLachlan/ASM/tree/main/src/Asm.Cqrs.AspNetCore) to map
+commands and queries directly to minimal API endpoints.
 
 ## Contributing
 
