@@ -4,5 +4,5 @@ namespace Asm.Cqrs.Tests.Queries;
 
 internal class TestQuery : IQuery<string>
 {
-    public string Input { get; init; }
+    public required string Input { get; init; }
 }

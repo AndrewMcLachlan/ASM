@@ -3,8 +3,8 @@ namespace Asm.Domain.Tests;
 [Binding]
 public class KeyedEntityTestsSteps(ScenarioContext context)
 {
-    private TestKeyedEntity _first;
-    private TestKeyedEntity _second;
+    private TestKeyedEntity? _first;
+    private TestKeyedEntity? _second;
 
     [Given(@"I have a keyed entity with ID (.*)")]
     public void GivenIHaveAKeyedEntityWithID(int? id)
@@ -21,6 +21,7 @@ public class KeyedEntityTestsSteps(ScenarioContext context)
     [When(@"I call first\.Equals\(second\)")]
     public void WhenICallFirst_EqualsSecond()
     {
+        Assert.NotNull(_first);
         context.AddResult(_first.Equals(_second));
     }
 

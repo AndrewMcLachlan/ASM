@@ -3,8 +3,8 @@ namespace Asm.Tests;
 [Binding]
 public class PagedResultSteps
 {
-    private List<int> _items;
-    private PagedResult<int> _result;
+    private List<int> _items = null!;
+    private PagedResult<int> _result = null!;
 
     [Given(@"I have a list of items \[(.*)\]")]
     public void GivenIHaveAListOfItems(string values)

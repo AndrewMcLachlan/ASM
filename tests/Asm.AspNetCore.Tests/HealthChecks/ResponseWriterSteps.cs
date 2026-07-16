@@ -8,10 +8,10 @@ namespace Asm.AspNetCore.Tests.HealthChecks;
 [Binding]
 public class ResponseWriterSteps
 {
-    private HealthReport _healthReport;
-    private DefaultHttpContext _httpContext;
-    private MemoryStream _responseStream;
-    private JsonDocument _responseJson;
+    private HealthReport _healthReport = null!;
+    private DefaultHttpContext _httpContext = null!;
+    private MemoryStream _responseStream = null!;
+    private JsonDocument _responseJson = null!;
     private readonly Dictionary<string, HealthReportEntry> _entries = [];
     private TimeSpan _duration = TimeSpan.FromMilliseconds(100);
 

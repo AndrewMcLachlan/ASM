@@ -8,7 +8,7 @@ namespace Asm.AspNetCore.Mvc.Tests.ActionConstraints;
 [Trait("Category", "Unit")]
 public class RegexActionConstraintTests
 {
-    private static ActionConstraintContext ContextForAction(string action)
+    private static ActionConstraintContext ContextForAction(string? action)
     {
         var routeData = new RouteData();
         if (action is not null)

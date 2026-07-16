@@ -5,7 +5,7 @@ namespace Asm.AspNetCore.Tests.Authorisation;
 [Binding]
 public class RouteParamAuthorisationRequirementSteps
 {
-    private RouteParamAuthorisationRequirement _requirement;
+    private RouteParamAuthorisationRequirement _requirement = null!;
 
     [When(@"I create a RouteParamAuthorisationRequirement with name '(.*)'")]
     public void WhenICreateARouteParamAuthorisationRequirementWithName(string name)

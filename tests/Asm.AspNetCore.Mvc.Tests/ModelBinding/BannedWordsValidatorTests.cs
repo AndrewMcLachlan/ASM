@@ -6,7 +6,7 @@ namespace Asm.AspNetCore.Mvc.Tests.ModelBinding;
 [Trait("Category", "Unit")]
 public class BannedWordsValidatorTests
 {
-    private static ValidationResult Validate(object value, params string[] bannedWords)
+    private static ValidationResult? Validate(object value, params string[] bannedWords)
     {
         var attribute = new BannedWordsValidatorAttribute(bannedWords);
         var context = new ValidationContext(new object()) { DisplayName = "Field" };

@@ -3,8 +3,8 @@ namespace Asm.Domain.Tests;
 [Binding]
 public class NamedEntityTestsSteps(ScenarioContext context)
 {
-    private TestNamedEntity _first;
-    private TestNamedEntity _second;
+    private TestNamedEntity _first = null!;
+    private TestNamedEntity _second = null!;
 
     [Given(@"I have a named entity with name '(.*)'")]
     public void GivenIHaveANamedEntityWithName(string name)

@@ -6,8 +6,8 @@ namespace Asm.Cqrs.AspNetCore.Tests;
 [Binding]
 public class IEndpointRouteBuilderExtensionsSteps
 {
-    private IEndpointRouteBuilder _endpoints;
-    private RouteHandlerBuilder _routeHandlerBuilder;
+    private IEndpointRouteBuilder _endpoints = null!;
+    private RouteHandlerBuilder _routeHandlerBuilder = null!;
 
     [Given(@"I have an IEndpointRouteBuilder")]
     public void GivenIHaveAnIEndpointRouteBuilder()

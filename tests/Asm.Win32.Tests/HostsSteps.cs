@@ -182,7 +182,7 @@ public class HostsSteps(ScenarioContext context) : IDisposable
         // Repeatedly refresh on one thread while another enumerates the read-only
         // snapshot. A non-thread-safe implementation would tear or throw here.
         using CancellationTokenSource cts = new();
-        Exception failure = null;
+        Exception? failure = null;
 
         Thread reader = new(() =>
         {
@@ -272,7 +272,7 @@ public class HostsSteps(ScenarioContext context) : IDisposable
     [Then(@"the exception message should contain ""(.*)""")]
     public void ThenTheExceptionMessageShouldContain(string fragment)
     {
-        Exception ex = context.GetException();
+        Exception? ex = context.GetException();
         Assert.NotNull(ex);
         Assert.Contains(fragment, ex.Message);
     }

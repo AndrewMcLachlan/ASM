@@ -49,7 +49,7 @@ public class EnumerableAsyncExtensionsTests
     [Trait("Category", "Unit")]
     public async Task SelectAsyncNullSourceThrows()
     {
-        IEnumerable<int> source = null;
+        IEnumerable<int> source = null!;
 
         await Assert.ThrowsAsync<ArgumentNullException>(() => source.SelectAsync(x => Task.FromResult(x)));
     }
@@ -58,6 +58,6 @@ public class EnumerableAsyncExtensionsTests
     [Trait("Category", "Unit")]
     public async Task SelectAsyncNullSelectorThrows()
     {
-        await Assert.ThrowsAsync<ArgumentNullException>(() => new[] { 1 }.SelectAsync<int, int>(null));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => new[] { 1 }.SelectAsync<int, int>(null!));
     }
 }

@@ -28,7 +28,9 @@ public class SharedIntegrationSteps(IntegrationTestContext context)
     [Then(@"the response content type should be '(.*)'")]
     public void ThenTheResponseContentTypeShouldBe(string contentType)
     {
-        Assert.NotNull(context.Response!.Content.Headers.ContentType);
-        Assert.StartsWith(contentType, context.Response.Content.Headers.ContentType.ToString());
+        Assert.NotNull(context.Response);
+        var contentTypeHeader = context.Response.Content.Headers.ContentType;
+        Assert.NotNull(contentTypeHeader);
+        Assert.StartsWith(contentType, contentTypeHeader.ToString());
     }
 }

@@ -62,12 +62,12 @@ public class EndpointGroupBaseSteps
         }
     }
 
-    private EndpointGroupBase _simpleEndpointGroup;
-    private EndpointGroupBase _minimalEndpointGroup;
-    private EndpointGroupBase _customAuthGroup;
-    private EndpointGroupBase _anonymousEndpointGroup;
-    private IEndpointRouteBuilder _endpointRouteBuilder;
-    private RouteGroupBuilder _routeGroupBuilder;
+    private EndpointGroupBase? _simpleEndpointGroup;
+    private EndpointGroupBase? _minimalEndpointGroup;
+    private EndpointGroupBase? _customAuthGroup;
+    private EndpointGroupBase? _anonymousEndpointGroup;
+    private IEndpointRouteBuilder _endpointRouteBuilder = null!;
+    private RouteGroupBuilder? _routeGroupBuilder;
 
     [Given(@"I have a simple endpoint group")]
     public void GivenIHaveASimpleEndpointGroup()
@@ -124,30 +124,35 @@ public class EndpointGroupBaseSteps
     [Then(@"the group path should be '(.*)'")]
     public void ThenTheGroupPathShouldBe(string expectedPath)
     {
+        Assert.NotNull(_simpleEndpointGroup);
         Assert.Equal(expectedPath, _simpleEndpointGroup.Path);
     }
 
     [Then(@"the group tag should be empty")]
     public void ThenTheGroupTagShouldBeEmpty()
     {
+        Assert.NotNull(_minimalEndpointGroup);
         Assert.True(String.IsNullOrEmpty(_minimalEndpointGroup.Tag));
     }
 
     [Then(@"the group tag should be '(.*)'")]
     public void ThenTheGroupTagShouldBe(string expectedTag)
     {
+        Assert.NotNull(_simpleEndpointGroup);
         Assert.Equal(expectedTag, _simpleEndpointGroup.Tag);
     }
 
     [Then(@"the authorization policy should be empty")]
     public void ThenTheAuthorizationPolicyShouldBeEmpty()
     {
+        Assert.NotNull(_minimalEndpointGroup);
         Assert.True(String.IsNullOrEmpty(_minimalEndpointGroup.AuthorisationPolicy));
     }
 
     [Then(@"the authorization policy should be '(.*)'")]
     public void ThenTheAuthorizationPolicyShouldBe(string expectedPolicy)
     {
+        Assert.NotNull(_simpleEndpointGroup);
         Assert.Equal(expectedPolicy, _simpleEndpointGroup.AuthorisationPolicy);
     }
 

@@ -3,8 +3,8 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class ICollectionExtensionsSteps(ScenarioContext context)
 {
-    private ICollection<int> _collection;
-    private IEnumerable<int> _itemsToAdd;
+    private ICollection<int>? _collection;
+    private IEnumerable<int>? _itemsToAdd;
 
     [Given(@"I have a collection with values \[(.*)\]")]
     public void GivenIHaveACollectionWithValues(string values)
@@ -54,7 +54,7 @@ public class ICollectionExtensionsSteps(ScenarioContext context)
     {
         try
         {
-            _collection.AddRange(_itemsToAdd!);
+            _collection!.AddRange(_itemsToAdd!);
         }
         catch (Exception ex)
         {

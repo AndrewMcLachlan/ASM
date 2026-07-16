@@ -7,14 +7,14 @@ namespace Asm.Tests;
 [Scope(Feature = "HexColour")]
 public class HexColourSteps(ScenarioContext context)
 {
-    private string _hexColour = null;
+    private string? _hexColour = null;
     private uint _uintColour;
     private HexColour _result;
     private HexColour _result2;
-    private string _jsonResult;
-    private string _jsonInput;
-    private object _conversionResult;
-    private string _conversionResultString;
+    private string _jsonResult = null!;
+    private string _jsonInput = null!;
+    private object _conversionResult = null!;
+    private string _conversionResultString = null!;
     private bool _conversionResultBool;
 
     [Given("I have a string {string}")]
@@ -56,13 +56,13 @@ public class HexColourSteps(ScenarioContext context)
     [When("I create a new HexColour from the string")]
     public void WhenICreateANewHexColourFromTheString()
     {
-        context.CatchException(() => _result = new HexColour(_hexColour));
+        context.CatchException(() => _result = new HexColour(_hexColour!));
     }
 
     [When("I parse a new HexColour from the string")]
     public void WhenIParseANewHexColourFromTheString()
     {
-        context.CatchException(() => _result = HexColour.Parse(_hexColour));
+        context.CatchException(() => _result = HexColour.Parse(_hexColour!));
     }
 
     [When("I try parse a new HexColour from the string")]
@@ -136,7 +136,7 @@ public class HexColourSteps(ScenarioContext context)
     [When("I check equality with null object")]
     public void WhenICheckEqualityWithNullObject()
     {
-        _conversionResultBool = _result.Equals((object)null);
+        _conversionResultBool = _result.Equals((object?)null);
     }
 
     [When("I check equality with another HexColour value")]

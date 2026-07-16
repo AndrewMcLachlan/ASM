@@ -153,7 +153,7 @@ public class IUmbracoBuilderExtensionsTests
     [Trait("Category", "Unit")]
     public void AddEntraIdAuthenticationWithNullBuilderThrowsArgumentNullException()
     {
-        IUmbracoBuilder nullBuilder = null;
+        IUmbracoBuilder nullBuilder = null!;
 
         Assert.Throws<ArgumentNullException>(() =>
             nullBuilder.AddEntraIdAuthentication(o =>
@@ -176,7 +176,7 @@ public class IUmbracoBuilderExtensionsTests
         var (builder, _) = CreateBuilder();
 
         Assert.Throws<ArgumentNullException>(() =>
-            builder.AddEntraIdAuthentication((Action<EntraIdOptions>)null));
+            builder.AddEntraIdAuthentication((Action<EntraIdOptions>)null!));
     }
 
     // -----------------------------------------------------------------------
@@ -289,7 +289,7 @@ public class IUmbracoBuilderExtensionsTests
         var (builder, _) = CreateBuilder();
 
         Assert.Throws<ArgumentNullException>(() =>
-            builder.AddEntraIdAuthentication((IConfigurationSection)null));
+            builder.AddEntraIdAuthentication((IConfigurationSection)null!));
     }
 
     /// <summary>
@@ -301,7 +301,7 @@ public class IUmbracoBuilderExtensionsTests
     [Trait("Category", "Unit")]
     public void AddEntraIdAuthenticationWithConfigSectionNullBuilderThrowsArgumentNullException()
     {
-        IUmbracoBuilder nullBuilder = null;
+        IUmbracoBuilder nullBuilder = null!;
 
         Assert.Throws<ArgumentNullException>(() =>
             nullBuilder.AddEntraIdAuthentication(BuildConfigSection()));
@@ -317,7 +317,7 @@ public class IUmbracoBuilderExtensionsTests
         string clientSecret = "default-secret")
     {
         var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["EntraId:TenantId"] = tenantId,
                 ["EntraId:ClientId"] = clientId,

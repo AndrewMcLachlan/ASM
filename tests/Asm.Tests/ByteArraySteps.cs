@@ -6,9 +6,9 @@ public class ByteArraySteps(ScenarioContext context)
     private ByteArray _byteArray;
     private ByteArray _byteArray2;
     private ByteArray _resultByteArray;
-    private char[] _resultCharArray;
-    private byte[] _rawByteArray;
-    private byte[] _resultRawByteArray;
+    private char[] _resultCharArray = null!;
+    private byte[] _rawByteArray = null!;
+    private byte[] _resultRawByteArray = null!;
 
     [Given(@"a ByteArray with values (.*) and (.*) endian")]
     public void GivenAByteArrayWithValues(string values, string endian)

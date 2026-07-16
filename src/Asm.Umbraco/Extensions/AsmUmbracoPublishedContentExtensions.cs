@@ -11,9 +11,9 @@ public static class AsmUmbracoPublishedContentExtensions
     /// Returns the content item's <c>Name</c> as a lowercase, hyphen-separated CSS class name.
     /// </summary>
     /// <param name="model">The content item.</param>
-    /// <returns>The CSS-safe class name, or <c>null</c> if the model is null.</returns>
-    public static string? NameAsCssClass(this IPublishedContent model) =>
-        model?.Name.ToLower().Replace(' ', '-');
+    /// <returns>The CSS-safe class name, or <c>null</c> if the model or its name is null.</returns>
+    public static string? NameAsCssClass(this IPublishedContent? model) =>
+        model?.Name?.ToLower().Replace(' ', '-');
 
     /// <summary>
     /// Returns the value of the named property if it has a value, otherwise the supplied default.

@@ -3,7 +3,7 @@ namespace Asm.Domain.Tests;
 [Binding]
 public class EntitySteps
 {
-    private TestEntity _entity;
+    private TestEntity _entity = null!;
 
     [When(@"I create a new test entity")]
     public void WhenICreateANewTestEntity()

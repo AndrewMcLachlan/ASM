@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Asm.Domain;
 
 /// <summary>
@@ -26,7 +28,7 @@ public class IdentifiableEqualityComparer<TType, TKey> : EqualityComparer<TType>
     }
 
     /// <inheritdoc />
-    public override int GetHashCode(TType obj)
+    public override int GetHashCode([AllowNull] TType obj)
     {
         // The contract allows GetHashCode(null); return 0 rather than throwing.
         if (obj is null || obj.Id is null) return 0;

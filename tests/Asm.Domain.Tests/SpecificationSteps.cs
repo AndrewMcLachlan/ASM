@@ -3,8 +3,8 @@ namespace Asm.Domain.Tests;
 [Binding]
 public class SpecificationSteps
 {
-    private IQueryable<TestSpecifiableEntity> _query;
-    private IQueryable<TestSpecifiableEntity> _result;
+    private IQueryable<TestSpecifiableEntity> _query = null!;
+    private IQueryable<TestSpecifiableEntity> _result = null!;
 
     [Given(@"I have a collection of test entities with IDs \[(.*)\]")]
     public void GivenIHaveACollectionOfTestEntitiesWithIds(string ids)
@@ -23,7 +23,7 @@ public class SpecificationSteps
     [When(@"I apply a null specification")]
     public void WhenIApplyANullSpecification()
     {
-        _result = _query.Specify((ISpecification<TestSpecifiableEntity>)null);
+        _result = _query.Specify(null);
     }
 
     [When(@"I apply the GreaterThanTwoSpecification using type parameter")]

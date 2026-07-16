@@ -24,7 +24,7 @@ public class CanonicalUrlMiddlewareTests
     /// assert on the 301 location header directly.
     /// </summary>
     private static async Task<(IHost host, HttpClient client)> BuildAsync(
-        Action<CanonicalUrlOptions> configure = null)
+        Action<CanonicalUrlOptions>? configure = null)
     {
         var host = await new HostBuilder()
             .ConfigureWebHost(webHost =>
@@ -52,7 +52,7 @@ public class CanonicalUrlMiddlewareTests
         return (host, client);
     }
 
-    private static string Location(HttpResponseMessage r) =>
+    private static string? Location(HttpResponseMessage r) =>
         r.Headers.Location?.ToString();
 
     // ──────────────────────────────────────────────────────────────────────────

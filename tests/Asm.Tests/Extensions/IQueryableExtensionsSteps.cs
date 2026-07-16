@@ -8,16 +8,16 @@ public class IQueryableExtensionsSteps
     private class Item
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public override bool Equals(object obj) =>
+        public override bool Equals(object? obj) =>
             obj is Item item && item.Id == Id && item.Name == Name;
 
         public override int GetHashCode() => HashCode.Combine(Id, Name);
     }
 
-    private IQueryable<Item> _dataSource;
-    private IQueryable<Item> _result;
+    private IQueryable<Item> _dataSource = null!;
+    private IQueryable<Item> _result = null!;
 
     [Given(@"I have a data source with the following items")]
     public void GivenIHaveADataSourceWithTheFollowingItems(Table table)

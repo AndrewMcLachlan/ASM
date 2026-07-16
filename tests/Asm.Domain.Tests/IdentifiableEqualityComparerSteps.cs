@@ -5,8 +5,8 @@ namespace Asm.Domain.Tests;
 [Binding]
 public class IdentifiableEqualityComparerSteps(ScenarioContext context)
 {
-    private TestKeyedEntity _first;
-    private TestKeyedEntity _second;
+    private TestKeyedEntity? _first;
+    private TestKeyedEntity? _second;
     private IdentifiableEqualityComparer<TestKeyedEntity, int> _comparer = new();
     private int _hashCode;
 
@@ -31,18 +31,20 @@ public class IdentifiableEqualityComparerSteps(ScenarioContext context)
     [When(@"I get the hash code using IIdentifiableEqualityComparer")]
     public void WhenIGetTheHashCodeUsingIIdentifiableEqualityComparer()
     {
+        Assert.NotNull(_first);
         _hashCode = _comparer.GetHashCode(_first);
     }
 
     [When(@"I get the hash code of null using IIdentifiableEqualityComparer")]
     public void WhenIGetTheHashCodeOfNullUsingIIdentifiableEqualityComparer()
     {
-        _hashCode = _comparer.GetHashCode(null!);
+        _hashCode = _comparer.GetHashCode(null);
     }
 
     [Then(@"the hash code should equal the ID hash code")]
     public void ThenTheHashCodeShouldEqualTheIdHashCode()
     {
+        Assert.NotNull(_first);
         Assert.Equal(_first.Id.GetHashCode(), _hashCode);
     }
 

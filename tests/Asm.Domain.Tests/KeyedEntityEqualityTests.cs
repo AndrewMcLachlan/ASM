@@ -15,7 +15,9 @@ public class KeyedEntityEqualityTests
 
         // Reflexivity must hold even for a transient (default-key) entity.
         Assert.True(entity.Equals(entity));
+#pragma warning disable CS1718 // Comparison to same variable is deliberate: this asserts reflexivity of ==.
         Assert.True(entity == entity);
+#pragma warning restore CS1718
     }
 
     /// <summary>

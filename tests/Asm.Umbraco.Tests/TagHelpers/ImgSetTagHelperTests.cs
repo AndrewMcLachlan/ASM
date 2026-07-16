@@ -31,7 +31,7 @@ public class ImgSetTagHelperTests
             attributes: new TagHelperAttributeList(),
             getChildContentAsync: (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
-    private ImgSetTagHelper CreateTagHelper(IEnumerable<IPublishedContent> images = null)
+    private ImgSetTagHelper CreateTagHelper(IEnumerable<IPublishedContent>? images = null)
     {
         var envMock = new Mock<IWebHostEnvironment>();
         envMock.Setup(e => e.EnvironmentName).Returns("Production");
