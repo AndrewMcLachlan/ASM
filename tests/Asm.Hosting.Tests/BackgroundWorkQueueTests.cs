@@ -59,6 +59,23 @@ public class BackgroundWorkQueueTests
         Assert.Throws<ObjectDisposedException>(() => queue.Queue(1));
     }
 
+    /// <summary>
+    /// Given a queue that has already been disposed
+    /// When Dispose is called a second time
+    /// Then the call returns without throwing (dispose is idempotent)
+    /// </summary>
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void DisposeIsIdempotent()
+    {
+        var queue = new BackgroundWorkQueue<int>();
+        queue.Dispose();
+
+        var exception = Record.Exception(() => queue.Dispose());
+
+        Assert.Null(exception);
+    }
+
     [Fact]
     [Trait("Category", "Unit")]
     public void AddBackgroundWorkQueueRegistersSingleton()

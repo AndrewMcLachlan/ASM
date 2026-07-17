@@ -55,6 +55,20 @@ public class OpenApiSchemaConventionsTests
         Assert.Equal(OpenApiOptions.CreateDefaultSchemaReferenceId(jsonTypeInfo), DisplayNameSchemaReferenceIds.Resolve(jsonTypeInfo));
     }
 
+    /// <summary>
+    /// Given a non-object type (which cannot carry a DisplayName)
+    /// When its schema reference ID is resolved
+    /// Then the default algorithm is used rather than inspecting for a DisplayName
+    /// </summary>
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void DisplayNameSchemaReferenceIdFallsBackForNonObjectTypes()
+    {
+        var jsonTypeInfo = JsonSerializerOptions.Default.GetTypeInfo(typeof(int));
+
+        Assert.Equal(OpenApiOptions.CreateDefaultSchemaReferenceId(jsonTypeInfo), DisplayNameSchemaReferenceIds.Resolve(jsonTypeInfo));
+    }
+
 #nullable enable
     private sealed class Model
     {

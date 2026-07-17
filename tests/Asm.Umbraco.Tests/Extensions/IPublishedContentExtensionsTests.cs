@@ -41,6 +41,23 @@ public class IPublishedContentExtensionsTests
     }
 
     /// <summary>
+    /// Given non-null published content whose Name is null
+    /// When NameAsCssClass is called
+    /// Then null is returned rather than throwing
+    /// </summary>
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void NameAsCssClassReturnsNullWhenNameIsNull()
+    {
+        var contentMock = new Mock<IPublishedContent>();
+        contentMock.Setup(c => c.Name).Returns((string)null!);
+
+        var result = contentMock.Object.NameAsCssClass();
+
+        Assert.Null(result);
+    }
+
+    /// <summary>
     /// Given published content whose Name contains multiple spaces
     /// When NameAsCssClass is called
     /// Then each space is replaced with a hyphen in the returned CSS class name
