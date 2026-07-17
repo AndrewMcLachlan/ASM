@@ -3,10 +3,10 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class IEnumerableExtensionsSteps(ScenarioContext context)
 {
-    private IEnumerable<int> _enumerable;
-    private IEnumerable<int> _result;
+    private IEnumerable<int>? _enumerable;
+    private IEnumerable<int> _result = null!;
     private bool _boolResult;
-    private Exception _exception;
+    private Exception? _exception;
 
     [Given(@"I have an enumerable with values \[(.*)\]")]
     public void GivenIHaveAnEnumerableWithValues(string values)

@@ -45,7 +45,7 @@ public class BackgroundWorkQueueTests
 
         queue.Queue(99);
 
-        var item = await dequeueTask.WaitAsync(TimeSpan.FromSeconds(1));
+        var item = await dequeueTask.WaitAsync(TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
         Assert.Equal(99, item);
     }
 

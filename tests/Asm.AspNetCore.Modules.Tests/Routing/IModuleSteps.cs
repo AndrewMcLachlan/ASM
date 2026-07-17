@@ -31,9 +31,9 @@ public class IModuleSteps
 
     private interface IModuleTestService;
 
-    private TestModule _testModule;
-    private IServiceCollection _serviceCollection;
-    private IEndpointRouteBuilder _endpointRouteBuilder;
+    private TestModule _testModule = null!;
+    private IServiceCollection _serviceCollection = null!;
+    private IEndpointRouteBuilder _endpointRouteBuilder = null!;
 
     [Given(@"I have a test module")]
     public void GivenIHaveATestModule()

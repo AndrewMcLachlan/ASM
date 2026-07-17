@@ -149,7 +149,7 @@ public class IApplicationBuilderExtensionsSecurityTests
     {
         public IServiceProvider ApplicationServices { get; set; } = null!;
         public Microsoft.AspNetCore.Http.Features.IFeatureCollection ServerFeatures { get; } = new Microsoft.AspNetCore.Http.Features.FeatureCollection();
-        public IDictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        public IDictionary<string, object?> Properties { get; } = new Dictionary<string, object?>();
         public RequestDelegate Build() => _ => Task.CompletedTask;
         public IApplicationBuilder New() => new FakeApplicationBuilder();
         public IApplicationBuilder Use(Func<RequestDelegate, RequestDelegate> middleware) => this;

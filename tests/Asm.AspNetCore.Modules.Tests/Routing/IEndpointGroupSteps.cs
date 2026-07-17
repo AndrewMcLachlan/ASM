@@ -19,9 +19,9 @@ public class IEndpointGroupSteps
         }
     }
 
-    private TestEndpointGroup _testEndpointGroup;
-    private IEndpointRouteBuilder _endpointRouteBuilder;
-    private RouteGroupBuilder _routeGroupBuilder;
+    private TestEndpointGroup _testEndpointGroup = null!;
+    private IEndpointRouteBuilder _endpointRouteBuilder = null!;
+    private RouteGroupBuilder _routeGroupBuilder = null!;
 
     [Given(@"I have a test endpoint group")]
     public void GivenIHaveATestEndpointGroup()

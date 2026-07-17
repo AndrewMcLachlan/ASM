@@ -8,10 +8,10 @@ public class NybbleSteps(ScenarioContext context)
     private byte _byteValue;
     private uint _uintValue;
     private int _intValue;
-    private byte[] _bytes;
+    private byte[] _bytes = null!;
     private Nybble _nybble1;
     private Nybble _nybble2;
-    private Nybble[] _nybbleArray;
+    private Nybble[] _nybbleArray = null!;
     private int _hashCode;
 
     [Given(@"I have a value (.*)")]

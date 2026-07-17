@@ -186,7 +186,7 @@ public class BoundedTests
     public async Task ConditionAsyncAlwaysTrueThrowsAfterMaxIterations()
     {
         await Assert.ThrowsAsync<BoundExceededException>(
-            () => Bounded.WhileAsync(() => true, _ => Task.CompletedTask, maxIterations: 10));
+            () => Bounded.WhileAsync(() => true, _ => Task.CompletedTask, maxIterations: 10, cancellationToken: TestContext.Current.CancellationToken));
     }
 
     /// <summary>

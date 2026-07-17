@@ -11,10 +11,10 @@ public class IPAddressExtensionsSteps(ScenarioContext context, ScenarioData scen
 
     public class ScenarioData
     {
-        public IPAddress IPAddress { get; set; }
-        public IPAddress SubnetMask { get; set; }
+        public IPAddress IPAddress { get; set; } = null!;
+        public IPAddress SubnetMask { get; set; } = null!;
 
-        public string Cidr { get; set; }
+        public string Cidr { get; set; } = null!;
 
         public uint IPAddressAsUInt32 { get; set; }
     }

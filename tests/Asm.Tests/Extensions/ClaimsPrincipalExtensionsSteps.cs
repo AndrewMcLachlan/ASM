@@ -5,7 +5,7 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class ClaimsPrincipalExtensionsSteps(ScenarioContext context)
 {
-    private ClaimsPrincipal _claimsPrincipal;
+    private ClaimsPrincipal _claimsPrincipal = null!;
 
     [Given(@"I have a ClaimsPrincipal with a claim of type ""(.*)"" and value ""(.*)""")]
     public void GivenIHaveAClaimsPrincipalWithAClaimOfTypeAndValue(string claimType, string claimValue)

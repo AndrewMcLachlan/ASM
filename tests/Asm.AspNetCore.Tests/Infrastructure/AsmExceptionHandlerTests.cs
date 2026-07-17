@@ -126,7 +126,7 @@ public class AsmExceptionHandlerTests
         Assert.Null(context);
     }
 
-    private static async Task<(bool Handled, ProblemDetailsContext Context, int StatusCode)> HandleAsync(Exception exception)
+    private static async Task<(bool Handled, ProblemDetailsContext? Context, int StatusCode)> HandleAsync(Exception exception)
     {
         var service = new CapturingProblemDetailsService();
         var handler = new AsmExceptionHandler(service);
@@ -141,7 +141,7 @@ public class AsmExceptionHandlerTests
 
     private sealed class CapturingProblemDetailsService : IProblemDetailsService
     {
-        public ProblemDetailsContext Captured { get; private set; }
+        public ProblemDetailsContext? Captured { get; private set; }
 
         public ValueTask WriteAsync(ProblemDetailsContext context)
         {

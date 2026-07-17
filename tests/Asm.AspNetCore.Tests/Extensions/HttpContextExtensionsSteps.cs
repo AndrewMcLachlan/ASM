@@ -6,8 +6,8 @@ namespace Asm.AspNetCore.Tests.Extensions;
 [Binding]
 public class HttpContextExtensionsSteps(ScenarioContext context)
 {
-    private HttpContext _httpContext;
-    private string _result;
+    private HttpContext? _httpContext;
+    private string _result = null!;
 
     [Given(@"I have an HttpContext with user claims")]
     public void GivenIHaveAnHttpContextWithUserClaims(Table table)
@@ -33,7 +33,7 @@ public class HttpContextExtensionsSteps(ScenarioContext context)
     {
         _httpContext = new DefaultHttpContext
         {
-            User = null
+            User = null!
         };
     }
 

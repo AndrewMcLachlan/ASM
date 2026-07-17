@@ -5,14 +5,14 @@ namespace Asm.Tests;
 [Binding]
 public class ExtendedBitArraySteps(ScenarioContext context)
 {
-    private BitArray _bitArray;
+    private BitArray _bitArray = null!;
     private Endian _endian;
-    private ExtendedBitArray _extendedBitArray;
-    private ExtendedBitArray _extendedBitArray2;
-    private byte[] _byteArray;
-    private object _conversionResult;
-    private string _conversionResultString;
-    private bool[] _rangeResult;
+    private ExtendedBitArray _extendedBitArray = null!;
+    private ExtendedBitArray _extendedBitArray2 = null!;
+    private byte[] _byteArray = null!;
+    private object? _conversionResult;
+    private string? _conversionResultString;
+    private bool[] _rangeResult = null!;
 
     // Primitive value holders for constructors
     private byte _singleByte;
@@ -168,7 +168,7 @@ public class ExtendedBitArraySteps(ScenarioContext context)
     {
         context.CatchException(() =>
         {
-            ExtendedBitArray nullArray = null;
+            ExtendedBitArray nullArray = null!;
             _extendedBitArray.CopyTo(nullArray, index);
         });
     }

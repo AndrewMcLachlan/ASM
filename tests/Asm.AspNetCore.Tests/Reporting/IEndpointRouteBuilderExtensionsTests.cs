@@ -32,15 +32,15 @@ public class IEndpointRouteBuilderExtensionsTests
             string category,
             List<(string, LogLevel, string)> entries) : ILogger
         {
-            public IDisposable BeginScope<TState>(TState state) where TState : notnull => null;
+            public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
             public bool IsEnabled(LogLevel logLevel) => true;
 
             public void Log<TState>(
                 LogLevel logLevel,
                 EventId eventId,
                 TState state,
-                Exception exception,
-                Func<TState, Exception, string> formatter)
+                Exception? exception,
+                Func<TState, Exception?, string> formatter)
             {
                 entries.Add((category, logLevel, formatter(state, exception)));
             }
@@ -52,7 +52,7 @@ public class IEndpointRouteBuilderExtensionsTests
     // ──────────────────────────────────────────────────────────────────────────
 
     private static async Task<(IHost host, HttpClient client, CapturingLoggerProvider logProvider)>
-        BuildHostAsync(Action<SecurityReportingOptions> configureReporting = null)
+        BuildHostAsync(Action<SecurityReportingOptions>? configureReporting = null)
     {
         var logProvider = new CapturingLoggerProvider();
 

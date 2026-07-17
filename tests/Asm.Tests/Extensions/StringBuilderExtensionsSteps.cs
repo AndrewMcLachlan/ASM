@@ -6,7 +6,7 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class StringBuilderExtensionsSteps
 {
-    private StringBuilder _stringBuilder;
+    private StringBuilder _stringBuilder = null!;
 
     [Given(@"I have a StringBuilder with content '(.*)'")]
     public void GivenIHaveAStringBuilderWithContent(string content)

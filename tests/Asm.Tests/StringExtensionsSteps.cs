@@ -4,8 +4,8 @@
 [Scope(Feature = "String Extensions")]
 public class StringExtensionsSteps(ScenarioContext context)
 {
-    private string _input;
-    private string _separator;
+    private string _input = null!;
+    private string _separator = null!;
 
     [Given(@"I have a string '(.*)'")]
     public void GivenIHaveAString(string input)

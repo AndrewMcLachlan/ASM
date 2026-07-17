@@ -8,10 +8,10 @@ namespace Asm.AspNetCore.Modules.Tests.Extensions;
 [Scope(Feature = "IEndpointConventionBuilderExtensions")]
 public class IEndpointConventionBuilderExtensionsSteps
 {
-    private WebApplication _app;
-    private RouteHandlerBuilder _endpoint;
-    private RouteGroupBuilder _routeGroupBuilder;
-    private IEndpointConventionBuilder _builder;
+    private WebApplication _app = null!;
+    private RouteHandlerBuilder? _endpoint;
+    private RouteGroupBuilder? _routeGroupBuilder;
+    private IEndpointConventionBuilder? _builder;
 
     [Given(@"I have an endpoint")]
     public void GivenIHaveAnEndpoint()

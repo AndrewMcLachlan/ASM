@@ -18,6 +18,7 @@ public class OpenApiDocumentTransformerTests
 
         await new ServerPathPrefixDocumentTransformer("/api").TransformAsync(document, null!, CancellationToken.None);
 
+        Assert.NotNull(document.Servers);
         Assert.Single(document.Servers);
         Assert.Equal("/api", document.Servers[0].Url);
         Assert.True(document.Paths.ContainsKey("/accounts"));
@@ -42,7 +43,7 @@ public class OpenApiDocumentTransformerTests
     public void ServerPathPrefixRequiresANonEmptyPrefix()
     {
         Assert.Throws<ArgumentException>(() => new ServerPathPrefixDocumentTransformer(""));
-        Assert.Throws<ArgumentNullException>(() => new ServerPathPrefixDocumentTransformer(null));
+        Assert.Throws<ArgumentNullException>(() => new ServerPathPrefixDocumentTransformer(null!));
     }
 
     [Fact]

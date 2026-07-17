@@ -31,7 +31,7 @@ public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCach
     /// contributes a <c>srcset</c> entry using its <c>scaling</c> property.
     /// </summary>
     [HtmlAttributeName("images")]
-    public IEnumerable<IPublishedContent> Images { get; set; } = [];
+    public IEnumerable<IPublishedContent>? Images { get; set; } = [];
 
     /// <summary>
     /// The web host environment.

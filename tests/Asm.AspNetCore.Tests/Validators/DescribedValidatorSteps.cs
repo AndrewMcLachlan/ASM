@@ -6,10 +6,10 @@ namespace Asm.AspNetCore.Tests.Validators;
 [Binding]
 public class DescribedValidatorSteps
 {
-    private TestDescribedObject _describedObject;
+    private TestDescribedObject _describedObject = null!;
     private DescribedValidator<TestDescribedObject> _validator;
-    private DescribedValidator<TestDescribedObject> _customValidator;
-    private ValidationResult _validationResult;
+    private DescribedValidator<TestDescribedObject> _customValidator = null!;
+    private ValidationResult _validationResult = null!;
 
     public DescribedValidatorSteps()
     {
@@ -25,7 +25,7 @@ public class DescribedValidatorSteps
     [Given(@"I have a described object with null name and description '(.*)'")]
     public void GivenIHaveADescribedObjectWithNullNameAndDescription(string description)
     {
-        _describedObject = new TestDescribedObject { Name = null, Description = description };
+        _describedObject = new TestDescribedObject { Name = null!, Description = description };
     }
 
     [Given(@"I have a described object with name exceeding (.*) characters and description '(.*)'")]
@@ -92,7 +92,7 @@ public class DescribedValidatorSteps
 
     private class TestDescribedObject : IDescribed, INamed
     {
-        public string Name { get; init; }
-        public string Description { get; init; }
+        public string Name { get; init; } = null!;
+        public string? Description { get; init; }
     }
 }

@@ -27,9 +27,9 @@ public class IApplicationBuilderExtensionsStandardSecurityTests
     /// registered and a terminal HTML-200 handler.
     /// </summary>
     private static async Task<(IHost host, HttpClient client)> BuildAsync(
-        Action<IServiceCollection> configureServices = null,
-        string[] exemptPrefixes = null,
-        Action<HeaderPolicyCollection> extend = null,
+        Action<IServiceCollection>? configureServices = null,
+        string[]? exemptPrefixes = null,
+        Action<HeaderPolicyCollection>? extend = null,
         string responseContentType = "text/html")
     {
         exemptPrefixes ??= [];

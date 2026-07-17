@@ -3,8 +3,8 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class ArrayExtensionsSteps(ScenarioContext context)
 {
-    private int[] _array;
-    private int[] _originalValues;
+    private int[]? _array;
+    private int[] _originalValues = null!;
 
     [Given(@"I have an array with values \[(.*)\]")]
     public void GivenIHaveAnArrayWithValues(string values)
@@ -28,7 +28,7 @@ public class ArrayExtensionsSteps(ScenarioContext context)
     [When(@"I call Shuffle on the array")]
     public void WhenICallShuffleOnTheArray()
     {
-        context.CatchException(() => _array.Shuffle());
+        context.CatchException(() => _array!.Shuffle());
     }
 
     [When(@"I call IsNullOrEmpty on the array")]
@@ -40,12 +40,13 @@ public class ArrayExtensionsSteps(ScenarioContext context)
     [When(@"I call Empty on the array")]
     public void WhenICallEmptyOnTheArray()
     {
-        context.AddResult(_array.Empty());
+        context.AddResult(_array!.Empty());
     }
 
     [Then(@"the array should contain all original elements")]
     public void ThenTheArrayShouldContainAllOriginalElements()
     {
+        Assert.NotNull(_array);
         var sorted = _array.OrderBy(x => x).ToArray();
         var originalSorted = _originalValues.OrderBy(x => x).ToArray();
         Assert.Equal(originalSorted, sorted);
@@ -54,6 +55,7 @@ public class ArrayExtensionsSteps(ScenarioContext context)
     [Then(@"the array should have (.*) elements")]
     public void ThenTheArrayShouldHaveElements(int count)
     {
+        Assert.NotNull(_array);
         Assert.Equal(count, _array.Length);
     }
 }

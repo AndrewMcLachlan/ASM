@@ -35,7 +35,7 @@ public class IPublishedContentExtensionsTests
     [Trait("Category", "Unit")]
     public void NameAsCssClassReturnsNullWhenContentIsNull()
     {
-        IPublishedContent content = null;
+        IPublishedContent? content = null;
         var result = content.NameAsCssClass();
         Assert.Null(result);
     }

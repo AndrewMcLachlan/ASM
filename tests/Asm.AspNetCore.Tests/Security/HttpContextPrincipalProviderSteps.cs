@@ -7,10 +7,10 @@ namespace Asm.AspNetCore.Tests.Security;
 [Binding]
 public class HttpContextPrincipalProviderSteps
 {
-    private Mock<IHttpContextAccessor> _httpContextAccessorMock;
-    private HttpContextPrincipalProvider _provider;
-    private ClaimsPrincipal _result;
-    private ClaimsPrincipal _expectedPrincipal;
+    private Mock<IHttpContextAccessor> _httpContextAccessorMock = null!;
+    private HttpContextPrincipalProvider _provider = null!;
+    private ClaimsPrincipal? _result;
+    private ClaimsPrincipal _expectedPrincipal = null!;
 
     [Given(@"I have an HttpContextAccessor with a user principal")]
     public void GivenIHaveAnHttpContextAccessorWithAUserPrincipal()
@@ -32,7 +32,7 @@ public class HttpContextPrincipalProviderSteps
     public void GivenIHaveAnHttpContextAccessorWithNoHttpContext()
     {
         _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        _httpContextAccessorMock.Setup(x => x.HttpContext).Returns((HttpContext)null);
+        _httpContextAccessorMock.Setup(x => x.HttpContext).Returns((HttpContext?)null);
     }
 
     [Given(@"I have an HttpContextAccessor with HttpContext but no user")]
@@ -40,7 +40,9 @@ public class HttpContextPrincipalProviderSteps
     {
         _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         var httpContextMock = new Mock<HttpContext>();
-        httpContextMock.Setup(x => x.User).Returns((ClaimsPrincipal)null);
+        // HttpContext.User is declared non-nullable, but a mocked context can still yield null;
+        // this scenario proves the provider tolerates that.
+        httpContextMock.Setup(x => x.User).Returns((ClaimsPrincipal)null!);
         _httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContextMock.Object);
     }
 
@@ -66,6 +68,9 @@ public class HttpContextPrincipalProviderSteps
     [Then(@"the principal should have the expected identity")]
     public void ThenThePrincipalShouldHaveTheExpectedIdentity()
     {
+        Assert.NotNull(_expectedPrincipal.Identity);
+        Assert.NotNull(_result);
+        Assert.NotNull(_result.Identity);
         Assert.Equal(_expectedPrincipal.Identity.Name, _result.Identity.Name);
     }
 }

@@ -7,13 +7,13 @@ namespace Asm.Cqrs.AspNetCore.Tests;
 [Binding]
 public class HandlersSteps
 {
-    private Mock<IQueryDispatcher> _queryDispatcherMock;
-    private Mock<ICommandDispatcher> _commandDispatcherMock;
-    private DefaultHttpContext _httpContext;
-    private IResult _result;
+    private Mock<IQueryDispatcher> _queryDispatcherMock = null!;
+    private Mock<ICommandDispatcher> _commandDispatcherMock = null!;
+    private DefaultHttpContext _httpContext = null!;
+    private IResult _result = null!;
     private bool _commandExecuted;
-    private object _expectedResult;
-    private Delegate _lastHandler;
+    private object _expectedResult = null!;
+    private Delegate _lastHandler = null!;
     private CommandBinding _lastBinding;
 
     // Test Query/Command types
@@ -29,7 +29,7 @@ public class HandlersSteps
     private static readonly Type ProductionHandlers =
         typeof(Asm.AspNetCore.AsmCqrsAspNetCoreEndpointRouteBuilderExtensions).Assembly.GetType("Asm.AspNetCore.Handlers")!;
 
-    private static MethodInfo Factory(string name, int genericArgs, Func<MethodInfo, bool> filter = null) =>
+    private static MethodInfo Factory(string name, int genericArgs, Func<MethodInfo, bool>? filter = null) =>
         ProductionHandlers.GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
             .Where(m => m.Name == name && m.GetGenericArguments().Length == genericArgs)
             .First(m => filter?.Invoke(m) ?? true);

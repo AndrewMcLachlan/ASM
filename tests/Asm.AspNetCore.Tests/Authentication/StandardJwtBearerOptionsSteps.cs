@@ -7,9 +7,9 @@ namespace Asm.AspNetCore.Tests.Authentication;
 [Binding]
 public class StandardJwtBearerOptionsSteps
 {
-    private OAuthOptions _oAuthOptions;
-    private JwtBearerEvents _customEvents;
-    private StandardJwtBearerOptions _standardJwtBearerOptions;
+    private OAuthOptions _oAuthOptions = null!;
+    private JwtBearerEvents _customEvents = null!;
+    private StandardJwtBearerOptions _standardJwtBearerOptions = null!;
 
     [Given(@"I have OAuthOptions with domain '(.*)' and audience '(.*)' and clientId '(.*)'")]
     public void GivenIHaveOAuthOptionsWithDomainAndAudienceAndClientId(string domain, string audience, string clientId)

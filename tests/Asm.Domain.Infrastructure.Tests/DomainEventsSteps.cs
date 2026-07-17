@@ -7,7 +7,7 @@ namespace Asm.Domain.Infrastructure.Tests;
 [Binding]
 public class DomainEventsSteps(ScenarioContext context)
 {
-    private IServiceProvider _serviceProvider;
+    private IServiceProvider _serviceProvider = null!;
 
     [BeforeScenario]
     public void Setup()

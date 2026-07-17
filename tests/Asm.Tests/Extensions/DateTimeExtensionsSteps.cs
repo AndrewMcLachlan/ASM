@@ -9,7 +9,7 @@ public class DateTimeExtensionsSteps(ScenarioContext context)
     {
         public DateTime Date { get; set; }
         public DateTime OtherDate { get; set; }
-        public IFormatProvider FormatProvider { get; set; }
+        public IFormatProvider? FormatProvider { get; set; }
     }
 
     private ScenarioInput _input = new();

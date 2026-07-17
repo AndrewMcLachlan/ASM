@@ -27,6 +27,7 @@ public class DecimalExtensionsSteps(ScenarioContext context)
     [When(@"I call ToRoundedCurrencyString expecting an exception")]
     public void WhenICallToRoundedCurrencyStringExpectingAnException()
     {
+        Assert.NotNull(_places);
         context.CatchException(() => _input.ToRoundedCurrencyString(_places.Value));
     }
 

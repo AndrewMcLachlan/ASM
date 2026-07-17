@@ -91,7 +91,7 @@ public class IUmbracoBuilderExtensionsTests
         var (builder, services) = CreateBuilder();
 
         var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["MachineInfo:MachineName"] = "section-machine",
                 ["MachineInfo:EnvironmentVariableName"] = "SECTION_VAR"
@@ -117,7 +117,7 @@ public class IUmbracoBuilderExtensionsTests
         var (builder, services) = CreateBuilder();
 
         var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["MachineInfo:MachineName"] = "section-machine",
                 ["MachineInfo:EnvironmentVariableName"] = "SECTION_VAR"
@@ -144,7 +144,7 @@ public class IUmbracoBuilderExtensionsTests
         var (builder, _) = CreateBuilder();
 
         var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string> { ["MachineInfo:MachineName"] = "m" })
+            .AddInMemoryCollection(new Dictionary<string, string?> { ["MachineInfo:MachineName"] = "m" })
             .Build();
 
         var returned = builder.AddFixedMachineInfoFactory(config.GetSection("MachineInfo"));
@@ -161,7 +161,7 @@ public class IUmbracoBuilderExtensionsTests
     [Trait("Category", "Unit")]
     public void AddFixedMachineInfoFactoryWithNullBuilderThrowsArgumentNullException()
     {
-        IUmbracoBuilder nullBuilder = null;
+        IUmbracoBuilder nullBuilder = null!;
         Assert.Throws<ArgumentNullException>(() =>
             nullBuilder.AddFixedMachineInfoFactory(opts => opts.MachineName = "x"));
     }
@@ -177,6 +177,6 @@ public class IUmbracoBuilderExtensionsTests
     {
         var (builder, _) = CreateBuilder();
         Assert.Throws<ArgumentNullException>(() =>
-            builder.AddFixedMachineInfoFactory((Action<FixedMachineInfoFactoryOptions>)null));
+            builder.AddFixedMachineInfoFactory((Action<FixedMachineInfoFactoryOptions>)null!));
     }
 }

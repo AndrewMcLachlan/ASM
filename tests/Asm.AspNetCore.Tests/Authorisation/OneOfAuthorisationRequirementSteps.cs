@@ -6,8 +6,8 @@ namespace Asm.AspNetCore.Tests.Authorisation;
 [Binding]
 public class OneOfAuthorisationRequirementSteps
 {
-    private IAuthorizationRequirement[] _requirements;
-    private OneOfAuthorisationRequirement _oneOfRequirement;
+    private IAuthorizationRequirement[] _requirements = null!;
+    private OneOfAuthorisationRequirement _oneOfRequirement = null!;
 
     [Given(@"I have authorization requirements")]
     public void GivenIHaveAuthorizationRequirements(Table table)

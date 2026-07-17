@@ -6,8 +6,8 @@ namespace Asm.Cqrs.AspNetCore.Tests;
 [Binding]
 public class CommandQueryControllerSteps
 {
-    private TestableCommandQueryController _controller;
-    private string _controllerNameResult;
+    private TestableCommandQueryController _controller = null!;
+    private string _controllerNameResult = null!;
 
     [Given(@"I have a CommandQueryController instance")]
     public void GivenIHaveACommandQueryControllerInstance()

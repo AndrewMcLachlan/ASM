@@ -3,8 +3,8 @@ namespace Asm.Tests.Extensions;
 [Binding]
 public class IListExtensionsSteps(ScenarioContext context)
 {
-    private IList<int> _list;
-    private IList<int> _originalValues;
+    private IList<int>? _list;
+    private IList<int> _originalValues = null!;
     private bool _boolResult;
 
     [Given(@"I have a list with values \[(.*)\]")]
