@@ -1,9 +1,9 @@
 using System.Text;
+using Asm.AspNetCore.Reporting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Asm.AspNetCore.Reporting;
 
 namespace Microsoft.AspNetCore.Routing;
 
@@ -84,7 +84,7 @@ public static class AsmAspNetCoreEndpointRouteBuilderExtensions
             total += read;
             if (total > maxBytes)
             {
-                return (string.Empty, true);
+                return (String.Empty, true);
             }
             await ms.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
         }
@@ -93,16 +93,16 @@ public static class AsmAspNetCoreEndpointRouteBuilderExtensions
 
     private static string SanitiseForLog(string? input)
     {
-        if (string.IsNullOrEmpty(input))
+        if (String.IsNullOrEmpty(input))
         {
-            return string.Empty;
+            return String.Empty;
         }
 
         var sb = new StringBuilder(input.Length);
         foreach (var c in input)
         {
             // Keep printable and tab (tab is common in JSON whitespace); drop other control chars.
-            if (c == '\t' || !char.IsControl(c))
+            if (c == '\t' || !Char.IsControl(c))
             {
                 sb.Append(c);
             }

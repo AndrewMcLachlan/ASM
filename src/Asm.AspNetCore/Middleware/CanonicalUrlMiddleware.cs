@@ -6,19 +6,12 @@ namespace Asm.AspNetCore.Middleware;
 /// <summary>
 /// Enforces a canonical URL form — lowercase path, no trailing slash — via 301 redirects.
 /// </summary>
-public class CanonicalUrlMiddleware
+/// <remarks>
+/// Creates a new <see cref="CanonicalUrlMiddleware"/>.
+/// </remarks>
+public class CanonicalUrlMiddleware(RequestDelegate next, IOptions<CanonicalUrlOptions> options)
 {
-    private readonly RequestDelegate _next;
-    private readonly CanonicalUrlOptions _options;
-
-    /// <summary>
-    /// Creates a new <see cref="CanonicalUrlMiddleware"/>.
-    /// </summary>
-    public CanonicalUrlMiddleware(RequestDelegate next, IOptions<CanonicalUrlOptions> options)
-    {
-        _next = next;
-        _options = options.Value;
-    }
+    private readonly CanonicalUrlOptions _options = options.Value;
 
     /// <summary>
     /// Processes the request, emitting 301 redirects to enforce the canonical URL form.
@@ -32,7 +25,7 @@ public class CanonicalUrlMiddleware
         // causes browsers to drop the body (or re-issue as GET), so those pass through.
         if (IsExempt(path) || String.IsNullOrEmpty(path) || !IsRedirectableMethod(context.Request.Method))
         {
-            await _next(context);
+            await next(context);
             return;
         }
 
@@ -52,7 +45,7 @@ public class CanonicalUrlMiddleware
             return;
         }
 
-        await _next(context);
+        await next(context);
     }
 
     private static bool IsRedirectableMethod(string method) =>
@@ -66,7 +59,7 @@ public class CanonicalUrlMiddleware
 
     private bool IsExempt(string? path)
     {
-        if (string.IsNullOrEmpty(path) || _options.ExemptPathPrefixes.Count == 0)
+        if (String.IsNullOrEmpty(path) || _options.ExemptPathPrefixes.Count == 0)
         {
             return false;
         }
@@ -85,7 +78,7 @@ public class CanonicalUrlMiddleware
     {
         foreach (var c in path)
         {
-            if (char.IsUpper(c)) return true;
+            if (Char.IsUpper(c)) return true;
         }
         return false;
     }

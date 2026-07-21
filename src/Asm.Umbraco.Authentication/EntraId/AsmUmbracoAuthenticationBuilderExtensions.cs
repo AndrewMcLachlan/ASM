@@ -1,10 +1,10 @@
+using Asm.Umbraco.Authentication.EntraId;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Api.Management.Security;
 using Umbraco.Cms.Infrastructure.Manifest;
 using Umbraco.Extensions;
-using Asm.Umbraco.Authentication.EntraId;
 
 namespace Umbraco.Cms.Core.DependencyInjection;
 

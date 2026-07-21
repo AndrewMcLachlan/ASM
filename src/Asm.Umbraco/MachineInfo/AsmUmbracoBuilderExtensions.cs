@@ -1,9 +1,9 @@
+using Asm.Umbraco.MachineInfo;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Factories;
 using Umbraco.Extensions;
-using Asm.Umbraco.MachineInfo;
 
 namespace Umbraco.Cms.Core.DependencyInjection;
 
