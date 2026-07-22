@@ -41,7 +41,7 @@ public interface ISpecification<TEntity> where TEntity : class
     /// </summary>
     /// <remarks>
     /// The default applies <see cref="Criteria"/> via
-    /// <see cref="Queryable.Where{TSource}(IQueryable{TSource}, Expression{Func{TSource, bool}})"/>.
+    /// <see cref="Queryable.Where{TSource}(IQueryable{TSource}, Expression{Func{TSource, Boolean}})"/>.
     /// Override to add shaping such as <c>Include</c>, <c>OrderBy</c> or paging.
     /// </remarks>
     /// <param name="query">The query to apply the specification to.</param>

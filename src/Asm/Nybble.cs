@@ -94,9 +94,9 @@ public readonly struct Nybble
     /// <param name="a">The unsigned integer to add to.</param>
     /// <param name="b">The nybble to add.</param>
     /// <returns>
-    /// The arithmetic sum as a <see cref="uint"/>. The result wraps in the usual unchecked <see cref="uint"/>
+    /// The arithmetic sum as a <see cref="UInt32"/>. The result wraps in the usual unchecked <see cref="UInt32"/>
     /// manner on overflow. To append the nybble as an extra hexadecimal digit (the pre-v4 behaviour of this
-    /// operator) use <see cref="Append(uint, Nybble)"/>.
+    /// operator) use <see cref="Append(UInt32, Nybble)"/>.
     /// </returns>
     public static uint operator +(uint a, Nybble b) => Add(a, b);
 
@@ -106,9 +106,9 @@ public readonly struct Nybble
     /// <param name="a">The byte to add to.</param>
     /// <param name="b">The nybble to add.</param>
     /// <returns>
-    /// The arithmetic sum as an <see cref="int"/> (matching C# numeric promotion for <see cref="byte"/> addition).
+    /// The arithmetic sum as an <see cref="Int32"/> (matching C# numeric promotion for <see cref="Byte"/> addition).
     /// To append the nybble as an extra hexadecimal digit (the pre-v4 behaviour of this operator) use
-    /// <see cref="Append(byte, Nybble)"/>.
+    /// <see cref="Append(Byte, Nybble)"/>.
     /// </returns>
     public static int operator +(byte a, Nybble b) => Add(a, b);
 
@@ -125,7 +125,7 @@ public readonly struct Nybble
     /// </summary>
     /// <param name="a">The unsigned integer to add to.</param>
     /// <param name="b">The nybble to add.</param>
-    /// <returns>The arithmetic sum as a <see cref="uint"/>.</returns>
+    /// <returns>The arithmetic sum as a <see cref="UInt32"/>.</returns>
     public static uint Add(uint a, Nybble b) => a + (uint)b.ByteValue;
 
     /// <summary>
@@ -133,7 +133,7 @@ public readonly struct Nybble
     /// </summary>
     /// <param name="a">The byte to add to.</param>
     /// <param name="b">The nybble to add.</param>
-    /// <returns>The arithmetic sum as an <see cref="int"/>.</returns>
+    /// <returns>The arithmetic sum as an <see cref="Int32"/>.</returns>
     public static int Add(byte a, Nybble b) => a + b.ByteValue;
 
     /// <summary>
@@ -155,7 +155,7 @@ public readonly struct Nybble
     /// </summary>
     /// <param name="value">The value to shift left and append to.</param>
     /// <param name="nybble">The nybble to place in the least-significant four bits.</param>
-    /// <returns>The combined value as a <see cref="ulong"/>. For example, <c>Append(0x5u, 0x3)</c> returns <c>0x53</c> (83).</returns>
+    /// <returns>The combined value as a <see cref="UInt64"/>. For example, <c>Append(0x5u, 0x3)</c> returns <c>0x53</c> (83).</returns>
     /// <remarks>
     /// This is the concatenation behaviour that the <c>uint + Nybble</c> operator performed prior to v4.
     /// </remarks>
@@ -167,7 +167,7 @@ public readonly struct Nybble
     /// </summary>
     /// <param name="value">The value to shift left and append to.</param>
     /// <param name="nybble">The nybble to place in the least-significant four bits.</param>
-    /// <returns>The combined value as an <see cref="int"/>. For example, <c>Append((byte)0x5, 0x3)</c> returns <c>0x53</c> (83).</returns>
+    /// <returns>The combined value as an <see cref="Int32"/>. For example, <c>Append((byte)0x5, 0x3)</c> returns <c>0x53</c> (83).</returns>
     /// <remarks>
     /// This is the concatenation behaviour that the <c>byte + Nybble</c> operator performed prior to v4.
     /// </remarks>
@@ -215,7 +215,7 @@ public readonly struct Nybble
 
     /// <summary>
     /// Converts the given value to an array of eight nybbles, most-significant nybble first
-    /// (consistent with <see cref="ToNybbles(byte[])"/>).
+    /// (consistent with <see cref="ToNybbles(global::System.Byte[])"/>).
     /// </summary>
     /// <param name="value">The value to convert.</param>
     /// <returns>An array of eight nybbles.</returns>

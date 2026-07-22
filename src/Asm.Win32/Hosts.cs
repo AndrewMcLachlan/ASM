@@ -88,9 +88,9 @@ public sealed partial class Hosts : IDisposable
     /// </summary>
     /// <remarks>
     /// This is a read-only snapshot taken at the point of access. Use
-    /// <see cref="AddEntry(HostEntry)"/>, <see cref="InsertEntry(int, HostEntry)"/>,
-    /// <see cref="UpdateEntry(int, HostEntry)"/>, <see cref="RemoveEntry(HostEntry)"/>,
-    /// <see cref="RemoveEntryAt(int)"/> and <see cref="ClearEntries"/> to mutate the
+    /// <see cref="AddEntry(HostEntry)"/>, <see cref="InsertEntry(Int32, HostEntry)"/>,
+    /// <see cref="UpdateEntry(Int32, HostEntry)"/>, <see cref="RemoveEntry(HostEntry)"/>,
+    /// <see cref="RemoveEntryAt(Int32)"/> and <see cref="ClearEntries"/> to mutate the
     /// entry collection.
     /// </remarks>
     public IReadOnlyList<HostEntry> Entries

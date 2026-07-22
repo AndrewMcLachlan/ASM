@@ -87,7 +87,7 @@ public static class Bounded
     }
 
     /// <summary>
-    /// Asynchronous counterpart to <see cref="While(Func{bool}, Action, int, BoundExceeded)"/>.
+    /// Asynchronous counterpart to <see cref="While(Func{Boolean}, Action, Int32, BoundExceeded)"/>.
     /// </summary>
     /// <param name="condition">Evaluated before each iteration; the loop ends when it returns <see langword="false"/>.</param>
     /// <param name="body">The loop body, passed the <paramref name="cancellationToken"/>.</param>
