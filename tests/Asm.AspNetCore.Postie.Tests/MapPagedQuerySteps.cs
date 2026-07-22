@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
@@ -23,7 +23,7 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
 
     private record TestPagedQuery(string? Term = null);
 
-    // ── Given ───────────────────────────────────────────────────────────────
+    #region Given
 
     [Given(@"a paged endpoint mapped with the default method")]
     public async Task GivenAPagedEndpointMappedWithTheDefaultMethod() => await MapPagedEndpointAsync(null);
@@ -49,7 +49,9 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
     [Given(@"a route builder")]
     public void GivenARouteBuilder() => _app = WebApplication.CreateSlimBuilder().Build();
 
-    // ── When ────────────────────────────────────────────────────────────────
+    #endregion
+
+    #region When
 
     [When(@"I GET the endpoint")]
     public async Task WhenIGetTheEndpoint() => _response = await _client!.GetAsync("/paged?term=y");
@@ -79,7 +81,9 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
     public void WhenIMapAPagedEndpointWithAnUndefinedBindingValue() =>
         context.CatchException(() => _app!.MapPagedQuery<TestPagedQuery, string>("/x", QueryMethod.Get, (RequestBinding)42));
 
-    // ── Then ────────────────────────────────────────────────────────────────
+    #endregion
+
+    #region Then
 
     [Then(@"the response status should be (.*)")]
     public void ThenTheResponseStatusShouldBe(int statusCode) => Assert.Equal(statusCode, (int)_response!.StatusCode);
@@ -106,6 +110,10 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
         Assert.NotNull(exception);
         Assert.Equal(parameterName, exception.ParamName);
     }
+
+    #endregion
+
+    #region Support
 
     private async Task MapPagedEndpointAsync(QueryMethod? method, RequestBinding? binding = null)
     {
@@ -141,4 +149,6 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
         _app?.DisposeAsync().AsTask().GetAwaiter().GetResult();
         GC.SuppressFinalize(this);
     }
+
+    #endregion
 }
