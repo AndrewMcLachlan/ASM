@@ -19,6 +19,7 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
     private HttpClient? _client;
     private HttpResponseMessage? _response;
     private IReadOnlyList<string> _expectedItems = [];
+    private object? _dispatchedRequest;
 
     private record TestPagedQuery(string? Term = null);
 
@@ -37,6 +38,7 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
 
         _dispatcherMock
             .Setup(d => d.DispatchAsync<PagedResult<string>>(It.IsAny<object>(), It.IsAny<CancellationToken>()))
+            .Callback<object, CancellationToken>((request, _) => _dispatchedRequest = request)
             .ReturnsAsync(new PagedResult<string> { Results = _expectedItems, Total = total });
     }
 
@@ -46,7 +48,7 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
     // ── When ────────────────────────────────────────────────────────────────
 
     [When(@"I GET the endpoint")]
-    public async Task WhenIGetTheEndpoint() => _response = await _client!.GetAsync("/paged");
+    public async Task WhenIGetTheEndpoint() => _response = await _client!.GetAsync("/paged?term=y");
 
     [When(@"I POST the criteria to the endpoint")]
     public async Task WhenIPostTheCriteriaToTheEndpoint() => _response = await _client!.PostAsJsonAsync("/paged", new TestPagedQuery("x"));
@@ -77,6 +79,10 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
     [Then(@"the X-Total-Count header should be '(.*)'")]
     public void ThenTheXTotalCountHeaderShouldBe(string expected) =>
         Assert.Equal(expected, _response!.Headers.GetValues("X-Total-Count").Single());
+
+    [Then(@"the dispatcher should have received the term '(.*)'")]
+    public void ThenTheDispatcherShouldHaveReceivedTheTerm(string term) =>
+        Assert.Equal(term, Assert.IsType<TestPagedQuery>(_dispatchedRequest).Term);
 
     [Then(@"an ArgumentOutOfRangeException should be thrown for '(.*)'")]
     public void ThenAnArgumentOutOfRangeExceptionShouldBeThrownFor(string parameterName)
