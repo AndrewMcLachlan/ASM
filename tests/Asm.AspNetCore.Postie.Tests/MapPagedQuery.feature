@@ -33,3 +33,25 @@ Scenario: An undefined method value is rejected at map time
     Given a route builder
     When I map a paged endpoint with an undefined method value
     Then an ArgumentOutOfRangeException should be thrown for 'method'
+
+@Unit
+Scenario: GET paged query with an explicit Body binding binds the criteria from the body
+    Given a paged endpoint mapped with method Get and binding Body
+    And the dispatcher returns 2 items with 5 total
+    When I send a GET request with criteria in the body to the endpoint
+    Then the response status should be 200
+    And the dispatcher should have received the term 'x'
+
+@Unit
+Scenario: A paged query with Default binding lets the framework infer the source
+    Given a paged endpoint mapped with method Post and binding Default
+    And the dispatcher returns 2 items with 5 total
+    When I POST the criteria to the endpoint
+    Then the response status should be 200
+    And the dispatcher should have received the term 'x'
+
+@Unit
+Scenario: An undefined binding value is rejected at map time
+    Given a route builder
+    When I map a paged endpoint with an undefined binding value
+    Then an ArgumentOutOfRangeException should be thrown for 'binding'

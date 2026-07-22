@@ -28,8 +28,12 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
     [Given(@"a paged endpoint mapped with the default method")]
     public async Task GivenAPagedEndpointMappedWithTheDefaultMethod() => await MapPagedEndpointAsync(null);
 
-    [Given(@"a paged endpoint mapped with method (.*)")]
+    [Given(@"a paged endpoint mapped with method (\w+)")]
     public async Task GivenAPagedEndpointMappedWithMethod(string method) => await MapPagedEndpointAsync(Enum.Parse<QueryMethod>(method));
+
+    [Given(@"a paged endpoint mapped with method (\w+) and binding (\w+)")]
+    public async Task GivenAPagedEndpointMappedWithMethodAndBinding(string method, string binding) =>
+        await MapPagedEndpointAsync(Enum.Parse<QueryMethod>(method), Enum.Parse<RequestBinding>(binding));
 
     [Given(@"the dispatcher returns (.*) items with (.*) total")]
     public void GivenTheDispatcherReturnsItemsWithTotal(int itemCount, int total)
@@ -60,9 +64,20 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
         _response = await _client!.SendAsync(request);
     }
 
+    [When(@"I send a GET request with criteria in the body to the endpoint")]
+    public async Task WhenISendAGetRequestWithCriteriaInTheBodyToTheEndpoint()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "/paged") { Content = JsonContent.Create(new TestPagedQuery("x")) };
+        _response = await _client!.SendAsync(request);
+    }
+
     [When(@"I map a paged endpoint with an undefined method value")]
     public void WhenIMapAPagedEndpointWithAnUndefinedMethodValue() =>
         context.CatchException(() => _app!.MapPagedQuery<TestPagedQuery, string>("/x", (QueryMethod)42));
+
+    [When(@"I map a paged endpoint with an undefined binding value")]
+    public void WhenIMapAPagedEndpointWithAnUndefinedBindingValue() =>
+        context.CatchException(() => _app!.MapPagedQuery<TestPagedQuery, string>("/x", QueryMethod.Get, (RequestBinding)42));
 
     // ── Then ────────────────────────────────────────────────────────────────
 
@@ -92,7 +107,7 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
         Assert.Equal(parameterName, exception.ParamName);
     }
 
-    private async Task MapPagedEndpointAsync(QueryMethod? method)
+    private async Task MapPagedEndpointAsync(QueryMethod? method, RequestBinding? binding = null)
     {
         var builder = WebApplication.CreateSlimBuilder();
         builder.WebHost.UseTestServer();
@@ -101,7 +116,14 @@ public class MapPagedQuerySteps(ScenarioContext context) : IDisposable
 
         if (method is { } explicitMethod)
         {
-            _app.MapPagedQuery<TestPagedQuery, string>("/paged", explicitMethod);
+            if (binding is { } explicitBinding)
+            {
+                _app.MapPagedQuery<TestPagedQuery, string>("/paged", explicitMethod, explicitBinding);
+            }
+            else
+            {
+                _app.MapPagedQuery<TestPagedQuery, string>("/paged", explicitMethod);
+            }
         }
         else
         {
