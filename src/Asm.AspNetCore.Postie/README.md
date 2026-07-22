@@ -22,6 +22,17 @@ The mapping extension method lives in the `Asm.AspNetCore` namespace.
 ```csharp
 using Asm.AspNetCore;
 using Postie.AspNetCore;
+using Postie.Cqrs.Queries;
+
+// Define the query with the IQuery<T> marker required by Postie's in-box mediator.
+public record GetOrders(int PageNumber, int PageSize) : IQuery<PagedResult<Order>>;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Register a mediator. This example uses the in-box Postie mediator (Postie.Cqrs.AspNetCore).
+// Each mediator adapter has its own request-marker requirement (Postie.AspNetCore.MediatR
+// requires MediatR's IRequest<T> instead) — MapPagedQuery itself has no mediator dependency.
+builder.Services.AddPostie(typeof(GetOrders).Assembly);
 
 var app = builder.Build();
 
@@ -32,11 +43,7 @@ orders.MapPagedQuery<GetOrders, Order>("/");
 ```
 
 By default the endpoint is a GET, and the query is bound with `[AsParameters]` from the route, query
-string and headers:
-
-```csharp
-public record GetOrders(int PageNumber, int PageSize) : IQuery<PagedResult<Order>>;
-```
+string and headers.
 
 Pass `QueryMethod.Post` (or `QueryMethod.Query`, for the HTTP `QUERY` method) to bind the query from
 the request body instead:
