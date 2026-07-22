@@ -47,12 +47,6 @@
     <Project Path="tests/Asm.AspNetCore.Postie.Tests/Asm.AspNetCore.Postie.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
-    <Project Path="tests/Asm.Cqrs.AspNetCore.Tests/Asm.Cqrs.AspNetCore.Tests.csproj">
-      <BuildType Solution="Release 64|*" Project="Release" />
-    </Project>
-    <Project Path="tests/Asm.Cqrs.Tests/Asm.Cqrs.Tests.csproj">
-      <BuildType Solution="Release 64|*" Project="Release" />
-    </Project>
     <Project Path="tests/Asm.Domain.Infrastructure.Tests/Asm.Domain.Infrastructure.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
@@ -100,12 +94,6 @@
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.AspNetCore.Postie/Asm.AspNetCore.Postie.csproj">
-    <BuildType Solution="Release 64|*" Project="Release" />
-  </Project>
-  <Project Path="src/Asm.Cqrs.AspNetCore/Asm.Cqrs.AspNetCore.csproj">
-    <BuildType Solution="Release 64|*" Project="Release" />
-  </Project>
-  <Project Path="src/Asm.Cqrs/Asm.Cqrs.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Domain.Infrastructure/Asm.Domain.Infrastructure.csproj">
