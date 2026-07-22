@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Postie endpoint mapping extensions using Asm conventions, starting with paged queries.</Description>
+    <RootNamespace>Asm.AspNetCore</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Postie.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Asm\Asm.csproj" />
+  </ItemGroup>
+
+</Project>
