@@ -15,7 +15,7 @@
          reviewable version change); the patch is the number of commits since this line last changed,
          and AssemblyVersion/FileVersion are assembled by CI. See .github/workflows/build.yml and
          docs/release-branching-strategy.md. Set VersionSuffix (e.g. beta) for a prerelease line. -->
-    <VersionPrefix>4.1</VersionPrefix>
+    <VersionPrefix>5.0</VersionPrefix>
   </PropertyGroup>
 
 

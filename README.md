@@ -20,11 +20,8 @@ A way to breakdown your app into modules, that define their own endpoints and se
 ## Asm.AspNetCore.Mvc
 Helpers for MVC application using Razor.
 
-## Asm.Cqrs
-A basic CQRS implementation with dispatchers and handlers for commands and queries.
-
-## Asm.Cqrs.AspNetCore
-Binds API endpoints directly to CQRS commands and queries.
+## Asm.AspNetCore.Postie
+Extends [Postie](https://github.com/AndrewMcLachlan/Postie)'s endpoint mapping with `MapPagedQuery`, for paged query endpoints. Supersedes `Asm.Cqrs` and `Asm.Cqrs.AspNetCore`, which have been removed as of 5.0 — see [docs/migration-v5.md](docs/migration-v5.md) for the migration path to Postie.
 
 ## Asm.Domain
 Supports domain-driven-design.

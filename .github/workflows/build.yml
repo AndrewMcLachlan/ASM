@@ -77,8 +77,7 @@ jobs:
           - { name: "Asm.AspNetCore.Modules.Tests", path: "tests/Asm.AspNetCore.Modules.Tests" }
           - { name: "Asm.AspNetCore.Mvc.Tests", path: "tests/Asm.AspNetCore.Mvc.Tests" }
           - { name: "Asm.AspNetCore.Api.Tests", path: "tests/Asm.AspNetCore.Api.Tests" }
-          - { name: "Asm.Cqrs.Tests", path: "tests/Asm.Cqrs.Tests" }
-          - { name: "Asm.Cqrs.AspNetCore.Tests", path: "tests/Asm.Cqrs.AspNetCore.Tests" }
+          - { name: "Asm.AspNetCore.Postie.Tests", path: "tests/Asm.AspNetCore.Postie.Tests" }
           - { name: "Asm.Domain.Tests", path: "tests/Asm.Domain.Tests" }
           - { name: "Asm.Domain.Infrastructure.Tests", path: "tests/Asm.Domain.Infrastructure.Tests" }
           - { name: "Asm.Hosting.Tests", path: "tests/Asm.Hosting.Tests" }

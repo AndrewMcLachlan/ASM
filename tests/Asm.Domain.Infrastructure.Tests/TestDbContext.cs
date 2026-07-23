@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 
 namespace Asm.Domain.Infrastructure.Tests;
 
 internal class TestDbContext(DbContextOptions options, IPublisher publisher) : DomainDbContext(options, publisher)
 {
+    [AllowNull]
     public DbSet<TestEntity> TestEntities { get; set; }
 }
