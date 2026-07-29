@@ -23,7 +23,7 @@ jobs:
       # First-class output from get-dotnet-version: true when a VersionSuffix is set.
       is-prerelease: ${{ steps.set-version-number.outputs.is-prerelease }}
     steps:
-    - uses: actions/checkout@v7.0.0
+    - uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
     - name: Setup .NET
@@ -89,7 +89,7 @@ jobs:
           - { name: "Asm.Umbraco.Tests", path: "tests/Asm.Umbraco.Tests" }
           - { name: "Asm.Win32.Tests", path: "tests/Asm.Win32.Tests" }
     steps:
-    - uses: actions/checkout@v7.0.0
+    - uses: actions/checkout@v7.0.1
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
@@ -119,7 +119,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-    - uses: actions/checkout@v7.0.0
+    - uses: actions/checkout@v7.0.1
     
     - name: Download all coverage reports
       uses: actions/download-artifact@v8
