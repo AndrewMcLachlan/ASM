@@ -13,8 +13,12 @@ namespace Asm.AspNetCore.Mvc.TagHelpers;
 public class CanonicalTagHelper : TagHelper
 {
     /// <summary>
-    /// Gets or sets the path to the canonical URL.
+    /// Gets or sets the canonical URL.
     /// </summary>
+    /// <remarks>
+    /// Accepts either an absolute URL, which is emitted unchanged, or a site-relative path, which
+    /// is resolved against the current request's scheme and host.
+    /// </remarks>
     [HtmlAttributeName("path")]
     public required string Path
     {
@@ -31,11 +35,24 @@ public class CanonicalTagHelper : TagHelper
     /// <inheritdoc />
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        string href = $"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host}" + ($"/{Path}".Replace("//", "/").TrimEnd('/'));
-
         output.TagName = "link";
 
         output.Attributes.Add("rel", "canonical");
-        output.Attributes.Add("href", href);
+        output.Attributes.Add("href", ResolveHref());
+    }
+
+    // A canonical URL is absolute by definition, so callers may supply one directly. Only a
+    // relative path needs the request's scheme and host grafted on.
+    private string ResolveHref()
+    {
+        if (Uri.TryCreate(Path, UriKind.Absolute, out var absolute) &&
+            (absolute.Scheme == Uri.UriSchemeHttp || absolute.Scheme == Uri.UriSchemeHttps))
+        {
+            return Path.TrimEnd('/');
+        }
+
+        var request = ViewContext.HttpContext.Request;
+
+        return $"{request.Scheme}://{request.Host}/{Path.TrimStart('/')}".TrimEnd('/');
     }
 }
