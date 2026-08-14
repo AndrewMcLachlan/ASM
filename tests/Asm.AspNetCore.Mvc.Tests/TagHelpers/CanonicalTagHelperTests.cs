@@ -58,4 +58,52 @@ public class CanonicalTagHelperTests
 
         Assert.Equal("https://example.com", output.Attributes["href"].Value);
     }
+
+    /// <summary>
+    /// Given a canonical tag helper with a rooted path
+    /// When it is processed
+    /// Then the href has a single separator between the host and the path
+    /// </summary>
+    [Fact]
+    public void ProcessEmitsSingleSeparatorForRootedPath()
+    {
+        var (context, output) = CreateContextAndOutput();
+        var helper = new CanonicalTagHelper { Path = "/about", ViewContext = ViewContextFor("https", "example.com") };
+
+        helper.Process(context, output);
+
+        Assert.Equal("https://example.com/about", output.Attributes["href"].Value);
+    }
+
+    /// <summary>
+    /// Given a canonical tag helper with an absolute URL
+    /// When it is processed
+    /// Then the URL is emitted unchanged rather than having the host prefixed again
+    /// </summary>
+    [Fact]
+    public void ProcessEmitsAbsoluteUrlUnchanged()
+    {
+        var (context, output) = CreateContextAndOutput();
+        var helper = new CanonicalTagHelper { Path = "https://example.com/about", ViewContext = ViewContextFor("https", "example.com") };
+
+        helper.Process(context, output);
+
+        Assert.Equal("https://example.com/about", output.Attributes["href"].Value);
+    }
+
+    /// <summary>
+    /// Given a canonical tag helper with an absolute URL for a different host
+    /// When it is processed
+    /// Then the supplied host is preserved rather than the request's host
+    /// </summary>
+    [Fact]
+    public void ProcessPreservesHostFromAbsoluteUrl()
+    {
+        var (context, output) = CreateContextAndOutput();
+        var helper = new CanonicalTagHelper { Path = "https://www.example.com/about", ViewContext = ViewContextFor("https", "example.com") };
+
+        helper.Process(context, output);
+
+        Assert.Equal("https://www.example.com/about", output.Attributes["href"].Value);
+    }
 }
