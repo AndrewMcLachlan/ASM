@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Asm.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -44,8 +45,10 @@ public class TwoPhaseDomainEventTests
 
     private sealed class PhaseDbContext(DbContextOptions options, IPublisher publisher) : DomainDbContext(options, publisher)
     {
+        [AllowNull]
         public DbSet<Order> Orders { get; set; }
 
+        [AllowNull]
         public DbSet<AuditEntry> Audits { get; set; }
     }
 

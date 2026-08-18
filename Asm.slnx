@@ -13,7 +13,7 @@
   <Folder Name="/.github/workflows/">
     <File Path=".github/workflows/build.yml" />
   </Folder>
-  <Folder Name="/Solution Items/">
+  <Folder Name="/Config/">
     <File Path=".editorConfig" />
     <File Path=".gitignore" />
     <File Path="AGENTS.md" />
@@ -23,7 +23,7 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.Targets" />
     <File Path="Directory.Packages.props" />
-    <File Path="GitVersion.yml" />
+    <File Path="global.json" />
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
