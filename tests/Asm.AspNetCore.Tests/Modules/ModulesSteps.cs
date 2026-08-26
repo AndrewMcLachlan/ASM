@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Reflection.Emit;
 using Asm.AspNetCore.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
@@ -9,12 +10,18 @@ namespace Asm.AspNetCore.Tests.Modules;
 [Binding]
 public class ModulesSteps
 {
+    private const string ProbePrefix = "Asm.AspNetCore.Tests.Probe.";
+
+    private static readonly string[] FrameworkAssemblies = ["System.", "Microsoft.", "netstandard", "mscorlib", "WindowsBase"];
+
     private WebApplicationBuilder _builder = null!;
     private WebApplicationBuilder _result = null!;
     private WebApplication _app = null!;
     private Assembly _assembly = null!;
     private IServiceCollection _services = null!;
     private IServiceProvider _provider = null!;
+    private Assembly[] _candidates = null!;
+    private string _unloadedAssemblyName = null!;
 
     [Given(@"I have a WebApplicationBuilder")]
     public void GivenIHaveAWebApplicationBuilder()
@@ -99,6 +106,88 @@ public class ModulesSteps
     {
         _result = _builder.RegisterModules(pattern);
     }
+
+    [When(@"I call RegisterModules with no arguments")]
+    public void WhenICallRegisterModulesWithNoArguments()
+    {
+        _result = _builder.RegisterModules();
+    }
+
+    [When(@"I call RegisterModules with a marker type")]
+    public void WhenICallRegisterModulesWithAMarkerType()
+    {
+        _result = _builder.RegisterModules<TestModule>();
+    }
+
+    [When(@"I get the candidate assemblies for discovery")]
+    public void WhenIGetTheCandidateAssembliesForDiscovery()
+    {
+        _candidates = [.. ModuleDiscovery.GetCandidateAssemblies()];
+    }
+
+    [Then(@"the discovered modules should include TestModule and SecondTestModule")]
+    public void ThenTheDiscoveredModulesShouldIncludeTestModuleAndSecondTestModule()
+    {
+        var modules = _builder.Services.BuildServiceProvider().GetServices<IModule>().ToList();
+
+        Assert.Contains(modules, m => m is TestModule);
+        Assert.Contains(modules, m => m is SecondTestModule);
+    }
+
+    [Then(@"the candidates should include every loaded application assembly")]
+    public void ThenTheCandidatesShouldIncludeEveryLoadedApplicationAssembly()
+    {
+        var loaded = AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsFrameworkAssembly(a.GetName().Name));
+
+        var missing = loaded.Except(_candidates).Select(a => a.GetName().Name).ToList();
+
+        Assert.True(missing.Count == 0, "Not candidates: " + String.Join(", ", missing));
+    }
+
+    [Given(@"an assembly is deployed alongside the application but not loaded")]
+    public void GivenAnAssemblyIsDeployedAlongsideTheApplicationButNotLoaded()
+    {
+        // Any probe left behind by an earlier run gets loaded by the first scenario that discovers, so
+        // give this one a name unique to the process. That makes "not loaded" true whatever order the
+        // scenarios run in. Tidy up the leftovers that are not currently in use while we are here.
+        foreach (var stale in Directory.EnumerateFiles(AppContext.BaseDirectory, $"{ProbePrefix}*.dll"))
+        {
+            try
+            {
+                File.Delete(stale);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                // Loaded by an earlier scenario, so it cannot be deleted. It is harmless.
+            }
+        }
+
+        _unloadedAssemblyName = $"{ProbePrefix}{Environment.ProcessId}";
+
+        PersistedAssemblyBuilder builder = new(new AssemblyName(_unloadedAssemblyName), typeof(object).Assembly);
+        builder.DefineDynamicModule(_unloadedAssemblyName).DefineType("Probe.Marker", TypeAttributes.Public | TypeAttributes.Class).CreateType();
+        builder.Save(Path.Combine(AppContext.BaseDirectory, $"{_unloadedAssemblyName}.dll"));
+
+        // Precondition: nothing has touched it, so AppDomain.GetAssemblies() cannot see it.
+        Assert.DoesNotContain(AppDomain.CurrentDomain.GetAssemblies(), a => a.GetName().Name == _unloadedAssemblyName);
+    }
+
+    [Then(@"the candidates should include the assembly that was not loaded")]
+    public void ThenTheCandidatesShouldIncludeTheAssemblyThatWasNotLoaded()
+    {
+        // The whole point of the fix: an assembly sitting alongside the application that nothing has
+        // touched is still a discovery candidate. AppDomain.GetAssemblies() alone would never see it.
+        Assert.Contains(_candidates, a => a.GetName().Name == _unloadedAssemblyName);
+    }
+
+    [Then(@"the candidates should exclude framework assemblies")]
+    public void ThenTheCandidatesShouldExcludeFrameworkAssemblies()
+    {
+        Assert.DoesNotContain(_candidates, a => IsFrameworkAssembly(a.GetName().Name));
+    }
+
+    private static bool IsFrameworkAssembly(string? name) =>
+        name is null || FrameworkAssemblies.Any(prefix => name.StartsWith(prefix, StringComparison.Ordinal));
 
     [When(@"I call RegisterModules with a module factory")]
     public void WhenICallRegisterModulesWithAModuleFactory()

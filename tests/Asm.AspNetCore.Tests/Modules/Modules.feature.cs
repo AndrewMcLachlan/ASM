@@ -105,7 +105,7 @@ namespace Asm.AspNetCore.Tests.Modules
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Modules/Modules.feature.ndjson", 9);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Modules/Modules.feature.ndjson", 12);
         }
         
         async System.Threading.Tasks.ValueTask Xunit.IAsyncLifetime.InitializeAsync()
@@ -175,17 +175,17 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.FactAttribute(DisplayName="RegisterModules with pattern registers matching modules")]
+        [global::Xunit.FactAttribute(DisplayName="RegisterModules discovers modules without being given them")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Modules")]
-        [global::Xunit.TraitAttribute("Description", "RegisterModules with pattern registers matching modules")]
+        [global::Xunit.TraitAttribute("Description", "RegisterModules discovers modules without being given them")]
         [global::Xunit.TraitAttribute("Category", "Unit")]
-        public async global::System.Threading.Tasks.Task RegisterModulesWithPatternRegistersMatchingModules()
+        public async global::System.Threading.Tasks.Task RegisterModulesDiscoversModulesWithoutBeingGivenThem()
         {
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("RegisterModules with pattern registers matching modules", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("RegisterModules discovers modules without being given them", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 13
@@ -202,9 +202,132 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
     await testRunner.GivenAsync("I have a WebApplicationBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 15
-    await testRunner.WhenAsync("I call RegisterModules with pattern \'Asm.AspNetCore.Tests\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I call RegisterModules with no arguments", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 16
+    await testRunner.ThenAsync("the builder should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 17
+    await testRunner.AndAsync("the module services should be registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 18
+    await testRunner.AndAsync("the discovered modules should include TestModule and SecondTestModule", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="Discovery searches assemblies the AppDomain has not loaded")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Modules")]
+        [global::Xunit.TraitAttribute("Description", "Discovery searches assemblies the AppDomain has not loaded")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task DiscoverySearchesAssembliesTheAppDomainHasNotLoaded()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "2";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Discovery searches assemblies the AppDomain has not loaded", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 21
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 22
+    await testRunner.GivenAsync("an assembly is deployed alongside the application but not loaded", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 23
+    await testRunner.WhenAsync("I get the candidate assemblies for discovery", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 24
+    await testRunner.ThenAsync("the candidates should include every loaded application assembly", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 25
+    await testRunner.AndAsync("the candidates should include the assembly that was not loaded", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 26
+    await testRunner.AndAsync("the candidates should exclude framework assemblies", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="RegisterModules with a marker type registers modules from that assembly")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Modules")]
+        [global::Xunit.TraitAttribute("Description", "RegisterModules with a marker type registers modules from that assembly")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task RegisterModulesWithAMarkerTypeRegistersModulesFromThatAssembly()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "3";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("RegisterModules with a marker type registers modules from that assembly", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 29
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 30
+    await testRunner.GivenAsync("I have a WebApplicationBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 31
+    await testRunner.WhenAsync("I call RegisterModules with a marker type", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 32
+    await testRunner.ThenAsync("the builder should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 33
+    await testRunner.AndAsync("the module services should be registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Xunit.FactAttribute(DisplayName="RegisterModules with pattern registers matching modules")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Modules")]
+        [global::Xunit.TraitAttribute("Description", "RegisterModules with pattern registers matching modules")]
+        [global::Xunit.TraitAttribute("Category", "Unit")]
+        public async global::System.Threading.Tasks.Task RegisterModulesWithPatternRegistersMatchingModules()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Unit"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "4";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("RegisterModules with pattern registers matching modules", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 36
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 37
+    await testRunner.GivenAsync("I have a WebApplicationBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 38
+    await testRunner.WhenAsync("I call RegisterModules with pattern \'Asm.AspNetCore.Tests\'", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 39
     await testRunner.ThenAsync("the builder should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -220,11 +343,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "2";
+            string pickleIndex = "5";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("RegisterModules with func registers provided modules", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 19
+#line 42
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -234,16 +357,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 20
+#line 43
     await testRunner.GivenAsync("I have a WebApplicationBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 21
+#line 44
     await testRunner.WhenAsync("I call RegisterModules with a module factory", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 22
+#line 45
     await testRunner.ThenAsync("the builder should be returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 23
+#line 46
     await testRunner.AndAsync("the module services should be registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -259,11 +382,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "3";
+            string pickleIndex = "6";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("MapModuleEndpoints maps registered module endpoints", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 26
+#line 49
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -273,16 +396,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 27
+#line 50
     await testRunner.GivenAsync("I have a WebApplicationBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 51
     await testRunner.AndAsync("I have registered modules", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 52
     await testRunner.WhenAsync("I build the application and map module endpoints", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 53
     await testRunner.ThenAsync("the module endpoints should be mapped", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -298,11 +421,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "4";
+            string pickleIndex = "7";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddModule registers a module in dependency injection", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 33
+#line 56
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -312,16 +435,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 34
+#line 57
     await testRunner.GivenAsync("I have a module service collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 35
+#line 58
     await testRunner.WhenAsync("I add a TestModule to the collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 59
     await testRunner.ThenAsync("the service provider should resolve 1 module(s)", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 37
+#line 60
     await testRunner.AndAsync("the module services should be registered in the collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -337,11 +460,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "5";
+            string pickleIndex = "8";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Module registration is additive", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 40
+#line 63
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -351,16 +474,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 41
+#line 64
     await testRunner.GivenAsync("I have a module service collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 42
+#line 65
     await testRunner.WhenAsync("I add a TestModule to the collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 66
     await testRunner.AndAsync("I add a SecondTestModule to the collection", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 44
+#line 67
     await testRunner.ThenAsync("the service provider should resolve 2 module(s)", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -376,11 +499,11 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             string[] tagsOfScenario = new string[] {
                     "Unit"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "6";
+            string pickleIndex = "9";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("MapModuleEndpoints maps endpoints for every DI-registered module", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 47
+#line 70
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -390,16 +513,16 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 48
+#line 71
     await testRunner.GivenAsync("I have a WebApplicationBuilder", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 49
+#line 72
     await testRunner.AndAsync("I have registered two modules", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 73
     await testRunner.WhenAsync("I build the application and map module endpoints", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 74
     await testRunner.ThenAsync("both module endpoints should be mapped", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
