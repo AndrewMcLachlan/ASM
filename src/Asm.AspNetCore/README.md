@@ -21,17 +21,32 @@ Or via the NuGet Package Manager:
 
 ### Modules
 
-Register modules in your ASP.NET Core application:
+Modules are discovered and activated for you — you do not have to list them:
 
 ```csharp
-using Asm.AspNetCore.Api.Modules;
+using Asm.AspNetCore.Modules;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.RegisterModules(() => 
-{
-    new MyModule(),
-});
+builder.RegisterModules();
+```
+
+This searches the assemblies already loaded *and* any assembly deployed alongside the application, so a
+module is found even when nothing has touched its assembly at start-up. Discovered modules need a public
+parameterless constructor.
+
+To narrow the search, name an assembly with a marker type or a name pattern:
+
+```csharp
+builder.RegisterModules<MyModule>();        // just that type's assembly
+builder.RegisterModules("MyApp.Modules");   // assemblies whose name contains this
+```
+
+Or register modules explicitly, which skips discovery entirely and accepts modules that take constructor
+arguments:
+
+```csharp
+builder.RegisterModules(() => [new MyModule("connection-string")]);
 ```
 
 Map module endpoints:

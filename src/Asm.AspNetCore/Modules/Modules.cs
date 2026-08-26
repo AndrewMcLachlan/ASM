@@ -17,22 +17,59 @@ namespace Asm.AspNetCore.Modules;
 /// </remarks>
 public static class Modules
 {
+    private static readonly Assembly ModuleContract = typeof(IModule).Assembly;
+
+
     /// <summary>
-    /// Discovers and registers modules from all assemblies in the current <see cref="AppDomain"/>.
+    /// Discovers and registers every module in the application, without being told where they are.
     /// </summary>
+    /// <remarks>
+    /// Both the assemblies already loaded into the current <see cref="AppDomain"/> and any assembly deployed
+    /// alongside the application are searched, so a module is found even when nothing has touched its assembly
+    /// at start-up. Use <see cref="RegisterModules{TMarker}(WebApplicationBuilder)"/> or
+    /// <see cref="RegisterModules(WebApplicationBuilder, string)"/> to narrow the search.
+    /// </remarks>
     /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance that this method extends.</param>
+    /// <example>
+    /// builder.RegisterModules();
+    /// </example>
     /// <returns>The <see cref="WebApplicationBuilder"/> instance so that calls can be chained.</returns>
     public static WebApplicationBuilder RegisterModules(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        builder.Services.AddModules(AppDomain.CurrentDomain.GetAssemblies());
+        builder.Services.AddModules(ModuleDiscovery.GetCandidateAssemblies());
+        return builder;
+    }
+
+    /// <summary>
+    /// Discovers and registers modules from the assembly containing <typeparamref name="TMarker"/>.
+    /// </summary>
+    /// <remarks>
+    /// <typeparamref name="TMarker"/> is only used to identify an assembly; it does not have to be a module.
+    /// </remarks>
+    /// <typeparam name="TMarker">Any type in the assembly to search.</typeparam>
+    /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance that this method extends.</param>
+    /// <example>
+    /// builder.RegisterModules&lt;MyModule&gt;();
+    /// </example>
+    /// <returns>The <see cref="WebApplicationBuilder"/> instance so that calls can be chained.</returns>
+    public static WebApplicationBuilder RegisterModules<TMarker>(this WebApplicationBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        builder.Services.AddModules(typeof(TMarker).Assembly);
         return builder;
     }
 
     /// <summary>
     /// Discovers and registers modules from assemblies matching a specific pattern.
     /// </summary>
+    /// <remarks>
+    /// Both the assemblies already loaded into the current <see cref="AppDomain"/> and any assembly deployed
+    /// alongside the application are searched, so a module is found even when nothing has touched its assembly
+    /// at start-up.
+    /// </remarks>
     /// <param name="builder">The <see cref="WebApplicationBuilder"/> instance that this method extends.</param>
     /// <param name="pattern">Only search assemblies where the name contains this pattern.</param>
     /// <example>
@@ -43,7 +80,7 @@ public static class Modules
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        var modulesAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.GetName().Name?.Contains(pattern) == true);
+        var modulesAssemblies = ModuleDiscovery.GetCandidateAssemblies().Where(a => a.GetName().Name?.Contains(pattern) == true);
         builder.Services.AddModules(modulesAssemblies);
         return builder;
     }
@@ -180,8 +217,35 @@ public static class Modules
     }
 
     private static IEnumerable<IModule> DiscoverModules(IEnumerable<Assembly> assemblies) =>
-        assemblies.SelectMany(a => a.GetTypes()
-                                    .Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo(typeof(IModule)))
-                                    .Select(Activator.CreateInstance)
-                                    .Cast<IModule>());
+        assemblies.SelectMany(GetModuleTypes).Select(CreateModule);
+
+    private static IEnumerable<Type> GetModuleTypes(Assembly assembly)
+    {
+        // A type can only implement IModule if its assembly references the assembly that defines IModule.
+        // Checking that first is what keeps discovery cheap: enumerating the types of every assembly
+        // deployed with an application costs far more than loading them.
+        if (assembly != ModuleContract && !assembly.GetReferencedAssemblies().Any(r => r.Name == ModuleContract.GetName().Name))
+        {
+            return [];
+        }
+
+        Type?[] types;
+
+        try
+        {
+            types = assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException ex)
+        {
+            // An optional dependency of the assembly is missing; discover what can be loaded rather than failing start-up.
+            types = ex.Types;
+        }
+
+        return types.OfType<Type>().Where(t => t.IsClass && !t.IsAbstract && !t.IsGenericTypeDefinition && t.IsAssignableTo(typeof(IModule)));
+    }
+
+    private static IModule CreateModule(Type type) =>
+        type.GetConstructor(Type.EmptyTypes) is null
+            ? throw new InvalidOperationException($"Module '{type.FullName}' was discovered but cannot be created because it has no public parameterless constructor. Register it explicitly with AddModule instead.")
+            : (IModule)Activator.CreateInstance(type)!;
 }

@@ -10,6 +10,29 @@ Scenario: RegisterModules with assembly registers modules
     And the module services should be registered
 
 @Unit
+Scenario: RegisterModules discovers modules without being given them
+    Given I have a WebApplicationBuilder
+    When I call RegisterModules with no arguments
+    Then the builder should be returned
+    And the module services should be registered
+    And the discovered modules should include TestModule and SecondTestModule
+
+@Unit
+Scenario: Discovery searches assemblies the AppDomain has not loaded
+    Given an assembly is deployed alongside the application but not loaded
+    When I get the candidate assemblies for discovery
+    Then the candidates should include every loaded application assembly
+    And the candidates should include the assembly that was not loaded
+    And the candidates should exclude framework assemblies
+
+@Unit
+Scenario: RegisterModules with a marker type registers modules from that assembly
+    Given I have a WebApplicationBuilder
+    When I call RegisterModules with a marker type
+    Then the builder should be returned
+    And the module services should be registered
+
+@Unit
 Scenario: RegisterModules with pattern registers matching modules
     Given I have a WebApplicationBuilder
     When I call RegisterModules with pattern 'Asm.AspNetCore.Tests'
