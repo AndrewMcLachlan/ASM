@@ -8,4 +8,26 @@
     <InternalsVisibleTo Include="Asm.Domain.Infrastructure.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Asm.Domain.SourceGenerators\Asm.Domain.SourceGenerators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- The generator ships inside this package; a consumer referencing Asm.Domain gets [Navigation]
+       and the generator that implements it together. -->
+  <PropertyGroup>
+    <GeneratorAssembly>$(MSBuildThisFileDirectory)..\Asm.Domain.SourceGenerators\bin\$(Configuration)\netstandard2.0\Asm.Domain.SourceGenerators.dll</GeneratorAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(GeneratorAssembly)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+  <Target Name="EnsureGeneratorIsPacked" BeforeTargets="GenerateNuspec">
+    <Error Condition="!Exists('$(GeneratorAssembly)')"
+           Text="The navigation generator was not found at $(GeneratorAssembly); packing Asm.Domain without it would ship [Navigation] with nothing to implement it." />
+  </Target>
+
 </Project>

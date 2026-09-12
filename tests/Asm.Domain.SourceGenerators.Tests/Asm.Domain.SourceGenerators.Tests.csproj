@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <CoverletInclude>[Asm.Domain.SourceGenerators]*</CoverletInclude>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Asm.Domain\Asm.Domain.csproj" />
+    <!-- Analyzer as well as reference: the unit tests drive the generator directly, and the
+         integration tests need it to have run over this project's own entities. -->
+    <ProjectReference Include="..\..\src\Asm.Domain.SourceGenerators\Asm.Domain.SourceGenerators.csproj"
+                      OutputItemType="Analyzer" />
+  </ItemGroup>
+
+</Project>
