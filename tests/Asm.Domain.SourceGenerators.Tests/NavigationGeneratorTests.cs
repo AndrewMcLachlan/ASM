@@ -73,7 +73,7 @@ public class NavigationGeneratorTests
         var assembly = GeneratorHarness.Run(Entity).Emit();
 
         Assert.NotNull(assembly.GetType("Test.Entities.Account")!
-            .GetField("_institution", BindingFlags.Instance | BindingFlags.NonPublic));
+            .GetField("<Institution>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic));
     }
 
     [Fact]

@@ -98,17 +98,19 @@ public sealed class NavigationGenerator : IIncrementalGenerator
         }
 
         var type_ = property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        var field = BackingFieldName(property.Name);
         var modifiers = string.Join(" ", declaration.Modifiers.Select(modifier => modifier.Text));
         var message = $"Navigation property '{owner.Name}.{property.Name}' has not been loaded. Include it in the query that loaded this entity.";
 
-        builder.Append(indent).Append("private ").Append(type_).Append("? ").Append(field).AppendLine(";");
-        builder.AppendLine();
+        // `field` rather than a named backing field: a derived name can collide with a field the
+        // entity already has, or with another navigation whose name differs only in its first
+        // letter's case, and the consumer gets CS0102 out of generated code they did not write.
+        // It lowers to the same <Name>k__BackingField an auto-property produces, so EF Core's
+        // backing-field convention still writes straight to it and the throwing getter never fires
+        // on a loaded entity.
         builder.Append(indent).Append(modifiers).Append(' ').Append(type_).Append(' ').AppendLine(property.Name);
         builder.Append(indent).AppendLine("{");
-        builder.Append(indent).Append("    get => ").Append(field)
-               .Append(" ?? throw new global::System.InvalidOperationException(\"").Append(message).AppendLine("\");");
-        builder.Append(indent).Append("    set => ").Append(field).AppendLine(" = value;");
+        builder.Append(indent).Append("    get => field ?? throw new global::System.InvalidOperationException(\"").Append(message).AppendLine("\");");
+        builder.Append(indent).AppendLine("    set => field = value;");
         builder.Append(indent).AppendLine("}");
 
         foreach (var _ in nesting)
@@ -155,8 +157,6 @@ public sealed class NavigationGenerator : IIncrementalGenerator
         return $"{keyword} {name}";
     }
 
-    private static string BackingFieldName(string propertyName) =>
-        "_" + char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
 
     private static string HintName(INamedTypeSymbol owner, IPropertySymbol property)
     {

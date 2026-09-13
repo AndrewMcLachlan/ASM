@@ -35,7 +35,7 @@ public class EntityFrameworkTests
 
         var navigation = context.Model.FindEntityType(typeof(Order))!.FindNavigation(nameof(Order.Customer))!;
 
-        Assert.Equal("_customer", navigation.FieldInfo?.Name);
+        Assert.Equal("<Customer>k__BackingField", navigation.FieldInfo?.Name);
     }
 
     [Fact]
