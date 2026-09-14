@@ -12,3 +12,4 @@ ASM1002 | Asm.Domain | Error | Type containing a navigation property must be par
 ASM1003 | Asm.Domain | Error | Navigation property must be a non-nullable reference type
 ASM1004 | Asm.Domain | Error | Navigation property must have a setter
 ASM1005 | Asm.Domain | Error | Navigation property already has an implementation
+ASM1006 | Asm.Domain | Error | Navigation property must have a getter

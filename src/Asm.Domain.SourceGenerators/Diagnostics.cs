@@ -38,6 +38,14 @@ internal static class Diagnostics
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
+    public static readonly DiagnosticDescriptor PropertyMustHaveGetter = new(
+        "ASM1006",
+        "Navigation property must have a getter",
+        "Navigation property '{0}' must have a getter; the generated implementation is a getter that reports the navigation was not loaded",
+        Category,
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
     public static readonly DiagnosticDescriptor PropertyAlreadyImplemented = new(
         "ASM1005",
         "Navigation property already has an implementation",

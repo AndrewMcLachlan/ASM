@@ -60,6 +60,11 @@ public sealed class NavigationGenerator : IIncrementalGenerator
             return Result.Failed(Diagnostics.PropertyMustBeNonNullableReference, declaration.Identifier, property.Name);
         }
 
+        if (property.GetMethod is null)
+        {
+            return Result.Failed(Diagnostics.PropertyMustHaveGetter, declaration.Identifier, property.Name);
+        }
+
         if (property.SetMethod is null)
         {
             return Result.Failed(Diagnostics.PropertyMustHaveSetter, declaration.Identifier, property.Name);
@@ -93,6 +98,12 @@ public sealed class NavigationGenerator : IIncrementalGenerator
         foreach (var type in nesting)
         {
             builder.Append(indent).Append("partial ").AppendLine(Declaration(type));
+
+            foreach (var constraint in Constraints(type))
+            {
+                builder.Append(indent).Append("    ").AppendLine(constraint);
+            }
+
             builder.Append(indent).AppendLine("{");
             indent += "    ";
         }
@@ -158,16 +169,87 @@ public sealed class NavigationGenerator : IIncrementalGenerator
     }
 
 
+    /// <summary>
+    /// The `where` clauses for a type's own type parameters.
+    /// </summary>
+    /// <remarks>
+    /// A partial declaration has to repeat them: omitted, the compiler reports CS0265 for
+    /// inconsistent constraints and no generic entity can carry a navigation.
+    /// </remarks>
+    private static IEnumerable<string> Constraints(INamedTypeSymbol type)
+    {
+        foreach (var parameter in type.TypeParameters)
+        {
+            var constraints = new List<string>();
+
+            if (parameter.HasReferenceTypeConstraint)
+            {
+                constraints.Add(parameter.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated ? "class?" : "class");
+            }
+
+            if (parameter.HasUnmanagedTypeConstraint)
+            {
+                constraints.Add("unmanaged");
+            }
+            else if (parameter.HasValueTypeConstraint)
+            {
+                constraints.Add("struct");
+            }
+
+            if (parameter.HasNotNullConstraint)
+            {
+                constraints.Add("notnull");
+            }
+
+            constraints.AddRange(parameter.ConstraintTypes.Select(constraint => constraint.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)));
+
+            // struct already implies a parameterless constructor, and the pair is not legal together.
+            if (parameter.HasConstructorConstraint && !parameter.HasValueTypeConstraint && !parameter.HasUnmanagedTypeConstraint)
+            {
+                constraints.Add("new()");
+            }
+
+            if (constraints.Count > 0)
+            {
+                yield return $"where {parameter.Name} : {string.Join(", ", constraints)}";
+            }
+        }
+    }
+
     private static string HintName(INamedTypeSymbol owner, IPropertySymbol property)
     {
         var qualified = owner.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+        var identity = qualified + "." + property.Name;
 
-        var builder = new StringBuilder(qualified.Length + property.Name.Length + 6);
+        var builder = new StringBuilder(identity.Length + 16);
         foreach (var character in qualified)
         {
             builder.Append(char.IsLetterOrDigit(character) || character == '.' || character == '_' ? character : '_');
         }
 
-        return builder.Append('.').Append(property.Name).Append(".g.cs").ToString();
+        // Flattening is lossy: Account<T> and a type legally named Account_T_ both come out as
+        // Account_T_. Two such entities in one compilation would hand the driver duplicate hint
+        // names and fail the build, so the identity's hash goes on the end to tell them apart.
+        return builder.Append('.').Append(property.Name)
+                      .Append('.').Append(Hash(identity))
+                      .Append(".g.cs").ToString();
+    }
+
+    /// <summary>
+    /// FNV-1a, for a hint-name suffix. Stable across runs, which a generator's output must be.
+    /// </summary>
+    private static string Hash(string value)
+    {
+        unchecked
+        {
+            var hash = 2166136261;
+
+            foreach (var character in value)
+            {
+                hash = (hash ^ character) * 16777619;
+            }
+
+            return hash.ToString("x8");
+        }
     }
 }

@@ -130,6 +130,7 @@ public class NavigationGeneratorTests
     [InlineData("ASM1003", "public virtual partial Institution? Institution { get; set; }")]
     [InlineData("ASM1003", "public virtual partial int Institution { get; set; }")]
     [InlineData("ASM1004", "public virtual partial Institution Institution { get; }")]
+    [InlineData("ASM1006", "public virtual partial Institution Institution { set; }")]
     public void Reports(string expected, string property)
     {
         var run = GeneratorHarness.Run($$"""
@@ -197,5 +198,68 @@ public class NavigationGeneratorTests
             """);
 
         Assert.Equal(["ASM1005"], run.DiagnosticIds);
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void Carries_Type_Parameter_Constraints_Onto_The_Generated_Declaration()
+    {
+        var run = GeneratorHarness.Run("""
+            using Asm.Domain;
+
+            namespace Test.Entities;
+
+            public class Institution;
+
+            public partial class Account<TKey, TValue>
+                where TKey : class, System.IComparable<TKey>, new()
+                where TValue : struct
+            {
+                [Navigation]
+                public virtual partial Institution Institution { get; set; }
+            }
+            """);
+
+        // Without the where clauses the compiler reports CS0265 for inconsistent constraints.
+        Assert.Empty(run.GeneratorDiagnostics);
+        Assert.Empty(run.CompilationErrors);
+
+        var generated = run.GeneratedSource.Replace("global::", String.Empty);
+        Assert.Contains("where TKey : class, System.IComparable<TKey>, new()", generated);
+        Assert.Contains("where TValue : struct", generated);
+    }
+
+    [Fact]
+    [Trait("Category", "Unit")]
+    public void Distinguishes_Entities_Whose_Names_Flatten_To_The_Same_Hint()
+    {
+        // Account<T> and Account_T_ both flatten to "Account_T_". Duplicate hint names fail the
+        // build, so this is only green while the hint carries something that tells them apart.
+        var run = GeneratorHarness.Run("""
+            using Asm.Domain;
+
+            namespace Test.Entities;
+
+            public class Institution;
+
+            public partial class Account<T>
+            {
+                [Navigation]
+                public virtual partial Institution Institution { get; set; }
+            }
+
+            public partial class Account_T_
+            {
+                [Navigation]
+                public virtual partial Institution Institution { get; set; }
+            }
+            """);
+
+        Assert.Empty(run.GeneratorDiagnostics);
+        Assert.Empty(run.CompilationErrors);
+
+        var generated = run.GeneratedSource;
+        Assert.Contains("partial class Account<T>", generated);
+        Assert.Contains("partial class Account_T_", generated);
     }
 }
