@@ -8,6 +8,7 @@ The `Asm.Domain` project provides a foundation for implementing domain-driven de
 - **Domain Events**: Abstractions for publishing and handling domain events.
 - **Aggregates**: Base classes for defining aggregate roots and enforcing aggregate boundaries.
 - **Specifications**: Support for the specification pattern to encapsulate business rules.
+- **Navigations**: `[Navigation]` generates navigation properties that fail loudly when they have not been loaded.
 
 ## Installation
 
@@ -133,6 +134,55 @@ var results = await repository.Get(spec, cancellationToken);
 
 The constraint is `where T : class`, so specifications can also target read models, DTOs or interfaces —
 not only entities.
+
+### Navigation Properties
+
+A navigation property is non-null once the data store has loaded it and null before then. Declaring it
+`Institution { get; set; } = null!` makes the compiler stop asking, and an unloaded navigation then
+travels on as a null the type system promised could not exist — surfacing far from where it was needed.
+
+Mark the property `[Navigation]` instead and declare it `partial`:
+
+```csharp
+using Asm.Domain;
+
+public partial class Account
+{
+    public Guid InstitutionId { get; set; }
+
+    [Navigation]
+    public virtual partial Institution Institution { get; set; }
+}
+```
+
+The generated implementation reads:
+
+```csharp
+private Institution? _institution;
+
+public virtual partial Institution Institution
+{
+    get => _institution ?? throw new InvalidOperationException(
+        "Navigation property 'Account.Institution' has not been loaded. Include it in the query that loaded this entity.");
+    set => _institution = value;
+}
+```
+
+The backing field follows the `_camelCase` convention Entity Framework Core binds to, so materialisation
+writes straight to the field and the getter never fires on a loaded entity. `virtual` is preserved for
+lazy-loading proxies.
+
+Optional navigations need none of this: declare them `Institution?` and let the caller handle the null.
+
+#### Diagnostics
+
+| ID | Meaning |
+|----|---------|
+| ASM1001 | The property is not `partial` |
+| ASM1002 | A containing type is not `partial` |
+| ASM1003 | The property is a value type or a nullable reference type |
+| ASM1004 | The property has no setter |
+| ASM1005 | The property already has a hand-written implementation |
 
 ## Contributing
 

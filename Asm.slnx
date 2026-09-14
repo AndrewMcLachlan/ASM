@@ -52,6 +52,9 @@
     <Project Path="tests/Asm.Domain.Tests/Asm.Domain.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Release" />
     </Project>
+    <Project Path="tests/Asm.Domain.SourceGenerators.Tests/Asm.Domain.SourceGenerators.Tests.csproj">
+      <BuildType Solution="Release 64|*" Project="Release" />
+    </Project>
     <Project Path="tests/Asm.Hosting.Tests/Asm.Hosting.Tests.csproj">
       <BuildType Solution="Release 64|*" Project="Debug" />
     </Project>
@@ -99,6 +102,9 @@
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Domain/Asm.Domain.csproj">
+    <BuildType Solution="Release 64|*" Project="Release" />
+  </Project>
+  <Project Path="src/Asm.Domain.SourceGenerators/Asm.Domain.SourceGenerators.csproj">
     <BuildType Solution="Release 64|*" Project="Release" />
   </Project>
   <Project Path="src/Asm.Hosting/Asm.Hosting.csproj">
