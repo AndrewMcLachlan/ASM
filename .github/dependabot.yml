@@ -15,6 +15,9 @@ updates:
     ignore:
       - dependency-name: "SixLabors.ImageSharp"
         versions: [">=3.0.0"]
+      # Consumers load Asm.Domain.SourceGenerators into their own compiler; a newer Roslyn stops it loading on older SDKs.
+      - dependency-name: "Microsoft.CodeAnalysis.CSharp"
+        versions: [">=5.0.0"]
     groups:
       microsoft:
         patterns:
