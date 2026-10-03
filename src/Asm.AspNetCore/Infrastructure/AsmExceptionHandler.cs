@@ -45,7 +45,7 @@ public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsSer
 
         if (LogLevelFor(exception, status) is { } level)
         {
-            logger.Log(level, exception, "{Method} {Path} answered {StatusCode}", httpContext.Request.Method, httpContext.Request.Path, status);
+            logger.Log(level, exception, "{Method} {Path} answered {StatusCode}", LogSanitiser.Sanitise(httpContext.Request.Method), LogSanitiser.Sanitise(httpContext.Request.Path.Value), status);
         }
 
         httpContext.Response.StatusCode = status;

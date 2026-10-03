@@ -177,6 +177,23 @@ public class AsmExceptionHandlerTests
         Assert.Same(exception, entry.Exception);
     }
 
+    /// <summary>
+    /// Given a logged exception on a request whose path carries a line break
+    /// When the handler runs
+    /// Then the logged path has the line break stripped, so it cannot forge a log entry.
+    /// </summary>
+    [Fact]
+    public async Task RequestPathIsSanitisedInTheLog()
+    {
+        var logger = new CapturingLogger();
+
+        await HandleAsync(new BadHttpRequestException("Failed to bind parameter"), logger: logger, path: $"/accounts{Environment.NewLine}forged");
+
+        var entry = Assert.Single(logger.Entries);
+        Assert.Contains("/accountsforged", entry.Message);
+        Assert.DoesNotContain(Environment.NewLine, entry.Message);
+    }
+
     public static TheoryData<Exception> ExpectedOutcomes() =>
     [
         new NotFoundException("missing"),
@@ -215,11 +232,12 @@ public class AsmExceptionHandlerTests
         Assert.Empty(logger.Entries);
     }
 
-    private static async Task<(bool Handled, ProblemDetailsContext? Context, int StatusCode)> HandleAsync(Exception exception, bool canWrite = true, CapturingLogger? logger = null)
+    private static async Task<(bool Handled, ProblemDetailsContext? Context, int StatusCode)> HandleAsync(Exception exception, bool canWrite = true, CapturingLogger? logger = null, string path = "/")
     {
         var service = new CapturingProblemDetailsService(canWrite);
         var handler = new AsmExceptionHandler(service, logger ?? new CapturingLogger());
         var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = path;
 
         var handled = await handler.TryHandleAsync(httpContext, exception, CancellationToken.None);
 
@@ -247,13 +265,13 @@ public class AsmExceptionHandlerTests
 
     private sealed class CapturingLogger : ILogger<AsmExceptionHandler>
     {
-        public List<(LogLevel Level, Exception? Exception)> Entries { get; } = [];
+        public List<(LogLevel Level, Exception? Exception, string Message)> Entries { get; } = [];
 
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
 
         public bool IsEnabled(LogLevel logLevel) => true;
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) =>
-            Entries.Add((logLevel, exception));
+            Entries.Add((logLevel, exception, formatter(state, exception)));
     }
 }

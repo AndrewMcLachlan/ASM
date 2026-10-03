@@ -1,4 +1,5 @@
 using System.Text;
+using Asm.AspNetCore;
 using Asm.AspNetCore.Reporting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -67,8 +68,8 @@ public static class AsmAspNetCoreEndpointRouteBuilderExtensions
             return Results.StatusCode(StatusCodes.Status413PayloadTooLarge);
         }
 
-        var contentType = SanitiseForLog(ctx.Request.ContentType);
-        var safeBody = SanitiseForLog(body);
+        var contentType = LogSanitiser.Sanitise(ctx.Request.ContentType);
+        var safeBody = LogSanitiser.Sanitise(body);
         logger.LogWarning("{Label} ({ContentType}): {Report}", reportLabel, contentType, safeBody);
         return Results.NoContent();
     }
@@ -89,24 +90,5 @@ public static class AsmAspNetCoreEndpointRouteBuilderExtensions
             await ms.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
         }
         return (Encoding.UTF8.GetString(ms.ToArray()), false);
-    }
-
-    private static string SanitiseForLog(string? input)
-    {
-        if (String.IsNullOrEmpty(input))
-        {
-            return String.Empty;
-        }
-
-        var sb = new StringBuilder(input.Length);
-        foreach (var c in input)
-        {
-            // Keep printable and tab (tab is common in JSON whitespace); drop other control chars.
-            if (c == '\t' || !Char.IsControl(c))
-            {
-                sb.Append(c);
-            }
-        }
-        return sb.ToString();
     }
 }
