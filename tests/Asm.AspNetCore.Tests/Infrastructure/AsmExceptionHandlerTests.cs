@@ -142,12 +142,12 @@ public class AsmExceptionHandlerTests
     }
 
     /// <summary>
-    /// Given an exception that maps to a client error
+    /// Given a malformed request
     /// When the handler runs
     /// Then it logs the exception once, at warning.
     /// </summary>
     [Fact]
-    public async Task ClientErrorIsLoggedAsWarning()
+    public async Task BadRequestIsLoggedAsWarning()
     {
         var exception = new BadHttpRequestException("Failed to bind parameter");
         var logger = new CapturingLogger();
@@ -175,6 +175,31 @@ public class AsmExceptionHandlerTests
         var entry = Assert.Single(logger.Entries);
         Assert.Equal(LogLevel.Error, entry.Level);
         Assert.Same(exception, entry.Exception);
+    }
+
+    public static TheoryData<Exception> ExpectedOutcomes() =>
+    [
+        new NotFoundException("missing"),
+        new ExistsException("dupe"),
+        new NotAuthorisedException("nope"),
+        new ValidationException([new ValidationFailure("Name", "Name is required")]),
+    ];
+
+    /// <summary>
+    /// Given an exception that maps to an expected outcome rather than a fault
+    /// When the handler runs
+    /// Then it writes problem details and logs nothing.
+    /// </summary>
+    [Theory]
+    [MemberData(nameof(ExpectedOutcomes))]
+    public async Task ExpectedOutcomeIsNotLogged(Exception exception)
+    {
+        var logger = new CapturingLogger();
+
+        var (handled, _, _) = await HandleAsync(exception, logger: logger);
+
+        Assert.True(handled);
+        Assert.Empty(logger.Entries);
     }
 
     /// <summary>

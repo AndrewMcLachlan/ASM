@@ -18,13 +18,14 @@ namespace Asm.AspNetCore;
 /// response, can deal with them.
 /// <para>
 /// A recognised exception is always reported as handled, which suppresses the middleware's own
-/// diagnostics, so the handler logs it instead: server errors at <see cref="LogLevel.Error"/>,
-/// client errors at <see cref="LogLevel.Warning"/>.
+/// diagnostics, so the handler logs the ones that point at a fault: server errors at
+/// <see cref="LogLevel.Error"/>, malformed requests at <see cref="LogLevel.Warning"/>. Expected
+/// outcomes — not found, already exists, validation and authorisation failures — are not logged.
 /// </para>
 /// </remarks>
 /// <param name="problemDetailsService">The service used to write the problem-detail response.</param>
 /// <param name="logger">The logger the handled exception is recorded on.</param>
-public sealed partial class AsmExceptionHandler(IProblemDetailsService problemDetailsService, ILogger<AsmExceptionHandler> logger) : IExceptionHandler
+public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsService, ILogger<AsmExceptionHandler> logger) : IExceptionHandler
 {
     /// <inheritdoc />
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -42,7 +43,10 @@ public sealed partial class AsmExceptionHandler(IProblemDetailsService problemDe
 
         var status = problemDetails.Status!.Value;
 
-        Log(status >= StatusCodes.Status500InternalServerError ? LogLevel.Error : LogLevel.Warning, exception, status, httpContext.Request.Method, httpContext.Request.Path);
+        if (LogLevelFor(exception, status) is { } level)
+        {
+            logger.Log(level, exception, "{Method} {Path} answered {StatusCode}", httpContext.Request.Method, httpContext.Request.Path, status);
+        }
 
         httpContext.Response.StatusCode = status;
 
@@ -57,8 +61,12 @@ public sealed partial class AsmExceptionHandler(IProblemDetailsService problemDe
         return true;
     }
 
-    [LoggerMessage("{Method} {Path} answered {StatusCode}")]
-    private partial void Log(LogLevel level, Exception exception, int statusCode, string method, PathString path);
+    private static LogLevel? LogLevelFor(Exception exception, int status) => exception switch
+    {
+        _ when status >= StatusCodes.Status500InternalServerError => LogLevel.Error,
+        BadHttpRequestException or InvalidOperationException => LogLevel.Warning,
+        _ => null,
+    };
 
     private static ProblemDetails? Map(Exception exception) => exception switch
     {
