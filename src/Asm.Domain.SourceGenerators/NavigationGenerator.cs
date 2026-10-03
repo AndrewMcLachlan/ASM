@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -85,7 +83,7 @@ public sealed class NavigationGenerator : IIncrementalGenerator
         builder.AppendLine("#nullable enable");
         builder.AppendLine();
 
-        var indent = string.Empty;
+        var indent = String.Empty;
 
         if (!owner.ContainingNamespace.IsGlobalNamespace)
         {
@@ -109,7 +107,7 @@ public sealed class NavigationGenerator : IIncrementalGenerator
         }
 
         var type_ = property.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        var modifiers = string.Join(" ", declaration.Modifiers.Select(modifier => modifier.Text));
+        var modifiers = String.Join(" ", declaration.Modifiers.Select(modifier => modifier.Text));
         var message = $"Navigation property '{owner.Name}.{property.Name}' has not been loaded. Include it in the query that loaded this entity.";
 
         // `field` rather than a named backing field: a derived name can collide with a field the
@@ -163,7 +161,7 @@ public sealed class NavigationGenerator : IIncrementalGenerator
 
         var name = type.TypeParameters.Length == 0
             ? type.Name
-            : $"{type.Name}<{string.Join(", ", type.TypeParameters.Select(parameter => parameter.Name))}>";
+            : $"{type.Name}<{String.Join(", ", type.TypeParameters.Select(parameter => parameter.Name))}>";
 
         return $"{keyword} {name}";
     }
@@ -211,7 +209,7 @@ public sealed class NavigationGenerator : IIncrementalGenerator
 
             if (constraints.Count > 0)
             {
-                yield return $"where {parameter.Name} : {string.Join(", ", constraints)}";
+                yield return $"where {parameter.Name} : {String.Join(", ", constraints)}";
             }
         }
     }
@@ -224,7 +222,7 @@ public sealed class NavigationGenerator : IIncrementalGenerator
         var builder = new StringBuilder(identity.Length + 16);
         foreach (var character in qualified)
         {
-            builder.Append(char.IsLetterOrDigit(character) || character == '.' || character == '_' ? character : '_');
+            builder.Append(Char.IsLetterOrDigit(character) || character == '.' || character == '_' ? character : '_');
         }
 
         // Flattening is lossy: Account<T> and a type legally named Account_T_ both come out as

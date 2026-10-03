@@ -137,9 +137,9 @@ public class ModulesSteps
     [Then(@"the candidates should include every loaded application assembly")]
     public void ThenTheCandidatesShouldIncludeEveryLoadedApplicationAssembly()
     {
-        var loaded = AppDomain.CurrentDomain.GetAssemblies().Where(a => !IsFrameworkAssembly(a.GetName().Name));
+        var loaded = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetName().Name).Where(name => !IsFrameworkAssembly(name));
 
-        var missing = loaded.Except(_candidates).Select(a => a.GetName().Name).ToList();
+        var missing = loaded.Except(_candidates.Select(a => a.GetName().Name)).ToList();
 
         Assert.True(missing.Count == 0, "Not candidates: " + String.Join(", ", missing));
     }

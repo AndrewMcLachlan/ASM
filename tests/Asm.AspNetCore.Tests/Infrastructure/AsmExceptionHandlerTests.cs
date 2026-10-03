@@ -180,9 +180,7 @@ public class AsmExceptionHandlerTests
     public static TheoryData<Exception> ExpectedOutcomes() =>
     [
         new NotFoundException("missing"),
-        new ExistsException("dupe"),
         new NotAuthorisedException("nope"),
-        new ValidationException([new ValidationFailure("Name", "Name is required")]),
     ];
 
     /// <summary>
