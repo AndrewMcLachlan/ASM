@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Asm.AspNetCore;
 
@@ -15,9 +16,15 @@ namespace Asm.AspNetCore;
 /// Exceptions this handler does not recognise are left unhandled so that other
 /// <see cref="IExceptionHandler"/> implementations, or the framework's default problem-details
 /// response, can deal with them.
+/// <para>
+/// A recognised exception is always reported as handled, which suppresses the middleware's own
+/// diagnostics, so the handler logs it instead: server errors at <see cref="LogLevel.Error"/>,
+/// client errors at <see cref="LogLevel.Warning"/>.
+/// </para>
 /// </remarks>
 /// <param name="problemDetailsService">The service used to write the problem-detail response.</param>
-public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
+/// <param name="logger">The logger the handled exception is recorded on.</param>
+public sealed partial class AsmExceptionHandler(IProblemDetailsService problemDetailsService, ILogger<AsmExceptionHandler> logger) : IExceptionHandler
 {
     /// <inheritdoc />
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -33,15 +40,25 @@ public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsSer
             return false;
         }
 
-        httpContext.Response.StatusCode = problemDetails.Status!.Value;
+        var status = problemDetails.Status!.Value;
 
-        return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+        Log(status >= StatusCodes.Status500InternalServerError ? LogLevel.Error : LogLevel.Warning, exception, status, httpContext.Request.Method, httpContext.Request.Path);
+
+        httpContext.Response.StatusCode = status;
+
+        // Must report handled even when nothing is written: false hands the exception back to the middleware, which logs it again at Error.
+        await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,
             Exception = exception,
             ProblemDetails = problemDetails,
         });
+
+        return true;
     }
+
+    [LoggerMessage("{Method} {Path} answered {StatusCode}")]
+    private partial void Log(LogLevel level, Exception exception, int statusCode, string method, PathString path);
 
     private static ProblemDetails? Map(Exception exception) => exception switch
     {
