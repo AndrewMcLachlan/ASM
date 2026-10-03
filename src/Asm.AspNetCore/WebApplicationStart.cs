@@ -100,7 +100,7 @@ public static class WebApplicationStart
         {
             Predicate = p => p.Tags.IsNullOrEmpty() || p.Tags.Contains("health"),
             ResponseWriter = ResponseWriter.WriteResponse,
-        });
+        }).AllowAnonymous();
 
         return application;
     }
