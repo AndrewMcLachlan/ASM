@@ -64,7 +64,8 @@ public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsSer
     private static LogLevel? LogLevelFor(Exception exception, int status) => exception switch
     {
         _ when status >= StatusCodes.Status500InternalServerError => LogLevel.Error,
-        BadHttpRequestException or InvalidOperationException => LogLevel.Warning,
+        ValidationException or BadHttpRequestException or InvalidOperationException => LogLevel.Warning,
+        ExistsException => LogLevel.Warning,
         _ => null,
     };
 
