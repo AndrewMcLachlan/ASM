@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Asm.AspNetCore;
 
@@ -15,9 +16,16 @@ namespace Asm.AspNetCore;
 /// Exceptions this handler does not recognise are left unhandled so that other
 /// <see cref="IExceptionHandler"/> implementations, or the framework's default problem-details
 /// response, can deal with them.
+/// <para>
+/// A recognised exception is always reported as handled, which suppresses the middleware's own
+/// diagnostics, so the handler logs the ones that point at a fault: server errors at
+/// <see cref="LogLevel.Error"/>, malformed requests at <see cref="LogLevel.Warning"/>. Expected
+/// outcomes — not found, already exists, validation and authorisation failures — are not logged.
+/// </para>
 /// </remarks>
 /// <param name="problemDetailsService">The service used to write the problem-detail response.</param>
-public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
+/// <param name="logger">The logger the handled exception is recorded on.</param>
+public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsService, ILogger<AsmExceptionHandler> logger) : IExceptionHandler
 {
     /// <inheritdoc />
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -33,15 +41,33 @@ public sealed class AsmExceptionHandler(IProblemDetailsService problemDetailsSer
             return false;
         }
 
-        httpContext.Response.StatusCode = problemDetails.Status!.Value;
+        var status = problemDetails.Status!.Value;
 
-        return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+        if (LogLevelFor(exception, status) is { } level)
+        {
+            logger.Log(level, exception, "{Method} {Path} answered {StatusCode}", LogSanitiser.Sanitise(httpContext.Request.Method), LogSanitiser.Sanitise(httpContext.Request.Path.Value), status);
+        }
+
+        httpContext.Response.StatusCode = status;
+
+        // Must report handled even when nothing is written: false hands the exception back to the middleware, which logs it again at Error.
+        await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,
             Exception = exception,
             ProblemDetails = problemDetails,
         });
+
+        return true;
     }
+
+    private static LogLevel? LogLevelFor(Exception exception, int status) => exception switch
+    {
+        _ when status >= StatusCodes.Status500InternalServerError => LogLevel.Error,
+        ValidationException or BadHttpRequestException or InvalidOperationException => LogLevel.Warning,
+        ExistsException => LogLevel.Warning,
+        _ => null,
+    };
 
     private static ProblemDetails? Map(Exception exception) => exception switch
     {

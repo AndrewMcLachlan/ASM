@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Asm.AspNetCore.Tests.Infrastructure;
 
@@ -126,11 +127,117 @@ public class AsmExceptionHandlerTests
         Assert.Null(context);
     }
 
-    private static async Task<(bool Handled, ProblemDetailsContext? Context, int StatusCode)> HandleAsync(Exception exception)
+    /// <summary>
+    /// Given a mapped exception and a client that accepts no problem-details format
+    /// When the handler runs
+    /// Then it still reports the exception handled with the mapped status.
+    /// </summary>
+    [Fact]
+    public async Task UnwritableProblemDetailsIsStillHandled()
     {
-        var service = new CapturingProblemDetailsService();
-        var handler = new AsmExceptionHandler(service);
+        var (handled, _, statusCode) = await HandleAsync(new NotFoundException("missing"), canWrite: false);
+
+        Assert.True(handled);
+        Assert.Equal(StatusCodes.Status404NotFound, statusCode);
+    }
+
+    /// <summary>
+    /// Given a malformed request
+    /// When the handler runs
+    /// Then it logs the exception once, at warning.
+    /// </summary>
+    [Fact]
+    public async Task BadRequestIsLoggedAsWarning()
+    {
+        var exception = new BadHttpRequestException("Failed to bind parameter");
+        var logger = new CapturingLogger();
+
+        await HandleAsync(exception, logger: logger);
+
+        var entry = Assert.Single(logger.Entries);
+        Assert.Equal(LogLevel.Warning, entry.Level);
+        Assert.Same(exception, entry.Exception);
+    }
+
+    /// <summary>
+    /// Given an exception that maps to a server error
+    /// When the handler runs
+    /// Then it logs the exception once, at error.
+    /// </summary>
+    [Fact]
+    public async Task ServerErrorIsLoggedAsError()
+    {
+        var exception = new TestAsmException("boom", 42);
+        var logger = new CapturingLogger();
+
+        await HandleAsync(exception, logger: logger);
+
+        var entry = Assert.Single(logger.Entries);
+        Assert.Equal(LogLevel.Error, entry.Level);
+        Assert.Same(exception, entry.Exception);
+    }
+
+    /// <summary>
+    /// Given a logged exception on a request whose path carries a line break
+    /// When the handler runs
+    /// Then the logged path has the line break stripped, so it cannot forge a log entry.
+    /// </summary>
+    [Fact]
+    public async Task RequestPathIsSanitisedInTheLog()
+    {
+        var logger = new CapturingLogger();
+
+        await HandleAsync(new BadHttpRequestException("Failed to bind parameter"), logger: logger, path: $"/accounts{Environment.NewLine}forged");
+
+        var entry = Assert.Single(logger.Entries);
+        Assert.Contains("/accountsforged", entry.Message);
+        Assert.DoesNotContain(Environment.NewLine, entry.Message);
+    }
+
+    public static TheoryData<Exception> ExpectedOutcomes() =>
+    [
+        new NotFoundException("missing"),
+        new NotAuthorisedException("nope"),
+    ];
+
+    /// <summary>
+    /// Given an exception that maps to an expected outcome rather than a fault
+    /// When the handler runs
+    /// Then it writes problem details and logs nothing.
+    /// </summary>
+    [Theory]
+    [MemberData(nameof(ExpectedOutcomes))]
+    public async Task ExpectedOutcomeIsNotLogged(Exception exception)
+    {
+        var logger = new CapturingLogger();
+
+        var (handled, _, _) = await HandleAsync(exception, logger: logger);
+
+        Assert.True(handled);
+        Assert.Empty(logger.Entries);
+    }
+
+    /// <summary>
+    /// Given an exception the handler does not recognise
+    /// When the handler runs
+    /// Then it logs nothing, leaving the exception to the middleware's diagnostics.
+    /// </summary>
+    [Fact]
+    public async Task UnmappedExceptionIsNotLogged()
+    {
+        var logger = new CapturingLogger();
+
+        await HandleAsync(new TimeoutException("slow"), logger: logger);
+
+        Assert.Empty(logger.Entries);
+    }
+
+    private static async Task<(bool Handled, ProblemDetailsContext? Context, int StatusCode)> HandleAsync(Exception exception, bool canWrite = true, CapturingLogger? logger = null, string path = "/")
+    {
+        var service = new CapturingProblemDetailsService(canWrite);
+        var handler = new AsmExceptionHandler(service, logger ?? new CapturingLogger());
         var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = path;
 
         var handled = await handler.TryHandleAsync(httpContext, exception, CancellationToken.None);
 
@@ -139,7 +246,7 @@ public class AsmExceptionHandlerTests
 
     private sealed class TestAsmException(string message, int errorId) : AsmException(message, errorId);
 
-    private sealed class CapturingProblemDetailsService : IProblemDetailsService
+    private sealed class CapturingProblemDetailsService(bool canWrite) : IProblemDetailsService
     {
         public ProblemDetailsContext? Captured { get; private set; }
 
@@ -152,7 +259,19 @@ public class AsmExceptionHandlerTests
         public ValueTask<bool> TryWriteAsync(ProblemDetailsContext context)
         {
             Captured = context;
-            return ValueTask.FromResult(true);
+            return ValueTask.FromResult(canWrite);
         }
+    }
+
+    private sealed class CapturingLogger : ILogger<AsmExceptionHandler>
+    {
+        public List<(LogLevel Level, Exception? Exception, string Message)> Entries { get; } = [];
+
+        public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
+
+        public bool IsEnabled(LogLevel logLevel) => true;
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) =>
+            Entries.Add((logLevel, exception, formatter(state, exception)));
     }
 }
