@@ -54,7 +54,7 @@ public class TestWebApplication : IDisposable
                         endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
                         {
                             ResponseWriter = ResponseWriter.WriteResponse,
-                        });
+                        }).AllowAnonymous();
                     });
                 });
             });
