@@ -28,9 +28,9 @@
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="10.0.0" Condition="'$(TargetFramework)' == 'net10.0'" />
     <!-- Non-Microsoft packages (version-agnostic) -->
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.6.0" />
-    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.9.0" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.10.0" />
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
-    <PackageVersion Include="FluentValidation" Version="12.1.1" />
+    <PackageVersion Include="FluentValidation" Version="12.2.0" />
     <PackageVersion Include="MailKit" Version="4.17.0" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions" Version="5.2.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
@@ -56,9 +56,9 @@
     <PackageVersion Include="Serilog.Sinks.Trace" Version="4.0.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="2.1.13" />
     <PackageVersion Include="Umbraco.Cms.Api.Management" Version="18.2.0" />
-    <PackageVersion Include="Umbraco.Cms.Core" Version="18.2.0" />
-    <PackageVersion Include="Umbraco.Cms.Infrastructure" Version="18.2.0" />
-    <PackageVersion Include="Umbraco.Cms.Web.Common" Version="18.2.0" />
+    <PackageVersion Include="Umbraco.Cms.Core" Version="18.2.1" />
+    <PackageVersion Include="Umbraco.Cms.Infrastructure" Version="18.2.1" />
+    <PackageVersion Include="Umbraco.Cms.Web.Common" Version="18.2.1" />
     <PackageVersion Include="xunit.v3" Version="4.0.2" />
     <PackageVersion Include="xunit.v3.assert" Version="4.0.2" />
     <PackageVersion Include="xunit.v3.common" Version="4.0.2" />
