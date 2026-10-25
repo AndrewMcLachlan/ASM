@@ -13,15 +13,15 @@
 
   <ItemGroup Label=".NET 10 Packages">
     <!-- .NET 10 versions -->
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.14" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="10.0.14" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.14" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.14" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.14" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.14" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Memory" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" Condition="'$(TargetFramework)' == 'net10.0'" />
