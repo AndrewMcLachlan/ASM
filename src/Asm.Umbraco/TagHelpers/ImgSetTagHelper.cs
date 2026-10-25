@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Globalization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -5,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
-using SixLabors.ImageSharp;
+using Umbraco.Cms.Core.Media;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
@@ -18,7 +19,7 @@ namespace Asm.Umbraco.TagHelpers;
 /// srcset entries. Caches the image dimensions in memory when they aren't supplied by Umbraco.
 /// </summary>
 [HtmlTargetElement("imgset", Attributes = "images")]
-public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCache memoryCache) : TagHelper
+public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCache memoryCache, IImageDimensionExtractor imageDimensionExtractor) : TagHelper
 {
     /// <summary>
     /// The current view context.
@@ -42,6 +43,11 @@ public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCach
     /// Memory cache used to store resolved image dimensions.
     /// </summary>
     protected IMemoryCache MemoryCache { get; } = memoryCache;
+
+    /// <summary>
+    /// Reads image dimensions using whichever imaging provider the site has installed.
+    /// </summary>
+    protected IImageDimensionExtractor ImageDimensionExtractor { get; } = imageDimensionExtractor;
 
     /// <inheritdoc />
     public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -96,12 +102,16 @@ public class ImgSetTagHelper(IWebHostEnvironment webHostEnvironment, IMemoryCach
 
                 try
                 {
-                    // Identify reads only the image header rather than decoding the whole image.
-                    var info = Image.Identify(path);
-                    if (info is null) return;
+                    Size? size;
+                    using (var stream = File.OpenRead(path))
+                    {
+                        size = ImageDimensionExtractor.GetDimensions(stream);
+                    }
 
-                    width = info.Width;
-                    height = info.Height;
+                    if (size is null) return;
+
+                    width = size.Value.Width;
+                    height = size.Value.Height;
 
                     if (!development)
                     {

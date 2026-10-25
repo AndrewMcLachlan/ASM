@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
+using Umbraco.Cms.Core.Media;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Asm.Umbraco.Tests.TagHelpers;
@@ -39,7 +40,7 @@ public class ImgSetTagHelperTests
 
         var cacheMock = new Mock<IMemoryCache>();
 
-        var helper = new ImgSetTagHelper(envMock.Object, cacheMock.Object)
+        var helper = new ImgSetTagHelper(envMock.Object, cacheMock.Object, Mock.Of<IImageDimensionExtractor>())
         {
             ViewContext = new ViewContext(),
             Images = images ?? []
